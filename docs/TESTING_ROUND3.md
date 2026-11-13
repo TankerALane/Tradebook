@@ -25,6 +25,12 @@ What's still open after round 2: the three fixes, plus everything that needs ano
 - [ ] Craft qty 1 / qty 3 / Craft All still work.
 - [ ] `/reload` keeps size, position, scale, stars, pins and characters.
 
+## F. Skill-up and material colours (any character)
+- [ ] **Gloves of Meditation** (Tailoring 115): the Skill-up section reads **orange until 125 / yellow until 140 / green until 155**, each line in its colour.
+- [ ] A **yellow** recipe starts at "yellow until …"; a **green** one shows only "green until …"; a **grey** one shows no Skill-up section.
+- [ ] Recipe colours in Tradebook's list match the default window (compare a few with **Default UI**).
+- [ ] Material names in a recipe's details are **white** when you have enough in your bags, **red** only when you're short.
+
 ## Lua errors
 [paste here]
 
