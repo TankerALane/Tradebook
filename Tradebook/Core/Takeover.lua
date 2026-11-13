@@ -93,21 +93,26 @@ local function shouldTakeOver()
     return ns.db and ns.db.settings.replaceDefault and not state.useDefault
 end
 
--- "Tradebook" button on the default frame, to switch back.
+-- "Tradebook" button on the default frame, to switch back. It is our own top-level
+-- button (parented to UIParent, drawn above the default frame's title art) anchored to
+-- the frame, shown only while the default frame is visible to the player.
 local switchButton
+
+local function updateSwitchButton()
+    local f = frame()
+    if not switchButton then return end
+    switchButton:SetShown(f ~= nil and f:IsShown() and not state.hidden)
+end
+
 local function ensureSwitchButton(f)
-    if not f then return end
-    if switchButton then
-        switchButton:SetFrameLevel(f:GetFrameLevel() + 50)
-        switchButton:Show()
-        return
-    end
-    switchButton = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+    if not f or switchButton then return end
+    switchButton = CreateFrame("Button", nil, UIParent, "UIPanelButtonTemplate")
     switchButton:SetText(L.OPEN_TRADEBOOK)
     switchButton:SetSize(96, 20)
-    switchButton:SetPoint("TOPRIGHT", f, "TOPRIGHT", -28, -1)
-    switchButton:SetFrameStrata(f:GetFrameStrata())
-    switchButton:SetFrameLevel(f:GetFrameLevel() + 50)
+    switchButton:SetPoint("TOPRIGHT", f, "TOPRIGHT", -30, -1)
+    switchButton:SetFrameStrata("HIGH")
+    switchButton:SetToplevel(true)
+    switchButton:Hide()
     switchButton:SetScript("OnClick", function() Takeover.UseTradebook() end)
     switchButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
@@ -127,6 +132,7 @@ local function onDefaultShow()
         f:HookScript("OnHide", function()
             restoreDefault()
             state.useDefault = false
+            updateSwitchButton()
             if not state.closingFromUs and ns.UI and ns.UI.OnDefaultClosed then ns.UI.OnDefaultClosed() end
         end)
     end
@@ -134,6 +140,7 @@ local function onDefaultShow()
         hideDefault()
         if ns.UI then ns.UI.Show() end
     end
+    updateSwitchButton()
 end
 
 function Takeover.Start()
@@ -173,6 +180,7 @@ function Takeover.UseDefault()
         ShowProfessionsFrame()
     end
     if ns.UI then ns.UI.Hide(true) end
+    updateSwitchButton()
 end
 
 -- "Tradebook" button on the default frame.
@@ -180,5 +188,6 @@ function Takeover.UseTradebook()
     state.useDefault = false
     local f = frame()
     if f and f:IsShown() then hideDefault() end
+    updateSwitchButton()
     if ns.UI then ns.UI.Show() end
 end
