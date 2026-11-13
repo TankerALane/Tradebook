@@ -46,10 +46,16 @@ local function build()
     local minimap = W.Check(panel, L.OPT_MINIMAP, function(v) ns.Minimap.SetShown(v) end)
     minimap:SetPoint("TOPLEFT", replace, "BOTTOMLEFT", 0, -6)
 
-    local scale = slider(panel, L.OPT_SCALE, 0.7, 1.5, 0.05,
+    local gathering = W.Check(panel, L.OPT_GATHERING, function(v)
+        ns.db.settings.showGathering = v
+        ns.UI.LayoutTabs()
+    end)
+    gathering:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 0, -6)
+
+    local scale = slider(panel, L.OPT_SCALE, 0.6, 1.4, 0.05,
         function() return ns.db.settings.scale or 1 end,
         function(v) ns.db.settings.scale = v; ns.UI.ApplyScale() end, "%.2f")
-    scale:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 6, -36)
+    scale:SetPoint("TOPLEFT", gathering, "BOTTOMLEFT", 6, -36)
 
     local stale = slider(panel, L.OPT_STALE, 7, 180, 1,
         function() return ns.db.settings.staleDays or 30 end,
@@ -71,6 +77,7 @@ local function build()
     panel:SetScript("OnShow", function()
         replace:SetChecked(ns.db.settings.replaceDefault)
         minimap:SetChecked(not ns.db.settings.minimap.hide)
+        gathering:SetChecked(ns.db.settings.showGathering)
         scale.Refresh()
         stale.Refresh()
     end)

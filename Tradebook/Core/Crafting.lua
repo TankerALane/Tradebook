@@ -52,8 +52,33 @@ function Crafting.OpenProfession(skillLineID)
     return Compat.Call("C_TradeSkillUI.OpenTradeSkill", skillLineID) == true
 end
 
+-- The craft button's action from a click: open the profession if that's all that's
+-- missing, otherwise craft. Returns true if something happened.
+function Crafting.Click(recipeID, times)
+    local state = Crafting.State(recipeID)
+    if state == "closed" then
+        local r = ns.db.recipes[recipeID]
+        return r ~= nil and Crafting.OpenProfession(r.s)
+    end
+    return Crafting.Craft(recipeID, times)
+end
+
+-- Can "Open in default window" work? Only for the current character's professions.
+function Crafting.CanOpenInDefault(recipeID)
+    local r = recipeID and ns.db.recipes[recipeID]
+    return r ~= nil and ns.char ~= nil and ns.char.professions[r.s] ~= nil and not InCombatLockdown()
+end
+
 -- Fallback: show this recipe in the default Professions window. Call from a click.
+-- Opens the recipe's profession first (OpenRecipe alone only works within the open one).
 function Crafting.OpenInDefault(recipeID)
+    if not Crafting.CanOpenInDefault(recipeID) then return false end
+    local r = ns.db.recipes[recipeID]
     ns.Takeover.UseDefault()
+    local open = ns.Scanner.OpenProfession()
+    if not open or open.professionID ~= r.s then
+        Compat.Call("C_TradeSkillUI.OpenTradeSkill", r.s)
+    end
     Compat.Call("C_TradeSkillUI.OpenRecipe", recipeID)
+    return true
 end

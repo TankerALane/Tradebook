@@ -21,23 +21,23 @@ local function createRow(row)
     row.name:SetWordWrap(false)
     row.mats = W.Text(row, "GameFontHighlightSmall")
     row.mats:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -3)
-    row.mats:SetPoint("RIGHT", -260, 0)
+    row.mats:SetPoint("RIGHT", -310, 0)
     row.mats:SetWordWrap(false)
     row.who = W.Text(row, "GameFontHighlightSmall")
-    row.who:SetPoint("TOPLEFT", row, "TOPRIGHT", -250, -6)
-    row.who:SetPoint("RIGHT", -96, 0)
+    row.who:SetPoint("TOPLEFT", row, "TOPRIGHT", -300, -6)
+    row.who:SetPoint("RIGHT", -142, 0)
     row.who:SetJustifyV("TOP")
     row.craft = W.Button(row, L.CRAFT, 80, 22)
     row.craft:SetPoint("RIGHT", -8, 0)
-    -- One CraftRecipe per click.
+    -- One call per click: opens the profession if that's all that's missing, else crafts.
     row.craft:SetScript("OnClick", function(self)
-        ns.Crafting.Craft(self:GetParent().data.id, 1)
-        C_Timer.After(0.3, function() View:Refresh() end)
+        ns.Crafting.Click(self:GetParent().data.id, 1)
+        C_Timer.After(0.4, function() View:Refresh() end)
     end)
     row.header = W.Text(row, "GameFontNormal")
     row.header:SetPoint("LEFT", 10, 0)
     row:SetScript("OnClick", function(self)
-        if self.data.id then ns.UI.OpenRecipe(self.data.id) end
+        if self.data.id then ns.UI.OpenRecipe(self.data.id, nil, true) end
     end)
 end
 
@@ -87,8 +87,14 @@ local function initRow(row, data)
     row.who:SetText(table.concat(lines, "\n"))
     local state = ns.Crafting.State(data.id)
     local mine = ns.char and ns.char.professions[r.s] and ns.char.professions[r.s].recipes[data.id]
+    local _, possible = Reagents.Shortage(ns.db, ns.char, r, 1)
+    local closed = state == "closed"
+    local p = ns.Professions.Get(r.s)
     row.craft:SetShown(mine ~= nil)
-    row.craft:SetEnabled(state == "ok")
+    row.craft:SetText(closed and p and L.OPEN_PROFESSION:format(L[p.name] or p.name) or L.CRAFT)
+    row.craft:SetWidth(closed and 130 or 80)
+    -- Enabled when craftable now, or when only the profession needs opening and you have the materials.
+    row.craft:SetEnabled(state == "ok" or (closed and possible > 0 and not InCombatLockdown()))
 end
 
 function View:Build(parent)

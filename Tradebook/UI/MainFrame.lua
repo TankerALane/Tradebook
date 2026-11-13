@@ -83,7 +83,6 @@ local function tabTooltip(tab)
 end
 
 local function buildTabs()
-    local prev
     for i, key in ipairs(tabIDs()) do
         local tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
         tab:SetID(i)
@@ -94,12 +93,6 @@ local function buildTabs()
             local p = ns.Professions.Get(key)
             tab:SetText(L[p.name] or p.name)
         end
-        if prev then
-            tab:SetPoint("LEFT", prev, "RIGHT", -10, 0)
-        else
-            tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 8, 2)
-        end
-        PanelTemplates_TabResize(tab, 0, nil, 40, 96)
         tab.badge = tab:CreateFontString(nil, "OVERLAY", "GameFontNormalTiny")
         tab.badge:SetPoint("TOPRIGHT", -6, -4)
         tab:SetScript("OnClick", function(self)
@@ -109,10 +102,44 @@ local function buildTabs()
         tab:SetScript("OnEnter", tabTooltip)
         tab:SetScript("OnLeave", GameTooltip_Hide)
         tabs[i] = tab
-        prev = tab
     end
     frame.Tabs = tabs
     PanelTemplates_SetNumTabs(frame, #tabs)
+end
+
+-- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
+-- Gathering tabs can be hidden in settings (their data is still saved).
+local TAB_OVERLAP = -10
+function UI.LayoutTabs()
+    if not frame then return end
+    local visible = {}
+    for _, tab in ipairs(tabs) do
+        local p = tab.key ~= CAMP and ns.Professions.Get(tab.key)
+        local show = not (p and p.gathering and not ns.db.settings.showGathering)
+        tab:SetShown(show)
+        if show then visible[#visible + 1] = tab end
+    end
+    local available = frame:GetWidth() - 16
+    local natural = 0
+    for _, tab in ipairs(visible) do
+        PanelTemplates_TabResize(tab, 0, nil, 40, 110)
+        natural = natural + tab:GetWidth()
+    end
+    natural = natural + TAB_OVERLAP * (#visible - 1)
+    if natural > available then
+        local each = math.floor((available - TAB_OVERLAP * (#visible - 1)) / #visible)
+        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, each, nil, nil) end
+    end
+    local prev
+    for _, tab in ipairs(visible) do
+        tab:ClearAllPoints()
+        if prev then
+            tab:SetPoint("LEFT", prev, "RIGHT", TAB_OVERLAP, 0)
+        else
+            tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 8, 2)
+        end
+        prev = tab
+    end
 end
 
 function UI.UpdateTabs()
@@ -197,8 +224,9 @@ local function restorePosition()
     end
 end
 
+-- Scale 1.0 in settings is drawn at DB.BASE_SCALE.
 function UI.ApplyScale()
-    if frame then frame:SetScale(ns.db.settings.scale or 1) end
+    if frame then frame:SetScale((ns.db.settings.scale or 1) * ns.DB.BASE_SCALE) end
 end
 
 local function buildHeader()
@@ -263,6 +291,8 @@ function UI.Create()
     buildTabs()
     restorePosition()
     UI.ApplyScale()
+    UI.LayoutTabs()
+    frame:HookScript("OnSizeChanged", function() UI.LayoutTabs() end)
 
     frame:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN)
@@ -339,11 +369,11 @@ function UI.GlobalSearch(text)
     if ns.util.Query(text) then showView("search", text) end
 end
 
--- Jump to a recipe (from search, characters, camp).
-function UI.OpenRecipe(recipeID, charKey)
+-- Jump to a recipe (from search, characters, camp). fromClick: also open the profession.
+function UI.OpenRecipe(recipeID, charKey, fromClick)
     local r = ns.db.recipes[recipeID]
     if not r then return end
-    UI.SelectTab(r.s)
+    UI.SelectTab(r.s, fromClick)
     local view = UI.views.profession
     if current.view == "profession" and view.SelectRecipe then view:SelectRecipe(recipeID, charKey) end
 end

@@ -9,6 +9,8 @@ local Characters = ns.Characters
 local View = {}
 ns.UI.RegisterView("characters", View)
 
+local SUMMARY_WIDTH = 250
+
 StaticPopupDialogs["TRADEBOOK_DELETE_CHARACTER"] = {
     text = L.DELETE_CONFIRM,
     button1 = YES,
@@ -32,7 +34,7 @@ local function createRow(row)
     row.info = W.Text(row, "GameFontHighlightSmall")
     row.info:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -3)
     row.profs = W.Text(row, "GameFontHighlightSmall")
-    row.profs:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 300, 0)
+    row.profs:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 230, 0)
     row.profs:SetPoint("RIGHT", -150, 0)
     row.profs:SetJustifyV("TOP")
     row.warn = W.Text(row, "GameFontRedSmall")
@@ -107,14 +109,31 @@ function View:Build(parent)
     end)
     self.showHidden:SetPoint("TOPRIGHT", -170, -6)
 
-    -- Closest-to-rank-up summary.
+    -- Left column: one block per profession, stacked, with who is next to rank up.
+    self.rankTitle = W.Text(f, "GameFontNormal")
+    self.rankTitle:SetPoint("TOPLEFT", 12, -40)
+    self.rankTitle:SetText(L.NEXT_RANKUP)
     self.summary = W.Text(f, "GameFontHighlightSmall")
-    self.summary:SetPoint("TOPLEFT", 12, -36)
-    self.summary:SetPoint("RIGHT", -12, 0)
+    self.summary:SetPoint("TOPLEFT", self.rankTitle, "BOTTOMLEFT", 0, -8)
+    self.summary:SetWidth(SUMMARY_WIDTH - 20)
+    self.summary:SetJustifyV("TOP")
+    self.summary:SetSpacing(3)
 
     self.list = W.List(f, 74, createRow, initRow)
-    self.list:SetPoint("TOPLEFT", 8, -110)
+    self.list:SetPoint("TOPLEFT", SUMMARY_WIDTH, -40)
     self.list:SetPoint("BOTTOMRIGHT", -22, 8)
+end
+
+-- "Ana  145/150  ->  Expert" / "Ana  ready to train Expert" for one profession.
+local function rankUpText(skillLineID)
+    local c, gap = Characters.ClosestToRankUp(ns.db, skillLineID, ns.charKey)
+    if not c then return nil end
+    local prof = c.professions[skillLineID]
+    local nextRank = Characters.NextRank(prof.max)
+    local rankName = nextRank and (L.RANK_NAMES[nextRank] or nextRank) or ""
+    local who = W.ClassName(c)
+    if gap == 0 then return L.READY_TO_TRAIN:format(who, rankName) end
+    return L.CLOSEST_RANKUP:format(who, prof.rank or 0, prof.max or 0, gap, rankName)
 end
 
 function View:Show()
@@ -123,15 +142,14 @@ end
 
 function View:Refresh()
     self.showHidden:SetChecked(ns.db.settings.showHidden)
-    local parts = {}
+    local lines = {}
     for _, p in ipairs(ns.Professions.list) do
-        local c, gap = Characters.ClosestToRankUp(ns.db, p.id, ns.charKey)
-        if c then
-            local text = gap == 0 and L.READY_TO_TRAIN:format(c.name or c.key)
-                or L.CLOSEST_RANKUP:format(c.name or c.key, gap)
-            parts[#parts + 1] = W.ColorText(W.GOLD, (L[p.name] or p.name) .. ":") .. " " .. text
+        local text = rankUpText(p.id)
+        if text then
+            lines[#lines + 1] = W.ColorText(W.GOLD, L[p.name] or p.name)
+            lines[#lines + 1] = "   " .. text
         end
     end
-    self.summary:SetText(table.concat(parts, "     "))
+    self.summary:SetText(#lines > 0 and table.concat(lines, "\n") or W.ColorText(W.GREY, L.MINIMAP_NONE))
     self.list:SetItems(Characters.List(ns.db, ns.charKey, ns.db.settings.showHidden))
 end

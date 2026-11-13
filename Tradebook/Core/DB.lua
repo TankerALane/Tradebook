@@ -18,12 +18,16 @@ local _, ns = ...
 local DB = {}
 ns.DB = DB
 
-DB.VERSION = 1
+DB.VERSION = 2
+
+-- The window's scale 1.0 is drawn at this size (1.25x the native frame), per user preference.
+DB.BASE_SCALE = 1.25
 
 DB.DEFAULTS = {
     settings = {
         replaceDefault = true,
         scale = 1,
+        showGathering = true,
         staleDays = 30,
         showSoD = false,
         showHidden = false,
@@ -49,6 +53,14 @@ DB.DEFAULTS = {
 DB.MIGRATIONS = {
     [1] = function(db)
         -- First version: nothing to convert, defaults are filled below.
+        return db
+    end,
+    [2] = function(db)
+        -- Scale is now relative to BASE_SCALE (old 1.25 becomes the new 1.0).
+        local s = db.settings
+        if s and tonumber(s.scale) then
+            s.scale = math.floor(s.scale / DB.BASE_SCALE * 20 + 0.5) / 20
+        end
         return db
     end,
 }

@@ -25,7 +25,7 @@ local function createRow(row)
     row.who:SetPoint("RIGHT", -6, 0)
     row.who:SetWordWrap(false)
     row:SetScript("OnClick", function(self)
-        ns.UI.OpenRecipe(self.data.id, self.data.crafters[1])
+        ns.UI.OpenRecipe(self.data.id, self.data.crafters[1], true)
     end)
 end
 

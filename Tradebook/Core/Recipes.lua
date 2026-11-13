@@ -147,7 +147,7 @@ end
 -- Recipes of a profession the character hasn't learned (needs the profession scanned once).
 function Recipes.Missing(db, character, skillLineID, showExtras)
     local p = character and character.professions and character.professions[skillLineID]
-    if not p or not p.scannedAt then return nil end
+    if not p or not (p.scannedAt or p.quickAt) then return nil end
     local out = {}
     for _, id in ipairs(Recipes.ForProfession(db, skillLineID, showExtras)) do
         if not p.recipes[id] then out[#out + 1] = id end

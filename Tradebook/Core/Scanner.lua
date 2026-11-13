@@ -72,16 +72,21 @@ end
 
 local categoryCache = {}
 
+-- Category name/parent. Uses the saved copy when the API can't answer (profession closed).
 local function category(id)
     if not id or id == 0 then return nil end
     local c = categoryCache[id]
     if c == nil then
         local info = Compat.Call("C_TradeSkillUI.GetCategoryInfo", id)
-        c = info and { n = info.name, p = info.parentCategoryID } or false
-        categoryCache[id] = c
-        if c then ns.db.categories[id] = c end
+        if info and info.name then
+            c = { n = info.name, p = info.parentCategoryID }
+            categoryCache[id] = c
+            ns.db.categories[id] = c
+        else
+            c = ns.db.categories[id]
+        end
     end
-    return c or nil
+    return c
 end
 
 -- Walk to the root category; return its name and whether the camp category is on the path.
@@ -171,6 +176,49 @@ function Scanner.Recipes()
     ns.Fire("RECIPES_UPDATED", skillLineID)
 end
 
+-- Quick scan without opening anything: check the bundled recipe list against the
+-- spellbook. Only ADDS recipes (the full scan on open is authoritative), and does
+-- nothing if the API can't see any recipe as known.
+function Scanner.QuickRecipes()
+    local c = ns.char
+    if not c or not ns.RecipeLevels or not Compat.Has("C_SpellBook.IsSpellKnown") then return end
+    local wanted = {}
+    for skill, p in pairs(c.professions) do
+        local def = ns.Professions.Get(skill)
+        if def and not def.noRecipes then wanted[skill] = p end
+    end
+    local found = {}
+    for id, lv in pairs(ns.RecipeLevels) do
+        local p = wanted[lv[1]]
+        if p and Compat.Call("C_SpellBook.IsSpellKnown", id) then
+            found[lv[1]] = found[lv[1]] or {}
+            found[lv[1]][id] = true
+        end
+    end
+    local added = 0
+    for skill, ids in pairs(found) do
+        local p = wanted[skill]
+        p.recipes = p.recipes or {}
+        local profName = ns.Professions.Get(skill).name
+        for id in pairs(ids) do
+            if p.recipes[id] == nil then
+                p.recipes[id] = ns.Sources.Difficulty(id, p.rank) or true
+                added = added + 1
+            end
+            if not ns.db.recipes[id] or not ns.db.recipes[id].n then
+                local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
+                if info and info.name then cacheRecipe(id, info, skill, profName) end
+            end
+        end
+        p.quickAt = now()
+    end
+    if added > 0 then
+        Recipes.Invalidate()
+        ns.Fire("RECIPES_UPDATED")
+    end
+    ns.Debug("quick scan added", added, "recipes")
+end
+
 ---------------------------------------------------------------------------
 -- bags and banks
 ---------------------------------------------------------------------------
@@ -208,13 +256,10 @@ Scanner.bankOpen = false
 function Scanner.Bank()
     local c = ns.char
     if not c or not Scanner.bankOpen or not Enum.BankType then return end
+    -- Forever has only the character bank (no account/warband bank).
     if Compat.Call("C_Bank.CanViewBank", Enum.BankType.Character) then
         c.bank = countContainers(bankTabs(Enum.BankType.Character), {})
         c.bankAt = now()
-    end
-    if Enum.BankType.Account and Compat.Call("C_Bank.CanViewBank", Enum.BankType.Account) then
-        ns.db.account.bank = countContainers(bankTabs(Enum.BankType.Account), {})
-        ns.db.account.bankAt = now()
     end
     ns.Fire("ITEMS_UPDATED")
 end
@@ -267,6 +312,7 @@ function Scanner.Start()
     ns.On("NEW_RECIPE_LEARNED", function()
         ns.Throttle("recipes", 0.5, Scanner.Recipes)
         ns.Throttle("professions", 1, Scanner.Professions)
+        ns.Throttle("quick", 2, Scanner.QuickRecipes)
     end)
     ns.On("BAG_UPDATE_DELAYED", function()
         ns.Throttle("bags", 0.5, Scanner.Bags)
@@ -277,7 +323,7 @@ function Scanner.Start()
         ns.Throttle("bank", 0.5, Scanner.Bank)
     end)
     ns.On("BANKFRAME_CLOSED", function() Scanner.bankOpen = false end)
-    for _, ev in ipairs({ "PLAYERBANKSLOTS_CHANGED", "BANK_TABS_CHANGED", "PLAYER_ACCOUNT_BANK_TAB_SLOTS_CHANGED" }) do
+    for _, ev in ipairs({ "PLAYERBANKSLOTS_CHANGED", "BANK_TABS_CHANGED" }) do
         ns.On(ev, function() if Scanner.bankOpen then ns.Throttle("bank", 0.5, Scanner.Bank) end end)
     end
     ns.On("PLAYER_LEVEL_UP", function(_, level) if ns.char then ns.char.level = level end end)
@@ -285,4 +331,5 @@ function Scanner.Start()
 
     Scanner.Professions()
     Scanner.Bags()
+    ns.Throttle("quick", 3, Scanner.QuickRecipes)
 end

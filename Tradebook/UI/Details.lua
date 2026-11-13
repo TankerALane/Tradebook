@@ -110,15 +110,15 @@ function Details.Create(parent)
     self.output:SetPoint("TOPLEFT", 2, -2)
     self.title = W.Text(f, "GameFontNormalLarge")
     self.title:SetPoint("TOPLEFT", self.output, "TOPRIGHT", 10, -2)
-    self.title:SetPoint("RIGHT", f, "RIGHT", -70, 0)
+    self.title:SetPoint("RIGHT", f, "RIGHT", -96, 0)
     self.title:SetWordWrap(false)
     self.sub = W.Text(f, "GameFontHighlightSmall")
     self.sub:SetPoint("TOPLEFT", self.title, "BOTTOMLEFT", 0, -4)
-    self.sub:SetPoint("RIGHT", f, "RIGHT", -70, 0)
+    self.sub:SetPoint("RIGHT", f, "RIGHT", -96, 0)
 
     self.favBtn = CreateFrame("Button", nil, f)
     self.favBtn:SetSize(22, 22)
-    self.favBtn:SetPoint("TOPRIGHT", -36, -2)
+    self.favBtn:SetPoint("TOPRIGHT", -2, -2)
     self.favBtn.tex = self.favBtn:CreateTexture(nil, "ARTWORK")
     self.favBtn.tex:SetAllPoints()
     self.favBtn.tex:SetAtlas("auctionhouse-icon-favorite")
@@ -130,8 +130,8 @@ function Details.Create(parent)
     end)
     W.Tooltip(self.favBtn, function() return ns.db.favorites[self.recipeID] and L.UNFAVORITE or L.FAVORITE end)
 
-    self.pinBtn = W.Button(f, L.PIN, 50, 20)
-    self.pinBtn:SetPoint("TOPRIGHT", -2, -3)
+    self.pinBtn = W.Button(f, L.PIN, 56, 20)
+    self.pinBtn:SetPoint("RIGHT", self.favBtn, "LEFT", -6, 0)
     self.pinBtn:SetScript("OnClick", function()
         local id = self.recipeID
         if not id then return end
@@ -167,10 +167,11 @@ function Details.Create(parent)
     self.qty:SetOnValueChangedCallback(function() self:RefreshReagents() end)
     self.craft = W.Button(f, L.CRAFT, 80, 22)
     self.craft:SetPoint("RIGHT", self.qty, "LEFT", -30, 0)
-    -- Each click makes exactly one CraftRecipe call (Phase 0: crafts need a hardware event).
+    -- Each click makes exactly one call (Phase 0: crafting and opening need a hardware event).
+    -- If only the profession is closed, the button reads "Open <profession>" and opens it.
     self.craft:SetScript("OnClick", function()
-        ns.Crafting.Craft(self.recipeID, self:Quantity())
-        C_Timer.After(0.2, function() self:Refresh() end)
+        ns.Crafting.Click(self.recipeID, self:Quantity())
+        C_Timer.After(0.3, function() self:Refresh() end)
     end)
     self.craftAll:SetScript("OnClick", function()
         local _, max = ns.Crafting.State(self.recipeID)
@@ -178,7 +179,7 @@ function Details.Create(parent)
         C_Timer.After(0.2, function() self:Refresh() end)
     end)
 
-    self.defaultBtn = W.Button(f, L.OPEN_IN_DEFAULT, 170, 22)
+    self.defaultBtn = W.Button(f, L.OPEN_IN_DEFAULT, 180, 22)
     self.defaultBtn:SetPoint("BOTTOMLEFT", 2, 4)
     self.defaultBtn:SetScript("OnClick", function()
         if self.recipeID then ns.Crafting.OpenInDefault(self.recipeID) end
@@ -235,7 +236,7 @@ function Pane:AddMaker(maker, indent, path)
     local who = Recipes.KnownBy(ns.db, maker.recipeID)
     self:Add({ indent = indent, text = L.MADE_BY:format((r and r.n or "?") .. " (" .. profName .. ")"),
         right = #who > 0 and knownByText(who) or W.ColorText(W.GREY, L.NOBODY),
-        onClick = function() ns.UI.OpenRecipe(maker.recipeID) end })
+        onClick = function() ns.UI.OpenRecipe(maker.recipeID, nil, true) end })
     self:AddTree(maker.children, indent + 1, path .. "." .. maker.recipeID)
 end
 
@@ -304,7 +305,7 @@ function Pane:Refresh()
         local right = L.HAVE_NEED:format(item.bags, item.need)
         right = (enough and W.GREEN or W.RED):WrapTextInColorCode(right)
         if item.fetch > 0 then
-            right = W.ColorText(W.GOLD, "(" .. L.IN_BANK:format(item.bank + item.account) .. ") ") .. right
+            right = W.ColorText(W.GOLD, "(" .. L.IN_BANK:format(item.bank) .. ") ") .. right
         end
         local node = tree[i]
         local key = "r." .. i
@@ -314,7 +315,7 @@ function Pane:Refresh()
             toggle = hasMakers and true or nil, expanded = self.expanded[key],
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank),
-                L.IN_ACCOUNT_BANK:format(item.account), item.fetch > 0 and L.BANK_FETCH or nil } })
+                item.fetch > 0 and L.BANK_FETCH or nil } })
         if hasMakers and self.expanded[key] then
             for _, maker in ipairs(node.makers) do self:AddMaker(maker, 1, key) end
         end
@@ -360,8 +361,14 @@ function Pane:RefreshCraft()
     end
     local state, max, reason = ns.Crafting.State(id)
     local ok = state == "ok"
-    self.craft:SetEnabled(ok)
+    local closed = state == "closed"
+    local r = ns.db.recipes[id]
+    local prof = r and ns.Professions.Get(r.s)
+    self.craft:SetText(closed and prof and L.OPEN_PROFESSION:format(L[prof.name] or prof.name) or L.CRAFT)
+    self.craft:SetWidth(closed and 130 or 80)
+    self.craft:SetEnabled(ok or (closed and not InCombatLockdown()))
     self.craftAll:SetEnabled(ok and max > 0)
+    self.defaultBtn:SetEnabled(ns.Crafting.CanOpenInDefault(id))
     self.qty:SetEnabled(state ~= "notlearned" and state ~= "other")
     if ok then
         self.status:SetText(W.ColorText(W.GREEN, L.CRAFT_ALL .. ": " .. max))

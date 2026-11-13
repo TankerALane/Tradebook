@@ -8,7 +8,7 @@ local _, ns = ...
 local Reagents = {}
 ns.Reagents = Reagents
 
--- Counts for one item for a character (bags, own bank, account bank).
+-- Counts for one item for a character (bags, bank; account is always 0 in Forever).
 function Reagents.Have(db, character, itemID)
     local bags = character and character.bags and character.bags[itemID] or 0
     local bank = character and character.bank and character.bank[itemID] or 0

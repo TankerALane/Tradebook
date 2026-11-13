@@ -313,8 +313,10 @@ function View:Refresh()
 
     local notices, showOpen = {}, false
     if not isMe then notices[#notices + 1] = L.VIEWING_ALT:format(c and ns.CharName(c.key) or "?") end
-    if prof and not prof.scannedAt then notices[#notices + 1] = L.NOT_SCANNED:format(profName) end
-    if isMe and prof and not self:IsLive() and not pInfo.gathering then
+    if prof and not prof.scannedAt and not pInfo.noRecipes then
+        notices[#notices + 1] = (prof.quickAt and L.QUICK_SCANNED or L.NOT_SCANNED):format(profName)
+    end
+    if isMe and prof and not self:IsLive() and not pInfo.noRecipes then
         showOpen = true
         self.openBtn:SetText(L.OPEN_PROFESSION:format(profName))
         self.openBtn:SetEnabled(not InCombatLockdown())

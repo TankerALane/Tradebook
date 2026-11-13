@@ -145,6 +145,11 @@ function Characters.ClosestToRankUp(db, skillLineID, currentKey)
     return best, bestGap
 end
 
+-- Next rank to train after the current cap: "Journeyman", "Expert", "Artisan" or nil at the top.
+function Characters.NextRank(max)
+    return ns.Professions.nextRank[max]
+end
+
 function Characters.Delete(db, key)
     if db.characters[key] then
         db.characters[key] = nil

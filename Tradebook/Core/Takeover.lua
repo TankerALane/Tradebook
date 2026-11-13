@@ -3,10 +3,11 @@
 --
 -- Phase 0: every way of opening professions shows ProfessionsFrame, and hiding that
 -- frame closes the trade-skill session (its OnHide calls CloseTradeSkill). So while
--- Tradebook is up, the default frame stays OPEN but invisible (alpha 0, tiny scale so it
--- can't catch clicks). Closing Tradebook closes the default frame, which ends the
--- session normally. No Blizzard function is replaced; only EventRegistry callbacks,
--- HookScript and our own button are used.
+-- Tradebook is up, the default frame stays OPEN but invisible: alpha 0 and moved
+-- off-screen so it can't catch clicks. Its scale is never touched (the panel manager
+-- scales it to fit, and Blizzard sizes some buttons from text width). Closing Tradebook
+-- closes the default frame, which ends the session normally. No Blizzard function is
+-- replaced; only EventRegistry callbacks, HookScript/hooksecurefunc and our own button.
 
 local _, ns = ...
 local L = ns.L
@@ -14,12 +15,14 @@ local L = ns.L
 local Takeover = {}
 ns.Takeover = Takeover
 
-local HIDDEN_SCALE = 0.001
 local owner = {}
 local state = {
     hidden = false,      -- default frame currently hidden behind Tradebook
     useDefault = false,  -- user chose the default UI until the default frame closes
     closingFromUs = false,
+    points = nil,        -- the panel manager's anchors, restored when shown again
+    clamped = nil,
+    moving = false,
 }
 
 local function frame()
@@ -35,20 +38,55 @@ function Takeover.IsHiding()
     return state.hidden
 end
 
+local OFFSCREEN_X = -5000
+
+local function capturePoints(f)
+    local points = {}
+    for i = 1, f:GetNumPoints() do points[i] = { f:GetPoint(i) } end
+    -- Ignore our own off-screen anchor (the panel manager may not have moved the frame).
+    if #points > 0 and points[1][4] ~= OFFSCREEN_X then state.points = points end
+end
+
+local function moveOffscreen(f)
+    state.moving = true
+    f:ClearAllPoints()
+    f:SetPoint("TOPRIGHT", UIParent, "TOPLEFT", OFFSCREEN_X, 0)
+    state.moving = false
+end
+
 local function hideDefault()
     local f = frame()
     if not f then return end
+    if not state.hidden then
+        capturePoints(f)
+        state.clamped = f:IsClampedToScreen()
+    end
+    f:SetClampedToScreen(false)
     f:SetAlpha(0)
-    f:SetScale(HIDDEN_SCALE)
+    moveOffscreen(f)
     state.hidden = true
 end
 
 local function restoreDefault()
     local f = frame()
-    if not f then return end
-    f:SetAlpha(1)
-    f:SetScale(1)
+    if not f or not state.hidden then return end
     state.hidden = false
+    f:SetAlpha(1)
+    if state.points then
+        f:ClearAllPoints()
+        for _, p in ipairs(state.points) do f:SetPoint(unpack(p)) end
+    end
+    if state.clamped ~= nil then f:SetClampedToScreen(state.clamped) end
+    state.points, state.clamped = nil, nil
+end
+
+-- The panel manager re-anchors panels when others open or close; keep ours hidden.
+local function onPanelsMoved()
+    local f = frame()
+    if state.hidden and f and f:IsShown() and not state.moving then
+        capturePoints(f)
+        moveOffscreen(f)
+    end
 end
 
 local function shouldTakeOver()
@@ -58,13 +96,18 @@ end
 -- "Tradebook" button on the default frame, to switch back.
 local switchButton
 local function ensureSwitchButton(f)
-    if switchButton or not f then return end
+    if not f then return end
+    if switchButton then
+        switchButton:SetFrameLevel(f:GetFrameLevel() + 50)
+        switchButton:Show()
+        return
+    end
     switchButton = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
     switchButton:SetText(L.OPEN_TRADEBOOK)
     switchButton:SetSize(96, 20)
-    local anchor = f.CloseButton or f
-    switchButton:SetPoint("RIGHT", anchor, "LEFT", -4, 0)
-    switchButton:SetFrameLevel(f:GetFrameLevel() + 20)
+    switchButton:SetPoint("TOPRIGHT", f, "TOPRIGHT", -28, -1)
+    switchButton:SetFrameStrata(f:GetFrameStrata())
+    switchButton:SetFrameLevel(f:GetFrameLevel() + 50)
     switchButton:SetScript("OnClick", function() Takeover.UseTradebook() end)
     switchButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
@@ -97,6 +140,16 @@ function Takeover.Start()
     if EventRegistry and EventRegistry.RegisterCallback then
         EventRegistry:RegisterCallback("ProfessionsFrame.Show", onDefaultShow, owner)
     end
+    if type(UpdateUIPanelPositions) == "function" then
+        hooksecurefunc("UpdateUIPanelPositions", onPanelsMoved)
+    end
+end
+
+function Takeover.DebugState()
+    local f = frame()
+    return string.format("defaultShown=%s hidden=%s useDefault=%s switchButton=%s",
+        tostring(f and f:IsShown()), tostring(state.hidden), tostring(state.useDefault),
+        tostring(switchButton and switchButton:IsVisible()))
 end
 
 -- Tradebook is closing: close the hidden default frame too (ends the trade skill properly).
