@@ -68,3 +68,7 @@ function Shopping.ShowPinned()
     end
     Shopping.Show(entries, L.SHOPPING_PINNED)
 end
+
+function Shopping.Hide()
+    if popup then popup:Hide() end
+end

@@ -27,6 +27,10 @@ SlashCmdList.TRADEBOOK = function(msg)
         ns.Takeover.UseDefault()
     elseif cmd == "options" or cmd == "settings" or cmd == "config" then
         ns.Settings.Open()
+    elseif cmd == "fake" then
+        ns.Fake.Toggle()
+    elseif cmd == "shots" then
+        ns.Screenshots.Run()
     elseif cmd == "debug" then
         ns.db.settings.debug = not ns.db.settings.debug
         ns.Print(ns.db.settings.debug and L.DEBUG_ON or L.DEBUG_OFF)

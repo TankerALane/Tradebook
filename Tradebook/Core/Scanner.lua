@@ -49,6 +49,7 @@ function Scanner.Identity()
 end
 
 function Scanner.Professions()
+    if ns.fake then return end -- /tb fake: never write into the made-up set
     local c = ns.char
     if not c then return end
     local list = {}
@@ -117,8 +118,9 @@ function Scanner.OpenProfession()
     return base
 end
 
-local function cacheRecipe(id, info, skillLineID, professionName)
-    local cached = ns.db.recipes[id]
+local function cacheRecipe(id, info, skillLineID, professionName, db)
+    db = db or ns.db
+    local cached = db.recipes[id]
     local rootName, isCamp = classify(info.categoryID)
     local data = {
         s = skillLineID,
@@ -129,7 +131,7 @@ local function cacheRecipe(id, info, skillLineID, professionName)
         camp = isCamp or nil,
         x = (rootName ~= nil and rootName ~= professionName) or nil,
     }
-    if isCamp and info.categoryID then ns.db.campCategories[info.categoryID] = skillLineID end
+    if isCamp and info.categoryID then db.campCategories[info.categoryID] = skillLineID end
     if not cached or not cached.r then
         local schem = Compat.Call("C_TradeSkillUI.GetRecipeSchematic", id, false)
         if schem then
@@ -146,7 +148,17 @@ local function cacheRecipe(id, info, skillLineID, professionName)
             data.q1, data.q2 = schem.quantityMin, schem.quantityMax
         end
     end
-    Recipes.Store(ns.db, id, data)
+    Recipes.Store(db, id, data)
+end
+
+-- Cache one recipe by ID into a given DB (used by /tb fake, which must not touch the real
+-- DB). Recipe info and schematics can be read by ID with the profession closed (Phase 0).
+function Scanner.CacheRecipeInto(db, id, skillLineID)
+    local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
+    if not (info and info.name) then return false end
+    local def = ns.Professions.Get(skillLineID)
+    cacheRecipe(id, info, skillLineID, def and def.name, db)
+    return true
 end
 
 -- Skill-up colour (0 orange .. 3 grey) of a recipe for a saved character:
@@ -174,6 +186,7 @@ function Scanner.Difficulty(c, skillLineID, recipeID, noLive)
 end
 
 function Scanner.Recipes()
+    if ns.fake then return end -- /tb fake: never write into the made-up set
     local c = ns.char
     local base = Scanner.OpenProfession()
     if not c or not base then return end
@@ -222,6 +235,7 @@ end
 -- spellbook. Only ADDS recipes (the full scan on open is authoritative), and does
 -- nothing if the API can't see any recipe as known.
 function Scanner.QuickRecipes()
+    if ns.fake then return end -- /tb fake: never write into the made-up set
     local c = ns.char
     if not c or not ns.RecipeLevels or not Compat.Has("C_SpellBook.IsSpellKnown") then return end
     local wanted = {}
@@ -279,6 +293,7 @@ local function countContainers(bagIDs, into)
 end
 
 function Scanner.Bags()
+    if ns.fake then return end -- /tb fake: never write into the made-up set
     local c = ns.char
     if not c then return end
     local bags = {}
@@ -296,6 +311,7 @@ end
 Scanner.bankOpen = false
 
 function Scanner.Bank()
+    if ns.fake then return end -- /tb fake: never write into the made-up set
     local c = ns.char
     if not c or not Scanner.bankOpen or not Enum.BankType then return end
     -- Forever has only the character bank (no account/warband bank).

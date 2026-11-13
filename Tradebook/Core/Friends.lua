@@ -53,6 +53,7 @@ end
 
 -- Convenience for the UI: friends with a profession, safe if anything is missing.
 function Friends.For(skillLineID)
+    if ns.fake and ns.FakeData then return ns.FakeData.FriendsWith(skillLineID, GetServerTime()) end
     local ok, list = pcall(Friends.WithProfession, Friends.Source(), skillLineID)
     return ok and list or {}
 end

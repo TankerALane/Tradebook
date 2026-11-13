@@ -412,6 +412,12 @@ function UI.Create()
     return frame
 end
 
+-- Title shows a banner while the made-up account (/tb fake) is on.
+function UI.SetFakeBanner(on)
+    if not (frame and frame.SetTitle) then return end
+    frame:SetTitle(on and (L.ADDON_TITLE .. "  " .. W.ColorText(W.RED, L.FAKE_BANNER)) or L.ADDON_TITLE)
+end
+
 function UI.Show()
     UI.Create()
     if not frame:IsShown() then frame:Show() end

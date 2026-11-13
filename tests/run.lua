@@ -17,6 +17,7 @@ local PURE_FILES = {
     "Tradebook/Core/Reagents.lua",
     "Tradebook/Core/Friends.lua",
     "Tradebook/Core/Locations.lua",
+    "Tradebook/Debug/FakeData.lua",
 }
 
 local function loadAddon()
@@ -487,6 +488,37 @@ test("faction filter and distance text", function()
     eq(ns.Locations.DistanceText(119.6), "120 yd")
     eq(ns.Locations.DistanceText(1500), "1.5k yd")
     eq(ns.Locations.DistanceText(nil), nil)
+end)
+
+test("fake data: four made-up characters, real data untouched", function()
+    local real = ns.DB.Migrate(nil)
+    real.recipes[2385] = { s = 197, n = "Brown Linen Vest", r = { 2996, 2 } }
+    real.settings.scale = 1.1
+    local before = ns.util.Count(real.recipes)
+    local ensured = 0
+    local db, key = ns.FakeData.Build(real, 1800000000, function(target, id, skill)
+        ensured = ensured + 1
+        target.recipes[id] = { s = skill, n = "Recipe " .. id, r = { 2589, 1 } }
+    end)
+    eq(ns.util.Count(db.characters), 4)
+    eq(key, "Aldric-Fernhollow")
+    eq(db.fake, true)
+    eq(ns.util.Count(real.characters), 0, "real characters untouched")
+    eq(ns.util.Count(real.recipes), before, "real recipe cache untouched")
+    assert(ensured > 0, "missing recipes are filled into the fake copy")
+    eq(db.settings.scale, 1.1, "settings copied")
+    local aldric = db.characters[key]
+    assert(ns.util.Count(aldric.professions[164].recipes) > 10, "Blacksmithing recipes known")
+    assert(next(aldric.bags), "bags filled")
+    local stale = db.characters["Sefaria-Fernhollow"]
+    eq(ns.Characters.IsStale(stale, 1800000000, 30, key), true, "one stale character for the warning")
+    local friends = ns.FakeData.FriendsWith(164, 1800000000)
+    eq(friends[1].name, "Grimwald Ashby")
+    -- deterministic
+    local db2 = ns.FakeData.Build(real, 1800000000, function(target, id, skill)
+        target.recipes[id] = { s = skill, n = "Recipe " .. id, r = { 2589, 1 } }
+    end)
+    eq(ns.util.Count(db2.characters[key].bags), ns.util.Count(aldric.bags), "same seed, same data")
 end)
 
 test("migration v3 clears old threshold mismatches", function()

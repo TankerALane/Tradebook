@@ -13,6 +13,7 @@ ns.Crafting = Crafting
 -- Can the current character craft this recipe right now?
 -- Returns state ("ok", "combat", "other", "notlearned", "closed", "missing"), max craftable, reason text.
 function Crafting.State(recipeID)
+    if ns.fake then return "other", 0, L.FAKE_NO_CRAFT end
     local recipe = ns.db.recipes[recipeID]
     if not recipe then return "notlearned", 0, L.CRAFT_NOT_LEARNED end
     local prof = ns.Professions.Get(recipe.s)
@@ -65,6 +66,7 @@ end
 
 -- Can "Open in default window" work? Only for the current character's professions.
 function Crafting.CanOpenInDefault(recipeID)
+    if ns.fake then return false end
     local r = recipeID and ns.db.recipes[recipeID]
     return r ~= nil and ns.char ~= nil and ns.char.professions[r.s] ~= nil and not InCombatLockdown()
 end

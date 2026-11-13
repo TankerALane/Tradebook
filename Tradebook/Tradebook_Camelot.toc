@@ -55,5 +55,10 @@ UI\LegacyView.lua
 UI\Shopping.lua
 UI\Settings.lua
 
+# Screenshots (made-up data, /tb fake and /tb shots)
+Debug\FakeData.lua
+Debug\Fake.lua
+Debug\Screenshots.lua
+
 Core\Slash.lua
 Core\Init.lua

@@ -9,6 +9,13 @@ L.ADDON_TITLE = "Tradebook"
 L.LOADED = "loaded. Type /tb for options."
 L.DEBUG_ON = "Debug output on."
 L.DEBUG_OFF = "Debug output off."
+L.FAKE_ON = "Made-up characters on (for screenshots). Nothing is saved; /tb fake or /reload to go back."
+L.FAKE_OFF = "Back to your real characters."
+L.FAKE_BANNER = "(made-up data)"
+L.FAKE_NO_CRAFT = "Crafting is off while showing made-up characters."
+L.SHOTS_START = "Taking %d screenshots. Don't move the mouse over the window until it's done."
+L.SHOTS_DONE = "Done: %d screenshots in your Screenshots folder. Run scripts/crop_shots.py to crop them."
+L.SHOTS_COMBAT = "Can't take screenshots in combat."
 L.HELP_HEADER = "Commands:"
 L.HELP_LINES = {
     "/tb - open or close Tradebook",
@@ -18,6 +25,8 @@ L.HELP_LINES = {
     "/tb default - use the default Professions window this time",
     "/tb options - open settings",
     "/tb debug - toggle diagnostics",
+    "/tb fake - made-up characters for screenshots (on/off; never saved)",
+    "/tb shots - take the screenshots for the addon page",
 }
 
 -- Window
