@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.1.0-alpha
+## v0.1.0-beta
 
-First alpha for WoW Forever (1.60.1). Early development: please report problems on GitHub.
+First beta for WoW Forever (1.60.1). Please report problems on GitHub.
 
 - **Profession window** that replaces the default one, with a "Default UI" button to switch, and a "Tradebook" button on the default window to switch back. Setting to turn the replacement off.
 - **Bottom tabs** for all 12 professions plus Camp. Tabs are gold for your professions, white for alt-only, grey for none, with a count of characters. Gathering professions can be hidden.

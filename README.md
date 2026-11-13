@@ -2,27 +2,30 @@
 
 A profession companion for **World of Warcraft: Forever**.
 
-> **Status: early development.** Not released yet.
+> **Status: beta.** First public beta for WoW Forever 1.60.1. Please report problems on GitHub.
 
-## Planned features (version 1)
+## Features
 
 - A profession window laid out like the modern Professions window (recipe list on the left, details on the right). It replaces the default window, with a one-click switch back to the default UI.
 - A bottom tab for every Forever profession, plus a **Camp** tab for campsite recipes.
 - Crafting from Tradebook for the character you're logged into: Craft, quantity, Craft All.
 - Every character's professions, skill levels and known recipes saved account-wide, with a fast **"Who can craft this?"** search.
 - Reagent counts from bags and bank, missing-reagent highlights, an expandable reagent tree and shopping lists.
-- Recipe sources for recipes you haven't learned yet.
+- Recipe sources for recipes you haven't learned yet, and skill-up ranges from Forever's own game data.
+- A Camp tab for campsite recipes across all your characters.
 - A read-only view of your Legacy profession perks.
+- Friends' profession ranks if you use Fellowship Ledger.
 - A minimap button and a Data Broker launcher.
 
 ## Install
 
-Not packaged yet. Once released it will be on CurseForge. For development, link the `Tradebook` folder into `World of Warcraft\_forever_\Interface\AddOns`.
+Install from CurseForge (search "Tradebook"), or download the zip from [GitHub Releases](https://github.com/TankerALane/Tradebook/releases) and extract the `Tradebook` folder into `World of Warcraft\_forever_\Interface\AddOns`.
 
 ## Credits
 
 - Developed by **Decoupled Lane Studio**.
 - Recipe source data adapted from **LibProfessionDB** by Pmptasty (MIT License).
+- Skill-up ranges from WoW Forever's game data (via wago.tools).
 
 ## License
 
