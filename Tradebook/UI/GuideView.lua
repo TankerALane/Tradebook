@@ -43,17 +43,17 @@ function View:Show(skillLineID)
         lines[#lines + 1] = ""
         lines[#lines + 1] = W.ColorText(W.GOLD, L.FRIENDS_HEADER)
         for _, f in ipairs(friends) do
-            lines[#lines + 1] = View.FriendLine(f, name)
+            lines[#lines + 1] = View.FriendLine(f)
         end
         lines[#lines + 1] = W.ColorText(W.GREY, L.FRIENDS_NOTE)
     end
     self.body:SetText(table.concat(lines, "\n"))
 end
 
--- "Cain Ratt: Has Blacksmithing 132/225  (2 days ago)", name in class colour.
-function View.FriendLine(f, professionName)
+-- "Cain Ratt: 132/225  (2 days ago)", name in class colour.
+function View.FriendLine(f)
     local who = ns.Compat.ClassColor(f.class):WrapTextInColorCode(f.name)
-    local text = L.FRIEND_HAS:format(who, professionName, f.rank, f.max)
+    local text = L.FRIEND_HAS:format(who, f.rank, f.max)
     if f.at then text = text .. "  " .. W.ColorText(W.GREY, "(" .. W.Ago(f.at) .. ")") end
     return text
 end
