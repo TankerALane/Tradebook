@@ -98,10 +98,9 @@ local function initRow(row, data)
         row.name:SetPoint("LEFT", 20, 0)
         row.name:SetPoint("RIGHT", row.right, "LEFT", -4, 0)
         row.name:SetFontObject("GameFontNormalSmall")
-        row.name:SetText(data.name)
+        row.name:SetText(data.name .. (data.count and ("  " .. W.ColorText(W.GREY, "(" .. data.count .. ")")) or ""))
         row.name:SetTextColor(W.GOLD:GetRGB())
-        row.right:SetText(data.count and ("(" .. data.count .. ")") or "")
-        row.right:SetTextColor(0.6, 0.6, 0.6)
+        row.right:SetText("") -- the count sits next to the name
         return
     end
     row.toggle:Hide()
