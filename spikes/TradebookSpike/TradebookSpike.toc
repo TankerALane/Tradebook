@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: Tradebook Spike |cff999999(Phase 0 test, remove after)|r
+## Notes: Throwaway feasibility probes for Tradebook. Type /tbs for commands.
+## Author: Decoupled Lane Studio
+## Version: 0.0.1-spike
+## IconTexture: Interface\AddOns\TradebookSpike\media\icon_png.png
+## SavedVariables: TradebookSpikeDB
+
+Spike.lua
