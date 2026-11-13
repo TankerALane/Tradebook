@@ -263,7 +263,7 @@ function View:Build(parent)
 
     -- Friends with this profession (Fellowship Ledger); hover to list them.
     self.friendsBtn = W.Button(left, "", 96, 20)
-    self.friendsBtn:SetPoint("TOPRIGHT", left, "TOPRIGHT", -14, -26)
+    -- positioned in View:Layout (row 1, right of the character picker)
     self.friendsBtn:SetScript("OnEnter", function(btn)
         GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
         GameTooltip:SetText(L.FRIENDS_HEADER, W.GOLD:GetRGB())
@@ -307,22 +307,19 @@ end
 
 -- Place search/list below the notice area (which changes height).
 -- Left column, top to bottom with explicit offsets so nothing overlaps:
---   row 1 (y 0):  character picker | rank
---   row 2:        note text (left)  | Friends button (right, when shown)
+--   row 1 (y 0):  character picker | Friends button (right, when shown)
+--   row 2:        note text (full width)
 --   row 3:        "Open <profession>" button (when shown)
 --   then the search + Filter row and the list.
 function View:Layout(showOpen)
+    self.friendsBtn:ClearAllPoints()
+    self.friendsBtn:SetPoint("TOPRIGHT", self.frame, "TOPLEFT", LEFT_WIDTH - 6, -9)
     local y = 28 -- below row 1
-    local friendsShown = self.friendsBtn:IsShown()
-    self.notice:SetWidth(friendsShown and (LEFT_WIDTH - 120) or (LEFT_WIDTH - 20))
+    self.notice:SetWidth(LEFT_WIDTH - 20)
     local noteH = (self.notice:GetText() or "") ~= "" and self.notice:GetStringHeight() or 0
-    local friendsH = friendsShown and self.friendsBtn:GetHeight() or 0
-    local row2 = math.max(noteH, friendsH)
     self.notice:ClearAllPoints()
     self.notice:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 10, -(8 + y))
-    self.friendsBtn:ClearAllPoints()
-    self.friendsBtn:SetPoint("TOPRIGHT", self.frame, "TOPLEFT", LEFT_WIDTH - 6, -(8 + y))
-    if row2 > 0 then y = y + row2 + 6 end
+    if noteH > 0 then y = y + noteH + 6 end
     self.openBtn:ClearAllPoints()
     self.openBtn:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 8, -(8 + y))
     if showOpen then y = y + 26 end
