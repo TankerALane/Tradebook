@@ -15,4 +15,10 @@ One line per significant decision. Newest at the bottom.
 - 2026-11-13 — Profession tabs call `C_TradeSkillUI.OpenTradeSkill` only from a click (blocked without a hardware event).
 - 2026-11-13 — Crafting from Tradebook: one `CraftRecipe(id, n)` call per click, only when the recipe's profession is open. No queued or delayed crafts (blocked without a hardware event).
 - 2026-11-13 — Textures use explicit `.png` paths (an extensionless PNG path fails to load).
+- 2026-11-13 — Hidden default frame uses alpha 0 + scale 0.001 so its invisible buttons can't catch clicks (alpha alone leaves them clickable).
+- 2026-11-13 — One extra global frame name, `TradebookFrame`, so ESC closes the window (`UISpecialFrames` needs a name). Also one `StaticPopupDialogs` entry for delete confirmation.
+- 2026-11-13 — Addon lives in `Tradebook/` in the repo; `.pkgmeta` moves it into place and pulls the four libs as externals. Local dev copies go in the git-ignored `Tradebook/Libs` via `scripts/dev-libs.sh`.
+- 2026-11-13 — LibProfessionDB data is copied at build time by `scripts/build_source_data.py` into `Data/SourceData.lua` (sources, NPC names, required skill, skill-up thresholds), with the MIT notice in the file header. Thresholds also recolour alts' recipes from their current rank.
+- 2026-11-13 — Recipe cache (`TradebookDB.recipes`) is shared by all characters; each character stores only learned recipe IDs plus difficulty, to keep memory modest.
+- 2026-11-13 — Camp tab: no cooldowns (not exposed), and nothing about what's active at the camp (out of scope).
 - 2026-11-13 — Git setup (link to `TankerALane/Tradebook`, first commits) waits until the spike is done.
