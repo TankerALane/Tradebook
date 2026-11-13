@@ -1,12 +1,20 @@
 # Changelog
 
-## Unreleased
+## v0.1.0-alpha
 
-- Phase 0 feasibility spikes for WoW Forever 1.60.1 (see `docs/FEASIBILITY.md`).
-- First build of Tradebook:
-  - Profession window that replaces the default one (switch back with "Default UI"), with bottom tabs for all 12 professions and Camp.
-  - Recipe list with search, filters, favourites and skill-up colours; details with reagents, reagent tree, sources and required skill.
-  - Craft, quantity and Craft All for the logged-in character.
-  - Account-wide characters, professions, recipes, bags and bank, with a "who can craft this?" search.
-  - Characters view (hide, delete, stale warning, closest to next rank), Camp tab, Legacy perks, shopping lists.
-  - Minimap button, Data Broker launcher and settings panel.
+First alpha for WoW Forever (1.60.1). Early development: please report problems on GitHub.
+
+- **Profession window** that replaces the default one, with a "Default UI" button to switch, and a "Tradebook" button on the default window to switch back. Setting to turn the replacement off.
+- **Bottom tabs** for all 12 professions plus Camp. Tabs are gold for your professions, white for alt-only, grey for none, with a count of characters. Gathering professions can be hidden.
+- **Recipe list** with search, filters (learned, not learned, have materials, gives skill-ups), Starred and Pinned sections, and skill-up colours that match the game.
+- **Recipe details**: result item tooltip, who can craft it, reagents with bag and bank counts (and which other characters hold them), an expandable reagent tree, skill-up ranges ("orange until 125" and so on, from Forever's own data), and where to learn recipes you don't know yet.
+- **Crafting** for the logged-in character: Craft, quantity, Craft All, and "Open <profession>" when the profession isn't open yet.
+- **Account-wide data**: every character's professions, recipes, bags and bank. Recipes are found from the spellbook at login, without opening the profession first.
+- **"Who can craft…?"** search across all characters.
+- **Characters view**: class, level, play type, last seen, professions and missing recipes; who is next to rank up in each profession; hide or delete characters; stale-data warning.
+- **Camp tab**: campsite recipes across all characters, who knows them, who can make them now, and the materials.
+- **Legacy**: your Legacy profession perks and unspent points.
+- **Shopping lists** for one recipe or all pinned recipes.
+- **Minimap button** and Data Broker launcher; settings panel (scale, minimap, gathering tabs, stale-data threshold).
+
+Credits: recipe source data adapted from LibProfessionDB by Pimptasty (MIT). Skill-up ranges from WoW Forever's game data.
