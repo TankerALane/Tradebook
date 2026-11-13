@@ -5,7 +5,7 @@ name: Game data check
 # changed. Nothing is merged or released automatically.
 on:
   schedule:
-    - cron: "0 14 * * 1" # Mondays 14:00 UTC
+    - cron: "0 23 * * 2" # Tuesdays 23:00 UTC = 3pm PST (4pm during PDT); after weekly maintenance
   workflow_dispatch:
     inputs:
       build:

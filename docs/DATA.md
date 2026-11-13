@@ -10,7 +10,7 @@ Tradebook ships two generated data files. Never edit them by hand; re-run the sc
 ## Skill-up thresholds (every Forever build)
 
 - Rule (checked in game against every colour the game reported: 166 of 166 matched): yellow from `TrivialSkillLineRankLow`, grey from `TrivialSkillLineRankHigh`, green from `floor((low + high) / 2)`, orange below yellow.
-- **Automatic:** `.github/workflows/game-data.yml` runs every Monday (and on demand from the Actions tab, optionally for a specific build). It regenerates the file, runs lint and tests, and opens a PR titled "Game data update: Forever <build>" listing added, removed and changed recipes. It also warns if the build suggests a new TOC `## Interface` number.
+- **Automatic:** `.github/workflows/game-data.yml` runs every Tuesday at 3pm Pacific (23:00 UTC), after weekly maintenance, (and on demand from the Actions tab, optionally for a specific build). It regenerates the file, runs lint and tests, and opens a PR titled "Game data update: Forever <build>" listing added, removed and changed recipes. It also warns if the build suggests a new TOC `## Interface` number.
 - **By hand:** `python -I scripts/update_game_data.py [build]`.
 - **In the game:** every time a profession is opened, Tradebook compares these numbers with the game's own colours. Any recipe that disagrees is flagged (`TradebookDB.badThresholds`); its "until" lines are hidden and the game's colour is used. `/tb debug` reports how many disagreed. If that number isn't 0 after a patch, run the update.
 
