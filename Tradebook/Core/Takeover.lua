@@ -164,16 +164,40 @@ end
 -- Tradebook is closing: close the hidden default frame too (ends the trade skill properly).
 -- In combat HideUIPanel does nothing, so the hidden default frame stays hidden
 -- (off-screen) and is closed when combat ends.
+-- Close the hidden default frame, making sure it really closes:
+--   1. HideUIPanel (normal path; does nothing in combat)
+--   2. end the trade-skill session (Blizzard's frame closes itself on TRADE_SKILL_CLOSE)
+--   3. out of combat only, hide the frame directly
+local function closeDefault(f)
+    state.closingFromUs = true
+    HideUIPanel(f)
+    local step = 1
+    if f:IsShown() then
+        ns.Compat.Call("C_TradeSkillUI.CloseTradeSkill")
+        step = 2
+    end
+    if f:IsShown() and not InCombatLockdown() then
+        f:Hide()
+        step = 3
+    end
+    state.closingFromUs = false
+    ns.Debug("closed default frame at step", step, "still shown:", tostring(f:IsShown()))
+    return not f:IsShown()
+end
+
 function Takeover.OnTradebookHidden()
     local f = frame()
     if state.hidden and f and f:IsShown() then
         if InCombatLockdown() then
-            state.closeAfterCombat = true
+            -- End the profession now; the (off-screen) frame is closed after combat.
+            ns.Compat.Call("C_TradeSkillUI.CloseTradeSkill")
+            if f:IsShown() then
+                state.closeAfterCombat = true
+                return
+            end
+        elseif not closeDefault(f) then
             return
         end
-        state.closingFromUs = true
-        HideUIPanel(f)
-        state.closingFromUs = false
     end
     restoreDefault()
 end
