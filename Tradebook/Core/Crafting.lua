@@ -70,14 +70,25 @@ function Crafting.CanOpenInDefault(recipeID)
 end
 
 -- Fallback: show this recipe in the default Professions window. Call from a click.
--- Opens the recipe's profession first (OpenRecipe alone only works within the open one).
+--   * Profession not open: C_TradeSkillUI.OpenRecipe opens it and the default window
+--     selects the recipe itself (seen in the Phase 0 spike).
+--   * Profession already open: Blizzard defers the response until the next list
+--     update, which may never come, so select it the way Blizzard's own handler does.
 function Crafting.OpenInDefault(recipeID)
     if not Crafting.CanOpenInDefault(recipeID) then return false end
     local r = ns.db.recipes[recipeID]
-    ns.Takeover.UseDefault()
     local open = ns.Scanner.OpenProfession()
-    if not open or open.professionID ~= r.s then
-        Compat.Call("C_TradeSkillUI.OpenTradeSkill", r.s)
+    local f = _G.ProfessionsFrame
+    ns.Takeover.UseDefault(true)
+    if open and open.professionID == r.s and f and f:IsShown() and f.CraftingPage and Professions
+        and Professions.GetProfessionInfo then
+        local ok = pcall(function()
+            if f.recipesTabID and f.SetTab then f:SetTab(f.recipesTabID) end
+            local info = Professions.GetProfessionInfo()
+            info.openRecipeID = recipeID
+            f.CraftingPage:Init(info)
+        end)
+        if ok then return true end
     end
     Compat.Call("C_TradeSkillUI.OpenRecipe", recipeID)
     return true

@@ -280,6 +280,12 @@ function UI.Create()
     end)
     frame:Hide()
     tinsert(UISpecialFrames, "TradebookFrame")
+    -- The template's X calls HideUIPanel, which does nothing in combat. Tradebook isn't
+    -- a protected frame, so hide it directly (return false = skip HideUIPanel).
+    frame.onCloseCallback = function()
+        UI.Hide()
+        return false
+    end
 
     inset = CreateFrame("Frame", nil, frame, "InsetFrameTemplate")
     inset:SetPoint("TOPLEFT", 6, -60)

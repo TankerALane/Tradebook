@@ -39,6 +39,7 @@ function Takeover.IsHiding()
 end
 
 local OFFSCREEN_X = -5000
+local onCombatEnded -- defined below Takeover.OnTradebookHidden, registered in Start
 
 local function capturePoints(f)
     local points = {}
@@ -150,6 +151,7 @@ function Takeover.Start()
     if type(UpdateUIPanelPositions) == "function" then
         hooksecurefunc("UpdateUIPanelPositions", onPanelsMoved)
     end
+    ns.On("PLAYER_REGEN_ENABLED", onCombatEnded)
 end
 
 function Takeover.DebugState()
@@ -160,9 +162,15 @@ function Takeover.DebugState()
 end
 
 -- Tradebook is closing: close the hidden default frame too (ends the trade skill properly).
+-- In combat HideUIPanel does nothing, so the hidden default frame stays hidden
+-- (off-screen) and is closed when combat ends.
 function Takeover.OnTradebookHidden()
     local f = frame()
     if state.hidden and f and f:IsShown() then
+        if InCombatLockdown() then
+            state.closeAfterCombat = true
+            return
+        end
         state.closingFromUs = true
         HideUIPanel(f)
         state.closingFromUs = false
@@ -170,13 +178,21 @@ function Takeover.OnTradebookHidden()
     restoreDefault()
 end
 
+function onCombatEnded()
+    if not state.closeAfterCombat then return end
+    state.closeAfterCombat = false
+    if not (ns.UI and ns.UI.IsShown()) then Takeover.OnTradebookHidden() end
+end
+
 -- "Default UI" button: show the default window (with the same profession open).
-function Takeover.UseDefault()
+-- noShow: don't open the book page (the caller opens a recipe itself).
+function Takeover.UseDefault(noShow)
     state.useDefault = true
+    state.closeAfterCombat = false
     local f = frame()
     if f and f:IsShown() then
         restoreDefault()
-    elseif ShowProfessionsFrame then
+    elseif ShowProfessionsFrame and not noShow then
         ShowProfessionsFrame()
     end
     if ns.UI then ns.UI.Hide(true) end
@@ -186,6 +202,7 @@ end
 -- "Tradebook" button on the default frame.
 function Takeover.UseTradebook()
     state.useDefault = false
+    state.closeAfterCombat = false
     local f = frame()
     if f and f:IsShown() then hideDefault() end
     updateSwitchButton()

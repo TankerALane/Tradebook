@@ -32,10 +32,20 @@ local function createRow(row)
     row.name:SetWordWrap(false)
     row.right = W.Text(row, "GameFontHighlightSmall", "RIGHT")
     row.right:SetPoint("RIGHT", -4, 0)
-    row.fav = row:CreateTexture(nil, "OVERLAY")
-    row.fav:SetSize(12, 12)
-    row.fav:SetAtlas("auctionhouse-icon-favorite")
+    -- Star marker; clicking it removes the star.
+    row.fav = CreateFrame("Button", nil, row)
+    row.fav:SetSize(13, 13)
     row.fav:SetPoint("RIGHT", row.right, "LEFT", -2, 0)
+    row.fav:SetNormalAtlas("auctionhouse-icon-favorite")
+    row.fav:SetHighlightAtlas("auctionhouse-icon-favorite", "ADD")
+    row.fav:SetScript("OnClick", function(self)
+        local data = self:GetParent().data
+        if data and data.id then
+            ns.db.favorites[data.id] = nil
+            ns.UI.Refresh()
+        end
+    end)
+    W.Tooltip(row.fav, ns.L.UNSTAR_TIP)
     -- Pin marker; clicking it unpins.
     row.pin = CreateFrame("Button", nil, row)
     row.pin:SetSize(14, 14)
