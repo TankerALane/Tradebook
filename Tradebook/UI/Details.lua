@@ -306,7 +306,7 @@ function Pane:Refresh()
     -- Who can craft this.
     local who = Recipes.KnownBy(ns.db, id)
     self:Add({ text = L.WHO_CAN_CRAFT, font = "GameFontNormal", color = W.GOLD })
-    self:Add({ indent = 1, text = #who > 0 and knownByText(who) or L.NOBODY, color = #who > 0 and nil or W.GREY })
+    self:Add({ indent = 1, text = #who > 0 and knownByText(who) or L.NOBODY, color = (#who == 0) and W.GREY or nil })
     self:Gap()
 
     -- Reagents for the viewed character (bags usable; bank shown as fetch-first).
@@ -327,7 +327,7 @@ function Pane:Refresh()
         local key = "r." .. i
         local hasMakers = node and #node.makers > 0
         self:Add({ indent = 0, itemID = item.itemID, text = name, right = right,
-            color = enough and nil or W.RED,
+            color = (not enough) and W.RED or nil,
             toggle = hasMakers and true or nil, expanded = self.expanded[key],
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = self:ReagentTooltip(c, name, item) })
