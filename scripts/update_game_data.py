@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "Tradebook" / "Data" / "SkillLevels.lua"
-TOC = ROOT / "Tradebook" / "Tradebook_Forever.toc"
+TOC = ROOT / "Tradebook" / "Tradebook_Camelot.toc"
 PRODUCT = "wowf"
 SKILL_LINES = {171, 164, 333, 202, 165, 197, 185, 129, 356, 182, 186, 393}
 UA = {"User-Agent": "tradebook-data-updater"}
