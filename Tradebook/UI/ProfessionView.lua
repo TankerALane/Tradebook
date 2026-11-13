@@ -182,7 +182,9 @@ function View:BuildItems()
             if db.favorites[id] then starred[#starred + 1] = item end
             if item.pinned then pinnedList[#pinnedList + 1] = item end
             local keep = (learned and f.learned) or (not learned and f.unlearned)
-            if f.skillup and not (learned and item.diff and item.diff < 3) then keep = false end
+            if f.skillup and not (learned and item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
+                keep = false
+            end
             if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
             if keep then
                 local cat = db.categories[r.c]
@@ -223,6 +225,16 @@ local function filterMenu(owner)
         add(L.FILTER_UNLEARNED, "unlearned")
         add(L.FILTER_CRAFTABLE, "haveMats")
         add(L.FILTER_SKILLUP, "skillup")
+        -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.
+        for i = 1, 3 do
+            local colour = W.DIFFICULTY[i - 1]
+            local text = "    " .. colour:WrapTextInColorCode((L.SKILLUP_COLORS[i]:gsub("^%l", string.upper)))
+            root:CreateCheckbox(text, function() return f.skillupColors[i] end, function()
+                f.skillupColors[i] = not f.skillupColors[i]
+                if f.skillupColors[i] then f.skillup = true end
+                View:RefreshList()
+            end)
+        end
         root:CreateDivider()
         root:CreateCheckbox(L.FILTER_SOD, function() return ns.db.settings.showSoD end, function()
             ns.db.settings.showSoD = not ns.db.settings.showSoD
