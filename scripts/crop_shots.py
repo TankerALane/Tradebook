@@ -6,10 +6,9 @@ After /tb shots, /reload (or log out) so TradebookDB.dev.shots is written, then 
 
 It reads the window position saved for each step, finds the screenshots taken during that
 run in _forever_/Screenshots (in order), and writes cropped PNGs to assets/screenshots/
-as 01-recipe.png, 02-skillup-filter.png, ... Needs ffmpeg/ffprobe on PATH.
+as 01-recipe.png, 02-skillup-filter.png, ... Needs ffmpeg/ffprobe and luajit on PATH.
 """
 import json
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -29,17 +28,37 @@ def find_saved_variables(wow, account):
     sys.exit("Tradebook.lua saved variables not found under %s" % base)
 
 
+LUA_DUMP = r"""
+dofile(arg[1])
+local s = TradebookDB and TradebookDB.dev and TradebookDB.dev.shots
+if not s then os.exit(2) end
+print(s.startedAt)
+for i, step in ipairs(s.steps or {}) do
+  local r = step.rect
+  print(string.format("%s %.6f %.6f %.6f %.6f", step.name, r.left, r.right, r.top, r.bottom))
+end
+"""
+
+
 def read_shots(sv):
-    text = sv.read_text(encoding="utf-8")
-    block = text[text.find('["shots"] = {'):]
-    if not block:
+    """Load the saved variables with LuaJIT (Tradebook's own file) and read dev.shots."""
+    script = Path(__file__).with_name("_dump_shots.lua")
+    script.write_text(LUA_DUMP, encoding="utf-8")
+    try:
+        out = subprocess.run(["luajit", str(script), str(sv)], capture_output=True, text=True)
+    finally:
+        script.unlink(missing_ok=True)
+    if out.returncode == 2:
         sys.exit("no shots recorded: run /tb shots, then /reload")
-    started = int(re.search(r'\["startedAt"\] = (\d+)', block).group(1))
+    if out.returncode != 0:
+        sys.exit("could not read %s: %s" % (sv, out.stderr.strip()))
+    lines = out.stdout.split("\n")
+    started = int(lines[0])
     steps = []
-    for m in re.finditer(r'\["name"\] = "([^"]+)"', block):
-        seg = block[max(0, m.start() - 400):m.start() + 400]
-        rect = {k: float(re.search(r'\["%s"\] = ([-0-9.e]+)' % k, seg).group(1)) for k in ("left", "right", "top", "bottom")}
-        steps.append((m.group(1), rect))
+    for line in lines[1:]:
+        parts = line.split()
+        if len(parts) == 5:
+            steps.append((parts[0], dict(zip(("left", "right", "top", "bottom"), map(float, parts[1:])))))
     return started, steps
 
 
