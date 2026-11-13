@@ -285,6 +285,22 @@ test("shortage with nothing", function()
     eq(list[2].fetch, 3)
 end)
 
+test("other characters' counts: only those who have it, most first", function()
+    local db, a, b = fixture(ns)
+    b.bags = { [2589] = 3 }
+    b.bank = { [2589] = 30 }
+    local list = ns.Reagents.OnOtherCharacters(db, 2589, "Ana-Forever")
+    eq(#list, 1, "Ana excluded as the current character")
+    eq(list[1].name, "Bo")
+    eq(list[1].total, 33)
+    eq(list[1].bags, 3)
+    eq(#ns.Reagents.OnOtherCharacters(db, 2320, "Ana-Forever"), 0, "Bo has none")
+    eq(#ns.Reagents.OnOtherCharacters(db, 2589, "Bo-Ironside"), 1, "Ana has some")
+    b.hidden = true
+    eq(#ns.Reagents.OnOtherCharacters(db, 2589, "Ana-Forever"), 0, "hidden left out")
+    eq(a.bags[2589], 5)
+end)
+
 test("shopping list totals across recipes", function()
     local db, a = fixture(ns)
     local list = ns.Reagents.ShoppingList(db, a, {

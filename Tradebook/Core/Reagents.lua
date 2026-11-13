@@ -16,6 +16,28 @@ function Reagents.Have(db, character, itemID)
     return { bags = bags, bank = bank, account = account, total = bags + bank + account }
 end
 
+-- How many of an item each OTHER saved character has (bags + bank), from their last
+-- login / bank visit. Only characters that have some; hidden characters left out.
+-- Returns { { key, name, bags, bank, total } }, most first.
+function Reagents.OnOtherCharacters(db, itemID, excludeKey)
+    local out = {}
+    for key, c in pairs(db.characters) do
+        if key ~= excludeKey and not c.hidden then
+            local bags = c.bags and c.bags[itemID] or 0
+            local bank = c.bank and c.bank[itemID] or 0
+            if bags + bank > 0 then
+                out[#out + 1] = { key = key, name = c.name or key, class = c.class,
+                    bags = bags, bank = bank, total = bags + bank }
+            end
+        end
+    end
+    table.sort(out, function(a, b)
+        if a.total ~= b.total then return a.total > b.total end
+        return a.name < b.name
+    end)
+    return out
+end
+
 -- Per-reagent need/have for crafting `times` of a recipe.
 -- Returns list of { itemID, need, bags, bank, account, missing, fetch }, and the
 -- number of crafts possible from bags alone.
