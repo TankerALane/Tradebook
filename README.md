@@ -14,8 +14,17 @@ A profession companion for **World of Warcraft: Forever**.
 - Recipe sources for recipes you haven't learned yet, and skill-up ranges from Forever's own game data.
 - A Camp tab for campsite recipes across all your characters.
 - A read-only view of your Legacy profession perks.
-- Friends' profession ranks if you use Fellowship Ledger.
+- Friends' profession ranks if you use Fellowship Ledger, and where to buy or farm materials if you use Questie.
 - A minimap button and a Data Broker launcher.
+
+## Optional addons
+
+Tradebook works on its own; these add more when installed:
+
+- **Questie**: nearest vendors, mobs and gathering nodes for each material, with waypoints.
+- **TomTom**: waypoints use TomTom's arrow (otherwise the game's map pin).
+- **Fellowship Ledger**: friends' profession ranks.
+- **Auctionator** *(coming soon)*: material prices, crafting cost, shopping list export.
 
 ## Install
 
