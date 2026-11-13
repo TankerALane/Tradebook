@@ -348,25 +348,33 @@ test("source data loads and resolves", function()
     eq(ns.Sources.Get(-1), nil)
 end)
 
-test("difficulty from thresholds", function()
-    -- 2385: orange 1, yellow 23, green 45, grey 70
-    eq(ns.Sources.Difficulty(2385, 10), 0)
-    eq(ns.Sources.Difficulty(2385, 23), 1)
-    eq(ns.Sources.Difficulty(2385, 50), 2)
+test("difficulty from the game's own thresholds", function()
+    -- 2385 Brown Linen Vest (SkillLineAbility low 45, high 70): orange 10, yellow 45, green 57, grey 70
+    local t = ns.Sources.Thresholds(2385)
+    eq(t[2], 45)
+    eq(t[3], 57)
+    eq(t[4], 70)
+    eq(ns.Sources.Difficulty(2385, 44), 0)
+    eq(ns.Sources.Difficulty(2385, 45), 1)
+    eq(ns.Sources.Difficulty(2385, 57), 2)
     eq(ns.Sources.Difficulty(2385, 70), 3)
     eq(ns.Sources.Difficulty(-1, 10), nil)
-    eq(#ns.Sources.Thresholds(2385), 4)
 end)
 
-test("impossible threshold rows are rejected", function()
-    -- 3850 Heavy Woolen Pants: required 110 but data says yellow at 55 (seen wrong in game)
-    eq(ns.Sources.Thresholds(3850), nil)
-    eq(ns.Sources.Difficulty(3850, 115), nil)
-    -- every in-game mismatch from the first scan is caught
+test("thresholds agree with colours the game reported", function()
+    -- At Tailoring 115 the game showed Gloves of Meditation (3852) orange and
+    -- Heavy Woolen Pants (3850) yellow; the old LibProfessionDB rows got both wrong.
+    eq(ns.Sources.Difficulty(3852, 115), 0)
+    eq(ns.Sources.Thresholds(3852)[2], 125)
+    eq(ns.Sources.Difficulty(3850, 115), 1)
     for _, id in ipairs({ 3850, 3866, 3852, 8467, 3848, 3855, 8758, 6690 }) do
-        eq(ns.Sources.Thresholds(id), nil, "recipe " .. id)
+        assert(ns.Sources.Thresholds(id), "thresholds present for " .. id)
     end
-    eq(#ns.Sources.Thresholds(2385), 4, "a sane row still works")
+end)
+
+test("migration v3 clears old threshold mismatches", function()
+    local db = ns.DB.Migrate({ version = 2, badThresholds = { [3852] = true } })
+    eq(next(db.badThresholds), nil)
 end)
 
 test("vendor and drop names are capped with a count", function()

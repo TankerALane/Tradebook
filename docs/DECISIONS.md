@@ -27,3 +27,4 @@ One line per significant decision. Newest at the bottom.
 - 2026-11-13 — Recipe cache (`TradebookDB.recipes`) is shared by all characters; each character stores only learned recipe IDs plus difficulty, to keep memory modest.
 - 2026-11-13 — Camp tab: no cooldowns (not exposed), and nothing about what's active at the camp (out of scope).
 - 2026-11-13 — Git setup (link to `TankerALane/Tradebook`, first commits) waits until the spike is done.
+- 2026-11-13 — Skill-up thresholds now come from Forever's own SkillLineAbility table (build 1.60.1.70938, exported via wago.tools): yellow = TrivialSkillLineRankLow, grey = TrivialSkillLineRankHigh, green = floor((low+high)/2). Matched all 168 colours the game reported in scans. LibProfessionDB's thresholds were wrong for ~400 recipes (it used MinSkillLineRank, which Forever sets to 1). LibProfessionDB still supplies sources and required skill.

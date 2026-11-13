@@ -18,7 +18,7 @@ local _, ns = ...
 local DB = {}
 ns.DB = DB
 
-DB.VERSION = 2
+DB.VERSION = 3
 
 -- The window's scale 1.0 is drawn at this size (1.25x the native frame), per user preference.
 DB.BASE_SCALE = 1.25
@@ -62,6 +62,12 @@ DB.MIGRATIONS = {
         if s and tonumber(s.scale) then
             s.scale = math.floor(s.scale / DB.BASE_SCALE * 20 + 0.5) / 20
         end
+        return db
+    end,
+    [3] = function(db)
+        -- Skill-up thresholds now come from the game's own table; forget mismatches
+        -- recorded against the old LibProfessionDB thresholds.
+        db.badThresholds = {}
         return db
     end,
 }

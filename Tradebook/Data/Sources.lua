@@ -57,14 +57,12 @@ function Sources.Required(recipeID)
     return lv[2], lv[7] == true
 end
 
--- Thresholds row for a recipe, or nil when missing or impossible. About 400 rows in the
--- bundled data turn yellow at or below the skill needed to learn the recipe (e.g. Heavy
--- Woolen Pants: learn at 110, "yellow at 55"); in-game scans confirmed those are wrong.
+-- Thresholds row for a recipe, or nil when unknown. Thresholds come from Forever's own
+-- SkillLineAbility table (see scripts/build_source_data.py), checked against the game's
+-- colours; scans still flag any recipe where they disagree (db.badThresholds).
 local function levels(recipeID)
     local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
     if not lv or lv[6] == 0 then return nil end
-    local required, yellow = lv[2], lv[4]
-    if required > 1 and yellow <= required then return nil end
     return lv
 end
 Sources.Levels = levels
