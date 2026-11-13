@@ -1,0 +1,52 @@
+## Interface: 16001
+## Title: Tradebook
+## Notes: Profession companion: a better Professions window, every character's recipes, and "who can craft this?"
+## Author: Decoupled Lane Studio
+## Version: @project-version@
+## IconTexture: Interface\AddOns\Tradebook\Media\icon.png
+## SavedVariables: TradebookDB
+## X-Curse-Project-ID: 1803120
+## X-License: MIT
+## X-Website: https://github.com/TankerALane/Tradebook
+
+# Libraries (pulled by .pkgmeta externals for releases)
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
+# Pure files first (tests/run.lua loads the same ones without WoW)
+Core\Namespace.lua
+Locales\enUS.lua
+Data\Professions.lua
+Data\Camp.lua
+Data\SourceData.lua
+Data\Sources.lua
+Core\DB.lua
+Core\Characters.lua
+Core\Recipes.lua
+Core\Reagents.lua
+
+# WoW-facing core
+Core\Compat.lua
+Core\Events.lua
+Core\Scanner.lua
+Core\Crafting.lua
+Core\Takeover.lua
+
+# UI
+UI\Widgets.lua
+UI\Minimap.lua
+UI\MainFrame.lua
+UI\Details.lua
+UI\ProfessionView.lua
+UI\GuideView.lua
+UI\SearchView.lua
+UI\CharactersView.lua
+UI\CampView.lua
+UI\LegacyView.lua
+UI\Shopping.lua
+UI\Settings.lua
+
+Core\Slash.lua
+Core\Init.lua

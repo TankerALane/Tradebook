@@ -1,0 +1,12 @@
+## Interface: 00000
+## Title: Tradebook |cffff4040(unsupported client)|r
+## Notes: Fallback file. WoW Forever loads Tradebook_Forever.toc instead.
+## Author: Decoupled Lane Studio
+## Version: @project-version@
+## X-License: MIT
+
+# Only loads when the client didn't pick a flavor TOC, so Tradebook never runs
+# on Classic or Retail. It just prints a message.
+Core\Namespace.lua
+Locales\enUS.lua
+Core\Unsupported.lua
