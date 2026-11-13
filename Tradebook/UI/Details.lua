@@ -340,7 +340,19 @@ function Pane:Refresh()
     -- Skill-up thresholds and required skill (bundled data).
     local thresholds = ns.Sources.Thresholds(id)
     if thresholds then
-        self:Add({ text = L.THRESHOLDS:format(unpack(thresholds)), color = W.GREY })
+        -- thresholds = level where orange, yellow, green and grey START. Show where each
+        -- colour ends ("orange until 23"); grey is the default after green, so it's left out,
+        -- and colours with an empty range are skipped.
+        local parts = {}
+        for i = 1, 3 do
+            if thresholds[i + 1] > thresholds[i] then
+                local color = W.DIFFICULTY[i - 1]
+                parts[#parts + 1] = color:WrapTextInColorCode(L.SKILLUP_UNTIL:format(L.SKILLUP_COLORS[i], thresholds[i + 1]))
+            end
+        end
+        if #parts > 0 then
+            self:Add({ text = L.SKILLUP_LABEL .. "  " .. table.concat(parts, "   "), color = W.GREY })
+        end
     end
 
     -- Sources (bundled data), shown when the viewed character hasn't learned it.
