@@ -269,9 +269,7 @@ function View:Build(parent)
     self.friendsBtn:SetScript("OnEnter", function(btn)
         GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
         GameTooltip:SetText(L.FRIENDS_HEADER, W.GOLD:GetRGB())
-        for _, friend in ipairs(View.friends or {}) do
-            GameTooltip:AddLine(ns.UI.views.guide.FriendLine(friend), 1, 1, 1)
-        end
+        ns.UI.views.guide.AddFriendsToTooltip(GameTooltip, View.friends or {})
         GameTooltip:AddLine(L.FRIENDS_NOTE, 0.6, 0.6, 0.6, true)
         GameTooltip:Show()
     end)

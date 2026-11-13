@@ -83,14 +83,7 @@ local function tabTooltip(tab)
         if #friends > 0 then
             GameTooltip:AddLine(" ")
             GameTooltip:AddLine(L.FRIENDS_HEADER, W.GOLD:GetRGB())
-            for i, f in ipairs(friends) do
-                if i > 5 then
-                    GameTooltip:AddLine(L.SOURCE_MORE:format(#friends - 5), 0.6, 0.6, 0.6)
-                    break
-                end
-                local who = ns.Compat.ClassColor(f.class):WrapTextInColorCode(f.name)
-                GameTooltip:AddDoubleLine(who, L.SKILL_RANK:format(f.rank, f.max))
-            end
+            UI.views.guide.AddFriendsToTooltip(GameTooltip, friends, 5)
         end
     end
     GameTooltip:Show()
@@ -136,18 +129,23 @@ function UI.LayoutTabs()
     end
     -- PanelTabButtonTemplate re-sizes itself on show from the parent's tabPadding /
     -- minTabWidth / maxTabWidth, so the limits live on the frame, not just in this call.
-    frame.tabPadding, frame.minTabWidth, frame.maxTabWidth = 0, 40, MAX_TAB_WIDTH
+    -- A tab must never be narrower than its fixed-size left + right cap art, or the
+    -- stretchy middle (and its hover highlight) gets a negative width and draws wrongly.
+    local first = visible[1]
+    local caps = first and first.Left and first.Right and (first.Left:GetWidth() + first.Right:GetWidth()) or 40
+    local minWidth = math.ceil(caps) + 6
+    frame.tabPadding, frame.minTabWidth, frame.maxTabWidth = 0, minWidth, MAX_TAB_WIDTH
     local available = frame:GetWidth() - 16
     local natural = 0
     for _, tab in ipairs(visible) do
-        PanelTemplates_TabResize(tab, 0, nil, 40, MAX_TAB_WIDTH)
+        PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
         natural = natural + tab:GetWidth()
     end
     natural = natural + TAB_GAP * (#visible - 1)
     if natural > available then
-        local each = math.floor((available - TAB_GAP * (#visible - 1)) / #visible)
+        local each = math.max(minWidth, math.floor((available - TAB_GAP * (#visible - 1)) / #visible))
         frame.maxTabWidth = each
-        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, nil, 40, each) end
+        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, nil, minWidth, each) end
     end
     local prev
     for _, tab in ipairs(visible) do
