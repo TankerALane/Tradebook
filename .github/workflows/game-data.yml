@@ -50,5 +50,7 @@ jobs:
           commit-message: "Game data: skill-up thresholds for Forever ${{ steps.update.outputs.build }}"
           title: "Game data update: Forever ${{ steps.update.outputs.build }}"
           body-path: report.txt
-          add-paths: Tradebook/Data/SkillLevels.lua
+          add-paths: |
+            Tradebook/Data/SkillLevels.lua
+            Tradebook/Data/Zones.lua
           delete-branch: true

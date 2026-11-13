@@ -271,9 +271,50 @@ end
 
 -- Reagent tooltip: this character's bags/bank, then (no header) every other character who has
 -- some (first name, class colour, bags + bank from their last login / bank visit).
+-- "Name  (lvl 12-14)" for mobs.
+local function levelText(e)
+    if not e.minLevel then return "" end
+    if e.maxLevel and e.maxLevel ~= e.minLevel then return "  " .. L.LEVEL_RANGE:format(e.minLevel, e.maxLevel) end
+    return "  " .. L.LEVEL_ONE:format(e.minLevel)
+end
+
+-- "Stormwind City (52, 47)  ·  120 yd"
+local function placeText(e)
+    local text = L.PLACE:format(ns.Questie.ZoneName(e.areaID), e.x, e.y)
+    local d = ns.Locations.DistanceText(e.distance)
+    if d then text = text .. "  " .. W.ColorText(W.GREY, d) end
+    return text
+end
+
+-- Where to get a material (QuestieDB): nearest vendors, mobs and gathering nodes; click a
+-- line to set a waypoint.
+function Pane:AddWhereToGet(itemID, indent)
+    local data = ns.Questie.WhereToGet(itemID)
+    if not data then return end
+    local function section(title, list, nameOf)
+        if #list == 0 then return end
+        self:Add({ indent = indent, text = title, color = W.GOLD })
+        for _, e in ipairs(list) do
+            self:Add({ indent = indent + 1, text = nameOf(e), right = placeText(e),
+                onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
+                tooltip = e.sub and { e.name, e.sub, L.WAYPOINT_CLICK } or { e.name, L.WAYPOINT_CLICK } })
+        end
+    end
+    section(L.SOLD_BY, data.vendors, function(e) return e.name end)
+    section(L.DROPPED_BY, data.drops, function(e) return e.name .. levelText(e) end)
+    section(L.GATHERED_FROM, data.objects, function(e) return e.name end)
+    if not data.located then self:Add({ indent = indent, text = L.WHERE_NO_POSITION, color = W.GREY }) end
+end
+
 function Pane:ReagentTooltip(c, name, item)
     local lines = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank) }
     if item.fetch > 0 then lines[#lines + 1] = L.BANK_FETCH end
+    local where = ns.Questie.HasSources(item.itemID) and ns.Questie.WhereToGet(item.itemID)
+    if where and #where.vendors > 0 then
+        lines[#lines + 1] = " "
+        lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY)
+        for _, e in ipairs(where.vendors) do lines[#lines + 1] = e.name .. "  " .. placeText(e) end
+    end
     local others = Reagents.OnOtherCharacters(ns.db, item.itemID, c and c.key)
     if #others > 0 then
         lines[#lines + 1] = " "
@@ -340,13 +381,17 @@ function Pane:Refresh()
         local node = tree[i]
         local key = "r." .. i
         local hasMakers = node and #node.makers > 0
+        local hasSources = ns.Questie.HasSources(item.itemID)
         self:Add({ indent = 0, itemID = item.itemID, text = name, right = right, large = true,
             font = "GameFontHighlight", color = (not enough) and W.RED or nil,
-            toggle = hasMakers and true or nil, expanded = self.expanded[key],
+            toggle = (hasMakers or hasSources) and true or nil, expanded = self.expanded[key],
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = self:ReagentTooltip(c, name, item) })
-        if hasMakers and self.expanded[key] then
-            for _, maker in ipairs(node.makers) do self:AddMaker(maker, 1, key) end
+        if self.expanded[key] then
+            if hasSources then self:AddWhereToGet(item.itemID, 1) end
+            if hasMakers then
+                for _, maker in ipairs(node.makers) do self:AddMaker(maker, 1, key) end
+            end
         end
     end
     self:Gap()

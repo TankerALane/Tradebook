@@ -27,6 +27,7 @@ local function onLogin()
     ns.Takeover.Start()
     if ns.Minimap then ns.Minimap.Start() end
     if ns.Settings then ns.Settings.Start() end
+    if ns.Questie then ns.Questie.Start() end
     ns.Debug("ready as", tostring(key))
 end
 

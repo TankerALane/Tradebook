@@ -41,7 +41,7 @@ read_globals = {
     "PanelTemplates_TabResize", "PlaySound", "ProfessionsFrame", "ScrollBoxConstants", "ScrollUtil", "Settings",
     "SettingsPanel", "ShowProfessionsFrame", "SOUNDKIT", "StaticPopup_Show", "UIParent", "UnitClass",
     "UnitFactionGroup", "UnitFullName", "UnitGUID", "UnitLevel", "UnitRace", "YES", "date", "issecretvalue",
-    "tinsert", "unpack", "UpdateUIPanelPositions", "hooksecurefunc", "Professions",
+    "tinsert", "unpack", "UpdateUIPanelPositions", "hooksecurefunc", "Professions", "CreateVector2D", "UiMapPoint",
 }
 
 files["tests/run.lua"] = { std = "lua51" }

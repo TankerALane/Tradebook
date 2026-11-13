@@ -5,7 +5,7 @@
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\Tradebook\Media\icon.png
 ## SavedVariables: TradebookDB
-## OptionalDeps: FellowshipLedger
+## OptionalDeps: FellowshipLedger, QuestieDB, Questie, Auctionator, TomTom
 ## X-Curse-Project-ID: 1803120
 ## X-License: MIT
 ## X-Website: https://github.com/TankerALane/Tradebook
@@ -23,12 +23,14 @@ Data\Professions.lua
 Data\Camp.lua
 Data\SourceData.lua
 Data\SkillLevels.lua
+Data\Zones.lua
 Data\Sources.lua
 Core\DB.lua
 Core\Characters.lua
 Core\Recipes.lua
 Core\Reagents.lua
 Core\Friends.lua
+Core\Locations.lua
 
 # WoW-facing core
 Core\Compat.lua
@@ -36,6 +38,8 @@ Core\Events.lua
 Core\Scanner.lua
 Core\Crafting.lua
 Core\Takeover.lua
+Core\Questie.lua
+Core\Waypoints.lua
 
 # UI
 UI\Widgets.lua

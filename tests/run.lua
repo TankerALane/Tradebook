@@ -16,6 +16,7 @@ local PURE_FILES = {
     "Tradebook/Core/Recipes.lua",
     "Tradebook/Core/Reagents.lua",
     "Tradebook/Core/Friends.lua",
+    "Tradebook/Core/Locations.lua",
 }
 
 local function loadAddon()
@@ -449,6 +450,43 @@ test("friends' professions from Fellowship Ledger data", function()
     eq(#ns.Friends.WithProfession(fl, 171), 0, "nobody has Alchemy")
     eq(#ns.Friends.WithProfession(nil, 164), 0, "Fellowship Ledger not installed")
     eq(#ns.Friends.WithProfession({ friends = 5 }, 164), 0, "unexpected shape")
+end)
+
+test("nearest vendors: closest on this continent first, then the rest", function()
+    -- toWorld: area 1 and 2 on continent 0 (area 2 offset by 1000 yd), area 3 on continent 1
+    local function toWorld(area, x, y)
+        if area == 1 then return 0, x * 10, y * 10 end
+        if area == 2 then return 0, 1000 + x * 10, y * 10 end
+        if area == 3 then return 1, x * 10, y * 10 end
+    end
+    local here = { continent = 0, x = 500, y = 500 } -- (50, 50) in area 1
+    local entries = {
+        { id = 1, name = "Far", spawns = { [2] = { { 50, 50 } } } },                -- 1000 yd
+        { id = 2, name = "Near", spawns = { [1] = { { 60, 50 }, { 90, 90 } } } },  -- 100 yd (best spawn)
+        { id = 3, name = "Other continent", spawns = { [3] = { { 50, 50 } } } },
+        { id = 4, name = "No spawns", spawns = {} },
+        { id = 5, name = "Bad point", spawns = { [1] = { { -1, -1 } } } },
+        { id = 6, name = "Unmapped", spawns = { [99] = { { 10, 10 } } } },
+    }
+    local list = ns.Locations.Nearest(entries, here, toWorld, 10)
+    eq(#list, 4, "entries without valid spawns dropped")
+    eq(list[1].name, "Near")
+    eq(math.floor(list[1].distance + 0.5), 100)
+    eq(list[1].x, 60, "nearest spawn picked")
+    eq(list[2].name, "Far")
+    eq(list[3].distance, nil, "no distance across continents")
+    eq(#ns.Locations.Nearest(entries, here, toWorld, 2), 2, "limit")
+    eq(ns.Locations.Nearest(entries, nil, toWorld, 10)[1].name, "Far", "position unknown: by name")
+end)
+
+test("faction filter and distance text", function()
+    eq(ns.Locations.FriendlyTo("A", "Alliance"), true)
+    eq(ns.Locations.FriendlyTo("H", "Alliance"), false)
+    eq(ns.Locations.FriendlyTo("AH", "Horde"), true)
+    eq(ns.Locations.FriendlyTo(nil, "Horde"), true)
+    eq(ns.Locations.DistanceText(119.6), "120 yd")
+    eq(ns.Locations.DistanceText(1500), "1.5k yd")
+    eq(ns.Locations.DistanceText(nil), nil)
 end)
 
 test("migration v3 clears old threshold mismatches", function()
