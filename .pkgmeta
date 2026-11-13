@@ -1,0 +1,28 @@
+package-as: Tradebook
+
+# The addon lives in the Tradebook/ subfolder of the repo.
+move-folders:
+  Tradebook/Tradebook: Tradebook
+
+externals:
+  Tradebook/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  Tradebook/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  Tradebook/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
+  Tradebook/Libs/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+
+ignore:
+  - assets
+  - docs
+  - scripts
+  - spikes
+  - tests
+  - .github
+  - .luacheckrc
+  - .gitattributes
+  - TRADEBOOK_BUILD_PROMPT.md
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+enable-nolib-creation: no

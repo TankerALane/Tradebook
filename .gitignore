@@ -14,3 +14,6 @@ desktop.ini
 
 # Lua tooling
 luacov.*.out
+
+# Local copies of embedded libs (releases use .pkgmeta externals)
+Tradebook/Libs/

@@ -1,0 +1,24 @@
+name: Release
+
+# Runs when a version tag (e.g. v0.1.0-alpha) is pushed. Packages with the BigWigs
+# packager, uploads to CurseForge (project 1803120) and creates a GitHub release.
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Package and release
+        uses: BigWigsMods/packager@v2
