@@ -263,9 +263,24 @@ function View:Build(parent)
     self.rank:SetPoint("LEFT", self.charBtn, "RIGHT", 6, 0)
     self.rank:SetPoint("RIGHT", left, "RIGHT", -18, 0)
 
+    -- Friends with this profession (Fellowship Ledger); hover to list them.
+    self.friendsBtn = W.Button(left, "", 96, 20)
+    self.friendsBtn:SetPoint("TOPRIGHT", left, "TOPRIGHT", -14, -26)
+    self.friendsBtn:SetScript("OnEnter", function(btn)
+        GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+        GameTooltip:SetText(L.FRIENDS_HEADER, W.GOLD:GetRGB())
+        for _, friend in ipairs(View.friends or {}) do
+            GameTooltip:AddLine(ns.UI.views.guide.FriendLine(friend), 1, 1, 1)
+        end
+        GameTooltip:AddLine(L.FRIENDS_NOTE, 0.6, 0.6, 0.6, true)
+        GameTooltip:Show()
+    end)
+    self.friendsBtn:SetScript("OnLeave", GameTooltip_Hide)
+    self.friendsBtn:SetScript("OnClick", function(btn) btn:GetScript("OnEnter")(btn) end)
+
     self.notice = W.Text(left, "GameFontDisableSmall")
     self.notice:SetPoint("TOPLEFT", self.charBtn, "BOTTOMLEFT", 2, -6)
-    self.notice:SetWidth(LEFT_WIDTH - 20)
+    self.notice:SetWidth(LEFT_WIDTH - 120) -- room for the Friends button
 
     self.openBtn = W.Button(left, "", 170, 22)
     self.openBtn:SetPoint("TOPLEFT", self.notice, "BOTTOMLEFT", -2, -4)
@@ -343,6 +358,9 @@ function View:Refresh()
 
     self.charBtn:SetText(c and W.ClassName(c) or "?")
     self.rank:SetText(prof and (profName .. "  " .. L.SKILL_RANK:format(prof.rank or 0, prof.max or 0)) or profName)
+    View.friends = ns.Friends.For(self.skill)
+    self.friendsBtn:SetShown(#View.friends > 0)
+    self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))
 
     local notices, showOpen = {}, false
     if not isMe then notices[#notices + 1] = L.VIEWING_ALT:format(c and ns.CharName(c.key) or "?") end
