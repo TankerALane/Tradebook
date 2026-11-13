@@ -73,8 +73,7 @@ function View:Show(text)
 end
 
 function View:Refresh()
-    local results = ns.Recipes.Search(ns.db, self.text, { limit = 300, onlyKnown = self.knownOnly,
-        showExtras = ns.db.settings.showSoD })
+    local results = ns.Recipes.Search(ns.db, self.text, { limit = 300, onlyKnown = self.knownOnly })
     self.title:SetText(L.SEARCH_ALL .. "  " .. W.ColorText(W.GOLD, self.text or ""))
     self.list:SetItems(results)
     self.empty:SetText(#results == 0 and L.NO_RECIPES or "")

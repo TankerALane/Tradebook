@@ -29,7 +29,6 @@ DB.DEFAULTS = {
         scale = 1,
         showGathering = true,
         staleDays = 30,
-        showSoD = false,
         showHidden = false,
         debug = false,
         minimap = { hide = false },

@@ -160,7 +160,7 @@ function View:BuildItems()
         table.insert(groups[key], item)
     end
 
-    for _, id in ipairs(Recipes.ForProfession(db, self.skill, db.settings.showSoD)) do
+    for _, id in ipairs(Recipes.ForProfession(db, self.skill)) do
         local r = db.recipes[id]
         if not self.query or ns.util.Matches(r.n, self.query) then
             local learned = learnedMap[id] ~= nil
@@ -212,35 +212,57 @@ end
 -- build
 ---------------------------------------------------------------------------
 
-local function filterMenu(owner)
-    MenuUtil.CreateContextMenu(owner, function(_, root)
-        local f = ns.db.settings.filters
-        local function add(text, key)
-            root:CreateCheckbox(text, function() return f[key] end, function()
-                f[key] = not f[key]
-                View:RefreshList()
-            end)
-        end
-        add(L.FILTER_LEARNED, "learned")
-        add(L.FILTER_UNLEARNED, "unlearned")
-        add(L.FILTER_CRAFTABLE, "haveMats")
-        add(L.FILTER_SKILLUP, "skillup")
-        -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.
-        for i = 1, 3 do
-            local colour = W.DIFFICULTY[i - 1]
-            local text = "    " .. colour:WrapTextInColorCode((L.SKILLUP_COLORS[i]:gsub("^%l", string.upper)))
-            root:CreateCheckbox(text, function() return f.skillupColors[i] end, function()
-                f.skillupColors[i] = not f.skillupColors[i]
-                if f.skillupColors[i] then f.skillup = true end
-                View:RefreshList()
-            end)
-        end
-        root:CreateDivider()
-        root:CreateCheckbox(L.FILTER_SOD, function() return ns.db.settings.showSoD end, function()
-            ns.db.settings.showSoD = not ns.db.settings.showSoD
+-- Filters, with the defaults the red X on the Filter button restores.
+local DEFAULT_FILTERS = { learned = true, unlearned = false, haveMats = false, skillup = false }
+local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
+
+local function filtersAreDefault()
+    local f = ns.db.settings.filters
+    for key, value in pairs(DEFAULT_FILTERS) do
+        if (f[key] or false) ~= value then return false end
+    end
+    for i = 1, 3 do
+        if not f.skillupColors[i] then return false end
+    end
+    return true
+end
+
+local function resetFilters()
+    local f = ns.db.settings.filters
+    for key, value in pairs(DEFAULT_FILTERS) do f[key] = value end
+    f.skillupColors = { true, true, true }
+    View:RefreshList()
+end
+
+local function buildFilterMenu(_, root)
+    local f = ns.db.settings.filters
+    local function add(text, key)
+        root:CreateCheckbox(text, function() return f[key] end, function()
+            f[key] = not f[key]
             View:RefreshList()
         end)
-    end)
+    end
+    add(L.FILTER_LEARNED, "learned")
+    add(L.FILTER_UNLEARNED, "unlearned")
+    add(L.FILTER_CRAFTABLE, "haveMats")
+    add(L.FILTER_SKILLUP, "skillup")
+    -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.
+    for i = 1, 3 do
+        local colour = W.DIFFICULTY[i - 1]
+        local text = colour:WrapTextInColorCode((L.SKILLUP_COLORS[i]:gsub("^%l", string.upper)))
+        local item = root:CreateCheckbox(text, function() return f.skillupColors[i] end, function()
+            f.skillupColors[i] = not f.skillupColors[i]
+            if f.skillupColors[i] then f.skillup = true end
+            View:RefreshList()
+        end)
+        -- Shift the whole item (checkbox and label) right, under "Gives skill-ups".
+        item:AddInitializer(function(button)
+            if button.leftTexture1 then
+                button.leftTexture1:ClearAllPoints()
+                button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
+            end
+        end)
+    end
 end
 
 local function charMenu(owner)
@@ -295,14 +317,18 @@ function View:Build(parent)
         ns.Crafting.OpenProfession(View.skill)
     end)
 
-    self.search = W.SearchBox(left, LEFT_WIDTH - 104, function(text)
+    self.search = W.SearchBox(left, LEFT_WIDTH - 120, function(text)
         View.query = ns.util.Query(text)
         View:RefreshList()
     end)
     if self.search.Instructions then self.search.Instructions:SetText(L.SEARCH_RECIPES) end
 
-    self.filterBtn = W.Button(left, L.FILTER, 80, 22)
-    self.filterBtn:SetScript("OnClick", filterMenu)
+    -- Blizzard's filter dropdown: shows a red X to reset when any filter is changed.
+    self.filterBtn = CreateFrame("DropdownButton", nil, left, "WowStyle1FilterDropdownTemplate")
+    self.filterBtn:SetWidth(90)
+    self.filterBtn:SetDefaultCallback(resetFilters)
+    self.filterBtn:SetIsDefaultCallback(filtersAreDefault)
+    self.filterBtn:SetupMenu(buildFilterMenu)
 
     self.list = W.List(left, 18, createRow, initRow)
     self.list:SetPoint("BOTTOMRIGHT", left, "BOTTOMRIGHT", -14, 0)
@@ -406,6 +432,7 @@ function View:Refresh()
 end
 
 function View:RefreshList()
+    if self.filterBtn and self.filterBtn.ValidateResetState then self.filterBtn:ValidateResetState() end
     local items = self:BuildItems()
     self.list:SetItems(items)
     self.empty:SetText(#items == 0 and L.NO_RECIPES or "")
