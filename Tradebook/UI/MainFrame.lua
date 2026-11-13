@@ -78,6 +78,20 @@ local function tabTooltip(tab)
                 GameTooltip:AddDoubleLine(W.ClassName(c), L.SKILL_RANK:format(prof.rank or 0, prof.max or 0))
             end
         end
+        -- Friends (Fellowship Ledger, if installed); top few only.
+        local friends = ns.Friends.For(tab.key)
+        if #friends > 0 then
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(L.FRIENDS_HEADER, W.GOLD:GetRGB())
+            for i, f in ipairs(friends) do
+                if i > 5 then
+                    GameTooltip:AddLine(L.SOURCE_MORE:format(#friends - 5), 0.6, 0.6, 0.6)
+                    break
+                end
+                local who = ns.Compat.ClassColor(f.class):WrapTextInColorCode(f.name)
+                GameTooltip:AddDoubleLine(who, L.SKILL_RANK:format(f.rank, f.max))
+            end
+        end
     end
     GameTooltip:Show()
 end

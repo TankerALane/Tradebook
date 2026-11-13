@@ -15,6 +15,7 @@ local PURE_FILES = {
     "Tradebook/Core/Characters.lua",
     "Tradebook/Core/Recipes.lua",
     "Tradebook/Core/Reagents.lua",
+    "Tradebook/Core/Friends.lua",
 }
 
 local function loadAddon()
@@ -421,6 +422,33 @@ test("skill-up lines are right for every recipe at every skill 1-300", function(
         end
     end
     assert(checked > 100000, "checked " .. checked)
+end)
+
+test("friends' professions from Fellowship Ledger data", function()
+    local fl = { friends = {
+        a = { name = "Sam", characters = {
+            ["Grim-Stone"] = { display = "Grim Stone", class = "WARRIOR", lastSeen = 100,
+                professions = { ["164"] = { name = "Blacksmithing", rank = 125, max = 150, lastAt = 200 },
+                    ["186"] = { name = "Mining", rank = 140, max = 150 } } },
+            ["Ivy-Leaf"] = { name = "Ivy", class = "DRUID", professions = { ["182"] = { rank = 60, max = 75 } } },
+        } },
+        b = { name = "Kim", characters = {
+            ["Bolt-Iron"] = { display = "Bolt Iron", class = "ROGUE", professions = { [164] = { rank = 200, max = 225 } } },
+            ["Nope-Nope"] = { display = "Nope", professions = "broken" },
+        } },
+        c = "not a table",
+    } }
+    local list = ns.Friends.WithProfession(fl, 164)
+    eq(#list, 2)
+    eq(list[1].name, "Bolt Iron", "highest rank first; numeric keys accepted")
+    eq(list[1].rank, 200)
+    eq(list[2].name, "Grim Stone")
+    eq(list[2].max, 150)
+    eq(list[2].at, 200)
+    eq(list[2].friend, "Sam")
+    eq(#ns.Friends.WithProfession(fl, 171), 0, "nobody has Alchemy")
+    eq(#ns.Friends.WithProfession(nil, 164), 0, "Fellowship Ledger not installed")
+    eq(#ns.Friends.WithProfession({ friends = 5 }, 164), 0, "unexpected shape")
 end)
 
 test("migration v3 clears old threshold mismatches", function()

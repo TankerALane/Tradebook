@@ -5,6 +5,7 @@
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\Tradebook\Media\icon.png
 ## SavedVariables: TradebookDB
+## OptionalDeps: FellowshipLedger
 ## X-Curse-Project-ID: 1803120
 ## X-License: MIT
 ## X-Website: https://github.com/TankerALane/Tradebook
@@ -27,6 +28,7 @@ Core\DB.lua
 Core\Characters.lua
 Core\Recipes.lua
 Core\Reagents.lua
+Core\Friends.lua
 
 # WoW-facing core
 Core\Compat.lua
