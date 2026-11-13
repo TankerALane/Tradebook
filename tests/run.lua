@@ -358,6 +358,17 @@ test("difficulty from thresholds", function()
     eq(#ns.Sources.Thresholds(2385), 4)
 end)
 
+test("impossible threshold rows are rejected", function()
+    -- 3850 Heavy Woolen Pants: required 110 but data says yellow at 55 (seen wrong in game)
+    eq(ns.Sources.Thresholds(3850), nil)
+    eq(ns.Sources.Difficulty(3850, 115), nil)
+    -- every in-game mismatch from the first scan is caught
+    for _, id in ipairs({ 3850, 3866, 3852, 8467, 3848, 3855, 8758, 6690 }) do
+        eq(ns.Sources.Thresholds(id), nil, "recipe " .. id)
+    end
+    eq(#ns.Sources.Thresholds(2385), 4, "a sane row still works")
+end)
+
 test("vendor and drop names are capped with a count", function()
     local found
     for id, s in pairs(ns.SourceData) do

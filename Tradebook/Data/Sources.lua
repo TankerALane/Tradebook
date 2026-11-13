@@ -57,10 +57,22 @@ function Sources.Required(recipeID)
     return lv[2], lv[7] == true
 end
 
+-- Thresholds row for a recipe, or nil when missing or impossible. About 400 rows in the
+-- bundled data turn yellow at or below the skill needed to learn the recipe (e.g. Heavy
+-- Woolen Pants: learn at 110, "yellow at 55"); in-game scans confirmed those are wrong.
+local function levels(recipeID)
+    local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
+    if not lv or lv[6] == 0 then return nil end
+    local required, yellow = lv[2], lv[4]
+    if required > 1 and yellow <= required then return nil end
+    return lv
+end
+Sources.Levels = levels
+
 -- Skill-up color for a rank from the thresholds: 0 orange, 1 yellow, 2 green, 3 grey.
 function Sources.Difficulty(recipeID, rank)
-    local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
-    if not lv or not rank or lv[6] == 0 then return nil end
+    local lv = levels(recipeID)
+    if not lv or not rank then return nil end
     if rank >= lv[6] then return 3 end
     if rank >= lv[5] then return 2 end
     if rank >= lv[4] then return 1 end
@@ -69,7 +81,7 @@ end
 
 -- Thresholds { orange, yellow, green, grey } for the tooltip, or nil.
 function Sources.Thresholds(recipeID)
-    local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
-    if not lv or lv[6] == 0 then return nil end
+    local lv = levels(recipeID)
+    if not lv then return nil end
     return { lv[3], lv[4], lv[5], lv[6] }
 end
