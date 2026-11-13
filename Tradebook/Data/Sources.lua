@@ -50,36 +50,39 @@ function Sources.Get(recipeID, resolve)
     return out, s.b == true
 end
 
--- Required skill to learn, and whether it was borrowed from Vanilla.
+-- Required skill to learn (LibProfessionDB, Data/SourceData.lua), and whether it was
+-- borrowed from Vanilla.
 function Sources.Required(recipeID)
-    local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
-    if not lv or lv[2] == 0 then return nil end
-    return lv[2], lv[7] == true
+    local r = ns.RecipeRequired and ns.RecipeRequired[recipeID]
+    if not r then return nil end
+    return r[1], r[2] == true
 end
 
--- Thresholds row for a recipe, or nil when unknown. Thresholds come from Forever's own
--- SkillLineAbility table (see scripts/build_source_data.py), checked against the game's
--- colours; scans still flag any recipe where they disagree (db.badThresholds).
+-- Skill-up thresholds from the game itself (Data/SkillLevels.lua, regenerated per build by
+-- scripts/update_game_data.py): { skillLine, yellow, green, grey }. Scans still flag any
+-- recipe where they disagree with the game (db.badThresholds).
 local function levels(recipeID)
     local lv = ns.RecipeLevels and ns.RecipeLevels[recipeID]
-    if not lv or lv[6] == 0 then return nil end
+    if not lv or lv[4] == 0 then return nil end
     return lv
 end
 Sources.Levels = levels
 
--- Skill-up color for a rank from the thresholds: 0 orange, 1 yellow, 2 green, 3 grey.
+-- Skill-up color for a rank: 0 orange, 1 yellow, 2 green, 3 grey.
 function Sources.Difficulty(recipeID, rank)
     local lv = levels(recipeID)
     if not lv or not rank then return nil end
-    if rank >= lv[6] then return 3 end
-    if rank >= lv[5] then return 2 end
-    if rank >= lv[4] then return 1 end
+    if rank >= lv[4] then return 3 end
+    if rank >= lv[3] then return 2 end
+    if rank >= lv[2] then return 1 end
     return 0
 end
 
--- Thresholds { orange, yellow, green, grey } for the tooltip, or nil.
+-- Thresholds { orange, yellow, green, grey } (skill where each colour starts), or nil.
+-- Orange starts at the skill needed to learn the recipe (or 1 when unknown).
 function Sources.Thresholds(recipeID)
     local lv = levels(recipeID)
     if not lv then return nil end
-    return { lv[3], lv[4], lv[5], lv[6] }
+    local orange = math.min(Sources.Required(recipeID) or 1, lv[2])
+    return { orange, lv[2], lv[3], lv[4] }
 end

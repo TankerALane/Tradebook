@@ -9,6 +9,7 @@ local PURE_FILES = {
     "Tradebook/Data/Professions.lua",
     "Tradebook/Data/Camp.lua",
     "Tradebook/Data/SourceData.lua",
+    "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Core/DB.lua",
     "Tradebook/Core/Characters.lua",

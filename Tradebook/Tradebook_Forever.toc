@@ -21,6 +21,7 @@ Locales\enUS.lua
 Data\Professions.lua
 Data\Camp.lua
 Data\SourceData.lua
+Data\SkillLevels.lua
 Data\Sources.lua
 Core\DB.lua
 Core\Characters.lua
