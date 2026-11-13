@@ -142,6 +142,7 @@ def apply_skill_line_ability(levels):
     if not SLA_CSV:
         return 0
     replaced = 0
+    from_game = set()
     for row in csv.DictReader(SLA_CSV.open(encoding="utf-8")):
         skill = int(row["SkillLine"])
         low, high = int(row["TrivialSkillLineRankLow"]), int(row["TrivialSkillLineRankHigh"])
@@ -151,7 +152,12 @@ def apply_skill_line_ability(levels):
         _, req, _ = levels.get(rid, (skill, None, []))
         orange = max(1, min(req or 1, low))
         levels[rid] = (skill, req, [orange, low, (low + high) // 2, high])
+        from_game.add(rid)
         replaced += 1
+    # Only Forever's own numbers: drop thresholds for anything not in its table.
+    for rid, (skill, req, _) in list(levels.items()):
+        if rid not in from_game:
+            levels[rid] = (skill, req, [])
     return replaced
 
 
