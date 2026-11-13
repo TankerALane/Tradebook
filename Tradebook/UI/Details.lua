@@ -63,15 +63,19 @@ function Pane:Add(o)
     local x = (o.indent or 0) * 16
     if o.toggle ~= nil then
         line.toggle:Show()
+        line.toggle:ClearAllPoints()
         line.toggle:SetPoint("LEFT", x, 0)
         line.toggle:SetNormalAtlas(o.expanded and "Campaign_HeaderIcon_Open" or "Professions-Slot-Plus")
         line.toggle:SetScript("OnClick", o.onToggle)
-        x = x + 16
     end
+    -- Large rows always keep the "+" column so their icons line up with or without it.
+    if o.toggle ~= nil or o.large then x = x + 16 end
     if o.itemID then
         local size = o.large and LARGE_ICON or 18
         line.item:SetSize(size, size)
+        line.item:SetSlotStyle(o.large == true)
         line.item:Show()
+        line.item:ClearAllPoints()
         line.item:SetPoint("LEFT", x, 0)
         line.item:SetItem(o.itemID)
         x = x + size + 6
@@ -115,8 +119,9 @@ function Details.Create(parent)
     self.frame = f
 
     -- Header: result item, name, makes N, favorite/pin.
-    self.output = W.ItemButton(f, 40)
+    self.output = W.ItemButton(f, 42)
     self.output:SetPoint("TOPLEFT", 2, -2)
+    self.output:SetSlotStyle(true)
     self.title = W.Text(f, "GameFontNormalLarge")
     self.title:SetPoint("TOPLEFT", self.output, "TOPRIGHT", 10, -2)
     self.title:SetPoint("RIGHT", f, "RIGHT", -96, 0)

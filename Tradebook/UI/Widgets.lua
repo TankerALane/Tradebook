@@ -104,6 +104,28 @@ function W.ItemButton(parent, size)
     b.border:SetAllPoints()
     b.border:SetAtlas("bags-glow-white")
     b.border:Hide()
+    -- Optional default-window look: slot background + bronze/gold slot frame
+    -- (Professions-Slot-bg / Professions-Slot-Frame, as ProfessionsButtonTemplate uses).
+    b.slotBg = b:CreateTexture(nil, "BACKGROUND")
+    b.slotBg:SetAtlas("Professions-Slot-bg")
+    b.slotBg:SetAllPoints()
+    b.slotBg:Hide()
+    b.slotFrame = b:CreateTexture(nil, "OVERLAY", nil, 1)
+    b.slotFrame:SetAtlas("Professions-Slot-Frame")
+    b.slotFrame:SetAllPoints()
+    b.slotFrame:Hide()
+    function b:SetSlotStyle(on)
+        self.slotBg:SetShown(on)
+        self.slotFrame:SetShown(on)
+        self.icon:ClearAllPoints()
+        if on then
+            local inset = math.max(2, math.floor(self:GetWidth() * 0.07 + 0.5))
+            self.icon:SetPoint("TOPLEFT", inset, -inset)
+            self.icon:SetPoint("BOTTOMRIGHT", -inset, inset)
+        else
+            self.icon:SetAllPoints()
+        end
+    end
     b:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
     b:SetScript("OnEnter", function(self)
         if not self.itemID and not self.link then return end
