@@ -278,7 +278,7 @@ function View:Build(parent)
 
     self.notice = W.Text(left, "GameFontDisableSmall")
     self.notice:SetPoint("TOPLEFT", self.charBtn, "BOTTOMLEFT", 2, -6)
-    self.notice:SetWidth(LEFT_WIDTH - 120) -- room for the Friends button
+    -- width set in Layout (narrower when the Friends button shows)
 
     self.openBtn = W.Button(left, "", 170, 22)
     self.openBtn:SetPoint("TOPLEFT", self.notice, "BOTTOMLEFT", -2, -4)
@@ -308,10 +308,28 @@ function View:Build(parent)
 end
 
 -- Place search/list below the notice area (which changes height).
+-- Left column, top to bottom with explicit offsets so nothing overlaps:
+--   row 1 (y 0):  character picker | rank
+--   row 2:        note text (left)  | Friends button (right, when shown)
+--   row 3:        "Open <profession>" button (when shown)
+--   then the search + Filter row and the list.
 function View:Layout(showOpen)
-    local anchor = showOpen and self.openBtn or self.notice
+    local y = 28 -- below row 1
+    local friendsShown = self.friendsBtn:IsShown()
+    self.notice:SetWidth(friendsShown and (LEFT_WIDTH - 120) or (LEFT_WIDTH - 20))
+    local noteH = (self.notice:GetText() or "") ~= "" and self.notice:GetStringHeight() or 0
+    local friendsH = friendsShown and self.friendsBtn:GetHeight() or 0
+    local row2 = math.max(noteH, friendsH)
+    self.notice:ClearAllPoints()
+    self.notice:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 10, -(8 + y))
+    self.friendsBtn:ClearAllPoints()
+    self.friendsBtn:SetPoint("TOPRIGHT", self.frame, "TOPLEFT", LEFT_WIDTH - 6, -(8 + y))
+    if row2 > 0 then y = y + row2 + 6 end
+    self.openBtn:ClearAllPoints()
+    self.openBtn:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 8, -(8 + y))
+    if showOpen then y = y + 26 end
     self.search:ClearAllPoints()
-    self.search:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 6, -8)
+    self.search:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 14, -(8 + y + 4))
     self.filterBtn:ClearAllPoints()
     self.filterBtn:SetPoint("LEFT", self.search, "RIGHT", 6, 0)
     self.list:ClearAllPoints()
