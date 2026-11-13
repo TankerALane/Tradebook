@@ -34,6 +34,8 @@ local function showView(name, arg)
     local view = UI.views[name]
     if not view then return end
     if not view.frame then view:Build(inset) end
+    -- The skill bar belongs to the profession view; it sets it again when it refreshes.
+    if name ~= "profession" then UI.SetRankBar(nil) end
     current.view = name
     view.frame:Show()
     view:Show(arg)
@@ -272,6 +274,60 @@ local function buildHeader()
     search:SetPoint("TOPLEFT", 66, -32)
     if search.Instructions then search.Instructions:SetText(L.SEARCH_ALL) end
     frame.globalSearch = search
+
+    -- Skill bar between the search box and the Legacy button, styled like the default
+    -- Professions window (its frame and background art, blue fill).
+    local bar = CreateFrame("Frame", nil, frame)
+    bar:SetHeight(29)
+    bar:SetPoint("LEFT", search, "RIGHT", 18, -3)
+    bar:SetPoint("RIGHT", legacyBtn, "LEFT", -18, -3)
+    bar.bg = bar:CreateTexture(nil, "BACKGROUND")
+    bar.bg:SetAtlas("Professions-skillbar-bg", true)
+    bar.bg:SetPoint("TOPLEFT")
+    bar.fill = CreateFrame("StatusBar", nil, bar)
+    bar.fill:SetPoint("TOPLEFT", 5, -3)
+    bar.fill:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+    bar.fill:SetStatusBarColor(0.22, 0.52, 1.0)
+    bar.border = bar:CreateTexture(nil, "OVERLAY")
+    bar.border:SetAtlas("Professions-skillbar-frame", true)
+    bar.border:SetPoint("TOPLEFT")
+    -- Number on top of the border art.
+    bar.fill:SetFrameLevel(bar:GetFrameLevel() + 1)
+    local overlay = CreateFrame("Frame", nil, bar)
+    overlay:SetAllPoints(bar.fill)
+    overlay:SetFrameLevel(bar.fill:GetFrameLevel() + 2)
+    bar.text = overlay:CreateFontString(nil, "OVERLAY", "Number12FontOutline")
+    bar.text:SetPoint("CENTER", overlay, "CENTER", 0, 0)
+    bar:SetScript("OnSizeChanged", function(self, w)
+        self.bg:SetWidth(w)
+        self.border:SetWidth(w - 2)
+        self.fill:SetSize(math.max(1, w - 12), 18)
+    end)
+    bar:EnableMouse(true)
+    bar:SetScript("OnEnter", function(self)
+        if not self.tip then return end
+        GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+        GameTooltip:SetText(self.tip, 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    bar:SetScript("OnLeave", GameTooltip_Hide)
+    bar:Hide()
+    frame.rankBar = bar
+end
+
+-- Show the skill bar for a character's profession, or hide it (rank == nil).
+function UI.SetRankBar(rank, max, tip)
+    local bar = frame and frame.rankBar
+    if not bar then return end
+    if not rank or not max or max <= 0 then
+        bar:Hide()
+        return
+    end
+    bar.fill:SetMinMaxValues(0, max)
+    bar.fill:SetValue(math.min(rank, max))
+    bar.text:SetText(L.SKILL_RANK:format(rank, max))
+    bar.tip = tip
+    bar:Show()
 end
 
 function UI.Create()

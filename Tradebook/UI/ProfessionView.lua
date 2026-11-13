@@ -259,9 +259,7 @@ function View:Build(parent)
     self.charBtn:SetPoint("TOPLEFT", 0, 0)
     self.charBtn:SetScript("OnClick", charMenu)
 
-    self.rank = W.Text(left, "GameFontNormalSmall", "RIGHT")
-    self.rank:SetPoint("LEFT", self.charBtn, "RIGHT", 6, 0)
-    self.rank:SetPoint("RIGHT", left, "RIGHT", -18, 0)
+    -- (The rank is shown as a skill bar in the window header: ns.UI.SetRankBar.)
 
     -- Friends with this profession (Fellowship Ledger); hover to list them.
     self.friendsBtn = W.Button(left, "", 96, 20)
@@ -373,7 +371,9 @@ function View:Refresh()
     local isMe = self.charKey == ns.charKey
 
     self.charBtn:SetText(c and W.ClassName(c) or "?")
-    self.rank:SetText(prof and (profName .. "  " .. L.SKILL_RANK:format(prof.rank or 0, prof.max or 0)) or profName)
+    -- Skill bar in the header: the viewed character's rank in this profession.
+    ns.UI.SetRankBar(prof and prof.rank, prof and prof.max,
+        prof and (profName .. " - " .. (c and ns.CharName(c.key) or "")))
     View.friends = ns.Friends.For(self.skill)
     self.friendsBtn:SetShown(#View.friends > 0)
     self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))
