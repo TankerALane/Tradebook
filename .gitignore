@@ -1,0 +1,16 @@
+# Local-only notes (contain machine paths)
+TRADEBOOK_BUILD_PROMPT.md
+
+# Packager output
+.release/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Lua tooling
+luacov.*.out

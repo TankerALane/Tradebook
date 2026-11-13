@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
+      <stop offset="0" stop-color="#3a2a1c"/>
+      <stop offset="1" stop-color="#140d08"/>
+    </radialGradient>
+    <linearGradient id="flameOuter" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#e8590c"/>
+      <stop offset="0.6" stop-color="#ff9f1c"/>
+      <stop offset="1" stop-color="#ffd166"/>
+    </linearGradient>
+    <linearGradient id="flameInner" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffb703"/>
+      <stop offset="1" stop-color="#fff3b0"/>
+    </linearGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a4b24"/>
+      <stop offset="1" stop-color="#5a2e14"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e9d9ae"/>
+      <stop offset="0.5" stop-color="#f7ecc9"/>
+      <stop offset="1" stop-color="#e9d9ae"/>
+    </linearGradient>
+  </defs>
+
+  <!-- rounded badge -->
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#c9922e" stroke-width="10"/>
+  <rect x="34" y="34" width="444" height="444" rx="80" fill="none" stroke="#7a5418" stroke-width="3"/>
+
+  <!-- glow -->
+  <ellipse cx="256" cy="230" rx="150" ry="130" fill="#ff9f1c" opacity="0.18"/>
+
+  <!-- flame -->
+  <path d="M256 70 C 290 130 345 160 330 230 C 322 268 296 288 256 292 C 216 288 190 268 182 230 C 170 180 215 160 224 118 C 236 140 244 128 256 70 Z" fill="url(#flameOuter)"/>
+  <path d="M256 150 C 276 188 306 204 298 244 C 293 266 276 278 256 280 C 236 278 219 266 214 244 C 208 214 238 202 244 176 C 250 188 254 180 256 150 Z" fill="url(#flameInner)"/>
+
+  <!-- book cover -->
+  <path d="M70 318 L256 352 L442 318 L442 408 L256 442 L70 408 Z" fill="url(#cover)" stroke="#2b1507" stroke-width="5" stroke-linejoin="round"/>
+  <!-- pages -->
+  <path d="M82 306 C 150 296 215 312 256 336 C 297 312 362 296 430 306 L430 394 C 362 384 297 400 256 424 C 215 400 150 384 82 394 Z" fill="url(#page)" stroke="#8c7440" stroke-width="3" stroke-linejoin="round"/>
+  <!-- spine -->
+  <path d="M256 336 L256 424" stroke="#8c7440" stroke-width="4"/>
+  <!-- text lines left -->
+  <g stroke="#a58b52" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M110 330 C 150 326 185 334 228 352"/>
+    <path d="M110 352 C 150 348 185 356 228 374"/>
+    <path d="M110 374 C 150 370 185 378 228 396"/>
+  </g>
+  <!-- text lines right -->
+  <g stroke="#a58b52" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M402 330 C 362 326 327 334 284 352"/>
+    <path d="M402 352 C 362 348 327 356 284 374"/>
+  </g>
+  <!-- tiny hammer mark on right page -->
+  <g transform="translate(332 378) rotate(-30)" fill="#8a4b24">
+    <rect x="-3" y="-4" width="6" height="26" rx="2"/>
+    <rect x="-14" y="-14" width="28" height="12" rx="3"/>
+  </g>
+</svg>
