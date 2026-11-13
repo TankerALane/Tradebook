@@ -109,7 +109,7 @@ end
 
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
 -- Gathering tabs can be hidden in settings (their data is still saved).
-local TAB_OVERLAP = -10
+local TAB_GAP = 3 -- space between tabs (no overlap)
 local MAX_TAB_WIDTH = 110
 function UI.LayoutTabs()
     if not frame then return end
@@ -129,9 +129,9 @@ function UI.LayoutTabs()
         PanelTemplates_TabResize(tab, 0, nil, 40, MAX_TAB_WIDTH)
         natural = natural + tab:GetWidth()
     end
-    natural = natural + TAB_OVERLAP * (#visible - 1)
+    natural = natural + TAB_GAP * (#visible - 1)
     if natural > available then
-        local each = math.floor((available - TAB_OVERLAP * (#visible - 1)) / #visible)
+        local each = math.floor((available - TAB_GAP * (#visible - 1)) / #visible)
         frame.maxTabWidth = each
         for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, nil, 40, each) end
     end
@@ -139,7 +139,7 @@ function UI.LayoutTabs()
     for _, tab in ipairs(visible) do
         tab:ClearAllPoints()
         if prev then
-            tab:SetPoint("LEFT", prev, "RIGHT", TAB_OVERLAP, 0)
+            tab:SetPoint("LEFT", prev, "RIGHT", TAB_GAP, 0)
         else
             tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 8, 2)
         end
