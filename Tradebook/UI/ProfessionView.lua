@@ -10,7 +10,9 @@ local View = {}
 ns.UI.RegisterView("profession", View)
 
 local LEFT_WIDTH = 330
-local FAVORITES_KEY = "\001favorites" -- sorts first
+local PINNED_KEY = "\000pinned"       -- sorts first
+local FAVORITES_KEY = "\001favorites" -- then favorites, then categories A-Z
+local PIN_ATLAS = "Waypoint-MapPin-Tracked"
 
 ---------------------------------------------------------------------------
 -- rows
@@ -32,6 +34,20 @@ local function createRow(row)
     row.fav:SetSize(12, 12)
     row.fav:SetAtlas("auctionhouse-icon-favorite")
     row.fav:SetPoint("RIGHT", row.right, "LEFT", -2, 0)
+    -- Pin marker; clicking it unpins.
+    row.pin = CreateFrame("Button", nil, row)
+    row.pin:SetSize(14, 14)
+    row.pin:SetPoint("RIGHT", row.fav, "LEFT", -2, 0)
+    row.pin:SetNormalAtlas(PIN_ATLAS)
+    row.pin:SetHighlightAtlas(PIN_ATLAS, "ADD")
+    row.pin:SetScript("OnClick", function(self)
+        local data = self:GetParent().data
+        if data and data.id then
+            ns.db.pinned[data.id] = nil
+            ns.UI.Refresh()
+        end
+    end)
+    W.Tooltip(row.pin, ns.L.UNPIN_TIP)
     row.selected = row:CreateTexture(nil, "BACKGROUND")
     row.selected:SetAllPoints()
     row.selected:SetColorTexture(W.GOLD.r, W.GOLD.g, W.GOLD.b, 0.18)
@@ -64,6 +80,7 @@ local function initRow(row, data)
     if data.header then
         row.icon:Hide()
         row.fav:Hide()
+        row.pin:Hide()
         row.toggle:Show()
         row.toggle:SetAtlas(ns.db.settings.collapsed[data.key] and "Campaign_HeaderIcon_Closed" or "Campaign_HeaderIcon_Open")
         row.name:SetPoint("LEFT", 20, 0)
@@ -80,7 +97,7 @@ local function initRow(row, data)
     row.icon:SetTexture(data.icon or 134400)
     row.icon:SetDesaturated(not data.learned)
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
-    row.name:SetPoint("RIGHT", row.fav, "LEFT", -2, 0)
+    row.name:SetPoint("RIGHT", row.pin, "LEFT", -2, 0)
     row.name:SetFontObject("GameFontHighlightSmall")
     row.name:SetText(data.name)
     if data.learned and data.diff and W.DIFFICULTY[data.diff] then
@@ -91,6 +108,7 @@ local function initRow(row, data)
         row.name:SetTextColor(0.55, 0.55, 0.55)
     end
     row.fav:SetShown(ns.db.favorites[data.id] == true)
+    row.pin:SetShown(data.pinned == true)
     -- Side display like the default window: craftable count, then skill-ups in the difficulty color.
     local parts = {}
     if data.possible and data.possible > 0 then parts[#parts + 1] = "[" .. data.possible .. "]" end
@@ -124,11 +142,12 @@ function View:BuildItems()
     for _, id in ipairs(Recipes.ForProfession(db, self.skill, db.settings.showSoD)) do
         local r = db.recipes[id]
         local learned = learnedMap[id] ~= nil
-        local keep = (learned and f.learned) or (not learned and f.unlearned)
-        if keep and self.query and not ns.util.Matches(r.n, self.query) then keep = false end
+        local pinned = db.pinned[id] ~= nil
+        -- Pinned recipes always show (in the Pinned group) unless the search excludes them.
+        local keep = not self.query or ns.util.Matches(r.n, self.query)
         local item
         if keep then
-            item = { id = id, name = r.n, icon = r.i, learned = learned }
+            item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = pinned }
             local diff = learnedMap[id]
             item.diff = type(diff) == "number" and diff or nil
             -- Recompute from the character's current rank where thresholds are known.
@@ -137,18 +156,21 @@ function View:BuildItems()
                 local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
                 if info then item.diff, item.skillUps = info.relativeDifficulty, info.numSkillUps end
             end
-            if f.skillup and not (learned and item.diff and item.diff < 3) then keep = false end
-            if keep and isMe and learned then
+            if isMe and learned then
                 local _, possible = Reagents.Shortage(db, c, r, 1)
                 item.possible = possible
-                if f.haveMats and possible == 0 then keep = false end
-            elseif f.haveMats then
-                keep = false
+            end
+            if not pinned then
+                if not ((learned and f.learned) or (not learned and f.unlearned)) then keep = false end
+                if f.skillup and not (learned and item.diff and item.diff < 3) then keep = false end
+                if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
             end
         end
         if keep then
             local key
-            if db.favorites[id] then
+            if pinned then
+                key = PINNED_KEY
+            elseif db.favorites[id] then
                 key = FAVORITES_KEY
             else
                 local cat = db.categories[r.c]
@@ -165,8 +187,8 @@ function View:BuildItems()
     local items = {}
     for _, key in ipairs(order) do
         local collapsed = db.settings.collapsed[key]
-        items[#items + 1] = { header = true, key = key, name = key == FAVORITES_KEY and L.FAVORITES or key,
-            count = #groups[key] }
+        local name = (key == PINNED_KEY and L.PINNED) or (key == FAVORITES_KEY and L.FAVORITES) or key
+        items[#items + 1] = { header = true, key = key, name = name, count = #groups[key] }
         if not collapsed then
             for _, item in ipairs(groups[key]) do items[#items + 1] = item end
         end

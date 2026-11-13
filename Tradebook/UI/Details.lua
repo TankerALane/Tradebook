@@ -136,7 +136,7 @@ function Details.Create(parent)
         local id = self.recipeID
         if not id then return end
         if ns.db.pinned[id] then ns.db.pinned[id] = nil else ns.db.pinned[id] = self:Quantity() end
-        self:Refresh()
+        ns.UI.Refresh() -- moves it into/out of the Pinned group in the list
     end)
 
     -- Scrolling body.
