@@ -6,7 +6,6 @@ local L = ns.L
 
 -- General
 L.ADDON_TITLE = "Tradebook"
-
 L.LOADED = "loaded. Type /tb for options."
 L.DEBUG_ON = "Debug output on."
 L.DEBUG_OFF = "Debug output off."
