@@ -343,23 +343,14 @@ function Pane:Refresh()
     -- Stacked from the current colour onward; grey is the default after green and isn't
     -- listed (no section once the recipe is grey).
     local current = ns.Scanner.Difficulty(c, r.s, id)
-    local thresholds = not ns.db.badThresholds[id] and ns.Sources.Thresholds(id)
-    local lines = {}
-    if thresholds then
-        for i = (current or 0) + 1, 3 do
-            if thresholds[i + 1] > thresholds[i] then
-                lines[#lines + 1] = { i - 1, L.SKILLUP_UNTIL:format(L.SKILLUP_COLORS[i], thresholds[i + 1]) }
-            end
-        end
-    end
-    if #lines == 0 and current and current < 3 then
-        -- No trustworthy numbers: just the current colour, as the game reports it.
-        lines[1] = { current, L.SKILLUP_NOW:format(L.SKILLUP_COLORS[current + 1]) }
-    end
+    local viewed = c and c.professions[r.s]
+    local lines = ns.Sources.SkillUpLines(id, viewed and viewed.rank, current, ns.db.badThresholds[id])
     if #lines > 0 then
         self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD })
         for _, line in ipairs(lines) do
-            self:Add({ indent = 1, text = line[2], color = W.DIFFICULTY[line[1]] })
+            local name = L.SKILLUP_COLORS[line.colour + 1]
+            local text = line.untilSkill and L.SKILLUP_UNTIL:format(name, line.untilSkill) or L.SKILLUP_NOW:format(name)
+            self:Add({ indent = 1, text = text, color = W.DIFFICULTY[line.colour] })
         end
         self:Gap()
     end

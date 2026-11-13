@@ -352,9 +352,9 @@ end)
 test("difficulty from the game's own thresholds", function()
     -- 2385 Brown Linen Vest (SkillLineAbility low 45, high 70): orange 10, yellow 45, green 57, grey 70
     local t = ns.Sources.Thresholds(2385)
-    eq(t[2], 45)
-    eq(t[3], 57)
-    eq(t[4], 70)
+    eq(t[1], 45)
+    eq(t[2], 57)
+    eq(t[3], 70)
     eq(ns.Sources.Difficulty(2385, 44), 0)
     eq(ns.Sources.Difficulty(2385, 45), 1)
     eq(ns.Sources.Difficulty(2385, 57), 2)
@@ -366,11 +366,61 @@ test("thresholds agree with colours the game reported", function()
     -- At Tailoring 115 the game showed Gloves of Meditation (3852) orange and
     -- Heavy Woolen Pants (3850) yellow; the old LibProfessionDB rows got both wrong.
     eq(ns.Sources.Difficulty(3852, 115), 0)
-    eq(ns.Sources.Thresholds(3852)[2], 125)
+    eq(ns.Sources.Thresholds(3852)[1], 125)
     eq(ns.Sources.Difficulty(3850, 115), 1)
     for _, id in ipairs({ 3850, 3866, 3852, 8467, 3848, 3855, 8758, 6690 }) do
         assert(ns.Sources.Thresholds(id), "thresholds present for " .. id)
     end
+end)
+
+local function linesText(lines)
+    local parts = {}
+    for _, l in ipairs(lines) do
+        parts[#parts + 1] = ns.L.SKILLUP_COLORS[l.colour + 1] .. (l.untilSkill and (" until " .. l.untilSkill) or " now")
+    end
+    return table.concat(parts, " / ")
+end
+
+test("skill-up lines: Gloves of Meditation at 115 and other cases", function()
+    eq(linesText(ns.Sources.SkillUpLines(3852, 115, 0)), "orange until 125 / yellow until 140 / green until 155")
+    eq(linesText(ns.Sources.SkillUpLines(3852, 130, 1)), "yellow until 140 / green until 155")
+    eq(linesText(ns.Sources.SkillUpLines(3852, 150, 2)), "green until 155")
+    eq(#ns.Sources.SkillUpLines(3852, 155, 3), 0, "grey: no section")
+    eq(linesText(ns.Sources.SkillUpLines(3852, 115, nil)), "orange until 125 / yellow until 140 / green until 155",
+        "colour worked out from the rank when the game's isn't known")
+    eq(linesText(ns.Sources.SkillUpLines(3852, 115, 0, true)), "orange now", "thresholds the game disagreed with")
+    eq(linesText(ns.Sources.SkillUpLines(-1, 50, 1)), "yellow now", "no data: game colour only")
+    eq(#ns.Sources.SkillUpLines(-1, 50, nil), 0, "nothing known")
+    -- Heavy Woolen Pants: yellow from 110, so at 115 the first line is yellow
+    eq(linesText(ns.Sources.SkillUpLines(3850, 115, 1)), "yellow until 127 / green until 145")
+end)
+
+test("skill-up lines are right for every recipe at every skill 1-300", function()
+    local checked = 0
+    for id in pairs(ns.RecipeLevels) do
+        for rank = 1, 300 do
+            local current = ns.Sources.Difficulty(id, rank)
+            local lines = ns.Sources.SkillUpLines(id, rank, current)
+            if current == nil or current == 3 then
+                eq(#lines, 0, "no section when grey/unknown: recipe " .. id .. " rank " .. rank)
+            else
+                assert(#lines > 0, "missing section: recipe " .. id .. " rank " .. rank)
+                eq(lines[1].colour, current, "first line is the current colour: recipe " .. id .. " rank " .. rank)
+                local last = rank
+                for _, l in ipairs(lines) do
+                    assert(l.untilSkill and l.untilSkill > last,
+                        "until values rise above the rank: recipe " .. id .. " rank " .. rank)
+                    eq(ns.Sources.Difficulty(id, l.untilSkill - 1), l.colour,
+                        "colour holds until just before: recipe " .. id .. " rank " .. rank)
+                    assert(ns.Sources.Difficulty(id, l.untilSkill) > l.colour,
+                        "colour changes at the until value: recipe " .. id .. " rank " .. rank)
+                    last = l.untilSkill
+                end
+                checked = checked + 1
+            end
+        end
+    end
+    assert(checked > 100000, "checked " .. checked)
 end)
 
 test("migration v3 clears old threshold mismatches", function()

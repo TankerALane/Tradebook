@@ -59,6 +59,8 @@ def main():
         skill = int(row["SkillLine"])
         low, high = int(row["TrivialSkillLineRankLow"]), int(row["TrivialSkillLineRankHigh"])
         if skill in SKILL_LINES and high > 0:
+            # A few rows have low > high (e.g. 22434: 320 / 310); grey wins, so clamp.
+            low = min(low, high)
             rows[int(row["Spell"])] = (skill, low, (low + high) // 2, high)
     if len(rows) < 500:
         sys.exit("only %d rows for build %s; refusing to overwrite (download problem?)" % (len(rows), build))

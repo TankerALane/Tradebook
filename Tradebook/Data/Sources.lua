@@ -70,19 +70,45 @@ Sources.Levels = levels
 
 -- Skill-up color for a rank: 0 orange, 1 yellow, 2 green, 3 grey.
 function Sources.Difficulty(recipeID, rank)
-    local lv = levels(recipeID)
-    if not lv or not rank then return nil end
-    if rank >= lv[4] then return 3 end
-    if rank >= lv[3] then return 2 end
-    if rank >= lv[2] then return 1 end
+    local t = Sources.Thresholds(recipeID)
+    if not t or not rank then return nil end
+    if rank >= t[3] then return 3 end
+    if rank >= t[2] then return 2 end
+    if rank >= t[1] then return 1 end
     return 0
 end
 
--- Thresholds { orange, yellow, green, grey } (skill where each colour starts), or nil.
--- Orange starts at the skill needed to learn the recipe (or 1 when unknown).
+-- Thresholds { yellow, green, grey } (skill where each colour starts), or nil.
+-- Orange is everything below yellow. (The "skill to learn" value is NOT used here: it's
+-- borrowed from classic and often wrong, e.g. 130 for a recipe learned at 115.)
 function Sources.Thresholds(recipeID)
     local lv = levels(recipeID)
     if not lv then return nil end
-    local orange = math.min(Sources.Required(recipeID) or 1, lv[2])
-    return { orange, lv[2], lv[3], lv[4] }
+    -- Defensive: keep yellow <= green <= grey (the generator already clamps).
+    local grey = lv[4]
+    local green = math.min(lv[3], grey)
+    return { math.min(lv[2], green), green, grey }
+end
+
+-- Skill-up lines for the details pane, from the colour the character is in now:
+-- { { colour = 0..2, untilSkill = n } ... } meaning "<colour> until <n>". Colours whose
+-- range is already behind the rank or empty are skipped; grey is never listed.
+-- current: the colour as the game reports it (0 orange .. 3 grey), or nil if unknown.
+-- When there are no thresholds, returns just { { colour = current } } (shown as "<colour> now").
+-- ignoreThresholds: the game disagreed with them for this recipe (db.badThresholds).
+function Sources.SkillUpLines(recipeID, rank, current, ignoreThresholds)
+    local t = not ignoreThresholds and Sources.Thresholds(recipeID) or nil
+    if current == nil and t and rank then current = Sources.Difficulty(recipeID, rank) end
+    if current == nil or current >= 3 then return {} end
+    if not t then return { { colour = current } } end
+    local out = {}
+    for colour = current, 2 do
+        local stop = t[colour + 1]                 -- where the next colour starts
+        local start = colour == 0 and 0 or t[colour] -- where this colour starts
+        if stop > start and (not rank or stop > rank) then
+            out[#out + 1] = { colour = colour, untilSkill = stop }
+        end
+    end
+    if #out == 0 then out[1] = { colour = current } end
+    return out
 end
