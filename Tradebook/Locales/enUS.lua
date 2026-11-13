@@ -12,7 +12,6 @@ L.DEBUG_OFF = "Debug output off."
 L.FAKE_ON = "Made-up characters on (for screenshots). Nothing is saved; /tb fake or /reload to go back."
 L.FAKE_OFF = "Back to your real characters."
 L.FAKE_BANNER = "(made-up data)"
-L.FAKE_NO_CRAFT = "Crafting is off while showing made-up characters."
 L.SHOTS_START = "Taking %d screenshots. Don't move the mouse over the window until it's done."
 L.SHOTS_DONE = "Done: %d screenshots in your Screenshots folder. Run scripts/crop_shots.py to crop them."
 L.SHOTS_COMBAT = "Can't take screenshots in combat."
@@ -166,8 +165,8 @@ L.DELETE = "Delete"
 L.DELETE_CONFIRM = "Delete all saved data for %s?"
 L.SHOW_HIDDEN = "Show hidden characters"
 L.NEXT_RANKUP = "Next rank-up"
-L.CLOSEST_RANKUP = "%s  %d/%d  (%d to go), then %s"
-L.READY_TO_TRAIN = "%s  ready to train %s"
+L.CLOSEST_RANKUP = "%s  %d/%d  -  %d to %s"
+L.READY_TO_TRAIN = "%s  %d/%d  -  train %s"
 L.RANK_NAMES = { Journeyman = "Journeyman", Expert = "Expert", Artisan = "Artisan" }
 L.PLAYTYPE = {
     normal = "Normal",
@@ -176,7 +175,7 @@ L.PLAYTYPE = {
     rppvp = "Role-Playing PvP",
     unknown = "Unknown",
 }
-L.MISSING_FOR = "%d recipes %s hasn't learned"
+L.MISSING_FOR = "%d not learned"
 
 -- Camp
 L.CAMP_TITLE = "Campsite recipes"

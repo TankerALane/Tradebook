@@ -21,6 +21,7 @@ function Fake.On()
     ns.db, ns.char, ns.charKey, ns.fake = db, db.characters[key], key, true
     ns.Recipes.Invalidate()
     if ns.UI.SetFakeBanner then ns.UI.SetFakeBanner(true) end
+    if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end -- settings were swapped (gathering tabs)
     ns.UI.Refresh()
     ns.Print(L.FAKE_ON)
 end
@@ -31,6 +32,7 @@ function Fake.Off()
     ns.real, ns.fake = nil, nil
     ns.Recipes.Invalidate()
     if ns.UI.SetFakeBanner then ns.UI.SetFakeBanner(false) end
+    if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end
     ns.UI.Refresh()
     ns.Print(L.FAKE_OFF)
 end

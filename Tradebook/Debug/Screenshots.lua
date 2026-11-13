@@ -14,54 +14,77 @@ ns.Screenshots = Shots
 Shots.DELAY = 1.5            -- seconds for the window to redraw before each picture
 Shots.WIDTH, Shots.HEIGHT = 1100, 640
 
-local BLACKSMITHING, TAILORING, ENGINEERING = 164, 197, 202
+local TAILORING, LEATHERWORKING, ENGINEERING = 197, 165, 202
 
--- A recipe of the main fake character whose first reagent can itself be crafted (so the
--- reagent tree has something to show); else any known recipe of that profession.
-local function pickRecipe(skillLineID)
-    local p = ns.char and ns.char.professions[skillLineID]
+-- A recipe of the shown character with a reagent that can itself be crafted (so the reagent
+-- tree has something to show). Returns recipeID and that reagent's index.
+local function pickRecipe(skillLineID, charKey)
+    local c = ns.db.characters[charKey or ns.charKey]
+    local p = c and c.professions[skillLineID]
     if not p then return nil end
     local ids = {}
-    for id in pairs(p.recipes) do if ns.db.recipes[id] then ids[#ids + 1] = id end end
+    for id in pairs(p.recipes) do if ns.db.recipes[id] and not ns.db.recipes[id].x then ids[#ids + 1] = id end end
     table.sort(ids, function(a, b) return a > b end)
     for _, id in ipairs(ids) do
-        local tree = ns.Reagents.Tree(ns.db, id, 1)
-        for _, node in ipairs(tree) do
-            if #node.makers > 0 then return id end
+        for i, node in ipairs(ns.Reagents.Tree(ns.db, id, 1)) do
+            if #node.makers > 0 then return id, i end
         end
     end
-    return ids[1]
+    return ids[1], 1
 end
 
 local function profession(skillLineID, opts)
     return function()
         ns.UI.SelectTab(skillLineID)
         local view = ns.UI.views.profession
-        if opts and opts.charKey then
-            view.charKey = opts.charKey
-            view:Refresh()
-        end
-        local id = pickRecipe(skillLineID) or view.selected
+        local id, reagent = pickRecipe(skillLineID, view.charKey)
         if id then view:SelectRecipe(id) end
-        if opts and opts.expand then
-            view.details.expanded["r.1"] = true
+        if opts and opts.expand and reagent then
+            view.details.expanded["r." .. reagent] = true
             view.details:Refresh()
+        end
+    end
+end
+
+-- Ask the game to load every item name/icon the pictures may show, before taking them.
+local function preloadItems()
+    local seen = {}
+    local function want(itemID)
+        if itemID and not seen[itemID] then
+            seen[itemID] = true
+            ns.Compat.Call("C_Item.RequestLoadItemDataByID", itemID)
+        end
+    end
+    for _, c in pairs(ns.db.characters) do
+        for _, p in pairs(c.professions) do
+            for id in pairs(p.recipes) do
+                local r = ns.db.recipes[id]
+                if r then
+                    want(r.o)
+                    for _, reagent in ipairs(ns.Recipes.Reagents(r)) do want(reagent.itemID) end
+                end
+            end
+        end
+    end
+    for _, ids in pairs(ns.Recipes.Camp(ns.db)) do
+        for _, id in ipairs(ids) do
+            for _, reagent in ipairs(ns.Recipes.Reagents(ns.db.recipes[id])) do want(reagent.itemID) end
         end
     end
 end
 
 -- The steps, in order. New steps go at the end so earlier pictures keep their numbers.
 Shots.PLAN = {
-    { name = "recipe", run = profession(BLACKSMITHING, { expand = true }) },
+    { name = "recipe", run = profession(TAILORING, { expand = true }) },
     { name = "skillup-filter", run = function()
         local f = ns.db.settings.filters
         f.skillup, f.skillupColors = true, { true, true, false }
-        profession(BLACKSMITHING)()
+        profession(TAILORING)()
     end },
     { name = "alt-readonly", run = function()
         local f = ns.db.settings.filters
         f.skillup, f.skillupColors = false, { true, true, true }
-        profession(TAILORING, { charKey = ns.Characters.Key("Mirelle", ns.FakeData.SECOND) })()
+        profession(LEATHERWORKING, { expand = true })() -- only Thornick has it: shown read-only
     end },
     { name = "characters", run = function() ns.UI.ShowCharacters() end },
     { name = "camp", run = function() ns.UI.SelectTab("camp") end },
@@ -71,7 +94,7 @@ Shots.PLAN = {
         ns.UI.SelectTab(ENGINEERING)
     end },
     { name = "shopping", run = function()
-        profession(BLACKSMITHING)()
+        profession(TAILORING)()
         ns.Shopping.ShowPinned()
     end, after = function() if ns.Shopping.Hide then ns.Shopping.Hide() end end },
 }
@@ -110,6 +133,7 @@ function Shots.Run()
     local record = { startedAt = time(), steps = {} }
     TradebookDB.dev.shots = record
     ns.Print(L.SHOTS_START:format(#Shots.PLAN))
+    preloadItems()
 
     local function finish()
         frame:SetSize(saved.w, saved.h)
@@ -135,5 +159,5 @@ function Shots.Run()
             end)
         end)
     end
-    step(1)
+    C_Timer.After(3, function() step(1) end) -- give item names time to load
 end

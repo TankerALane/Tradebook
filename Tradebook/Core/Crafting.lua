@@ -13,8 +13,16 @@ ns.Crafting = Crafting
 -- Can the current character craft this recipe right now?
 -- Returns state ("ok", "combat", "other", "notlearned", "closed", "missing"), max craftable, reason text.
 function Crafting.State(recipeID)
-    if ns.fake then return "other", 0, L.FAKE_NO_CRAFT end
     local recipe = ns.db.recipes[recipeID]
+    if ns.fake then
+        -- Made-up account (screenshots): look like the real thing from the fake bags; the
+        -- Craft call itself does nothing (Crafting.Craft returns early).
+        local mine = recipe and ns.char and ns.char.professions[recipe.s]
+        if not (mine and mine.recipes[recipeID]) then return "notlearned", 0, L.CRAFT_NOT_LEARNED end
+        local _, possible = ns.Reagents.Shortage(ns.db, ns.char, recipe, 1)
+        if possible > 0 then return "ok", possible end
+        return "missing", 0, L.CRAFT_MISSING
+    end
     if not recipe then return "notlearned", 0, L.CRAFT_NOT_LEARNED end
     local prof = ns.Professions.Get(recipe.s)
     local profName = prof and (L[prof.name] or prof.name) or "?"
@@ -36,6 +44,7 @@ end
 
 -- Must be called directly from a button's OnClick.
 function Crafting.Craft(recipeID, times)
+    if ns.fake then return false end -- /tb fake: never craft
     local state, max = Crafting.State(recipeID)
     if state ~= "ok" then return false end
     times = math.max(1, math.min(tonumber(times) or 1, max))
@@ -46,6 +55,7 @@ end
 
 -- Open one of the current character's professions. Must be called from a click.
 function Crafting.OpenProfession(skillLineID)
+    if ns.fake then return false end
     if InCombatLockdown() then return false end
     if not (ns.char and ns.char.professions[skillLineID]) then return false end
     local open = ns.Scanner.OpenProfession()

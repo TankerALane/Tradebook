@@ -407,6 +407,9 @@ function UI.Create()
         end
     end)
     ns.On("TRADE_SKILL_CLOSE", refreshSoon)
+    -- Item names/icons not cached yet show as "item:123" until the game loads them.
+    ns.On("GET_ITEM_INFO_RECEIVED", refreshSoon)
+    ns.On("ITEM_DATA_LOAD_RESULT", refreshSoon)
     ns.On("PLAYER_REGEN_ENABLED", refreshSoon)
     ns.On("PLAYER_REGEN_DISABLED", refreshSoon)
     return frame

@@ -9,7 +9,7 @@ local Characters = ns.Characters
 local View = {}
 ns.UI.RegisterView("characters", View)
 
-local SUMMARY_WIDTH = 250
+local SUMMARY_WIDTH = 280
 
 StaticPopupDialogs["TRADEBOOK_DELETE_CHARACTER"] = {
     text = L.DELETE_CONFIRM,
@@ -33,10 +33,20 @@ local function createRow(row)
     row.name:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 8, 0)
     row.info = W.Text(row, "GameFontHighlightSmall")
     row.info:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -3)
-    row.profs = W.Text(row, "GameFontHighlightSmall")
-    row.profs:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 230, 0)
-    row.profs:SetPoint("RIGHT", -150, 0)
-    row.profs:SetJustifyV("TOP")
+    -- Professions in three aligned columns: name | rank (right-aligned) | not learned (grey).
+    local function column(width, justify)
+        local fs = W.Text(row, "GameFontHighlightSmall", justify)
+        fs:SetWidth(width)
+        fs:SetJustifyV("TOP")
+        fs:SetWordWrap(false)
+        return fs
+    end
+    row.profs = column(110)
+    row.profs:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 236, 0)
+    row.ranks = column(64, "RIGHT")
+    row.ranks:SetPoint("TOPLEFT", row.profs, "TOPRIGHT", 0, 0)
+    row.missing = column(130)
+    row.missing:SetPoint("TOPLEFT", row.ranks, "TOPRIGHT", 14, 0)
     row.warn = W.Text(row, "GameFontRedSmall")
     row.warn:SetPoint("TOPLEFT", row.info, "BOTTOMLEFT", 0, -3)
     row.hide = W.Button(row, L.HIDE, 64, 20)
@@ -79,17 +89,20 @@ local function initRow(row, c)
     else
         row.warn:SetText("")
     end
-    local lines = {}
+    local names, ranks, missingLines = {}, {}, {}
     for _, p in ipairs(ns.Professions.list) do
         local prof = c.professions[p.id]
         if prof then
             local missing = ns.Recipes.Missing(ns.db, c, p.id)
-            local extra = missing and #missing > 0 and W.ColorText(W.GREY, "  " .. L.MISSING_FOR:format(#missing, c.name or "")) or ""
-            lines[#lines + 1] = string.format("%s %s%s", L[p.name] or p.name,
-                L.SKILL_RANK:format(prof.rank or 0, prof.max or 0), extra)
+            names[#names + 1] = L[p.name] or p.name
+            ranks[#ranks + 1] = L.SKILL_RANK:format(prof.rank or 0, prof.max or 0)
+            missingLines[#missingLines + 1] = (missing and #missing > 0) and L.MISSING_FOR:format(#missing) or " "
         end
     end
-    row.profs:SetText(table.concat(lines, "\n"))
+    row.profs:SetText(table.concat(names, "\n"))
+    row.ranks:SetText(table.concat(ranks, "\n"))
+    row.missing:SetText(table.concat(missingLines, "\n"))
+    row.missing:SetTextColor(W.GREY:GetRGB())
     row.hide:SetText(c.hidden and L.UNHIDE or L.HIDE)
     row.hide:SetEnabled(not isMe)
     row.delete:SetEnabled(not isMe)
@@ -131,8 +144,8 @@ local function rankUpText(skillLineID)
     local prof = c.professions[skillLineID]
     local nextRank = Characters.NextRank(prof.max)
     local rankName = nextRank and (L.RANK_NAMES[nextRank] or nextRank) or ""
-    local who = W.ClassName(c)
-    if gap == 0 then return L.READY_TO_TRAIN:format(who, rankName) end
+    local who = ns.Compat.ClassColor(c.class):WrapTextInColorCode(c.name or c.key) -- first name
+    if gap == 0 then return L.READY_TO_TRAIN:format(who, prof.rank or 0, prof.max or 0, rankName) end
     return L.CLOSEST_RANKUP:format(who, prof.rank or 0, prof.max or 0, gap, rankName)
 end
 

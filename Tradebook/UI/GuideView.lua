@@ -47,7 +47,7 @@ function View:Build(parent)
     self.friendsHeader:SetPoint("TOPLEFT", self.body, "BOTTOMLEFT", 0, -18)
     self.friendsHeader:SetText(L.FRIENDS_HEADER)
     self.friendsNote = W.Text(f, "GameFontDisableSmall")
-    self.friendsNote:SetWidth(NAME_W + RANK_W + 160)
+    self.friendsNote:SetWidth(640)
     self.rows = {}
 end
 

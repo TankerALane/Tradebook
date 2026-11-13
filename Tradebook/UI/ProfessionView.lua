@@ -417,7 +417,7 @@ function View:Refresh()
     if prof and not prof.scannedAt and not pInfo.noRecipes then
         notices[#notices + 1] = (prof.quickAt and L.QUICK_SCANNED or L.NOT_SCANNED):format(profName)
     end
-    if isMe and prof and not self:IsLive() and not pInfo.noRecipes then
+    if isMe and prof and not self:IsLive() and not pInfo.noRecipes and not ns.fake then
         showOpen = true
         self.openBtn:SetText(L.OPEN_PROFESSION:format(profName))
         self.openBtn:SetEnabled(not InCombatLockdown())

@@ -17,11 +17,12 @@ FakeData.SEED = 20261113
 FakeData.SECOND = "Fernhollow" -- every fake character's second name
 
 -- name, class, level, play type, days since seen, professions { skillLine, rank, max }
+-- The first one is the "logged-in" character.
 FakeData.CHARACTERS = {
-    { name = "Aldric", class = "PALADIN", level = 34, seen = 0,
-        professions = { { 164, 172, 225 }, { 186, 188, 225 }, { 185, 140, 150 }, { 129, 150, 150 } } },
-    { name = "Mirelle", class = "MAGE", level = 27, seen = 2,
+    { name = "Mirelle", class = "MAGE", level = 27, seen = 0,
         professions = { { 197, 131, 150 }, { 333, 118, 150 }, { 185, 75, 75 }, { 356, 92, 150 } } },
+    { name = "Aldric", class = "PALADIN", level = 34, seen = 2,
+        professions = { { 164, 172, 225 }, { 186, 188, 225 }, { 185, 140, 150 }, { 129, 150, 150 } } },
     { name = "Thornick", class = "ROGUE", level = 22, seen = 5,
         professions = { { 165, 98, 150 }, { 393, 120, 150 }, { 129, 75, 75 } } },
     { name = "Sefaria", class = "PRIEST", level = 18, seen = 41, -- stale (shows the warning)
@@ -32,6 +33,7 @@ FakeData.FRIENDS = {
     { name = "Grimwald Ashby", class = "WARRIOR", profs = { [164] = { 205, 225 }, [186] = { 210, 225 } } },
     { name = "Vexa Moonrill", class = "DRUID", profs = { [171] = { 178, 225 }, [182] = { 190, 225 } } },
     { name = "Brask Ironvein", class = "SHAMAN", profs = { [202] = { 140, 150 }, [186] = { 150, 150 } } },
+    { name = "Pip Cogsworth", class = "WARRIOR", profs = { [202] = { 212, 225 }, [186] = { 205, 225 } } },
     { name = "Okka Thistle", class = "HUNTER", profs = { [165] = { 160, 225 }, [393] = { 175, 225 }, [185] = { 90, 150 } } },
     { name = "Lune Varrow", class = "WARLOCK", profs = { [197] = { 220, 225 }, [333] = { 200, 225 } } },
 }
@@ -77,7 +79,10 @@ function FakeData.Build(real, now, ensure)
     db.recipes = copy(real.recipes)
     db.categories = copy(real.categories)
     db.campCategories = copy(real.campCategories)
-    db.settings = copy(real.settings)
+    -- Settings start from the defaults (filters, sections, tabs), keeping only the window
+    -- size/position and scale, so pictures don't depend on the player's own choices.
+    db.settings.window = copy(real.settings.window)
+    db.settings.scale = real.settings.scale
     db.fake = true
 
     local currentKey
@@ -118,15 +123,25 @@ function FakeData.Build(real, now, ensure)
         if i == 1 then currentKey = key end
     end
 
-    -- A few starred and pinned recipes on the main character.
+    -- A few starred and pinned recipes on the main character (Tailoring). Pinned ones are
+    -- recipes that are short of materials, so the pinned shopping list has something in it.
     local main = db.characters[currentKey]
     local picks = {}
-    for id in pairs(main.professions[164] and main.professions[164].recipes or {}) do
-        if db.recipes[id] then picks[#picks + 1] = id end
+    for id in pairs(main.professions[197] and main.professions[197].recipes or {}) do
+        if db.recipes[id] and db.recipes[id].r then picks[#picks + 1] = id end
     end
     table.sort(picks)
     for n = 1, math.min(3, #picks) do db.favorites[picks[#picks - n + 1]] = true end
-    if picks[1] then db.pinned[picks[1]] = 2 end
+    local pinned = 0
+    for _, id in ipairs(picks) do
+        local list = ns.Reagents.Shortage(db, main, db.recipes[id], 3)
+        local short = false
+        for _, item in ipairs(list) do if item.missing > 0 then short = true end end
+        if short and pinned < 2 then
+            db.pinned[id] = 3
+            pinned = pinned + 1
+        end
+    end
     return db, currentKey
 end
 

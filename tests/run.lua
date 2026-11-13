@@ -501,24 +501,26 @@ test("fake data: four made-up characters, real data untouched", function()
         target.recipes[id] = { s = skill, n = "Recipe " .. id, r = { 2589, 1 } }
     end)
     eq(ns.util.Count(db.characters), 4)
-    eq(key, "Aldric-Fernhollow")
+    eq(key, "Mirelle-Fernhollow", "Mirelle is the logged-in fake character")
     eq(db.fake, true)
     eq(ns.util.Count(real.characters), 0, "real characters untouched")
     eq(ns.util.Count(real.recipes), before, "real recipe cache untouched")
     assert(ensured > 0, "missing recipes are filled into the fake copy")
-    eq(db.settings.scale, 1.1, "settings copied")
-    local aldric = db.characters[key]
+    eq(db.settings.scale, 1.1, "scale copied")
+    eq(db.settings.filters.unlearned, false, "filters start at defaults")
+    local aldric = db.characters["Aldric-Fernhollow"]
     assert(ns.util.Count(aldric.professions[164].recipes) > 10, "Blacksmithing recipes known")
     assert(next(aldric.bags), "bags filled")
     local stale = db.characters["Sefaria-Fernhollow"]
     eq(ns.Characters.IsStale(stale, 1800000000, 30, key), true, "one stale character for the warning")
     local friends = ns.FakeData.FriendsWith(164, 1800000000)
     eq(friends[1].name, "Grimwald Ashby")
+    eq(#ns.FakeData.FriendsWith(202, 1800000000), 2, "two Engineering friends for the guide page")
     -- deterministic
     local db2 = ns.FakeData.Build(real, 1800000000, function(target, id, skill)
         target.recipes[id] = { s = skill, n = "Recipe " .. id, r = { 2589, 1 } }
     end)
-    eq(ns.util.Count(db2.characters[key].bags), ns.util.Count(aldric.bags), "same seed, same data")
+    eq(ns.util.Count(db2.characters["Aldric-Fernhollow"].bags), ns.util.Count(aldric.bags), "same seed, same data")
 end)
 
 test("migration v3 clears old threshold mismatches", function()
