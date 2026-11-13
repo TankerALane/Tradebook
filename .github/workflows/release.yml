@@ -41,3 +41,4 @@ jobs:
         with:
           name: tradebook-dry-run
           path: .release/*.zip
+          include-hidden-files: true
