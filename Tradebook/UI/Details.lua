@@ -388,10 +388,11 @@ function Pane:Refresh()
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = self:ReagentTooltip(c, name, item) })
         if self.expanded[key] then
-            if hasSources then self:AddWhereToGet(item.itemID, 1) end
+            -- Made by (crafted) first, then where to get it (vendors, drops, nodes).
             if hasMakers then
                 for _, maker in ipairs(node.makers) do self:AddMaker(maker, 1, key) end
             end
+            if hasSources then self:AddWhereToGet(item.itemID, 1) end
         end
     end
     self:Gap()
