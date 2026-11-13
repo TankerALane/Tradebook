@@ -110,6 +110,7 @@ end
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
 -- Gathering tabs can be hidden in settings (their data is still saved).
 local TAB_OVERLAP = -10
+local MAX_TAB_WIDTH = 110
 function UI.LayoutTabs()
     if not frame then return end
     local visible = {}
@@ -119,16 +120,20 @@ function UI.LayoutTabs()
         tab:SetShown(show)
         if show then visible[#visible + 1] = tab end
     end
+    -- PanelTabButtonTemplate re-sizes itself on show from the parent's tabPadding /
+    -- minTabWidth / maxTabWidth, so the limits live on the frame, not just in this call.
+    frame.tabPadding, frame.minTabWidth, frame.maxTabWidth = 0, 40, MAX_TAB_WIDTH
     local available = frame:GetWidth() - 16
     local natural = 0
     for _, tab in ipairs(visible) do
-        PanelTemplates_TabResize(tab, 0, nil, 40, 110)
+        PanelTemplates_TabResize(tab, 0, nil, 40, MAX_TAB_WIDTH)
         natural = natural + tab:GetWidth()
     end
     natural = natural + TAB_OVERLAP * (#visible - 1)
     if natural > available then
         local each = math.floor((available - TAB_OVERLAP * (#visible - 1)) / #visible)
-        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, each, nil, nil) end
+        frame.maxTabWidth = each
+        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, nil, 40, each) end
     end
     local prev
     for _, tab in ipairs(visible) do
@@ -297,6 +302,8 @@ function UI.Create()
     frame:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN)
         UI.SelectTab(defaultTab())
+        -- Tabs resize themselves in their own OnShow; lay out again once that's done.
+        C_Timer.After(0, UI.LayoutTabs)
     end)
     frame:SetScript("OnHide", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE)
