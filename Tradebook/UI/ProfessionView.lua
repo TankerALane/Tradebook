@@ -373,7 +373,7 @@ function View:Refresh()
     self.charBtn:SetText(c and W.ClassName(c) or "?")
     -- Skill bar in the header: the viewed character's rank in this profession.
     ns.UI.SetRankBar(prof and prof.rank, prof and prof.max,
-        prof and (profName .. " - " .. (c and ns.CharName(c.key) or "")))
+        prof and (profName .. " - " .. (c and ns.CharName(c.key) or "")), profName)
     View.friends = ns.Friends.For(self.skill)
     self.friendsBtn:SetShown(#View.friends > 0)
     self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))

@@ -317,7 +317,8 @@ local function buildHeader()
 end
 
 -- Show the skill bar for a character's profession, or hide it (rank == nil).
-function UI.SetRankBar(rank, max, tip)
+-- label: shown in front of the numbers (the profession name).
+function UI.SetRankBar(rank, max, tip, label)
     local bar = frame and frame.rankBar
     if not bar then return end
     if not rank or not max or max <= 0 then
@@ -326,7 +327,8 @@ function UI.SetRankBar(rank, max, tip)
     end
     bar.fill:SetMinMaxValues(0, max)
     bar.fill:SetValue(math.min(rank, max))
-    bar.text:SetText(L.SKILL_RANK:format(rank, max))
+    local numbers = L.SKILL_RANK:format(rank, max)
+    bar.text:SetText(label and (label .. "  " .. numbers) or numbers)
     bar.tip = tip
     bar:Show()
 end
