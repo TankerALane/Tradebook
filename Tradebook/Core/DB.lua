@@ -44,6 +44,7 @@ DB.DEFAULTS = {
     recipes = {},
     categories = {},
     campCategories = {},
+    badThresholds = {}, -- [recipeID] = true when bundled skill-up thresholds disagreed with the game
     favorites = {},
     pinned = {},
 }

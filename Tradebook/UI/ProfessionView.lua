@@ -166,13 +166,13 @@ function View:BuildItems()
         if not self.query or ns.util.Matches(r.n, self.query) then
             local learned = learnedMap[id] ~= nil
             local item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = db.pinned[id] ~= nil }
-            local diff = learnedMap[id]
-            item.diff = type(diff) == "number" and diff or nil
-            -- Recompute from the character's current rank where thresholds are known.
-            if learned and p and p.rank then item.diff = ns.Sources.Difficulty(id, p.rank) or item.diff end
             if live and learned then
+                -- Profession open: the game's own colour and skill-up count.
                 local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
                 if info then item.diff, item.skillUps = info.relativeDifficulty, info.numSkillUps end
+            end
+            if learned and item.diff == nil then
+                item.diff = ns.Scanner.Difficulty(c, self.skill, id, true)
             end
             if isMe and learned then
                 local _, possible = Reagents.Shortage(db, c, r, 1)

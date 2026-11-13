@@ -149,6 +149,30 @@ local function cacheRecipe(id, info, skillLineID, professionName)
     Recipes.Store(ns.db, id, data)
 end
 
+-- Skill-up colour (0 orange .. 3 grey) of a recipe for a saved character:
+--   1. live from the game when it's the logged-in character with that profession open;
+--   2. from the bundled thresholds and the character's current rank, unless a scan found
+--      those thresholds disagree with the game for this recipe;
+--   3. otherwise the colour saved at the last scan.
+-- noLive: skip step 1 (used while the profession is closed anyway).
+function Scanner.Difficulty(c, skillLineID, recipeID, noLive)
+    if not c then return nil end
+    local p = c.professions and c.professions[skillLineID]
+    if not noLive and c.key == ns.charKey then
+        local open = Scanner.OpenProfession()
+        if open and open.professionID == skillLineID then
+            local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", recipeID)
+            if info and info.learned and info.relativeDifficulty then return info.relativeDifficulty end
+        end
+    end
+    if p and p.rank and not ns.db.badThresholds[recipeID] then
+        local d = ns.Sources.Difficulty(recipeID, p.rank)
+        if d then return d end
+    end
+    local saved = p and p.recipes and p.recipes[recipeID]
+    return type(saved) == "number" and saved or nil
+end
+
 function Scanner.Recipes()
     local c = ns.char
     local base = Scanner.OpenProfession()
@@ -156,13 +180,31 @@ function Scanner.Recipes()
     local skillLineID = base.professionID
     local ids = Compat.Call("C_TradeSkillUI.GetAllRecipeIDs") or Compat.Call("C_TradeSkillUI.GetFilteredRecipeIDs") or {}
     local learned = {}
+    local rank, bonus = base.skillLevel, base.skillModifier or 0
+    local mismatches = 0
     for _, id in ipairs(ids) do
         local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
         if info and info.name then
             cacheRecipe(id, info, skillLineID, base.professionName)
-            if info.learned then learned[id] = info.relativeDifficulty or true end
+            if info.learned then
+                local live = info.relativeDifficulty
+                learned[id] = live or true
+                -- Check the bundled thresholds against the game's own colour; distrust
+                -- them for this recipe if neither the base nor the boosted skill agrees.
+                if live and rank and ns.Sources.Thresholds(id) then
+                    local a = ns.Sources.Difficulty(id, rank)
+                    local b = ns.Sources.Difficulty(id, rank + bonus)
+                    if a ~= live and b ~= live then
+                        ns.db.badThresholds[id] = true
+                        mismatches = mismatches + 1
+                    else
+                        ns.db.badThresholds[id] = nil
+                    end
+                end
+            end
         end
     end
+    if mismatches > 0 then ns.Debug("skill-up thresholds disagree with the game for", mismatches, "recipes") end
     if next(learned) or #ids > 0 then
         Characters.SetRecipes(c, skillLineID, learned, now())
     end
@@ -202,7 +244,7 @@ function Scanner.QuickRecipes()
         local profName = ns.Professions.Get(skill).name
         for id in pairs(ids) do
             if p.recipes[id] == nil then
-                p.recipes[id] = ns.Sources.Difficulty(id, p.rank) or true
+                p.recipes[id] = Scanner.Difficulty(c, skill, id, true) or true
                 added = added + 1
             end
             if not ns.db.recipes[id] or not ns.db.recipes[id].n then

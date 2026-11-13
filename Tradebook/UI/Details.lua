@@ -337,15 +337,16 @@ function Pane:Refresh()
     end
     self:Gap()
 
-    -- Skill-up thresholds and required skill (bundled data).
-    local thresholds = ns.Sources.Thresholds(id)
+    -- Skill-up thresholds (bundled data). Not shown for recipes where a scan found the
+    -- bundled thresholds disagree with the game.
+    local thresholds = not ns.db.badThresholds[id] and ns.Sources.Thresholds(id)
     if thresholds then
         -- thresholds = level where orange, yellow, green and grey START. Stack where each
         -- colour ends ("orange until 23"), starting at the colour the viewed character is
-        -- in now, so only what's still ahead shows. Grey is the default after green and is
-        -- left out (no section at all once the recipe is grey); empty ranges are skipped.
-        local viewed = c and c.professions[r.s]
-        local current = viewed and viewed.rank and ns.Sources.Difficulty(id, viewed.rank) or 0
+        -- in now (as the game shows it, live when open), so only what's still ahead shows.
+        -- Grey is the default after green and is left out (no section once the recipe is
+        -- grey); empty ranges are skipped.
+        local current = ns.Scanner.Difficulty(c, r.s, id) or 0
         local lines = {}
         for i = current + 1, 3 do
             if thresholds[i + 1] > thresholds[i] then
