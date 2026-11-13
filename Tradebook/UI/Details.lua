@@ -340,18 +340,24 @@ function Pane:Refresh()
     -- Skill-up thresholds and required skill (bundled data).
     local thresholds = ns.Sources.Thresholds(id)
     if thresholds then
-        -- thresholds = level where orange, yellow, green and grey START. Show where each
-        -- colour ends ("orange until 23"); grey is the default after green, so it's left out,
-        -- and colours with an empty range are skipped.
-        local parts = {}
-        for i = 1, 3 do
+        -- thresholds = level where orange, yellow, green and grey START. Stack where each
+        -- colour ends ("orange until 23"), starting at the colour the viewed character is
+        -- in now, so only what's still ahead shows. Grey is the default after green and is
+        -- left out (no section at all once the recipe is grey); empty ranges are skipped.
+        local viewed = c and c.professions[r.s]
+        local current = viewed and viewed.rank and ns.Sources.Difficulty(id, viewed.rank) or 0
+        local lines = {}
+        for i = current + 1, 3 do
             if thresholds[i + 1] > thresholds[i] then
-                local color = W.DIFFICULTY[i - 1]
-                parts[#parts + 1] = color:WrapTextInColorCode(L.SKILLUP_UNTIL:format(L.SKILLUP_COLORS[i], thresholds[i + 1]))
+                lines[#lines + 1] = { i - 1, L.SKILLUP_UNTIL:format(L.SKILLUP_COLORS[i], thresholds[i + 1]) }
             end
         end
-        if #parts > 0 then
-            self:Add({ text = L.SKILLUP_LABEL .. "  " .. table.concat(parts, "   "), color = W.GREY })
+        if #lines > 0 then
+            self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD })
+            for _, line in ipairs(lines) do
+                self:Add({ indent = 1, text = line[2], color = W.DIFFICULTY[line[1]] })
+            end
+            self:Gap()
         end
     end
 
