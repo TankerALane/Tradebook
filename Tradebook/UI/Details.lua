@@ -10,6 +10,8 @@ local Details = {}
 ns.Details = Details
 
 local LINE_H = 22
+local LARGE_LINE_H = 42 -- reagent rows
+local LARGE_ICON = 36   -- about the size of the default window's reagent slots
 local Pane = {}
 Pane.__index = Pane
 
@@ -42,18 +44,22 @@ function Pane:Line()
     line.text:SetFontObject("GameFontHighlightSmall")
     line.text:SetTextColor(1, 1, 1)
     line.right:SetText("")
+    line.right:SetFontObject("GameFontHighlightSmall")
     line:SetScript("OnClick", nil)
     line:SetScript("OnEnter", nil)
     line:SetScript("OnLeave", nil)
     line:GetHighlightTexture():SetAlpha(0)
     line:Show()
-    self.y = self.y + LINE_H
     return line
 end
 
--- Add a line: { indent, itemID, text, right, color, font, onClick, toggle = bool|nil, expanded, onToggle, tooltip }
+-- Add a line: { indent, itemID, text, right, color, font, onClick, toggle = bool|nil, expanded, onToggle,
+-- tooltip, large = true for a big icon row (reagents, like the default window's slots) }
 function Pane:Add(o)
     local line = self:Line()
+    local height = o.large and LARGE_LINE_H or LINE_H
+    line:SetHeight(height)
+    self.y = self.y + height
     local x = (o.indent or 0) * 16
     if o.toggle ~= nil then
         line.toggle:Show()
@@ -63,15 +69,18 @@ function Pane:Add(o)
         x = x + 16
     end
     if o.itemID then
+        local size = o.large and LARGE_ICON or 18
+        line.item:SetSize(size, size)
         line.item:Show()
         line.item:SetPoint("LEFT", x, 0)
         line.item:SetItem(o.itemID)
-        x = x + 22
+        x = x + size + 6
     end
     line.text:ClearAllPoints()
     line.text:SetPoint("LEFT", x, 0)
     line.text:SetPoint("RIGHT", line.right, "LEFT", -6, 0)
     if o.font then line.text:SetFontObject(o.font) end
+    if o.large then line.right:SetFontObject("GameFontHighlight") end
     line.text:SetText(o.text or "")
     if o.color then line.text:SetTextColor(o.color:GetRGB()) end
     line.right:SetText(o.right or "")
@@ -326,8 +335,8 @@ function Pane:Refresh()
         local node = tree[i]
         local key = "r." .. i
         local hasMakers = node and #node.makers > 0
-        self:Add({ indent = 0, itemID = item.itemID, text = name, right = right,
-            color = (not enough) and W.RED or nil,
+        self:Add({ indent = 0, itemID = item.itemID, text = name, right = right, large = true,
+            font = "GameFontHighlight", color = (not enough) and W.RED or nil,
             toggle = hasMakers and true or nil, expanded = self.expanded[key],
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = self:ReagentTooltip(c, name, item) })
