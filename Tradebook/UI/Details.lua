@@ -255,7 +255,7 @@ function Pane:AddTree(nodes, indent, path)
     end
 end
 
--- Reagent tooltip: this character's bags/bank, then every other character who has
+-- Reagent tooltip: this character's bags/bank, then (no header) every other character who has
 -- some (first name, class colour, bags + bank from their last login / bank visit).
 function Pane:ReagentTooltip(c, name, item)
     local lines = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank) }
@@ -263,7 +263,6 @@ function Pane:ReagentTooltip(c, name, item)
     local others = Reagents.OnOtherCharacters(ns.db, item.itemID, c and c.key)
     if #others > 0 then
         lines[#lines + 1] = " "
-        lines[#lines + 1] = W.ColorText(W.GOLD, L.OTHER_CHARACTERS)
         for _, o in ipairs(others) do
             local who = Compat.ClassColor(o.class):WrapTextInColorCode(o.name)
             lines[#lines + 1] = L.CHAR_HAS:format(who, o.total)
