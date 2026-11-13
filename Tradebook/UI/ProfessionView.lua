@@ -10,8 +10,10 @@ local View = {}
 ns.UI.RegisterView("profession", View)
 
 local LEFT_WIDTH = 330
-local PINNED_KEY = "\000pinned"       -- sorts first
-local FAVORITES_KEY = "\001favorites" -- then favorites, then categories A-Z
+-- Section keys (also used to remember collapsed state); Starred first, then Pinned,
+-- then the categories A-Z.
+local STARRED_KEY = "\000starred"
+local PINNED_KEY = "\001pinned"
 local PIN_ATLAS = "Waypoint-MapPin-Tracked"
 
 ---------------------------------------------------------------------------
@@ -139,15 +141,21 @@ function View:BuildItems()
     local f = db.settings.filters
     local groups, order = {}, {}
 
+    local starred, pinnedList = {}, {}
+
+    local function add(key, item)
+        if not groups[key] then
+            groups[key] = {}
+            order[#order + 1] = key
+        end
+        table.insert(groups[key], item)
+    end
+
     for _, id in ipairs(Recipes.ForProfession(db, self.skill, db.settings.showSoD)) do
         local r = db.recipes[id]
-        local learned = learnedMap[id] ~= nil
-        local pinned = db.pinned[id] ~= nil
-        -- Pinned recipes always show (in the Pinned group) unless the search excludes them.
-        local keep = not self.query or ns.util.Matches(r.n, self.query)
-        local item
-        if keep then
-            item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = pinned }
+        if not self.query or ns.util.Matches(r.n, self.query) then
+            local learned = learnedMap[id] ~= nil
+            local item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = db.pinned[id] ~= nil }
             local diff = learnedMap[id]
             item.diff = type(diff) == "number" and diff or nil
             -- Recompute from the character's current rank where thresholds are known.
@@ -160,39 +168,32 @@ function View:BuildItems()
                 local _, possible = Reagents.Shortage(db, c, r, 1)
                 item.possible = possible
             end
-            if not pinned then
-                if not ((learned and f.learned) or (not learned and f.unlearned)) then keep = false end
-                if f.skillup and not (learned and item.diff and item.diff < 3) then keep = false end
-                if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
-            end
-        end
-        if keep then
-            local key
-            if pinned then
-                key = PINNED_KEY
-            elseif db.favorites[id] then
-                key = FAVORITES_KEY
-            else
+            -- Starred and Pinned sections are shortcuts: they ignore the filters (search still
+            -- applies), and the recipes also stay in their own category below.
+            if db.favorites[id] then starred[#starred + 1] = item end
+            if item.pinned then pinnedList[#pinnedList + 1] = item end
+            local keep = (learned and f.learned) or (not learned and f.unlearned)
+            if f.skillup and not (learned and item.diff and item.diff < 3) then keep = false end
+            if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
+            if keep then
                 local cat = db.categories[r.c]
-                key = cat and cat.n or OTHER or "Other"
+                add(cat and cat.n or OTHER or "Other", item)
             end
-            if not groups[key] then
-                groups[key] = {}
-                order[#order + 1] = key
-            end
-            table.insert(groups[key], item)
         end
     end
     table.sort(order)
+
     local items = {}
-    for _, key in ipairs(order) do
-        local collapsed = db.settings.collapsed[key]
-        local name = (key == PINNED_KEY and L.PINNED) or (key == FAVORITES_KEY and L.FAVORITES) or key
-        items[#items + 1] = { header = true, key = key, name = name, count = #groups[key] }
-        if not collapsed then
-            for _, item in ipairs(groups[key]) do items[#items + 1] = item end
+    local function section(key, name, list)
+        if #list == 0 then return end
+        items[#items + 1] = { header = true, key = key, name = name, count = #list }
+        if not db.settings.collapsed[key] then
+            for _, item in ipairs(list) do items[#items + 1] = item end
         end
     end
+    section(STARRED_KEY, L.STARRED, starred)
+    section(PINNED_KEY, L.PINNED, pinnedList)
+    for _, key in ipairs(order) do section(key, key, groups[key]) end
     return items
 end
 
