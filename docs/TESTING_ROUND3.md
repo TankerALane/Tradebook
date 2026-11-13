@@ -18,7 +18,7 @@ What's still open after round 2: the three fixes, plus everything that needs ano
 - [ ] Opening that profession once replaces the list with the full one (categories and unlearned recipes).
 
 ## D. Characters view
-- [ ] Left column **"Next rank-up"**: one block per profession, stacked, showing who is closest and to what rank (for example "Ana 145/150 (5 to go), then Expert", or "ready to train Expert").
+- [X] Left column **"Next rank-up"**: one block per profession, stacked, showing who is closest and to what rank (for example "Ana 145/150 (5 to go), then Expert", or "ready to train Expert").
 
 ## E. Regression check
 - [ ] Professions key, micro button and spellbook still open Tradebook. ESC closes it in one press (out of combat).
