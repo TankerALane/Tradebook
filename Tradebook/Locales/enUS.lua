@@ -90,6 +90,7 @@ L.SOURCE_LOCATIONS = "%d locations"
 L.SOURCE_MORE = "(+%d more)"
 L.SKILLUP_LABEL = "Skill-up"
 L.SKILLUP_UNTIL = "%s until %d"
+L.SKILLUP_NOW = "%s now"
 L.SKILLUP_COLORS = { "orange", "yellow", "green" }
 L.REQUIRES_SKILL = "Requires %s (%d)"
 L.SKILLUP_TIP = "Skill-ups: %d"

@@ -337,29 +337,31 @@ function Pane:Refresh()
     end
     self:Gap()
 
-    -- Skill-up thresholds (bundled data). Not shown for recipes where a scan found the
-    -- bundled thresholds disagree with the game.
+    -- Skill-up section. The current colour comes from the game (live when the profession
+    -- is open, else the last scan or trusted thresholds). "until N" lines come from the
+    -- bundled thresholds and are only added when they're trustworthy for this recipe.
+    -- Stacked from the current colour onward; grey is the default after green and isn't
+    -- listed (no section once the recipe is grey).
+    local current = ns.Scanner.Difficulty(c, r.s, id)
     local thresholds = not ns.db.badThresholds[id] and ns.Sources.Thresholds(id)
+    local lines = {}
     if thresholds then
-        -- thresholds = level where orange, yellow, green and grey START. Stack where each
-        -- colour ends ("orange until 23"), starting at the colour the viewed character is
-        -- in now (as the game shows it, live when open), so only what's still ahead shows.
-        -- Grey is the default after green and is left out (no section once the recipe is
-        -- grey); empty ranges are skipped.
-        local current = ns.Scanner.Difficulty(c, r.s, id) or 0
-        local lines = {}
-        for i = current + 1, 3 do
+        for i = (current or 0) + 1, 3 do
             if thresholds[i + 1] > thresholds[i] then
                 lines[#lines + 1] = { i - 1, L.SKILLUP_UNTIL:format(L.SKILLUP_COLORS[i], thresholds[i + 1]) }
             end
         end
-        if #lines > 0 then
-            self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD })
-            for _, line in ipairs(lines) do
-                self:Add({ indent = 1, text = line[2], color = W.DIFFICULTY[line[1]] })
-            end
-            self:Gap()
+    end
+    if #lines == 0 and current and current < 3 then
+        -- No trustworthy numbers: just the current colour, as the game reports it.
+        lines[1] = { current, L.SKILLUP_NOW:format(L.SKILLUP_COLORS[current + 1]) }
+    end
+    if #lines > 0 then
+        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD })
+        for _, line in ipairs(lines) do
+            self:Add({ indent = 1, text = line[2], color = W.DIFFICULTY[line[1]] })
         end
+        self:Gap()
     end
 
     -- Sources (bundled data), shown when the viewed character hasn't learned it.
