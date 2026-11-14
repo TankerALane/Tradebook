@@ -129,12 +129,12 @@ local function initRow(row, data)
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
     row.name:SetPoint("RIGHT", row.pin, "LEFT", -2, 0)
     row.name:SetFontObject("GameFontHighlightSmall")
-    -- Not learned yet but would give skill-ups: a dot in that skill-up colour before the name.
+    -- Not learned yet but would give skill-ups: a dot in that skill-up colour after the name.
     local dot = ""
     if not data.learned and data.diff and data.diff < 3 and W.DIFFICULTY[data.diff] then
-        dot = W.ColorText(W.DIFFICULTY[data.diff], "\226\128\162") .. " " -- U+2022 bullet
+        dot = " " .. W.ColorText(W.DIFFICULTY[data.diff], "\226\128\162") -- U+2022 bullet
     end
-    row.name:SetText(dot .. data.name)
+    row.name:SetText(data.name .. dot)
     if data.learned and data.diff and W.DIFFICULTY[data.diff] then
         row.name:SetTextColor(W.DIFFICULTY[data.diff]:GetRGB())
     elseif data.learned then
