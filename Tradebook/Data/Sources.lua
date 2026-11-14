@@ -150,8 +150,37 @@ end
 -- borrowed from Vanilla.
 function Sources.Required(recipeID)
     local r = ns.RecipeRequired and ns.RecipeRequired[recipeID]
-    if not r then return nil end
+    if not r then
+        -- New Forever recipes: the skill from the checked vendor data.
+        local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+        if o and o.k then return o.k, false end
+        return nil
+    end
     return r[1], r[2] == true
+end
+
+-- Merchant's Favor camps: the reputation is the one for your faction.
+local CAMP_FACTION = { Horde = 2587, Alliance = 2586 } -- Durotar Supply and Logistics / Azeroth Commerce Authority
+
+-- What buying a recipe from its vendor needs: { favor = Merchant's Favor cost or nil,
+-- factionID, standing (4 Friendly .. 7 Exalted) or nil }, or nil when nothing is known.
+-- playerFaction: "Horde" / "Alliance" (for the supply camps' reputation).
+function Sources.Purchase(recipeID, playerFaction)
+    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    if not o or not (o.fv or o.cr or o.rf) then return nil end
+    local out = { favor = o.fv }
+    if o.rf then
+        out.factionID, out.standing = o.rf[1], o.rf[2]
+    elseif o.cr then
+        out.factionID, out.standing = CAMP_FACTION[playerFaction] or CAMP_FACTION.Horde, o.cr
+        out.camp = true
+    end
+    return out
+end
+
+-- English name of a faction in the data (ns.RecipeFactionNames), or nil.
+function Sources.FactionName(id)
+    return ns.RecipeFactionNames and ns.RecipeFactionNames[id]
 end
 
 -- How a recipe is learned: { trainer = bool, recipe = bool (a recipe item: vendor, drop,

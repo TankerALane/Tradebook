@@ -12,6 +12,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "docs", "research", "recipe_vendors.json")
 OUT = os.path.join(ROOT, "Tradebook", "Data", "RecipeVendors.lua")
 
+FACTIONS = {2586: "Azeroth Commerce Authority", 2587: "Durotar Supply and Logistics", 270: "Zandalar Tribe",
+            576: "Timbermaw Hold", 609: "Cenarion Circle", 749: "Hydraxian Waterlords", 2740: "Kirin Tor",
+            2787: "Earthen Ring"}
+STANDING = {"Neutral": 3, "Friendly": 4, "Honored": 5, "Revered": 6, "Exalted": 7}
+
 STATUS = {"vendor": None, "none": 3, "notYet": 1, "disputed": 2}
 
 
@@ -25,7 +30,7 @@ def ids(xs):
 
 def main():
     data = json.load(open(SRC, encoding="utf-8"))["recipes"]
-    names = {}
+    names, quest_names = {}, {}
     lines = []
     for r in sorted(data, key=lambda r: r["recipeSpellID"]):
         conf = sorted({v["npc"] for v in r["vendors"] if v["confirmed"]})
@@ -36,6 +41,8 @@ def main():
         quests = sorted({q["quest"] for q in r["quests"]}) if other else []
         for v in r["vendors"]:
             names[v["npc"]] = v["name"]
+        for q in r["quests"] if other else []:
+            if q.get("name"): quest_names[q["quest"]] = q["name"]
         for d in r["drops"] if other else []:
             if d.get("name"): names[d["npc"]] = d["name"]
         parts = []
@@ -44,6 +51,14 @@ def main():
         if drops: parts.append("d=" + ids(drops))
         if quests: parts.append("q=" + ids(quests))
         if STATUS[r["status"]]: parts.append("x=%d" % STATUS[r["status"]])
+        # New Forever vendors: Merchant's Favor cost, supply camp standing, other reputation,
+        # skill to learn.
+        if r.get("favor"): parts.append("fv=%d" % r["favor"])
+        if r.get("campStanding"): parts.append("cr=%d" % STANDING[r["campStanding"]])
+        rf = r.get("reputation")
+        if rf and rf.get("factionID") and rf.get("standing") in STANDING:
+            parts.append("rf={%d,%d}" % (rf["factionID"], STANDING[rf["standing"]]))
+        if r.get("requiredSkill"): parts.append("k=%d" % r["requiredSkill"])
         lines.append("[%d]={%s}, -- %s" % (r["recipeSpellID"], ",".join(parts), r["recipeName"]))
     out = [
         "-- Data/RecipeVendors.lua",
@@ -55,6 +70,9 @@ def main():
         "-- web sources; see docs/DATA.md). [recipeID] = {",
         "--   v = vendors confirmed by two sources, u = vendors from one source (unconfirmed),",
         "--   d = NPCs that drop the recipe, q = quests that reward it (QuestieDB Forever),",
+        "--   fv = Merchant's Favor cost, cr = supply camp standing needed (Durotar Supply and",
+        "--   Logistics / Azeroth Commerce Authority, by your faction), rf = { factionID, standing }",
+        "--   other reputation (4 Friendly .. 7 Exalted), k = skill to learn (new Forever recipes),",
         "--   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree,",
         "--       3 no vendor is known to sell it in Forever }",
         "",
@@ -66,7 +84,17 @@ def main():
         "",
         "-- Names of the NPCs above (English).",
         "ns.RecipeVendorNames = {",
-    ] + ["[%d]=%s," % (k, lua_str(names[k])) for k in sorted(names) if names[k]] + ["}", ""]
+    ] + ["[%d]=%s," % (k, lua_str(names[k])) for k in sorted(names) if names[k]] + [
+        "}",
+        "",
+        "-- Names of the quests above (English), for when the game hasn't loaded them yet.",
+        "ns.RecipeQuestNames = {",
+    ] + ["[%d]=%s," % (k, lua_str(quest_names[k])) for k in sorted(quest_names)] + [
+        "}",
+        "",
+        "-- Names of the reputations above (English).",
+        "ns.RecipeFactionNames = {",
+    ] + ["[%d]=%s," % (k, lua_str(FACTIONS[k])) for k in sorted(FACTIONS)] + ["}", ""]
     open(OUT, "w", encoding="utf-8", newline="\n").write("\n".join(out))
     print("wrote", OUT, len(lines), "recipes", len(names), "names")
 

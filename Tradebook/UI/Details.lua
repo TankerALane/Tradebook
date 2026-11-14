@@ -565,13 +565,21 @@ function Pane:Refresh()
         self:Gap()
     end
 
-    -- Sources (bundled data), shown when the viewed character hasn't learned it.
-    local mine = c and c.professions[r.s] and c.professions[r.s].recipes[id]
-    if not mine then
+    -- Sources (bundled data and vendor windows), also for recipes you know (to buy one for
+    -- another character, or find the vendor again).
+    do
         self:Add({ text = L.SOURCE, font = "GameFontNormal", color = W.GOLD })
         local required = ns.Sources.Required(id)
         if required then
             self:Add({ indent = 1, text = L.REQUIRES_SKILL:format(prof and (L[prof.name] or prof.name) or "", required) })
+        end
+        -- What buying it needs: Merchant's Favor and reputation (new Forever vendors).
+        local buy = ns.Sources.Purchase(id, Compat.Call("UnitFactionGroup", "player"))
+        if buy and buy.favor then self:Add({ indent = 1, text = L.SOURCE_COST_FAVOR:format(buy.favor) }) end
+        if buy and buy.factionID and buy.standing then
+            local name = ns.Sources.FactionName(buy.factionID) or ("#" .. buy.factionID)
+            local standing = _G["FACTION_STANDING_LABEL" .. buy.standing] or tostring(buy.standing)
+            self:Add({ indent = 1, text = L.SOURCE_REPUTATION:format(standing, name) })
         end
         -- Nearest trainers/vendors that teach it (Questie locations); click for a waypoint.
         local near = ns.Questie.RecipeSources(id)
@@ -595,7 +603,11 @@ function Pane:Refresh()
             end
         end
         local sources, borrowed, checked = ns.Sources.Get(id, {
-            quest = function(q) return Compat.Call("C_QuestLog.GetTitleForQuestID", q) end,
+            quest = function(q)
+                -- The game only knows a quest's name once it's loaded; then Questie, then the data.
+                return Compat.Call("C_QuestLog.GetTitleForQuestID", q) or ns.Questie.QuestName(q)
+                    or (ns.RecipeQuestNames and ns.RecipeQuestNames[q])
+            end,
             item = function(i) return (Compat.ItemInfo(i)) end,
         })
         if sources then

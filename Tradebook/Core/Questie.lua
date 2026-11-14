@@ -146,6 +146,12 @@ function Questie.WhereToGet(itemID)
     return data
 end
 
+-- A quest's name from QuestieDB, or nil.
+function Questie.QuestName(id)
+    if not Questie.Available() or not lib.Quest then return nil end
+    return get(lib.Quest, id, "name")
+end
+
 -- Zone name for an area ID.
 function Questie.ZoneName(areaID)
     local map = ns.ZoneMaps and ns.ZoneMaps[areaID]

@@ -7,6 +7,9 @@
 -- web sources; see docs/DATA.md). [recipeID] = {
 --   v = vendors confirmed by two sources, u = vendors from one source (unconfirmed),
 --   d = NPCs that drop the recipe, q = quests that reward it (QuestieDB Forever),
+--   fv = Merchant's Favor cost, cr = supply camp standing needed (Durotar Supply and
+--   Logistics / Azeroth Commerce Authority, by your faction), rf = { factionID, standing }
+--   other reputation (4 Friendly .. 7 Exalted), k = skill to learn (new Forever recipes),
 --   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree,
 --       3 no vendor is known to sell it in Forever }
 
@@ -587,4 +590,24 @@ ns.RecipeVendorNames = {
 [267000]="Paige",
 [270780]="Qujo",
 [272646]="Miranda Turner",
+}
+
+-- Names of the quests above (English), for when the game hasn't loaded them yet.
+ns.RecipeQuestNames = {
+[862]="Dig Rat Stew",
+[8877]="Firework Launcher",
+[8878]="Festive Recipes",
+[8882]="Cluster Launcher",
+}
+
+-- Names of the reputations above (English).
+ns.RecipeFactionNames = {
+[270]="Zandalar Tribe",
+[576]="Timbermaw Hold",
+[609]="Cenarion Circle",
+[749]="Hydraxian Waterlords",
+[2586]="Azeroth Commerce Authority",
+[2587]="Durotar Supply and Logistics",
+[2740]="Kirin Tor",
+[2787]="Earthen Ring",
 }
