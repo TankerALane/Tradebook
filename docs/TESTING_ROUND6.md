@@ -5,8 +5,9 @@ Tick `[X]` and add notes in `[brackets]`; paste any Lua error text at the bottom
 **First: fully restart WoW** (new files `Core\Planner.lua` and `UI\Planner.lua`). Have Auctionator prices from a recent scan if you can.
 
 ## A. Opening it
-- [ ] Click the skill bar on a profession that's below its cap: the rank window has a gold **Leveling plan to N** line near the top. Click it: the **Leveling plan** window opens (drag to move, Escape closes). Clicking the line again closes it.
-- [ ] At the cap (e.g. 75/75), the line isn't there (the planner window would say "train the next rank first").
+- [ ] On a profession tab, the **Leveling plan** button sits to the left of the skill bar. Click it: the **Leveling plan** window opens (drag to move, Escape closes). Clicking the button again closes it.
+- [ ] Clicking the skill bar itself opens only the rank window (where to train, requirements, specializations), with no leveling plan in it.
+- [ ] At the cap (e.g. 75/75), the planner says "train the next rank first".
 
 ## B. The plan
 - [ ] It says "<Name>: <Profession> 131 to 150", then **Steps** with the total cost on the right.
