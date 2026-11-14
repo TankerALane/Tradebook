@@ -129,7 +129,12 @@ local function initRow(row, data)
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
     row.name:SetPoint("RIGHT", row.pin, "LEFT", -2, 0)
     row.name:SetFontObject("GameFontHighlightSmall")
-    row.name:SetText(data.name)
+    -- Not learned yet but would give skill-ups: a dot in that skill-up colour before the name.
+    local dot = ""
+    if not data.learned and data.diff and data.diff < 3 and W.DIFFICULTY[data.diff] then
+        dot = W.ColorText(W.DIFFICULTY[data.diff], "\226\128\162") .. " " -- U+2022 bullet
+    end
+    row.name:SetText(dot .. data.name)
     if data.learned and data.diff and W.DIFFICULTY[data.diff] then
         row.name:SetTextColor(W.DIFFICULTY[data.diff]:GetRGB())
     elseif data.learned then
@@ -212,6 +217,11 @@ function View:BuildItems()
             end
             if learned and item.diff == nil then
                 item.diff = ns.Scanner.Difficulty(c, self.skill, id, true)
+            elseif not learned and p and p.rank and not self.browsing and not db.badThresholds[id]
+                and ns.Sources.Learnable(id, p.rank) ~= false then
+                -- Not learned yet: the colour it would have at your skill now (only when you
+                -- could learn it now; one needing more skill gives nothing yet).
+                item.diff = ns.Sources.Difficulty(id, p.rank)
             end
             if isMe and learned then
                 local _, possible = Reagents.Shortage(db, c, r, 1)
@@ -224,7 +234,7 @@ function View:BuildItems()
             local keep = (learned and f.learned) or (not learned and f.unlearned)
             if self.browsing then keep = true end -- nobody has it: every recipe, search only
             if not self.browsing and f.skillup
-                and not (learned and item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
+                and not (item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
                 keep = false
             end
             if not self.browsing and f.haveMats and not (item.possible and item.possible > 0) then keep = false end

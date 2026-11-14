@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Fixed:** with **Not learned** and **Gives skill-ups** both ticked, recipes you haven't learned that would give skill-ups now show too, with a dot before the name in their skill-up colour. Recipes needing more skill than you have don't count.
 - **Enchants and other recipes without a result item** now say what they do on hover: the recipe's icon in the details pane, the Camp list and the leveling plan, the recipe list on the left, and search results (which now show a tooltip for every recipe).
 - **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, each item with its price per unit and total, and a subtotal per section. Send to Auctionator sends only the auction house items.
 - The leveling plan works without Auctionator too: it uses your own materials and vendor prices, then recipes needing the fewest other materials.
