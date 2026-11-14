@@ -12,6 +12,7 @@ local PURE_FILES = {
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
+    "Tradebook/Data/RankTrainers.lua",
     "Tradebook/Core/DB.lua",
     "Tradebook/Core/Characters.lua",
     "Tradebook/Core/Recipes.lua",
@@ -590,6 +591,8 @@ test("rank-up routes: books and quests for the secondary professions", function(
     eq(R.Next(356, { max = 150 }).bookLevel, 20)
     eq(R.Next(356, { max = 225 }).quest, "Nat Pagle, Angler Extreme")
     eq(R.Next(129, { max = 225 }).quest, "Triage")
+    eq(R.Next(185, { max = 225 }).quest, "Clamlette Surprise", "Artisan Cooking is a quest")
+    eq(R.Next(356, { max = 75 }).level, 10, "Journeyman Fishing needs level 10")
     eq(R.Next(197, { max = 150 }).book, nil, "Tailoring: trainer")
     eq(R.Next(197, { max = 75 }).cost, 500, "Journeyman fee")
     eq(R.Next(197, { max = 225 }).cost, 50000, "Artisan fee")
@@ -648,6 +651,25 @@ test("trainer services: rank and profession from the trainer window", function()
     eq(T.SkillLineFor("Cooking"), 185)
     eq(T.SkillLineFor("First Aid"), 129)
     eq(T.SkillLineFor("Swords"), nil)
+end)
+
+test("researched rank trainers", function()
+    local RT = ns.RankTrainers
+    local list, known = RT.For(333, "Expert")
+    eq(known, true)
+    local names = {}
+    for _, t in ipairs(list) do names[t.name] = true end
+    eq(names["Hgarth"], true)
+    eq(names["Lavinia Crowe"], nil, "Lavinia teaches Journeyman, not Expert (seen in game)")
+    eq(RT.For(333, "Artisan")[1].id, 11073, "Annora")
+    eq(select(2, RT.For(182, "Artisan")), true, "gathering trainers teach every rank")
+    eq(select(2, RT.For(185, "Journeyman")), false, "Cooking: any trainer (searched)")
+    -- Every listed trainer has a name, and IDs are numbers when present.
+    for _, ranks in pairs(RT.crafting) do
+        for _, l in pairs(ranks) do
+            for _, t in ipairs(l) do assert(type(t.name) == "string" and (t.id == nil or type(t.id) == "number")) end
+        end
+    end
 end)
 
 ---------------------------------------------------------------------------

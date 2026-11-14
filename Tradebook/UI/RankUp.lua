@@ -70,7 +70,7 @@ local function addTrainers(pane, skill, nextRank, faction, profName)
     else
         local unsure = false
         for _, e in ipairs(list) do
-            npcLine(pane, e, 1, e.confirmed and W.ColorText(W.GREEN, L.RANKUP_CONFIRMED) or nil)
+            npcLine(pane, e, 1, not e.confirmed and W.ColorText(W.GREY, L.RANKUP_GUESS) or nil)
             if not e.confirmed then unsure = true end
         end
         if unsure then pane:Add({ indent = 1, text = L.RANKUP_UNCONFIRMED, color = W.GREY }) end

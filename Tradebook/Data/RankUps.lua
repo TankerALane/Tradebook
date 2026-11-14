@@ -9,7 +9,8 @@
 -- Most ranks come from a trainer. The exceptions (from classic, checked against Forever's
 -- item data where a book is involved; see docs/DATA.md):
 --   Expert Cooking / Fishing / First Aid: a book sold by vendors (or the auction house).
---   Artisan Fishing / First Aid: a quest.
+--   Artisan Cooking / Fishing / First Aid: a quest (Clamlette Surprise, Nat Pagle, Triage).
+-- Confirmed for Forever by several sources (docs/DATA.md).
 
 local _, ns = ...
 
@@ -26,6 +27,9 @@ RankUps.byCap = {
 }
 RankUps.costConfirmed = true
 
+-- Level requirements outside the crafting professions (sources agree): Journeyman Fishing 10.
+RankUps.levelOverride = { [356] = { Journeyman = 10 } }
+
 -- Trainers that teach a rank also teach recipes needing at least this much skill
 -- (used to pick them from the recipe source data: an Apprentice-only trainer teaches
 -- nothing above 75, a Journeyman one nothing above 150, and so on).
@@ -36,6 +40,7 @@ RankUps.trainerMinRecipe = { Journeyman = 80, Expert = 155, Artisan = 230 }
 RankUps.special = {
     [185] = { -- Cooking
         Expert = { book = 16072, bookSkill = 125, bookPrice = 10000 },
+        Artisan = { quest = "Clamlette Surprise" }, -- from Dirge Quikcleave, Gadgetzan
     },
     [356] = { -- Fishing
         Expert = { book = 16083, bookSkill = 125, bookLevel = 20, bookPrice = 10000 },
@@ -54,8 +59,8 @@ function RankUps.Next(skillLine, prof)
     if not step then return nil end
     local def = ns.Professions and ns.Professions.Get(skillLine)
     local crafting = def and def.primary and not def.gathering
-    local out = { rank = step.rank, skill = step.skill, level = crafting and step.level or nil, cap = step.cap,
-        cost = step.cost }
+    local level = crafting and step.level or (RankUps.levelOverride[skillLine] or {})[step.rank]
+    local out = { rank = step.rank, skill = step.skill, level = level, cap = step.cap, cost = step.cost }
     local special = RankUps.special[skillLine] and RankUps.special[skillLine][step.rank]
     for k, v in pairs(special or {}) do out[k] = v end
     -- A book or quest replaces the trainer, so there is no training fee.

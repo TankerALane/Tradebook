@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Researched rank trainers**: the rank-up window lists the trainers that actually teach each rank in Forever (cross-checked across several Forever guides and trainer windows in game), the Artisan Cooking quest (Clamlette Surprise) and Journeyman Fishing's level 10.
 - **Trainers remember what they teach**: opening a profession trainer's window saves which ranks they teach and what it costs. The rank-up window then marks those trainers "(teaches it)", drops ones that don't, and shows the real cost.
 - **Browse professions you don't have**: a grey tab's guide page has **Show all recipes**, listing every recipe of that profession (from Forever's game data) with search and full details: materials, what they cost, and where to learn each recipe. **Back to the guide** returns.
 - **Train the next rank**: once a character can train the next rank (skill 50, 125, 200), a **Train <rank>** button appears in the skill bar. It opens a window with the requirements (skill and level: Journeyman 10, Expert 20, Artisan 35) and how to get it: the nearest trainers, the Expert Cooking/Fishing/First Aid books (auction price and where they're sold), or the Artisan Fishing/First Aid quests (giver, level, reputation and prerequisite quests). Waypoints, target and mark included. Locations need Questie; prices need Auctionator.

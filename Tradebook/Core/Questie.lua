@@ -265,29 +265,57 @@ local function trainersByTitle(word)
     return ids
 end
 
--- Nearest trainers (friendly to `faction`) that can teach `rank` of a profession:
--- up to LIMIT entries, nearest first, or {} when none are known.
+-- NPC IDs for a list of { id?, name } (Data/RankTrainers.lua): the given ID, or every
+-- QuestieDB NPC with that exact name.
+local nameIDs = {}
+local function idsOf(list)
+    local ids = {}
+    for _, t in ipairs(list) do
+        if t.id then
+            ids[#ids + 1] = t.id
+        else
+            if nameIDs[t.name] == nil then
+                local ok, found = pcall(lib.Npc.IdsByName, t.name)
+                nameIDs[t.name] = ok and type(found) == "table" and found or false
+            end
+            for _, id in ipairs(nameIDs[t.name] or {}) do ids[#ids + 1] = id end
+        end
+    end
+    return ids
+end
+
+-- Nearest trainers (friendly to `faction`) that teach `rank` of a profession: up to LIMIT
+-- entries, nearest first. Each has confirmed = true when the trainer is known to teach it
+-- (researched list, or its window read in game); false for the fallback guess.
 function Questie.RankTrainers(skillLine, rank, faction)
     if not Questie.Available() then return {} end
-    local guessed = trainersFromRecipes(skillLine, ns.RankUps.trainerMinRecipe[rank] or 0)
-    if #guessed == 0 then
-        local p = ns.Professions.Get(skillLine)
-        if p then guessed = trainersByTitle(p.name) end
+    local listed, known = ns.RankTrainers.For(skillLine, rank)
+    local ids, sure, seen = {}, {}, {}
+    local function add(id, certain)
+        if seen[id] or ns.Trainers.Teaches(id, rank) == false then return end
+        seen[id] = true
+        ids[#ids + 1] = id
+        sure[id] = certain
     end
-    -- Trainers whose window was read (Core/Trainers.lua) are certain: those that teach the
-    -- rank are added, those that don't are left out.
-    local ids, seen = {}, {}
+    -- Read in game: certain.
     for id, t in pairs(ns.db.trainers or {}) do
-        if t.skill == skillLine and t.ranks[rank] then ids[#ids + 1] = id; seen[id] = true end
+        if t.skill == skillLine and t.ranks[rank] then add(id, true) end
     end
-    for _, id in ipairs(guessed) do
-        if not seen[id] and ns.Trainers.Teaches(id, rank) ~= false then ids[#ids + 1] = id; seen[id] = true end
+    if known then
+        for _, id in ipairs(idsOf(listed)) do add(id, true) end
+    elseif ns.RankTrainers.journeymanFromAny[skillLine] and rank == "Journeyman" then
+        -- Every Cooking / Fishing / First Aid trainer teaches Journeyman.
+        local p = ns.Professions.Get(skillLine)
+        for _, id in ipairs(p and trainersByTitle(p.name) or {}) do add(id, true) end
+    else
+        -- No researched list: a guess from the recipes trainers teach.
+        for _, id in ipairs(trainersFromRecipes(skillLine, ns.RankUps.trainerMinRecipe[rank] or 0)) do add(id, false) end
     end
     local all = nearestOf(ids, faction, "trainer")
     local out = {}
     for i = 1, math.min(LIMIT, #all) do
         out[i] = all[i]
-        out[i].confirmed = ns.Trainers.Teaches(all[i].id, rank) == true
+        out[i].confirmed = sure[all[i].id] == true
     end
     return out
 end
