@@ -54,7 +54,8 @@ function Pane:Line()
 end
 
 -- Add a line: { indent, itemID, text, right, color, font, onClick, toggle = bool|nil, expanded, onToggle,
--- tooltip, large = true for a big icon row (reagents, like the default window's slots) }
+-- tooltip, large = true for a big icon row (reagents, like the default window's slots),
+-- target = NPC name: clicking also targets it when nearby (secure button, out of combat) }
 function Pane:Add(o)
     local line = self:Line()
     local height = o.large and LARGE_LINE_H or LINE_H
@@ -93,6 +94,10 @@ function Pane:Add(o)
         line:SetScript("OnClick", o.onClick)
     end
     if o.tooltip then W.Tooltip(line, o.tooltip) end
+    if o.target and o.onClick then
+        ns.TargetButtons.Attach(line, o.target, o.onClick,
+            o.targetTooltip or o.tooltip)
+    end
     return line
 end
 
@@ -102,6 +107,7 @@ end
 
 function Pane:Begin()
     self.used, self.y = 0, 0
+    ns.TargetButtons.Release()
 end
 
 function Pane:Finish()
@@ -291,18 +297,20 @@ end
 function Pane:AddWhereToGet(itemID, indent)
     local data = ns.Questie.WhereToGet(itemID)
     if not data then return end
-    local function section(title, list, nameOf)
+    local function section(title, list, nameOf, isNpc)
         if #list == 0 then return end
         self:Add({ indent = indent, text = title, color = W.GOLD })
         for _, e in ipairs(list) do
+            local hint = isNpc and L.WAYPOINT_TARGET_CLICK or L.WAYPOINT_CLICK
             self:Add({ indent = indent + 1, text = nameOf(e), right = placeText(e),
                 onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
-                tooltip = e.sub and { e.name, e.sub, L.WAYPOINT_CLICK } or { e.name, L.WAYPOINT_CLICK } })
+                target = isNpc and e.name or nil,
+                tooltip = e.sub and { e.name, e.sub, hint } or { e.name, hint } })
         end
     end
-    section(L.SOLD_BY, data.vendors, function(e) return e.name end)
-    section(L.DROPPED_BY, data.drops, function(e) return e.name .. levelText(e) end)
-    section(L.GATHERED_FROM, data.objects, function(e) return e.name end)
+    section(L.SOLD_BY, data.vendors, function(e) return e.name end, true)
+    section(L.DROPPED_BY, data.drops, function(e) return e.name .. levelText(e) end, true)
+    section(L.GATHERED_FROM, data.objects, function(e) return e.name end, false)
     if not data.located then self:Add({ indent = indent, text = L.WHERE_NO_POSITION, color = W.GREY }) end
 end
 
@@ -432,7 +440,9 @@ function Pane:Refresh()
                 self:Add({ indent = 2, text = e.name .. "  " .. W.ColorText(W.GREY, "(" .. kind .. ")"),
                     right = placeText(e),
                     onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
-                    tooltip = e.sub and { e.name, e.sub, L.WAYPOINT_CLICK } or { e.name, L.WAYPOINT_CLICK } })
+                    target = e.name,
+                    tooltip = e.sub and { e.name, e.sub, L.WAYPOINT_TARGET_CLICK }
+                        or { e.name, L.WAYPOINT_TARGET_CLICK } })
             end
         end
         local sources, borrowed = ns.Sources.Get(id, {
