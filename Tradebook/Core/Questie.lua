@@ -212,6 +212,12 @@ local function nearestOf(ids, faction, kind)
     return out
 end
 
+-- Nearest spawn of any NPC (mobs too: no faction check), with its zone and coordinates, or nil.
+function Questie.NpcNearest(id)
+    if not Questie.Available() then return nil end
+    return nearestNpc(id, nil) or nil
+end
+
 -- Nearest trainers and vendors that teach a recipe: { list = {...up to 3, mixed, nearest
 -- first}, best = nearest entry or nil }, or nil when unknown. Entries carry kind =
 -- "trainer" or "vendor".

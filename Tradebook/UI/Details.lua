@@ -602,6 +602,43 @@ function Pane:Refresh()
                         or { e.name, L.WAYPOINT_TARGET_CLICK } })
             end
         end
+        -- Dropped by: the most likely droppers, with zone and drop chance; click for a waypoint.
+        local drops = ns.Sources.Drops(id)
+        if #drops > 0 then
+            self:Add({ indent = 1, text = L.DROPPED_BY, color = W.GOLD })
+            for _, d in ipairs(drops) do
+                local e = ns.Questie.NpcNearest(d.npcID)
+                local name = d.name or (e and e.name) or ("NPC " .. d.npcID)
+                local chance = (d.chance >= 1 and "%.0f%%" or "%.1f%%"):format(d.chance)
+                local zone = e and placeText(e) or (d.areaID and ns.Questie.ZoneName(d.areaID)) or ""
+                if e and e.minLevel then
+                    local lv = (e.maxLevel and e.maxLevel ~= e.minLevel) and L.LEVEL_RANGE:format(e.minLevel, e.maxLevel)
+                        or L.LEVEL_ONE:format(e.minLevel)
+                    name = name .. "  " .. W.ColorText(W.GREY, lv)
+                end
+                self:Add({ indent = 2, text = name .. "  " .. W.ColorText(W.GOLD, chance), right = zone,
+                    onClick = e and function() ns.Waypoints.Set(e.areaID, e.x, e.y, d.name or e.name) end or nil,
+                    tooltip = e and { d.name or e.name, L.DROP_CHANCE_TIP:format(chance), L.WAYPOINT_CLICK } or nil })
+            end
+        end
+        -- Auction house: the recipe item's price (Auctionator), for items that aren't soulbound.
+        for _, itemID in ipairs(ns.Sources.RecipeItems(id)) do
+            if ns.Sources.Tradeable(itemID) then
+                local right
+                if ns.Prices.Available() then
+                    local p = ns.Prices.Get(itemID)
+                    if p.auction then
+                        right = ns.Prices.Money(p.auction)
+                            .. (p.age and p.age > 0 and (" " .. W.ColorText(W.GREY, L.PRICE_AGE:format(p.age))) or "")
+                    else
+                        right = W.ColorText(W.GREY, L.SOURCE_AH_NO_PRICE)
+                    end
+                else
+                    right = W.ColorText(W.GREY, L.SOURCE_AH_NO_AUCTIONATOR)
+                end
+                self:Add({ indent = 1, itemID = itemID, text = L.SOURCE_AUCTION_HOUSE, right = right })
+            end
+        end
         local sources, borrowed, checked = ns.Sources.Get(id, {
             quest = function(q)
                 -- The game only knows a quest's name once it's loaded; then Questie, then the data.

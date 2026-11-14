@@ -133,7 +133,9 @@ function Sources.Get(recipeID, resolve)
         out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": "
             .. npcNames(unconf, not s.checked and s.vn or nil, decorate) }
     end
-    if s.d then out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) } end
+    -- Drops with chances are listed separately (Sources.Drops); otherwise the names.
+    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    if s.d and not (o and o.dr) then out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) } end
     for _, q in ipairs(s.q or {}) do
         local name = resolve.quest and resolve.quest(q)
         out[#out + 1] = { text = L.SOURCE_QUEST .. ": " .. (name or ("#" .. q)) }
@@ -157,6 +159,37 @@ function Sources.Required(recipeID)
         return nil
     end
     return r[1], r[2] == true
+end
+
+-- NPCs that drop a recipe, with the drop chance in percent, highest first:
+-- { { npcID, chance, name, areaID } } (Data/RecipeVendors.lua `dr`), or {}.
+function Sources.Drops(recipeID)
+    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    local out = {}
+    for _, d in ipairs(o and o.dr or {}) do
+        out[#out + 1] = { npcID = d[1], chance = d[2] / 100, name = npcName(d[1]),
+            areaID = ns.RecipeNpcZones and ns.RecipeNpcZones[d[1]] }
+    end
+    return out
+end
+
+-- Items that teach a recipe (Data/RecipeItems.lua): { itemID, ... } (built once).
+local itemsByRecipe
+function Sources.RecipeItems(recipeID)
+    if not itemsByRecipe then
+        itemsByRecipe = {}
+        for itemID, r in pairs(ns.RecipeItems or {}) do
+            itemsByRecipe[r] = itemsByRecipe[r] or {}
+            table.insert(itemsByRecipe[r], itemID)
+        end
+        for _, list in pairs(itemsByRecipe) do table.sort(list) end
+    end
+    return itemsByRecipe[recipeID] or {}
+end
+
+-- Can this recipe item be bought from other players (not soulbound on pickup)?
+function Sources.Tradeable(itemID)
+    return not (ns.RecipeItemBound and ns.RecipeItemBound[itemID])
 end
 
 -- Merchant's Favor camps: the reputation is the one for your faction.
