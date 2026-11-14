@@ -27,10 +27,10 @@ Tradebook works on its own. These addons add extra information when they are ins
 
 | Addon | What it adds to Tradebook |
 |---|---|
-| **Questie** | Where to learn unlearned recipes, nearest first (trainers and vendors, with distance and waypoints). Where to get each material: the nearest **vendors** that sell it (your faction, with zone, coordinates and distance), the **mobs** that drop it, and the **nodes** it's gathered from. Click one to set a waypoint. |
+| **Questie** | Where to learn unlearned recipes, nearest first (trainers and vendors, with distance and waypoints). Where to get each material: the nearest **vendors** that sell it (your faction, with zone, coordinates and distance), the **mobs** that drop it, and the **nodes** it's gathered from. Click one to set a waypoint; if the NPC is nearby, it's also targeted and marked with a purple diamond. |
 | **TomTom** | Waypoints from Tradebook use TomTom's arrow. Without TomTom, Tradebook uses the game's own map pin instead. |
 | **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab (Friends button) and on professions none of your characters have. |
-| **Auctionator** | *(coming soon)* Auction and vendor prices for materials, the cost to craft a recipe, and sending your shopping list to Auctionator. |
+| **Auctionator** | Auction and vendor prices for each material (in its tooltip), the **cost to craft** a recipe, what the result **sells for** and your **profit**, the cost of a shopping list, and **Send to Auctionator** to turn a shopping list into an Auctionator shopping list. |
 
 ### Notes
 - WoW Forever only. Data such as recipe sources comes from LibProfessionDB (MIT) and is marked unconfirmed where it was borrowed from classic; skill-up ranges come from Forever's own game data.

@@ -38,7 +38,7 @@ SlashCmdList.TRADEBOOK = function(msg)
             ns.Debug("character", tostring(ns.charKey), "playType", ns.char and ns.char.playType,
                 "characters", ns.util.Count(ns.db.characters), "recipes", ns.util.Count(ns.db.recipes),
                 "open", ns.Scanner.OpenProfession() and ns.Scanner.OpenProfession().professionName or "none",
-                ns.Takeover.DebugState(), ns.Questie.DebugState())
+                ns.Takeover.DebugState(), ns.Questie.DebugState(), ns.Prices.DebugState())
         end
     else
         ns.Print(L.HELP_HEADER)

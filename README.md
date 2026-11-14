@@ -21,10 +21,10 @@ A profession companion for **World of Warcraft: Forever**.
 
 Tradebook works on its own; these add more when installed:
 
-- **Questie**: nearest vendors, mobs and gathering nodes for each material, with waypoints.
+- **Questie**: nearest vendors, mobs and gathering nodes for each material, and nearest trainers and vendors for unlearned recipes, with waypoints (click an NPC nearby to target and mark it).
 - **TomTom**: waypoints use TomTom's arrow (otherwise the game's map pin).
 - **Fellowship Ledger**: friends' profession ranks.
-- **Auctionator** *(coming soon)*: material prices, crafting cost, shopping list export.
+- **Auctionator**: auction and vendor prices for materials, the cost to craft, what the result sells for and the profit, and sending a shopping list to Auctionator.
 
 ## Install
 

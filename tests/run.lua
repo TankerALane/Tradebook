@@ -17,6 +17,7 @@ local PURE_FILES = {
     "Tradebook/Core/Reagents.lua",
     "Tradebook/Core/Friends.lua",
     "Tradebook/Core/Locations.lua",
+    "Tradebook/Core/Prices.lua",
     "Tradebook/Debug/FakeData.lua",
 }
 
@@ -558,6 +559,45 @@ test("vendor and drop names are capped with a count", function()
     local text
     for _, l in ipairs(lines) do if l.text:find("^Drop") then text = l.text end end
     assert(text and text:find("more%)"), "drop line shows the remaining count: " .. tostring(text))
+end)
+
+---------------------------------------------------------------------------
+-- prices (Auctionator)
+---------------------------------------------------------------------------
+
+test("cheapest price prefers the vendor when it is cheaper or equal", function()
+    local P = ns.Prices
+    eq(select(2, P.Cheapest({ vendor = 50, auction = 80 })), "vendor")
+    eq(select(2, P.Cheapest({ vendor = 90, auction = 80 })), "auction")
+    eq(P.Cheapest({ vendor = 80, auction = 80 }), 80)
+    eq(P.Cheapest({ auction = 7 }), 7)
+    eq(P.Cheapest({}), nil)
+    eq(P.Cheapest(nil), nil)
+end)
+
+test("craft cost sums priced materials and counts unpriced ones", function()
+    local prices = { [1] = { auction = 100 }, [2] = { vendor = 25, auction = 40 }, [3] = {} }
+    local lookup = function(id) return prices[id] end
+    local total, unpriced = ns.Prices.CraftCost({
+        { itemID = 1, need = 3 }, { itemID = 2, need = 4 }, { itemID = 3, need = 1 },
+    }, lookup)
+    eq(total, 400)
+    eq(unpriced, 1)
+    eq(select(2, ns.Prices.CraftCost({}, lookup)), 0)
+end)
+
+test("profit takes the auction house cut off the sale", function()
+    local value, profit = ns.Prices.Profit(500, 1000, 2)
+    eq(value, 1900)
+    eq(profit, 1400)
+    eq(ns.Prices.Profit(500, nil, 1), nil, "no auction price")
+end)
+
+test("money text", function()
+    eq(ns.Prices.MoneyText(12345), "1g 23s 45c")
+    eq(ns.Prices.MoneyText(10000), "1g")
+    eq(ns.Prices.MoneyText(0), "0c")
+    eq(ns.Prices.MoneyText(-250), "-2s 50c")
 end)
 
 print(string.format("%d passed, %d failed", passed, failed))

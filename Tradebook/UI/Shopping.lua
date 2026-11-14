@@ -45,7 +45,18 @@ local function ensure()
     popup.title:SetPoint("TOP", 0, -5)
     popup.list = W.List(popup, 22, createRow, initRow)
     popup.list:SetPoint("TOPLEFT", 12, -32)
-    popup.list:SetPoint("BOTTOMRIGHT", -24, 12)
+    popup.list:SetPoint("BOTTOMRIGHT", -24, 42)
+    -- Footer: total cost and "Send to Auctionator" (only with Auctionator).
+    popup.cost = W.Text(popup, "GameFontHighlightSmall")
+    popup.cost:SetPoint("BOTTOMLEFT", 14, 16)
+    popup.export = W.Button(popup, L.SHOPPING_EXPORT, 150, 22)
+    popup.export:SetPoint("BOTTOMRIGHT", -10, 10)
+    popup.export:SetScript("OnClick", function()
+        local name = L.SHOPPING_LIST_NAME
+        local sent = ns.Prices.ExportShoppingList(popup.items or {}, name)
+        if sent then ns.Print(L.SHOPPING_EXPORTED:format(sent, name)) else ns.Print(L.SHOPPING_EXPORT_FAILED) end
+    end)
+    W.Tooltip(popup.export, { L.SHOPPING_EXPORT, L.SHOPPING_EXPORT_TIP:format(L.SHOPPING_LIST_NAME) })
     popup.empty = W.Text(popup, "GameFontDisable", "CENTER")
     popup.empty:SetPoint("CENTER")
     return popup
@@ -57,7 +68,21 @@ function Shopping.Show(entries, title)
     p.title:SetText(title or L.SHOPPING_LIST)
     local list = ns.Reagents.ShoppingList(ns.db, ns.char, entries)
     p.list:SetItems(list)
+    p.items = list
     p.empty:SetText(#list == 0 and L.SHOPPING_EMPTY or "")
+    local priced = ns.Prices.Available()
+    p.export:SetShown(priced)
+    p.export:SetEnabled(#list > 0)
+    if priced and #list > 0 then
+        local buy = {}
+        for _, item in ipairs(list) do buy[#buy + 1] = { itemID = item.itemID, need = item.missing } end
+        local cost, unpriced = ns.Prices.CraftCost(buy, ns.Prices.Get)
+        local text = L.SHOPPING_COST:format(ns.Prices.Money(cost))
+        if unpriced > 0 then text = text .. "  " .. W.ColorText(W.GREY, L.COST_UNPRICED:format(unpriced)) end
+        p.cost:SetText(text)
+    else
+        p.cost:SetText("")
+    end
     p:Show()
 end
 

@@ -323,6 +323,10 @@ function Pane:ReagentTooltip(c, name, item)
         lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY)
         for _, e in ipairs(where.vendors) do lines[#lines + 1] = e.name .. "  " .. placeText(e) end
     end
+    if ns.Prices.Available() then
+        lines[#lines + 1] = " "
+        for _, p in ipairs(ns.Prices.TooltipLines(item.itemID)) do lines[#lines + 1] = p end
+    end
     local others = Reagents.OnOtherCharacters(ns.db, item.itemID, c and c.key)
     if #others > 0 then
         lines[#lines + 1] = " "
@@ -332,6 +336,35 @@ function Pane:ReagentTooltip(c, name, item)
         end
     end
     return lines
+end
+
+-- Cost section (Auctionator): materials at their cheapest known price, what the result sells
+-- for at auction, and the profit. Hidden without Auctionator.
+function Pane:AddCost(r, list, times)
+    local Prices = ns.Prices
+    if not Prices.Available() or #list == 0 then return end
+    self:Add({ text = L.COST, font = "GameFontNormal", color = W.GOLD, tooltip = { L.COST, L.COST_TIP } })
+    local cost, unpriced = Prices.CraftCost(list, Prices.Get)
+    if unpriced == #list then
+        self:Add({ indent = 1, text = L.COST_NO_DATA, color = W.GREY })
+        self:Gap()
+        return
+    end
+    self:Add({ indent = 1, text = L.COST_TO_CRAFT, right = Prices.Money(cost) })
+    if unpriced > 0 then
+        self:Add({ indent = 1, text = L.COST_UNPRICED:format(unpriced), color = W.GREY })
+    end
+    local made = ((r.q1 or 1) + (r.q2 or r.q1 or 1)) / 2 * times
+    local sale = r.o and Prices.Get(r.o).auction
+    local value, profit = Prices.Profit(cost, sale, made)
+    if value then
+        self:Add({ indent = 1, text = L.COST_SELLS_FOR, right = Prices.Money(value) })
+        if unpriced == 0 then
+            self:Add({ indent = 1, text = L.COST_PROFIT, right = (profit >= 0 and W.GREEN or W.RED)
+                :WrapTextInColorCode(Prices.Money(profit)) })
+        end
+    end
+    self:Gap()
 end
 
 function Pane:RefreshReagents()
@@ -404,6 +437,7 @@ function Pane:Refresh()
         end
     end
     self:Gap()
+    self:AddCost(r, list, times)
 
     -- Skill-up section. The current colour comes from the game (live when the profession
     -- is open, else the last scan or trusted thresholds). "until N" lines come from the

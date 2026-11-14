@@ -39,6 +39,7 @@ Core\Scanner.lua
 Core\Crafting.lua
 Core\Takeover.lua
 Core\Questie.lua
+Core\Prices.lua
 Core\Waypoints.lua
 
 # UI

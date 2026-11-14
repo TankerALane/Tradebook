@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- **Auctionator prices** (optional): auction and vendor prices in material tooltips, a Cost section in recipe details (cost to craft, sells for, profit), the cost of a shopping list, and **Send to Auctionator** to create an Auctionator shopping list.
+- **Questie** (optional): where to get each material (nearest vendors, mobs and nodes) and the nearest trainers and vendors for unlearned recipes, with distance and waypoints. Clicking an NPC that's nearby also targets it and marks it with a purple diamond.
+- **Not learned** filter options: Learnable now, From a trainer, From a recipe, and Nearest first.
+- "Made by" is listed first under a material.
+- Camp shows recipes that exist once per faction (Faction Banner) only once.
+- Characters: every profession is shown (no more cut-off columns).
+- `/tb shots` takes screenshots with fake data for the addon page.
+
 ## v0.1.0-beta
 
 First beta for WoW Forever (1.60.1). Please report problems on GitHub.
