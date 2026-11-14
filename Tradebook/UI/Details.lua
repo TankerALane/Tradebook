@@ -624,14 +624,42 @@ function Pane:Refresh()
                         L.WAYPOINT_CLICK } or nil })
             end
         end
-        -- Buy the recipe: vendor price (when a vendor sells it for gold) next to the auction
-        -- house price (Auctionator, items that aren't soulbound); the cheaper one is marked.
+        local sources, borrowed, checked = ns.Sources.Get(id, {
+            quest = function(q)
+                -- The game only knows a quest's name once it's loaded; then Questie, then the data.
+                return Compat.Call("C_QuestLog.GetTitleForQuestID", q) or ns.Questie.QuestName(q)
+                    or (ns.RecipeQuestNames and ns.RecipeQuestNames[q])
+            end,
+            item = function(i) return (Compat.ItemInfo(i)) end,
+        }, { noVendors = near ~= nil })
+        if sources then
+            for _, s in ipairs(sources) do
+                self:Add({ indent = 1, text = s.text, right = s.right, color = s.grey and W.GREY or nil })
+            end
+            if borrowed then
+                self:Add({ indent = 1, text = checked and L.SOURCE_PARTLY_CHECKED or L.SOURCE_UNCONFIRMED,
+                    color = W.GREY })
+            end
+        elseif #drops == 0 and not near then
+            self:Add({ indent = 1, text = L.SOURCE_UNKNOWN, color = W.GREY })
+        end
+        -- Purchase price (own section): vendor price (when a vendor sells it for gold) next to
+        -- the auction house price (Auctionator, items that aren't soulbound); the cheaper one
+        -- is marked.
         local vendorPrice, vendorNote = self:RecipeVendorPrice(id, buy)
+        local priceHeader = false
+        local function header()
+            if priceHeader then return end
+            priceHeader = true
+            self:Gap()
+            self:Add({ text = L.PURCHASE_PRICE, font = "GameFontNormal", color = W.GOLD })
+        end
         for _, itemID in ipairs(ns.Sources.RecipeItems(id)) do
             local tradeable = ns.Sources.Tradeable(itemID)
             local p = tradeable and ns.Prices.Available() and ns.Prices.Get(itemID) or {}
             local vendor = vendorPrice and vendorPrice(itemID)
             if vendor or tradeable then
+                header()
                 local cheaper = vendor and p.auction and ((p.auction < vendor) and "auction" or "vendor")
                 local mark = " " .. W.ColorText(W.GREEN, L.PRICE_CHEAPER)
                 if vendor then
@@ -653,25 +681,6 @@ function Pane:Refresh()
                     self:Add({ indent = 1, itemID = not vendor and itemID or nil, text = L.SOURCE_AUCTION_HOUSE, right = right })
                 end
             end
-        end
-        local sources, borrowed, checked = ns.Sources.Get(id, {
-            quest = function(q)
-                -- The game only knows a quest's name once it's loaded; then Questie, then the data.
-                return Compat.Call("C_QuestLog.GetTitleForQuestID", q) or ns.Questie.QuestName(q)
-                    or (ns.RecipeQuestNames and ns.RecipeQuestNames[q])
-            end,
-            item = function(i) return (Compat.ItemInfo(i)) end,
-        })
-        if sources then
-            for _, s in ipairs(sources) do
-                self:Add({ indent = 1, text = s.text, right = s.right, color = s.grey and W.GREY or nil })
-            end
-            if borrowed then
-                self:Add({ indent = 1, text = checked and L.SOURCE_PARTLY_CHECKED or L.SOURCE_UNCONFIRMED,
-                    color = W.GREY })
-            end
-        elseif #drops == 0 then
-            self:Add({ indent = 1, text = L.SOURCE_UNKNOWN, color = W.GREY })
         end
     end
     self:Finish()

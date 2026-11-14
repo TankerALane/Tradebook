@@ -116,7 +116,9 @@ end
 -- Source lines for the details pane: { { text, right, grey } }, or nil when unknown.
 -- resolve (optional): { quest = fn(id) -> name, item = fn(id) -> name } for runtime lookups.
 -- Second result: the classic parts are unconfirmed. Third: the vendors were checked for Forever.
-function Sources.Get(recipeID, resolve)
+-- opts (optional): { noVendors = true } leaves out the vendor lines (the details pane lists
+-- vendors under "Learn from" when Questie knows where they are).
+function Sources.Get(recipeID, resolve, opts)
     local s = Sources.Raw(recipeID)
     if not s then return nil end
     resolve = resolve or {}
@@ -142,10 +144,11 @@ function Sources.Get(recipeID, resolve)
         out[#out + 1] = { text = s.tr == 2 and L.SOURCE_TRAINER_UNCONFIRMED or L.SOURCE_TRAINER }
     end
     if s.ct then out[#out + 1] = { text = L.SOURCE_COST_TEXT:format(s.ct) } end
-    if #conf > 0 then
+    local showVendors = not (opts and opts.noVendors)
+    if showVendors and #conf > 0 then
         out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(conf, nil, decorate) }
     end
-    if #unconf > 0 then
+    if showVendors and #unconf > 0 then
         out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": "
             .. npcNames(unconf, not s.checked and s.vn or nil, decorate) }
     end
