@@ -28,6 +28,7 @@ local function onLogin()
     if ns.Minimap then ns.Minimap.Start() end
     if ns.Settings then ns.Settings.Start() end
     if ns.Questie then ns.Questie.Start() end
+    ns.Trainers.Start()
     ns.Debug("ready as", tostring(key))
 end
 

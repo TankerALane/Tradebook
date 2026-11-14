@@ -41,6 +41,7 @@ Core\Crafting.lua
 Core\Takeover.lua
 Core\Questie.lua
 Core\Prices.lua
+Core\Trainers.lua
 Core\Waypoints.lua
 
 # UI

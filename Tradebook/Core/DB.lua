@@ -42,6 +42,7 @@ DB.DEFAULTS = {
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
     },
     characters = {},
+    trainers = {}, -- [npcID] = what a trainer teaches, read from its window (Core/Trainers.lua)
     account = { bank = {} },
     recipes = {},
     categories = {},

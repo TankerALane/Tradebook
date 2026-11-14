@@ -43,8 +43,9 @@ end
 
 -- One NPC line: name (title) on the left, place and distance on the right; click for a
 -- waypoint, and (nearby, out of combat) target and mark it.
-local function npcLine(pane, e, indent)
+local function npcLine(pane, e, indent, note)
     local text = e.name .. (e.sub and ("  " .. W.ColorText(W.GREY, "<" .. e.sub .. ">")) or "")
+    if note then text = text .. "  " .. note end
     pane:Add({ indent = indent, text = text, right = ns.Details.PlaceText(e),
         onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
         target = e.name,
@@ -67,7 +68,12 @@ local function addTrainers(pane, skill, nextRank, faction, profName)
             color = W.GREY })
         if not ns.Questie.Available() then pane:Add({ indent = 1, text = L.RANKUP_NEED_QUESTIE, color = W.GREY }) end
     else
-        for _, e in ipairs(list) do npcLine(pane, e, 1) end
+        local unsure = false
+        for _, e in ipairs(list) do
+            npcLine(pane, e, 1, e.confirmed and W.ColorText(W.GREEN, L.RANKUP_CONFIRMED) or nil)
+            if not e.confirmed then unsure = true end
+        end
+        if unsure then pane:Add({ indent = 1, text = L.RANKUP_UNCONFIRMED, color = W.GREY }) end
     end
     pane:Gap()
 end
@@ -193,6 +199,9 @@ function RankUp.Refresh()
     end
     -- Cost: the trainer's fee, or the book's price. Gold is checked for the character you're on.
     local cost, costNote = nextRank.cost, not ns.RankUps.costConfirmed and L.RANKUP_COST_CLASSIC or nil
+    -- A trainer's window was read for this rank: its real cost.
+    local seen = not nextRank.book and not nextRank.quest and ns.Trainers.RankInfo(skill, nextRank.rank)
+    if seen and seen.cost then cost, costNote = seen.cost, nil end
     if nextRank.book then
         local p = ns.Prices.Available() and ns.Prices.Get(nextRank.book) or {}
         cost, costNote = ns.Prices.Cheapest(p) or nextRank.bookPrice, nil

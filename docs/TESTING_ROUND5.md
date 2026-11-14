@@ -55,5 +55,12 @@ Find a character whose skill is at 50+ with a cap of 75, 125+ with 150, or 200+ 
 - [ ] Craft buttons are disabled; filters don't hide anything here.
 - [ ] Switch tabs and come back: still showing the list. **Back to the guide** returns to the guide page.
 
+## G. Trainers remember what they teach
+Needs a **full WoW restart** (new file `Core\Trainers.lua`).
+
+- [ ] Talk to a profession trainer (e.g. Eunice Burch) and open the training window. Nothing looks different, and your trainer filters (Available / Unavailable / Used) are the same as before. With `/tb debug` on, chat prints `trainer <id> <name> skill <id> ranks ...`. [Paste that line here.]
+- [ ] Close it, `/reload`, and tell me: I'll read what was saved (every service the trainer lists, with level, skill and cost).
+- [ ] Open the rank-up window for that profession: trainers whose window you opened say **(teaches it)**, and ones that don't teach the rank are gone. The training cost is the real one (no "classic price").
+
 ## Notes / errors
 

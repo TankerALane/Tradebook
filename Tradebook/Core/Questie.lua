@@ -269,14 +269,26 @@ end
 -- up to LIMIT entries, nearest first, or {} when none are known.
 function Questie.RankTrainers(skillLine, rank, faction)
     if not Questie.Available() then return {} end
-    local ids = trainersFromRecipes(skillLine, ns.RankUps.trainerMinRecipe[rank] or 0)
-    if #ids == 0 then
+    local guessed = trainersFromRecipes(skillLine, ns.RankUps.trainerMinRecipe[rank] or 0)
+    if #guessed == 0 then
         local p = ns.Professions.Get(skillLine)
-        if p then ids = trainersByTitle(p.name) end
+        if p then guessed = trainersByTitle(p.name) end
+    end
+    -- Trainers whose window was read (Core/Trainers.lua) are certain: those that teach the
+    -- rank are added, those that don't are left out.
+    local ids, seen = {}, {}
+    for id, t in pairs(ns.db.trainers or {}) do
+        if t.skill == skillLine and t.ranks[rank] then ids[#ids + 1] = id; seen[id] = true end
+    end
+    for _, id in ipairs(guessed) do
+        if not seen[id] and ns.Trainers.Teaches(id, rank) ~= false then ids[#ids + 1] = id; seen[id] = true end
     end
     local all = nearestOf(ids, faction, "trainer")
     local out = {}
-    for i = 1, math.min(LIMIT, #all) do out[i] = all[i] end
+    for i = 1, math.min(LIMIT, #all) do
+        out[i] = all[i]
+        out[i].confirmed = ns.Trainers.Teaches(all[i].id, rank) == true
+    end
     return out
 end
 

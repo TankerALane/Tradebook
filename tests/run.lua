@@ -19,6 +19,7 @@ local PURE_FILES = {
     "Tradebook/Core/Friends.lua",
     "Tradebook/Core/Locations.lua",
     "Tradebook/Core/Prices.lua",
+    "Tradebook/Core/Trainers.lua",
     "Tradebook/Debug/FakeData.lua",
 }
 
@@ -620,6 +621,18 @@ test("could learn: characters with the profession, closest first", function()
     eq(#list, 1)
     eq(list[1].status, "rank")
     ns.Sources.Required = real
+end)
+
+test("trainer services: rank and profession from the trainer window", function()
+    local T = ns.Trainers
+    eq(T.ParseRank("Cooking", "Artisan"), "Artisan")
+    eq(T.ParseRank("Journeyman Cook", ""), "Journeyman")
+    eq(T.ParseRank("Expert Cookbook", nil), "Expert")
+    eq(T.ParseRank("Cooking", "Mastery"), nil, "whole words only")
+    eq(T.ParseRank("Roasted Boar Meat", ""), nil)
+    eq(T.SkillLineFor("Cooking"), 185)
+    eq(T.SkillLineFor("First Aid"), 129)
+    eq(T.SkillLineFor("Swords"), nil)
 end)
 
 ---------------------------------------------------------------------------
