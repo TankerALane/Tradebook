@@ -95,8 +95,9 @@ from Tradebook's recipe cache) was checked; 582 had no source. Sources:
   QuestieDB droppers, wow.gg's embedded data (its "Trainer" label means "no data" and was not
   counted), warcraft.wiki.gg Forever lists (source type only). Per-profession results in
   `docs/research/deep/`.
-Result: 221 resolved (drops, trainer, quests, vendors), 100 marked "Not available in WoW Forever"
-(Season of Discovery leftovers, Naxxramas/Onyxia, unreleased), 166 still unknown (mostly new
+Result: 302 resolved (drops, trainer, quests, vendors; 63 of them from warcraftdb's recorded vendors
+and quest rewards), 100 marked "Not available in WoW Forever"
+(Season of Discovery leftovers, Naxxramas/Onyxia, unreleased), 148 still unknown (mostly new
 Forever epics and rockets with no source anywhere yet). Drops: top 5 droppers per recipe
 (highest chance first; "(unconfirmed)" when only one source names the NPC); items QuestieDB lists
 20+ droppers for are shown as "World drop: mobs level X-Y" (middle 80% of the droppers' levels).

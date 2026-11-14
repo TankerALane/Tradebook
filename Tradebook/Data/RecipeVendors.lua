@@ -22,6 +22,7 @@ ns.RecipeVendors = {
 [2547]={v={340}}, -- Redridge Goulash
 [2548]={v={340}}, -- Succulent Pork Ribs
 [2549]={v={340}}, -- Seasoned Wolf Kabob
+[2671]={tr=2}, -- Rough Bronze Bracers
 [2795]={v={340}}, -- Beer Basted Boar Ribs
 [3370]={v={340}}, -- Crocolisk Steak
 [3371]={v={340}}, -- Blood Sausage
@@ -100,6 +101,8 @@ ns.RecipeVendors = {
 [7929]={v={2805,13476}}, -- Heavy Silk Bandage
 [7953]={v={5783}}, -- Deviate Scale Cloak
 [7954]={v={5783}}, -- Deviate Scale Gloves
+[8366]={tr=2}, -- Ironforge Chain
+[8368]={tr=2}, -- Ironforge Gauntlets
 [8607]={v={1465,3556}}, -- Smoked Bear Meat
 [8786]={v={6574,6576},u={251997}}, -- Azure Silk Cloak
 [8789]={v={2670,12246},u={251997}}, -- Crimson Silk Cloak
@@ -113,9 +116,15 @@ ns.RecipeVendors = {
 [9273]={v={4086,12246}}, -- Goblin Jumper Cables
 [9513]={v={6779}}, -- Thistle Tea
 [9937]={v={8161,8176}}, -- Mithril Plate Bracers
+[9942]={tr=2}, -- Mithril Plate Gloves
+[9957]={tr=2}, -- Orcish War Leggings
+[9972]={tr=2}, -- Ornate Mithril Breastplate
+[9979]={tr=2}, -- Ornate Mithril Boots
+[9980]={tr=2}, -- Ornate Mithril Helm
 [10013]={v={11278}}, -- Ebon Shiv
 [10509]={v={7852,7854}}, -- Turtle Scale Gloves
 [10516]={v={7854,8160}}, -- Nightscape Shoulders
+[10550]={tr=2}, -- Nightscape Cloak
 [10840]={v={2805,13476}}, -- Mageweave Bandage
 [11459]={v={5594}}, -- Philosopher's Stone
 [11473]={v={8157,8158}}, -- Ghost Dye
@@ -156,9 +165,14 @@ ns.RecipeVendors = {
 [16665]={d={1836},x=3}, -- Runic Plate Boots
 [16726]={d={4364},x=3}, -- Runic Plate Helm
 [16732]={d={1885},x=3}, -- Runic Plate Leggings
+[16960]={tr=2}, -- Thorium Greatsword
+[16965]={tr=2}, -- Bleakwood Hew
+[16967]={tr=2}, -- Inlaid Thorium Hammer
 [16969]={v={11278}}, -- Ornate Thorium Handaxe
 [16971]={v={11278}}, -- Huge Thorium Battleaxe
 [16980]={x=4}, -- Rune Edge
+[16986]={tr=2}, -- Blood Talon
+[16987]={tr=2}, -- Darkspear
 [16992]={x=3}, -- Frostguard
 [17187]={v={5594}}, -- Transmute: Arcanite
 [17553]={v={4226,4610}}, -- Superior Mana Potion
@@ -372,6 +386,7 @@ ns.RecipeVendors = {
 [435960]={x=4}, -- Hyperconductive Goldwap
 [435964]={x=4}, -- High-Yield Radiation Bomb
 [435966]={x=4}, -- Ez-Thro Radiation Bomb
+[439120]={q={80241}}, -- Golden Scale Gauntlets
 [439122]={x=4}, -- Golden Scale Boots
 [439124]={x=4}, -- Golden Scale Cuirass
 [439126]={x=4}, -- Golden Scale Coif
@@ -381,7 +396,9 @@ ns.RecipeVendors = {
 [446179]={x=4}, -- Shoulderplates of Dread
 [446188]={x=4}, -- Fearmonger's Shoulderguards
 [446191]={x=4}, -- Baleful Pauldrons
+[460460]={q={84338}}, -- Sulfuron Hammer
 [461647]={x=4}, -- Skyrider's Masterwork Stormhammer
+[461651]={q={84495}}, -- Fiery Plate Gauntlets of the Hidden Technique
 [461653]={x=4}, -- Brilliant Chromatic Cloak
 [461667]={x=4}, -- Tempered Dark Iron Plate
 [461669]={x=4}, -- Refined Arcanite Champion
@@ -394,6 +411,7 @@ ns.RecipeVendors = {
 [461716]={x=4}, -- Deadly Heartseeker
 [461718]={x=4}, -- Tranquility
 [461730]={x=4}, -- Hardened Frostguard
+[461733]={q={84496}}, -- Finely-Enchanted Battlehammer
 [461735]={x=4}, -- Invincible Mail
 [461737]={x=4}, -- Tempest Gauntlets
 [461739]={x=4}, -- Warcrest of the Great Chief
@@ -456,6 +474,7 @@ ns.RecipeVendors = {
 [1226213]={x=4}, -- Semisafe Transporter: New Avalon
 [1228088]={x=4}, -- Pop-Up Shrub
 [1230171]={tr=1}, -- Sharpening Wheel
+[1230656]={q={97902,97930},tr=2}, -- Reagent Bot
 [1244431]={tr=1}, -- Minor Healing Potion
 [1244432]={tr=1}, -- Lesser Healing Potion
 [1244433]={tr=1}, -- Healing Potion
@@ -502,6 +521,8 @@ ns.RecipeVendors = {
 [1249966]={v={248198,256731},fv=60,cr=4}, -- Calcified Smoothie
 [1249967]={v={248198,256731},fv=60,cr=4}, -- Spicy Smoothie
 [1249968]={v={248198,256731},fv=90,cr=5}, -- Wicked Smoothie
+[1250148]={q={92433,97119}}, -- Steaming Stag Steak
+[1250154]={q={95697}}, -- Twice-Spiced Raptor Slice
 [1250777]={v={248196,256729},fv=180,cr=5}, -- Elixir of Cunning
 [1250778]={v={248196,256729},fv=180,cr=5}, -- Elixir of the Phalanx
 [1250780]={v={248196,256729},fv=45}, -- Lesser Cleric's Elixir
@@ -532,6 +553,9 @@ ns.RecipeVendors = {
 [1251749]={v={248196,256729},fv=180,cr=5}, -- Caustic Smog Potion
 [1251751]={v={248196,256729},fv=120,cr=4}, -- Dragonfire Potion
 [1251752]={v={248196,256729},fv=180,cr=5}, -- Potion of Elemental Purging
+[1252229]={tr=2}, -- Gemmed Copper Boots
+[1252230]={tr=2}, -- Strange Copper Boots
+[1252231]={tr=2}, -- Glowing Copper Boots
 [1252252]={v={248197,256730},fv=30}, -- Veteran's Boots
 [1252253]={v={248197,256730},fv=30}, -- Guard's Boots
 [1252254]={v={248197,256730},fv=30}, -- Protector's Boots
@@ -621,6 +645,7 @@ ns.RecipeVendors = {
 [1255005]={v={248201,256734},fv=60,cr=4,k=210}, -- Skirmisher's Mail Shoulders
 [1255006]={v={248201,256734},fv=60,cr=4,k=210}, -- Skycaller's Mail Shoulders
 [1255007]={v={248201,256734},fv=60,cr=4,k=210}, -- Stalker's Mail Shoulders
+[1255024]={q={92817}}, -- Blue Suede Armor
 [1255030]={v={266901}}, -- Tooled Leather Armor
 [1255031]={v={248201,256734},fv=90,cr=5,k=250}, -- Mender's Leather Waistguard
 [1255032]={v={248201,256734},fv=90,cr=5,k=250}, -- Skycaller's Leather Waistguard
@@ -704,6 +729,8 @@ ns.RecipeVendors = {
 [1255146]={v={258306}}, -- Black Whelp Slippers
 [1257013]={v={1347,1454,1474,1672,2394,2668,2669,2670,3005,3091,3096,3364,3485,4168,4189,4577,5154,5944,6567,6568,6574,7940,8681,242498,251973,251991,252380,258415,258463,258466,258548,258568,258572,260570},u={6576,254695}}, -- Linen Reagent Bag
 [1257017]={v={1347,1454,1474,1672,2394,2668,2669,2670,3005,3091,3096,3364,3485,4168,4189,4577,5154,5944,6567,6568,6574,7940,8681,242498,251973,251991,252380,258415,258463,258466,258548,258568,258572,260570},u={6576,254695}}, -- Woolen Reagent Bag
+[1257368]={tr=2}, -- Novice Arcanist's Sash
+[1257369]={tr=2}, -- Novice Ardent's Sash
 [1257370]={v={248202,256735},fv=30,k=60}, -- Pristine Boots
 [1257371]={v={248202,256735},fv=30,k=60}, -- Silky Boots
 [1257372]={v={248202,256735},fv=30,k=60}, -- Flame Boots
@@ -747,12 +774,18 @@ ns.RecipeVendors = {
 [1257429]={tr=1}, -- Black Slippers
 [1257430]={tr=1}, -- Golden Slippers
 [1257431]={tr=1}, -- Radiant Slippers
+[1257436]={tr=2}, -- Gilded Handwraps
 [1257437]={v={248202,256735},fv=60,cr=4,k=165}, -- Frothing Handwraps
 [1257438]={v={248202,256735},fv=60,cr=4,k=165}, -- Fiery Handwraps
 [1257439]={v={248202,256735},fv=60,cr=4,k=165}, -- Black Handwraps
 [1257440]={v={248202,256735},fv=60,cr=4,k=165}, -- Golden Handwraps
 [1257441]={v={248202,256735},fv=60,cr=4,k=165}, -- Radiant Handwraps
 [1257443]={v={248202,256735},fv=60,cr=4,k=190}, -- Mageweave Reagent Bag
+[1257444]={tr=2}, -- Gilded Cord
+[1257445]={tr=2}, -- Frothing Cord
+[1257447]={tr=2}, -- Black Cord
+[1257448]={tr=2}, -- Golden Cord
+[1257449]={tr=2}, -- Radiant Cord
 [1257450]={v={248202,256735},fv=60,cr=4,k=195}, -- Nethergeld Shoulders
 [1257451]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherfroth Shoulders
 [1257452]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherflame Shoulders
@@ -772,6 +805,12 @@ ns.RecipeVendors = {
 [1257469]={v={248202,256735},fv=60,cr=4,k=215}, -- Black Waistcord
 [1257470]={v={248202,256735},fv=60,cr=4,k=215}, -- Golden Waistcord
 [1257471]={v={248202,256735},fv=60,cr=4,k=215}, -- Radiant Waistcord
+[1257473]={tr=2}, -- Gilded Gloves
+[1257474]={tr=2}, -- Frothing Gloves
+[1257475]={tr=2}, -- Fiery Gloves
+[1257476]={tr=2}, -- Black Gloves
+[1257477]={tr=2}, -- Golden Gloves
+[1257478]={tr=2}, -- Radiant Gloves
 [1257479]={v={248202,256735},fv=90,cr=5,k=235}, -- Gilded Sandals
 [1257480]={v={248202,256735},fv=90,cr=5,k=235}, -- Frothing Sandals
 [1257481]={v={248202,256735},fv=90,cr=5,k=235}, -- Fiery Sandals
@@ -780,7 +819,10 @@ ns.RecipeVendors = {
 [1257484]={v={248202,256735},fv=90,cr=5,k=235}, -- Radiant Sandals
 [1257487]={v={266901}}, -- Runecloth Cuffs
 [1259342]={tr=1}, -- Simple Poultice
+[1259345]={q={86812}}, -- Powerful Poultice
 [1259347]={tr=1}, -- Woolen Tourniquet
+[1263034]={u={277945},ct="15s"}, -- Repair Bot
+[1263041]={u={277945},ct="15s"}, -- Anvil
 [1266893]={v={248200,256733},fv=45}, -- SAF-T Tabs
 [1266905]={v={248200,256733},fv=45}, -- SAF-T Dynamite
 [1266906]={v={248200,256733},fv=45}, -- SAF-T Copper Bomb
@@ -799,6 +841,8 @@ ns.RecipeVendors = {
 [1266937]={v={248200,256733},fv=360,cr=5}, -- Gnomish Poultryizer
 [1266938]={v={248200,256733},fv=360,cr=5}, -- Ultralight Goblin Glider
 [1266940]={v={248200,256733},fv=360,cr=5}, -- Stealthman 52
+[1270633]={q={92553}}, -- Skywall Souffle
+[1270635]={q={93317}}, -- Pincer Bites
 [1286792]={v={253139}}, -- Centaur Banner Deployment Device
 [1286796]={v={253139}}, -- Hoof-Shaped Foot Pedal
 [1292920]={v={264797}}, -- Grovekeeper Trousers
@@ -869,6 +913,7 @@ ns.RecipeVendors = {
 [1292986]={v={264797}}, -- Handguards of Glory
 [1292987]={v={264797}}, -- Pauldrons of Glory
 [1292988]={v={264797}}, -- Sabatons of Glory
+[1295805]={q={95121}}, -- Briny Seafood Stew
 [1295834]={v={259860}}, -- Plain Ol' Paletusk
 [1297120]={v={15179},rf={609,4}}, -- Venomspew Gloves
 [1297121]={v={15179},rf={609,5}}, -- Venomspew Cord
@@ -886,6 +931,54 @@ ns.RecipeVendors = {
 [1299915]={v={264797}}, -- Spiritcaller Gloves
 [1299916]={v={264797}}, -- Spiritcaller Mantle
 [1299917]={v={264797}}, -- Spiritcaller Boots
+[1301421]={u={254151},ct="12s 50c"}, -- Cloudy Skyforged Chainmail
+[1301422]={u={254151},ct="9s 50c"}, -- Cloudy Skyforged Wristguards
+[1301423]={u={254151},ct="11s"}, -- Cloudy Skyforged Gauntlets
+[1301424]={u={254151},ct="9s 50c"}, -- Cloudy Skyforged Chain
+[1301425]={u={254151},ct="12s 50c"}, -- Cloudy Skyforged Legguards
+[1301426]={u={254151},ct="11s"}, -- Cloudy Skyforged Greaves
+[1301427]={u={254151},ct="12s 50c"}, -- Cloudy Gustwoven Harness
+[1301428]={u={254151},ct="9s 50c"}, -- Cloudy Gustwoven Bracers
+[1301429]={u={254151},ct="11s"}, -- Cloudy Gustwoven Gloves
+[1301430]={u={254151},ct="9s 50c"}, -- Cloudy Gustwoven Belt
+[1301431]={u={254151},ct="12s 50c"}, -- Cloudy Gustwoven Trousers
+[1301432]={u={254151},ct="11s"}, -- Cloudy Gustwoven Boots
+[1301433]={u={254151},ct="12s 50c"}, -- Cloudy Windraveled Jerkin
+[1301434]={u={254151},ct="9s 50c"}, -- Cloudy Windraveled Armguards
+[1301435]={u={254151},ct="11s"}, -- Cloudy Windraveled Mitts
+[1301436]={u={254151},ct="9s 50c"}, -- Cloudy Windraveled Strap
+[1301437]={u={254151},ct="12s 50c"}, -- Cloudy Windraveled Pants
+[1301438]={u={254151},ct="11s"}, -- Cloudy Windraveled Footwraps
+[1301439]={u={254151},ct="12s 50c"}, -- Cloudy Stormsewn Vest
+[1301440]={u={254151},ct="9s 50c"}, -- Cloudy Stormsewn Cuffs
+[1301441]={u={254151},ct="11s"}, -- Cloudy Stormsewn Handwraps
+[1301442]={u={254151},ct="9s 50c"}, -- Cloudy Stormsewn Cord
+[1301443]={u={254151},ct="12s 50c"}, -- Cloudy Stormsewn Leggings
+[1301444]={u={254151},ct="11s"}, -- Cloudy Stormsewn Shoes
+[1301445]={u={254151},ct="12s 50c"}, -- Azure Skyforged Chainmail
+[1301446]={u={254151},ct="9s 50c"}, -- Azure Skyforged Wristguards
+[1301447]={u={254151},ct="11s"}, -- Azure Skyforged Gauntlets
+[1301448]={u={254151},ct="9s 50c"}, -- Azure Skyforged Chain
+[1301449]={u={254151},ct="12s 50c"}, -- Azure Skyforged Legguards
+[1301450]={u={254151},ct="11s"}, -- Azure Skyforged Greaves
+[1301451]={u={254151},ct="12s 50c"}, -- Azure Gustwoven Harness
+[1301452]={u={254151},ct="9s 50c"}, -- Azure Gustwoven Bracers
+[1301453]={u={254151},ct="11s"}, -- Azure Gustwoven Gloves
+[1301454]={u={254151},ct="9s 50c"}, -- Azure Gustwoven Belt
+[1301455]={u={254151},ct="12s 50c"}, -- Azure Gustwoven Trousers
+[1301456]={u={254151},ct="11s"}, -- Azure Gustwoven Boots
+[1301457]={u={254151},ct="12s 50c"}, -- Azure Windraveled Jerkin
+[1301458]={u={254151},ct="9s 50c"}, -- Azure Windraveled Armguards
+[1301459]={u={254151},ct="11s"}, -- Azure Windraveled Mitts
+[1301460]={u={254151},ct="9s 50c"}, -- Azure Windraveled Strap
+[1301461]={u={254151},ct="12s 50c"}, -- Azure Windraveled Pants
+[1301462]={u={254151},ct="11s"}, -- Azure Windraveled Footwraps
+[1301463]={u={254151},ct="12s 50c"}, -- Azure Stormsewn Vest
+[1301464]={u={254151},ct="9s 50c"}, -- Azure Stormsewn Cuffs
+[1301465]={u={254151},ct="11s"}, -- Azure Stormsewn Handwraps
+[1301466]={u={254151},ct="9s 50c"}, -- Azure Stormsewn Cord
+[1301468]={u={254151},ct="12s 50c"}, -- Azure Stormsewn Leggings
+[1301469]={u={254151},ct="11s"}, -- Azure Stormsewn Shoes
 [1301526]={v={264078},rf={2787,4}}, -- Cloudy Skyforged Helm
 [1301527]={v={264078},rf={2787,4}}, -- Cloudy Skyforged Pauldrons
 [1301528]={v={264078},rf={2787,4}}, -- Cloudy Gustwoven Hood
@@ -902,6 +995,8 @@ ns.RecipeVendors = {
 [1301539]={v={32287},rf={2740,4}}, -- Azure Windraveled Drapes
 [1301540]={v={32287},rf={2740,4}}, -- Azure Stormsewn Cowl
 [1301541]={v={32287},rf={2740,4}}, -- Azure Stormsewn Epaulets
+[1302161]={q={92911}}, -- Harvester Override Signalcaster
+[1302598]={q={95217,96874}}, -- Rough Copper Chain Boots
 [1302604]={v={4225}}, -- Light Leather Reagent Bag
 [1308178]={v={248200,256733},fv=180,cr=4}, -- Whimsical Waistwrap
 [1308179]={v={248200,256733},fv=180,cr=4}, -- Gizmo Girdle
@@ -1111,8 +1206,10 @@ ns.RecipeVendorNames = {
 [3550]="Martine Tramblay",
 [3556]="Andrew Hilbert",
 [3654]="Mutanus the Devourer",
+[3669]="Lord Cobrahn",
 [3670]="Lord Pythas",
 [3673]="Lord Serpentis",
+[3674]="Skum",
 [3683]="Kiknikle",
 [3711]="Wrathtail Myrmidon",
 [3725]="Dark Strand Cultist",
@@ -1124,6 +1221,7 @@ ns.RecipeVendorNames = {
 [3834]="Crazed Ancient",
 [3840]="Druid of the Fang",
 [3864]="Fel Steed",
+[3865]="Shadow Charger",
 [3872]="Deathsworn Captain",
 [3881]="Grimtak",
 [3887]="Baron Silverlaine",
@@ -1168,9 +1266,11 @@ ns.RecipeVendorNames = {
 [4364]="Strashaz Warrior",
 [4366]="Strashaz Serpent Guard",
 [4420]="Overlord Ramtusk",
+[4421]="Charlga Razorflank",
 [4422]="Agathelos the Raging",
 [4424]="Aggem Thorncurse",
 [4425]="Blind Hunter",
+[4428]="Death Speaker Jargba",
 [4467]="Vilebranch Soothsayer",
 [4511]="Agam'ar",
 [4542]="High Inquisitor Fairbanks",
@@ -1190,12 +1290,16 @@ ns.RecipeVendorNames = {
 [4799]="Fallenroot Hellcaller",
 [4810]="Twilight Reaver",
 [4829]="Aku'mai",
+[4830]="Old Serra'kis",
+[4831]="Lady Sarevess",
+[4832]="Twilight Lord Kelris",
 [4850]="Stonevault Cave Lurker",
 [4854]="Grimlok",
 [4860]="Stone Steward",
 [4877]="Jandia",
 [4878]="Montarr",
 [4879]="Ogg'marr",
+[4887]="Ghamoo-ra",
 [4897]="Helenia Olden",
 [5128]="Bombus Finespindle",
 [5154]="Poranna Snowbraid",
@@ -1232,6 +1336,7 @@ ns.RecipeVendorNames = {
 [5757]="Lilly",
 [5758]="Leo Sarn",
 [5761]="Deviate Shambler",
+[5775]="Verdan the Everliving",
 [5783]="Kalldan Felmoon",
 [5839]="Dark Iron Geologist",
 [5846]="Dark Iron Taskmaster",
@@ -1253,7 +1358,9 @@ ns.RecipeVendorNames = {
 [6199]="Blood Elf Reclaimer",
 [6206]="Caverndeep Burrower",
 [6227]="Mechano-Frostwalker",
+[6228]="Dark Iron Ambassador",
 [6229]="Crowd Pummeler 9-60",
+[6243]="Gelihast",
 [6487]="Arcanist Doan",
 [6505]="Ravasaur",
 [6508]="Venomhide Ravasaur",
@@ -1371,6 +1478,8 @@ ns.RecipeVendorNames = {
 [11291]="Unliving Mossflayer",
 [11322]="Searing Blade Cultist",
 [11441]="Gordok Brute",
+[11518]="Jergosh the Invoker",
+[11519]="Bazzalan",
 [11536]="Quartermaster Miranda Breechlock",
 [11557]="Meilosh",
 [11559]="Outcast Necromancer",
@@ -1386,6 +1495,7 @@ ns.RecipeVendorNames = {
 [12245]="Vendor-Tron 1000",
 [12246]="Super-Seller 680",
 [12258]="Razorlash",
+[12876]="Baron Aquanis",
 [12902]="Lorgus Jett",
 [12941]="Jase Farlane",
 [12942]="Leonard Porter",
@@ -1445,6 +1555,7 @@ ns.RecipeVendorNames = {
 [253139]="Gorhak",
 [253140]="Molkar",
 [253272]="Magram Necromancer",
+[254151]="Vayn Moongaze",
 [254695]="Repair Bot",
 [255066]="Fallen Mage",
 [255894]="Innkeeper Zizplink",
@@ -1489,6 +1600,7 @@ ns.RecipeVendorNames = {
 [270780]="Qujo",
 [272646]="Miranda Turner",
 [275045]="Dragonmaw Saboteur",
+[277945]="Happy Camper",
 }
 
 -- Who drops each recipe: [recipeID] = { n = { { npcID, chance x100, drops, loots, confirmed } }
@@ -1862,10 +1974,22 @@ ns.RecipeDrops = {
 [1255134]={n={{644,2500,1,4,1}}},
 [1255135]={n={{647,0,0,0,1},{645,0,0,0,1},{5912,0,0,0,1},{3864,0,0,0,1},{1763,0,0,0,1}}},
 [1255136]={n={{647,0,0,0,1},{645,0,0,0,1},{5912,0,0,0,1},{3864,0,0,0,1},{1763,0,0,0,1}}},
+[1257376]={n={{3864,2,0,0,1},{643,2,0,0,1}}},
+[1257377]={n={{3864,2,0,0,1},{1763,1,0,0,1},{643,1,0,0,1},{644,0,0,0,1}}},
+[1257378]={n={{3864,4,0,0,1},{644,3,0,0,1},{3865,2,0,0,1},{1763,1,0,0,1},{11518,1,0,0,1}}},
+[1257379]={n={{3864,5,0,0,1},{11519,4,0,0,1},{645,1,0,0,1},{3669,0,0,0,1}}},
+[1257380]={n={{3864,6,0,0,1},{11519,2,0,0,1},{645,1,0,0,1}}},
+[1257381]={n={{11519,2,0,0,1},{647,1,0,0,1},{645,1,0,0,1},{3864,1,0,0,1}}},
+[1257394]={n={{4887,3,0,0,1},{639,2,0,0,1},{3670,0,0,0,1},{5775,0,0,0,1}}},
+[1257395]={n={{4887,3,0,0,1},{3865,2,0,0,1},{639,0,0,0,1}}},
+[1257396]={n={{4831,4,0,0,1},{4887,3,0,0,1},{1696,1,0,0,1}}},
+[1257397]={n={{4831,4,0,0,1},{4887,2,0,0,1},{1696,1,0,0,1},{3674,0,0,0,1}}},
+[1257398]={n={{3865,4,0,0,1},{4887,0,0,0,1}}},
+[1257399]={n={{3865,4,0,0,1},{639,2,0,0,1},{4831,2,0,0,1}}},
 [1257413]={n={{3983,2000,1,5,1}},w={26,34,28}},
-[1257414]={w={26,34,26}},
-[1257415]={w={26,34,28}},
-[1257416]={w={26,34,28}},
+[1257414]={n={{6228,34,0,0,1},{12902,16,0,0,1},{4830,8,0,0,1},{4421,2,0,0,1},{6243,2,0,0,1}},w={26,34,26}},
+[1257415]={n={{12902,8,0,0,1},{12876,4,0,0,1},{6243,4,0,0,1},{4829,2,0,0,1},{1663,1,0,0,1}},w={26,34,28}},
+[1257416]={n={{12902,8,0,0,1},{4830,3,0,0,1},{4428,2,0,0,1},{1666,1,0,0,1},{4832,1,0,0,1}},w={26,34,28}},
 [1257417]={n={{4829,5000,1,2,1}},w={26,34,28}},
 [1257418]={n={{4424,2500,1,4,1},{3974,2500,1,4,1}},w={26,34,28}},
 [1257425]={n={{4116,0,0,0,0}}},
@@ -2010,8 +2134,10 @@ ns.RecipeNpcZones = {
 [3385]=17,
 [3463]=17,
 [3654]=718,
+[3669]=718,
 [3670]=718,
 [3673]=718,
+[3674]=718,
 [3711]=331,
 [3725]=331,
 [3727]=331,
@@ -2022,6 +2148,7 @@ ns.RecipeNpcZones = {
 [3834]=331,
 [3840]=718,
 [3864]=209,
+[3865]=209,
 [3872]=209,
 [3887]=209,
 [3974]=796,
@@ -2044,9 +2171,11 @@ ns.RecipeNpcZones = {
 [4359]=15,
 [4362]=15,
 [4420]=491,
+[4421]=491,
 [4422]=491,
 [4424]=491,
 [4425]=491,
+[4428]=491,
 [4467]=47,
 [4511]=491,
 [4542]=796,
@@ -2058,9 +2187,13 @@ ns.RecipeNpcZones = {
 [4799]=719,
 [4810]=719,
 [4829]=719,
+[4830]=719,
+[4831]=719,
+[4832]=719,
 [4850]=1337,
 [4854]=1337,
 [4860]=1337,
+[4887]=719,
 [5232]=357,
 [5236]=357,
 [5249]=357,
@@ -2080,6 +2213,7 @@ ns.RecipeNpcZones = {
 [5710]=1477,
 [5715]=1477,
 [5761]=718,
+[5775]=718,
 [5839]=51,
 [5846]=51,
 [5852]=51,
@@ -2097,7 +2231,9 @@ ns.RecipeNpcZones = {
 [6199]=16,
 [6206]=721,
 [6227]=721,
+[6228]=721,
 [6229]=721,
+[6243]=719,
 [6487]=796,
 [6505]=490,
 [6508]=490,
@@ -2162,6 +2298,8 @@ ns.RecipeNpcZones = {
 [11291]=139,
 [11322]=2437,
 [11441]=2557,
+[11518]=2437,
+[11519]=2437,
 [11559]=405,
 [11915]=406,
 [12201]=2100,
@@ -2169,6 +2307,7 @@ ns.RecipeNpcZones = {
 [12225]=2100,
 [12236]=2100,
 [12258]=2100,
+[12876]=719,
 [12902]=719,
 [13282]=2100,
 [247001]=36,
@@ -2191,6 +2330,21 @@ ns.RecipeQuestNames = {
 [8877]="Firework Launcher",
 [8878]="Festive Recipes",
 [8882]="Cluster Launcher",
+[80241]="The Origins of Smithing",
+[84338]="A Binding Contract",
+[84495]="Fiery Plate Gauntlets",
+[84496]="Sweet Serenity",
+[86812]="Transmuted Tincture",
+[92433]="Now We're Cooking",
+[92553]="Restocking the Larders",
+[92817]="Leather Technique",
+[92911]="Harvesting the Harvesters",
+[93317]="Crab Season",
+[95121]="A Taste of the Sea",
+[95217]="The Quarry's Smith",
+[95697]="Changing Tastes",
+[96874]="This Is Spinal Axe",
+[97119]="Now We're Cooking",
 }
 
 -- Names of the reputations above (English).

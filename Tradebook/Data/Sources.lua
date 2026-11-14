@@ -139,7 +139,7 @@ function Sources.Get(recipeID, resolve)
     if s.t then
         out[#out + 1] = { text = L.SOURCE_TRAINER, right = L.SOURCE_LOCATIONS:format(s.tn or #s.t) }
     elseif s.tr then
-        out[#out + 1] = { text = L.SOURCE_TRAINER }
+        out[#out + 1] = { text = s.tr == 2 and L.SOURCE_TRAINER_UNCONFIRMED or L.SOURCE_TRAINER }
     end
     if s.ct then out[#out + 1] = { text = L.SOURCE_COST_TEXT:format(s.ct) } end
     if #conf > 0 then

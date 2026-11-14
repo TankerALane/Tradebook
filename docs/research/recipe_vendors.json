@@ -44846,6 +44846,226 @@
    "webNotes": "New Blacksmithing plans (Blacksmith Hammer) sold for Merchant's Favor per warcraftdb item/NPC data only; not on wow-professions vendor pages; reputation unknown. Single source."
   },
   {
+   "recipeSpellID": 2671,
+   "recipeName": "Rough Bronze Bracers",
+   "profession": null,
+   "recipeItems": [
+    5577
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 5577, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 8366,
+   "recipeName": "Ironforge Chain",
+   "profession": null,
+   "recipeItems": [
+    6734
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 6734, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 8368,
+   "recipeName": "Ironforge Gauntlets",
+   "profession": null,
+   "recipeItems": [
+    6736
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 6736, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 9942,
+   "recipeName": "Mithril Plate Gloves",
+   "profession": null,
+   "recipeItems": [
+    7977
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7977, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 9957,
+   "recipeName": "Orcish War Leggings",
+   "profession": null,
+   "recipeItems": [
+    7994
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7994, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 9972,
+   "recipeName": "Ornate Mithril Breastplate",
+   "profession": null,
+   "recipeItems": [
+    7986
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7986, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 9979,
+   "recipeName": "Ornate Mithril Boots",
+   "profession": null,
+   "recipeItems": [
+    7988
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7988, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 9980,
+   "recipeName": "Ornate Mithril Helm",
+   "profession": null,
+   "recipeItems": [
+    7987
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7987, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 16960,
+   "recipeName": "Thorium Greatsword",
+   "profession": null,
+   "recipeItems": [
+    12816
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12816, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 16965,
+   "recipeName": "Bleakwood Hew",
+   "profession": null,
+   "recipeItems": [
+    12817
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12817, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 16967,
+   "recipeName": "Inlaid Thorium Hammer",
+   "profession": null,
+   "recipeItems": [
+    12818
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Old plan item 12818 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling items 12816/12817/12831/12832 all 404 on Wowhead Forever). Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
    "recipeSpellID": 16980,
    "recipeName": "Rune Edge",
    "profession": null,
@@ -44864,6 +45084,46 @@
    "costText": null,
    "webOther": [],
    "webNotes": "Rune Edge: plan item 12826 returns 404 on Wowhead Forever; the spell is absent from the wow.gg Forever Blacksmithing list (437 recipes) and from the warcraft.wiki.gg Forever plans list. Evidence is absence only. URLs checked: https://www.wowhead.com/forever/item=12826, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+  },
+  {
+   "recipeSpellID": 16986,
+   "recipeName": "Blood Talon",
+   "profession": null,
+   "recipeItems": [
+    12831
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12831, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+  },
+  {
+   "recipeSpellID": 16987,
+   "recipeName": "Darkspear",
+   "profession": null,
+   "recipeItems": [
+    12832
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12832, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
   },
   {
    "recipeSpellID": 427061,
@@ -46062,12 +46322,72 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
    "webOther": [],
    "webNotes": "wow.gg Forever table: Trainer (learn 20); warcraft.wiki.gg Forever plans: Trainer (skill 20)."
+  },
+  {
+   "recipeSpellID": 1252229,
+   "recipeName": "Gemmed Copper Boots",
+   "profession": null,
+   "recipeItems": [
+    251332
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251332 has no source."
+  },
+  {
+   "recipeSpellID": 1252230,
+   "recipeName": "Strange Copper Boots",
+   "profession": null,
+   "recipeItems": [
+    251333
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251333 has no source."
+  },
+  {
+   "recipeSpellID": 1252231,
+   "recipeName": "Glowing Copper Boots",
+   "profession": null,
+   "recipeItems": [
+    251334
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251334 has no source."
   },
   {
    "recipeSpellID": 1252234,
@@ -46742,7 +47062,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -46762,7 +47082,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -46782,7 +47102,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -46802,7 +47122,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -46822,7 +47142,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -47282,7 +47602,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49249,7 +49569,7 @@
      "name": null
     }
    ],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49267,7 +49587,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49285,7 +49605,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49303,7 +49623,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49341,7 +49661,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49619,7 +49939,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -49657,7 +49977,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50323,6 +50643,46 @@
    "webNotes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Pyroguard Emberseer is a Blackrock Spire boss."
   },
   {
+   "recipeSpellID": 1257368,
+   "recipeName": "Novice Arcanist's Sash",
+   "profession": "Tailoring",
+   "recipeItems": [
+    253886
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Only the Warcraft wiki gives a source type (Trainer). wow.gg shows \"Trainer\" but its data has source:null. wow.gg shows \"Trainer\" for every tailoring recipe without source data, including known drops, so that label is not counted. The pattern item exists (Wowhead: \"New in Forever\", no acquisition sentence). No QuestieDB droppers."
+  },
+  {
+   "recipeSpellID": 1257369,
+   "recipeName": "Novice Ardent's Sash",
+   "profession": "Tailoring",
+   "recipeItems": [
+    253888
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": 2,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": "Only the Warcraft wiki gives a source type (Trainer). wow.gg shows \"Trainer\" but its data has source:null. wow.gg shows \"Trainer\" for every tailoring recipe without source data, including known drops, so that label is not counted. The pattern item exists (Wowhead: \"New in Forever\", no acquisition sentence). No QuestieDB droppers."
+  },
+  {
    "recipeSpellID": 1257376,
    "recipeName": "Filigreed Pristine Gown",
    "profession": "Tailoring",
@@ -50655,7 +51015,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50675,7 +51035,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50695,7 +51055,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50715,7 +51075,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50735,7 +51095,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50755,7 +51115,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": true,
+   "trainer": 1,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50855,7 +51215,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50895,7 +51255,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50915,7 +51275,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50935,7 +51295,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50955,7 +51315,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -50975,7 +51335,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51075,7 +51435,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51095,7 +51455,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51115,7 +51475,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51135,7 +51495,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51155,7 +51515,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51175,7 +51535,7 @@
    "removed": [],
    "drops": [],
    "quests": [],
-   "trainer": false,
+   "trainer": 2,
    "auto": false,
    "notes": [],
    "costText": null,
@@ -51241,6 +51601,1989 @@
    "costText": null,
    "webOther": [],
    "webNotes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Third-party aggregator sites (not counted) also name Searing Ghoul."
+  },
+  {
+   "recipeSpellID": 439120,
+   "recipeName": "Golden Scale Gauntlets",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    217274
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 80241,
+     "name": "The Origins of Smithing"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 460460,
+   "recipeName": "Sulfuron Hammer",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    227727
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 84338,
+     "name": "A Binding Contract"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 461651,
+   "recipeName": "Fiery Plate Gauntlets of the Hidden Technique",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    227909
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 84495,
+     "name": "Fiery Plate Gauntlets"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 461733,
+   "recipeName": "Finely-Enchanted Battlehammer",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    228311
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 84496,
+     "name": "Sweet Serenity"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1250148,
+   "recipeName": "Steaming Stag Steak",
+   "profession": "Cooking",
+   "recipeItems": [
+    250179
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 92433,
+     "name": "Now We're Cooking"
+    },
+    {
+     "quest": 97119,
+     "name": "Now We're Cooking"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1250154,
+   "recipeName": "Twice-Spiced Raptor Slice",
+   "profession": "Cooking",
+   "recipeItems": [
+    250185
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 95697,
+     "name": "Changing Tastes"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1255024,
+   "recipeName": "Blue Suede Armor",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    252883
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 92817,
+     "name": "Leather Technique"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1259345,
+   "recipeName": "Powerful Poultice",
+   "profession": "First Aid",
+   "recipeItems": [
+    255731
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 86812,
+     "name": "Transmuted Tincture"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1263034,
+   "recipeName": "Repair Bot",
+   "profession": "Engineering",
+   "recipeItems": [
+    273092
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 277945,
+     "name": "Happy Camper",
+     "zone": "Durotar",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/277945"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "15s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1263041,
+   "recipeName": "Anvil",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    273086
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 277945,
+     "name": "Happy Camper",
+     "zone": "Durotar",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/277945"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "15s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1270633,
+   "recipeName": "Skywall Souffle",
+   "profession": "Cooking",
+   "recipeItems": [
+    263511
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 92553,
+     "name": "Restocking the Larders"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1270635,
+   "recipeName": "Pincer Bites",
+   "profession": "Cooking",
+   "recipeItems": [
+    263513
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 93317,
+     "name": "Crab Season"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1295805,
+   "recipeName": "Briny Seafood Stew",
+   "profession": "Cooking",
+   "recipeItems": [
+    274972
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 95121,
+     "name": "A Taste of the Sea"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301421,
+   "recipeName": "Cloudy Skyforged Chainmail",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276928
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301422,
+   "recipeName": "Cloudy Skyforged Wristguards",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276929
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301423,
+   "recipeName": "Cloudy Skyforged Gauntlets",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276930
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301424,
+   "recipeName": "Cloudy Skyforged Chain",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276931
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301425,
+   "recipeName": "Cloudy Skyforged Legguards",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276932
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301426,
+   "recipeName": "Cloudy Skyforged Greaves",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276933
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301427,
+   "recipeName": "Cloudy Gustwoven Harness",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276934
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301428,
+   "recipeName": "Cloudy Gustwoven Bracers",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276935
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301429,
+   "recipeName": "Cloudy Gustwoven Gloves",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276936
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301430,
+   "recipeName": "Cloudy Gustwoven Belt",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276937
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301431,
+   "recipeName": "Cloudy Gustwoven Trousers",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276938
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301432,
+   "recipeName": "Cloudy Gustwoven Boots",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276939
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301433,
+   "recipeName": "Cloudy Windraveled Jerkin",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276940
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301434,
+   "recipeName": "Cloudy Windraveled Armguards",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276941
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301435,
+   "recipeName": "Cloudy Windraveled Mitts",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276942
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301436,
+   "recipeName": "Cloudy Windraveled Strap",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276943
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301437,
+   "recipeName": "Cloudy Windraveled Pants",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276944
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301438,
+   "recipeName": "Cloudy Windraveled Footwraps",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276945
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301439,
+   "recipeName": "Cloudy Stormsewn Vest",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276946
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301440,
+   "recipeName": "Cloudy Stormsewn Cuffs",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276947
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301441,
+   "recipeName": "Cloudy Stormsewn Handwraps",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276948
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301442,
+   "recipeName": "Cloudy Stormsewn Cord",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276949
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301443,
+   "recipeName": "Cloudy Stormsewn Leggings",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276950
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301444,
+   "recipeName": "Cloudy Stormsewn Shoes",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276951
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301445,
+   "recipeName": "Azure Skyforged Chainmail",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276952
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301446,
+   "recipeName": "Azure Skyforged Wristguards",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276953
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301447,
+   "recipeName": "Azure Skyforged Gauntlets",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276954
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301448,
+   "recipeName": "Azure Skyforged Chain",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276955
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301449,
+   "recipeName": "Azure Skyforged Legguards",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276956
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301450,
+   "recipeName": "Azure Skyforged Greaves",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    276957
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301451,
+   "recipeName": "Azure Gustwoven Harness",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276958
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301452,
+   "recipeName": "Azure Gustwoven Bracers",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276959
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301453,
+   "recipeName": "Azure Gustwoven Gloves",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276960
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301454,
+   "recipeName": "Azure Gustwoven Belt",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276961
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301455,
+   "recipeName": "Azure Gustwoven Trousers",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276962
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301456,
+   "recipeName": "Azure Gustwoven Boots",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276963
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301457,
+   "recipeName": "Azure Windraveled Jerkin",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276964
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301458,
+   "recipeName": "Azure Windraveled Armguards",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276965
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301459,
+   "recipeName": "Azure Windraveled Mitts",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276966
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301460,
+   "recipeName": "Azure Windraveled Strap",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276967
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301461,
+   "recipeName": "Azure Windraveled Pants",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276968
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301462,
+   "recipeName": "Azure Windraveled Footwraps",
+   "profession": "Leatherworking",
+   "recipeItems": [
+    276969
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301463,
+   "recipeName": "Azure Stormsewn Vest",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276970
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301464,
+   "recipeName": "Azure Stormsewn Cuffs",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276971
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301465,
+   "recipeName": "Azure Stormsewn Handwraps",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276972
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301466,
+   "recipeName": "Azure Stormsewn Cord",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276973
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "9s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301468,
+   "recipeName": "Azure Stormsewn Leggings",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276974
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "12s 50c",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1301469,
+   "recipeName": "Azure Stormsewn Shoes",
+   "profession": "Tailoring",
+   "recipeItems": [
+    276975
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [
+    {
+     "npc": 254151,
+     "name": "Vayn Moongaze",
+     "zone": "Zephras Isle",
+     "confirmed": false,
+     "evidence": [
+      "warcraftdb"
+     ],
+     "sources": [
+      "https://forever.warcraftdb.com/data/npc/254151"
+     ]
+    }
+   ],
+   "removed": [],
+   "drops": [],
+   "quests": [],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": "11s",
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1302161,
+   "recipeName": "Harvester Override Signalcaster",
+   "profession": "Engineering",
+   "recipeItems": [
+    277470
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 92911,
+     "name": "Harvesting the Harvesters"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
+  },
+  {
+   "recipeSpellID": 1302598,
+   "recipeName": "Rough Copper Chain Boots",
+   "profession": "Blacksmithing",
+   "recipeItems": [
+    277673
+   ],
+   "status": "vendor",
+   "set": "deep",
+   "vendors": [],
+   "removed": [],
+   "drops": [],
+   "quests": [
+    {
+     "quest": 95217,
+     "name": "The Quarry's Smith"
+    },
+    {
+     "quest": 96874,
+     "name": "This Is Spinal Axe"
+    }
+   ],
+   "trainer": false,
+   "auto": false,
+   "notes": [],
+   "costText": null,
+   "webOther": [],
+   "webNotes": null
   }
  ],
  "drops": {
@@ -57938,40 +60281,462 @@
    ]
   },
   "1257376": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.02,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 643,
+     "name": "Sneed",
+     "chance": 0.02,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257377": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.02,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1763,
+     "name": "Gilnid",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 643,
+     "name": "Sneed",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 644,
+     "name": "Rhahk'Zor",
+     "chance": 0,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257378": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.04,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 644,
+     "name": "Rhahk'Zor",
+     "chance": 0.03,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3865,
+     "name": "Shadow Charger",
+     "chance": 0.02,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1763,
+     "name": "Gilnid",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 11518,
+     "name": "Jergosh the Invoker",
+     "chance": 0.01,
+     "zone": 2437,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257379": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.05,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 11519,
+     "name": "Bazzalan",
+     "chance": 0.04,
+     "zone": 2437,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 645,
+     "name": "Cookie",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3669,
+     "name": "Lord Cobrahn",
+     "chance": 0,
+     "zone": 718,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257380": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.06,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 11519,
+     "name": "Bazzalan",
+     "chance": 0.02,
+     "zone": 2437,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 645,
+     "name": "Cookie",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257381": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 11519,
+     "name": "Bazzalan",
+     "chance": 0.02,
+     "zone": 2437,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 647,
+     "name": "Captain Greenskin",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 645,
+     "name": "Cookie",
+     "chance": 0.01,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3864,
+     "name": "Fel Steed",
+     "chance": 0.01,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257394": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 4887,
+     "name": "Ghamoo-ra",
+     "chance": 0.03,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 639,
+     "name": "Edwin VanCleef",
+     "chance": 0.02,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3670,
+     "name": "Lord Pythas",
+     "chance": 0,
+     "zone": 718,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 5775,
+     "name": "Verdan the Everliving",
+     "chance": 0,
+     "zone": 718,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257395": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 4887,
+     "name": "Ghamoo-ra",
+     "chance": 0.03,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3865,
+     "name": "Shadow Charger",
+     "chance": 0.02,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 639,
+     "name": "Edwin VanCleef",
+     "chance": 0,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257396": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 4831,
+     "name": "Lady Sarevess",
+     "chance": 0.04,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4887,
+     "name": "Ghamoo-ra",
+     "chance": 0.03,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1696,
+     "name": "Targorr the Dread",
+     "chance": 0.01,
+     "zone": 717,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257397": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 4831,
+     "name": "Lady Sarevess",
+     "chance": 0.04,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4887,
+     "name": "Ghamoo-ra",
+     "chance": 0.02,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1696,
+     "name": "Targorr the Dread",
+     "chance": 0.01,
+     "zone": 717,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 3674,
+     "name": "Skum",
+     "chance": 0,
+     "zone": 718,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257398": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3865,
+     "name": "Shadow Charger",
+     "chance": 0.04,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4887,
+     "name": "Ghamoo-ra",
+     "chance": 0,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257399": {
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 3865,
+     "name": "Shadow Charger",
+     "chance": 0.04,
+     "zone": 209,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 639,
+     "name": "Edwin VanCleef",
+     "chance": 0.02,
+     "zone": 1581,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4831,
+     "name": "Lady Sarevess",
+     "chance": 0.02,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257413": {
    "world": [
@@ -57998,7 +60763,58 @@
     34,
     26
    ],
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 6228,
+     "name": "Dark Iron Ambassador",
+     "chance": 0.34,
+     "zone": 721,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 12902,
+     "name": "Lorgus Jett",
+     "chance": 0.16,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4830,
+     "name": "Old Serra'kis",
+     "chance": 0.08,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4421,
+     "name": "Charlga Razorflank",
+     "chance": 0.02,
+     "zone": 491,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 6243,
+     "name": "Gelihast",
+     "chance": 0.02,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257415": {
    "world": [
@@ -58006,7 +60822,58 @@
     34,
     28
    ],
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 12902,
+     "name": "Lorgus Jett",
+     "chance": 0.08,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 12876,
+     "name": "Baron Aquanis",
+     "chance": 0.04,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 6243,
+     "name": "Gelihast",
+     "chance": 0.04,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4829,
+     "name": "Aku'mai",
+     "chance": 0.02,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1663,
+     "name": "Dextren Ward",
+     "chance": 0.01,
+     "zone": 717,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257416": {
    "world": [
@@ -58014,7 +60881,58 @@
     34,
     28
    ],
-   "npcs": []
+   "npcs": [
+    {
+     "npc": 12902,
+     "name": "Lorgus Jett",
+     "chance": 0.08,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4830,
+     "name": "Old Serra'kis",
+     "chance": 0.03,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4428,
+     "name": "Death Speaker Jargba",
+     "chance": 0.02,
+     "zone": 491,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 1666,
+     "name": "Kam Deepfury",
+     "chance": 0.01,
+     "zone": 717,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    },
+    {
+     "npc": 4832,
+     "name": "Twilight Lord Kelris",
+     "chance": 0.01,
+     "zone": 719,
+     "drops": 0,
+     "loots": 0,
+     "confirmed": true,
+     "source": "deep"
+    }
+   ]
   },
   "1257417": {
    "world": [

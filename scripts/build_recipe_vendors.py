@@ -40,7 +40,7 @@ def main():
         conf = sorted({v["npc"] for v in r["vendors"] if v["confirmed"]})
         unconf = sorted({v["npc"] for v in r["vendors"] if not v["confirmed"]} - set(conf))
         # Drops and quests only where no vendor sells it (the classic data keeps the rest).
-        other = r["status"] != "vendor"
+        other = r["status"] != "vendor" or r.get("set") == "deep"
         drops = sorted({d["npc"] for d in r["drops"]}) if other else []
         quests = sorted({q["quest"] for q in r["quests"]}) if other else []
         for v in r["vendors"]:
@@ -67,7 +67,7 @@ def main():
             parts.append("rf={%d,%d}" % (rf["factionID"], STANDING[rf["standing"]]))
         if r.get("requiredSkill"): parts.append("k=%d" % r["requiredSkill"])
         # Deep dive (2026-11-14): trainer, learned automatically, a note, a cost in another currency.
-        if r.get("trainer"): parts.append("tr=1")
+        if r.get("trainer"): parts.append("tr=%d" % (2 if r["trainer"] == 2 else 1))
         if r.get("auto"): parts.append("a=1")
         if r.get("notes"): parts.append("nt=" + lua_str(" ".join(r["notes"])))
         if r.get("costText"): parts.append("ct=" + lua_str(r["costText"]))
