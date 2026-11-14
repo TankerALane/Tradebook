@@ -547,6 +547,12 @@ test("how a recipe is learned, and learnable now", function()
     local vendorRecipe
     for id, s in pairs(ns.SourceData) do if s.v and not s.t then vendorRecipe = id break end end
     eq(ns.Sources.Kinds(vendorRecipe).recipe, true, "vendor-sold recipe item")
+    -- vendor / drop kinds: Ice Deflector (3957) is sold; a world-drop recipe drops
+    eq(ns.Sources.Kinds(3957).vendor, true)
+    local dropped
+    for id, d in pairs(ns.RecipeDrops) do if d.w then dropped = id break end end
+    eq(ns.Sources.Kinds(dropped).drop, true)
+    eq(ns.Sources.Kinds(dropped).recipe, true)
     eq(ns.Sources.Learnable(2385, 9), false)
     eq(ns.Sources.Learnable(2385, 10), true)
     eq(ns.Sources.Learnable(2385, nil), nil)

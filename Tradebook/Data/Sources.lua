@@ -245,8 +245,11 @@ end
 function Sources.Kinds(recipeID)
     local s = Sources.Raw(recipeID)
     if not s then return nil end
-    return { trainer = (s.t or s.tr) ~= nil, recipe = (s.v or s.u or s.d or s.q or s.c) ~= nil or s.drops == true,
-        auto = s.a == 1 }
+    local conf, unconf = Sources.Vendors(recipeID)
+    local vendor = #conf + #unconf > 0
+    local drop = s.d ~= nil or s.drops == true
+    return { trainer = (s.t or s.tr) ~= nil, recipe = vendor or drop or (s.q or s.c) ~= nil,
+        vendor = vendor, drop = drop, auto = s.a == 1 }
 end
 
 -- Can a character at `rank` learn this recipe now? true / false, or nil when the required

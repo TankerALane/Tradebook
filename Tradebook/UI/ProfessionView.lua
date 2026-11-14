@@ -243,7 +243,13 @@ function View:BuildItems()
                 if f.unlearnedLearnable and not ns.Sources.Learnable(id, p and p.rank) then keep = false end
                 if f.unlearnedTrainer or f.unlearnedRecipe then
                     local kinds = ns.Sources.Kinds(id)
-                    if not (kinds and ((f.unlearnedTrainer and kinds.trainer) or (f.unlearnedRecipe and kinds.recipe))) then
+                    -- "From a recipe" narrows to vendor and/or mob drops when either is ticked
+                    -- (a recipe both sold and dropped shows under either).
+                    local fromRecipe = kinds and kinds.recipe
+                    if fromRecipe and (f.unlearnedVendor or f.unlearnedDrop) then
+                        fromRecipe = (f.unlearnedVendor and kinds.vendor) or (f.unlearnedDrop and kinds.drop)
+                    end
+                    if not (kinds and ((f.unlearnedTrainer and kinds.trainer) or (f.unlearnedRecipe and fromRecipe))) then
                         keep = false
                     end
                 end
@@ -293,7 +299,8 @@ end
 
 -- Filters, with the defaults the red X on the Filter button restores.
 local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
-    unlearnedTrainer = false, unlearnedRecipe = false, haveMats = false, skillup = false }
+    unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false,
+    haveMats = false, skillup = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -314,12 +321,13 @@ local function resetFilters()
     View:RefreshList()
 end
 
--- Shift a menu checkbox (box and label) one checkbox to the right, under its parent option.
-local function indent(item)
+-- Shift a menu checkbox (box and label) one checkbox (or `levels`) to the right, under its
+-- parent option.
+local function indent(item, levels)
     item:AddInitializer(function(button)
         if button.leftTexture1 then
             button.leftTexture1:ClearAllPoints()
-            button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
+            button.leftTexture1:SetPoint("LEFT", SUB_INDENT * (levels or 1), 0)
         end
     end)
 end
@@ -335,17 +343,27 @@ local function buildFilterMenu(_, root)
     add(L.FILTER_LEARNED, "learned")
     add(L.FILTER_UNLEARNED, "unlearned")
     -- Options under "Not learned" (indented); ticking one turns "Not learned" on.
-    local function sub(text, key)
+    -- parent: the option one level up, turned on with it (children are cleared when it's
+    -- turned off).
+    local function sub(text, key, parent, levels, children)
         local item = root:CreateCheckbox(text, function() return f[key] end, function()
             f[key] = not f[key]
-            if f[key] then f.unlearned = true end
+            if f[key] then
+                f.unlearned = true
+                if parent then f[parent] = true end
+            else
+                for _, child in ipairs(children or {}) do f[child] = false end
+            end
             View:RefreshList()
         end)
-        indent(item)
+        indent(item, levels)
     end
     sub(L.FILTER_LEARNABLE, "unlearnedLearnable")
     sub(L.FILTER_FROM_TRAINER, "unlearnedTrainer")
-    sub(L.FILTER_FROM_RECIPE, "unlearnedRecipe")
+    sub(L.FILTER_FROM_RECIPE, "unlearnedRecipe", nil, 1, { "unlearnedVendor", "unlearnedDrop" })
+    -- Under "From a recipe": where the recipe item comes from.
+    sub(L.FILTER_FROM_VENDOR, "unlearnedVendor", "unlearnedRecipe", 2)
+    sub(L.FILTER_FROM_DROP, "unlearnedDrop", "unlearnedRecipe", 2)
     if ns.Questie.Available() then sub(L.FILTER_NEAREST, "unlearnedNearest") end -- needs NPC locations
     add(L.FILTER_CRAFTABLE, "haveMats")
     add(L.FILTER_SKILLUP, "skillup")

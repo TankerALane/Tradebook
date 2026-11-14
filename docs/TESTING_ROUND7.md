@@ -28,5 +28,9 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] A recipe a vendor sells for gold (e.g. Recipe: Smoked Sagefish) shows **Vendor** with a price ("(before reputation discounts)" until you've opened that vendor, then "(seen at a vendor)") next to **Auction house**, and "cheaper" on the lower one. Merchant's Favor recipes show no gold vendor price.
 - [ ] Kithas: open his window and check for Enchant Chest - **Lesser Mana** / Lesser Intellect (Tradebook records it either way).
 
+## D. Filters
+- [ ] Filter menu: **From a vendor** and **From a mob** sit indented under **From a recipe**. Ticking one also ticks From a recipe and Not learned; unticking From a recipe clears both.
+- [ ] From a vendor shows only recipes sold by a vendor; From a mob only dropped ones; both ticked shows either (a recipe sold and dropped appears once).
+
 ## Notes / errors
 
