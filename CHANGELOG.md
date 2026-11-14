@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Enchants and other recipes without a result item** now say what they do on hover: the recipe's icon in the details pane, the Camp list and the leveling plan, the recipe list on the left, and search results (which now show a tooltip for every recipe).
 - **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, each item with its price per unit and total, and a subtotal per section. Send to Auctionator sends only the auction house items.
 - The leveling plan works without Auctionator too: it uses your own materials and vendor prices, then recipes needing the fewest other materials.
 - **Vendor prices from the game**: thread, dyes, vials, spices and other vendor goods now have their vendor price (from Forever's item data, for items Questie lists a vendor for) even if you haven't visited that vendor with Auctionator. Costs to craft and the leveling plan use it.

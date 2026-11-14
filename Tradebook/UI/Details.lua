@@ -78,14 +78,14 @@ function Pane:Add(o)
     end
     -- Large rows always keep the "+" column so their icons line up with or without it.
     if o.toggle ~= nil or o.large then x = x + 16 end
-    if o.itemID then
+    if o.itemID or o.spellID then
         local size = o.large and LARGE_ICON or 18
         line.item:SetSize(size, size)
         line.item:SetSlotStyle(o.large == true)
         line.item:Show()
         line.item:ClearAllPoints()
         line.item:SetPoint("LEFT", x, 0)
-        line.item:SetItem(o.itemID)
+        line.item:SetItem(o.itemID, nil, o.icon, o.spellID)
         x = x + size + 6
     end
     line.text:ClearAllPoints()
@@ -438,7 +438,7 @@ function Pane:Refresh()
         return
     end
     self.output:Show()
-    self.output:SetItem(r.o, nil, r.i)
+    self.output:SetItem(r.o, nil, r.i, self.recipeID)
     local _, _, quality = Compat.ItemInfo(r.o)
     self.title:SetText(r.n)
     local qc = quality and ITEM_QUALITY_COLORS and ITEM_QUALITY_COLORS[quality]

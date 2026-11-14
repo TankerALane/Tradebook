@@ -76,10 +76,16 @@ local function createRow(row)
     end)
     row:SetScript("OnEnter", function(self)
         local data = self.data
-        if data.header or not data.diff then return end
+        if data.header then return end
+        local r = ns.db.recipes[data.id]
+        -- Recipes without a result item (enchants and the like): what the spell does.
+        local desc = r and not r.o and ns.Compat.Call("C_Spell.GetSpellDescription", data.id)
+        if desc == "" then desc = nil end
+        if not data.diff and not desc then return end
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(data.name, 1, 1, 1)
-        local key = ({ [0] = "DIFF_OPTIMAL", [1] = "DIFF_MEDIUM", [2] = "DIFF_EASY", [3] = "DIFF_TRIVIAL" })[data.diff]
+        if desc then GameTooltip:AddLine(desc, nil, nil, nil, true) end
+        local key = data.diff and ({ [0] = "DIFF_OPTIMAL", [1] = "DIFF_MEDIUM", [2] = "DIFF_EASY", [3] = "DIFF_TRIVIAL" })[data.diff]
         if key then GameTooltip:AddLine(L[key], W.DIFFICULTY[data.diff]:GetRGB()) end
         if data.skillUps and data.skillUps > 1 then GameTooltip:AddLine(L.SKILLUP_TIP:format(data.skillUps)) end
         GameTooltip:Show()

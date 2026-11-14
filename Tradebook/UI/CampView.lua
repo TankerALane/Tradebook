@@ -68,7 +68,7 @@ local function initRow(row, data)
     end
     row:GetHighlightTexture():SetAlpha(1)
     local r = ns.db.recipes[data.id]
-    row.item:SetItem(r.o, nil, r.i)
+    row.item:SetItem(r.o, nil, r.i, data.id)
     row.name:SetText(r.n)
     row.mats:SetText(matsText(r))
     local known = Recipes.KnownBy(ns.db, data.id)

@@ -27,6 +27,15 @@ local function createRow(row)
     row:SetScript("OnClick", function(self)
         ns.UI.OpenRecipe(self.data.id, self.data.crafters[1], true)
     end)
+    -- What it makes (item tooltip), or what it does for enchants and the like (spell tooltip).
+    row:SetScript("OnEnter", function(self)
+        local r = self.data and self.data.recipe
+        if not r then return end
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        if r.o then GameTooltip:SetItemByID(r.o) else GameTooltip:SetSpellByID(self.data.id) end
+        GameTooltip:Show()
+    end)
+    row:SetScript("OnLeave", GameTooltip_Hide)
 end
 
 local function initRow(row, data)

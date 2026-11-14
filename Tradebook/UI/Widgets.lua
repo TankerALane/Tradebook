@@ -171,17 +171,26 @@ function W.ItemButton(parent, size)
     end
     b:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
     b:SetScript("OnEnter", function(self)
-        if not self.itemID and not self.link then return end
+        if not self.itemID and not self.link and not self.spellID then return end
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        if self.link then GameTooltip:SetHyperlink(self.link) else GameTooltip:SetItemByID(self.itemID) end
+        if self.link then
+            GameTooltip:SetHyperlink(self.link)
+        elseif self.itemID then
+            GameTooltip:SetItemByID(self.itemID)
+        else
+            -- Recipes without a result item (enchants and the like): the recipe's spell says
+            -- what it does.
+            GameTooltip:SetSpellByID(self.spellID)
+        end
         GameTooltip:Show()
     end)
     b:SetScript("OnLeave", GameTooltip_Hide)
     b:SetScript("OnClick", function(self)
         if self.link and IsModifiedClick("CHATLINK") then ChatEdit_InsertLink(self.link) end
     end)
-    function b:SetItem(itemID, link, icon)
-        self.itemID, self.link = itemID, link
+    -- spellID: shown on hover when there's no item (a recipe's spell, for enchants).
+    function b:SetItem(itemID, link, icon, spellID)
+        self.itemID, self.link, self.spellID = itemID, link, spellID
         local _, itemLink, quality, itemIcon = Compat.ItemInfo(itemID)
         self.link = link or itemLink
         self.icon:SetTexture(icon or itemIcon or 134400)
