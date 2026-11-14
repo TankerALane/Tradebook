@@ -80,6 +80,9 @@ def main():
                    key=lambda p: p.stat().st_mtime)
     if len(shots) < len(steps):
         sys.exit("found %d screenshots after the run started, expected %d" % (len(shots), len(steps)))
+    # The newest ones: a later run without /reload keeps the same window rects (fixed size,
+    # centred), so its pictures still crop correctly.
+    shots = shots[-len(steps):]
     OUT.mkdir(parents=True, exist_ok=True)
     for i, ((name, r), shot) in enumerate(zip(steps, shots), start=1):
         w, h = image_size(shot)
