@@ -18,5 +18,14 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] A vendor the data lists for a recipe, but whose window didn't have it, shows "(not in stock when you visited)".
 - [X] `/tb debug` (twice, to turn it off again) prints "Vendors read: N" and any recipe a vendor sold that the data didn't list.
 - [X] [Any vendor that sells a recipe Tradebook didn't know about? Name and recipe:] [Not sure]
+## C. Drops, world drops, auction house (after `/reload`)
+- [ ] Plans: Shining Mithril Helm (Blacksmithing): **Dropped by** Naga Explorer with zone and level; clicking sets a waypoint. No "Unknown source" under it.
+- [ ] Pattern: White Leather Jerkin (Leatherworking): droppers show a chance with the sample, e.g. "11% (1 of 9)", and "(unconfirmed)" where only one source names the mob.
+- [ ] A world-drop recipe (e.g. Pattern: Wicked Leather Gauntlets) says "World drop: mobs level X-Y".
+- [ ] A Season of Discovery leftover (e.g. Schematic: Soul Vessel) says "Not available in WoW Forever."
+- [ ] A recipe item that isn't soulbound shows **Auction house** with the recipe's icon and Auctionator's price (or "no recent price"); a soulbound one (e.g. a Merchant's Favor formula) doesn't.
+- [ ] Recipes you already know also show their Source section.
+- [ ] Kithas: open his window and check for Enchant Chest - **Lesser Mana** / Lesser Intellect (Tradebook records it either way).
+
 ## Notes / errors
 
