@@ -779,6 +779,33 @@ test("trainers: services, recipes they teach, share round-trip", function()
     assert(ok, err)
 end)
 
+test("share: NPCs that still match are only confirmed", function()
+    local S = ns.Share
+    local community = { [1] = { name = "A", loc = { m = 1, x = 1, y = 1 }, items = {
+        [10] = { p = 100, s = -1 }, [11] = { s = 2 } } } }
+    -- same items, 10% cheaper (reputation discount), the limited item sold out: still matches
+    local mine = { [1] = { name = "A", seenAt = 50, loc = { m = 1, x = 1, y = 1 }, items = { [10] = { p = 90, s = -1 } } },
+        [2] = { name = "B", seenAt = 50, items = { [12] = { p = 5, s = -1 } } } }
+    local text, nv, _, stats = S.Encode(mine, "b", "v", nil, { community = community })
+    eq(nv, 2)
+    eq(stats.confirmed, 1)
+    eq(stats.vendors, 1, "only B in full")
+    assert(text:find("\nC~1~50"), text)
+    local _, _, confirmed = S.Decode(text)
+    eq(confirmed[1].npc, 1)
+    -- a higher price, a new item, or an unlimited item gone: changed
+    eq(S.VendorMatches({ items = { [10] = { p = 120, s = -1 } } }, community[1]), false)
+    eq(S.VendorMatches({ items = { [10] = { p = 100, s = -1 }, [99] = { p = 1, s = -1 } } }, community[1]), false)
+    eq(S.VendorMatches({ items = { [11] = { s = 1 } } }, community[1]), false, "item 10 (unlimited) missing")
+    -- since: only scans after the last share
+    local _, n2 = S.Encode(mine, "b", "v", nil, { community = community, since = 60 })
+    eq(n2, 0)
+    -- trainers
+    local ct = { [7] = { services = { "Linen Bag||used|0|Tailoring 5|50|" } } }
+    eq(S.TrainerMatches({ services = { "Linen Bag||used|0|Tailoring 5|45|" } }, ct[7]), true, "discount")
+    eq(S.TrainerMatches({ services = { "Linen Bag||used|0|Tailoring 5|50|", "Linen Belt||used|0|Tailoring 15|50|" } }, ct[7]), false)
+end)
+
 test("recipe items map to the recipe they teach", function()
     eq(ns.RecipeItems[2598], 2389, "Pattern: Red Linen Robe")
     eq(ns.RecipeItems[6346], 7776, "Formula: Enchant Chest - Lesser Intellect")

@@ -10,7 +10,13 @@
 --   I~<itemID>~<gold price or "">~<stock>~<cost or "">      (items of the V line above)
 --   T~<npcID>~<name>~<skillLineID>~<uiMapID>~<x>~<y>~<seenAt>   (a trainer)
 --   S~<name>~<subText>~<type>~<level>~<skill req>~<cost>~<prof>  (its services, as read)
+--   C~<npcID>~<seenAt>      a vendor you scanned that still matches the community data
+--   CT~<npcID>~<seenAt>     a trainer that still matches
 -- "~" and line breaks are removed from names.
+-- NPCs that still match what Tradebook already ships (Data/CommunityVendors.lua /
+-- CommunityTrainers.lua) are sent as one C / CT line ("confirmed again") instead of in full.
+-- Lower gold prices than the community's (by up to 25%) still match: that's a reputation
+-- discount, not a change.
 
 local _, ns = ...
 local L, Compat = ns.L, ns.Compat
@@ -26,20 +32,92 @@ local function clean(s)
     return (tostring(s or ""):gsub("[~\r\n|]", " "))
 end
 
+local DISCOUNT = 0.75 -- a price this much lower than the community's is still the same price
+
+-- PURE. Does a vendor scan still match the community's entry? (Same items and costs, gold
+-- prices equal or a reputation discount lower; nothing the scan would add, like a location.)
+-- Limited-stock items the community has may be missing (sold out).
+function Share.VendorMatches(e, c)
+    if not c or not c.items then return false end
+    if e.loc and not c.loc then return false end
+    for itemID, it in pairs(e.items or {}) do
+        local ci = c.items[itemID]
+        if not ci then return false end
+        if (it.c or "") ~= (ci.c or "") then return false end
+        if it.p and not ci.p then return false end
+        if it.p and ci.p and (it.p > ci.p or it.p < ci.p * DISCOUNT) then return false end
+    end
+    for itemID, ci in pairs(c.items) do
+        if not (e.items and e.items[itemID]) and (ci.s or -1) < 0 then return false end
+    end
+    return true
+end
+
+-- PURE. Does a trainer read still match the community's? (Same services; costs equal or a
+-- reputation discount lower.)
+function Share.TrainerMatches(t, c)
+    if not c or not c.services then return false end
+    if t.loc and not c.loc then return false end
+    local function index(services)
+        local out, n = {}, 0
+        for _, line in ipairs(services or {}) do
+            local name, sub, _, _, _, cost = line:match("^([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)")
+            if name then
+                out[name .. "|" .. sub] = tonumber(cost) or false
+                n = n + 1
+            end
+        end
+        return out, n
+    end
+    local mine, n1 = index(t.services)
+    local theirs, n2 = index(c.services)
+    if n1 ~= n2 then return false end
+    for key, cost in pairs(mine) do
+        local tc = theirs[key]
+        if tc == nil then return false end -- a service they don't have
+        if cost and tc and (cost > tc or cost < tc * DISCOUNT) then return false end
+    end
+    return true
+end
+
 -- PURE. The share text for saved vendors and trainers. Only vendors seen with items and
--- trainers with services are included.
-function Share.Encode(vendors, build, version, trainers)
-    local ids = {}
+-- trainers with services are included. opts (optional):
+--   community, communityTrainers   what Tradebook ships: matching NPCs become C / CT lines
+--   since                          only NPCs scanned after this time (your last share)
+-- Returns text, vendors, trainers (counted with confirmations) and
+-- { vendors, trainers, confirmed } (full entries and confirmations).
+function Share.Encode(vendors, build, version, trainers, opts)
+    opts = opts or {}
+    local since = opts.since or 0
+    local ids, confirm = {}, {}
     for npc, e in pairs(vendors or {}) do
-        if e.items and next(e.items) then ids[#ids + 1] = npc end
+        if e.items and next(e.items) and (e.seenAt or 0) > since then
+            if Share.VendorMatches(e, opts.community and opts.community[npc]) then
+                confirm[#confirm + 1] = { "C", npc, e.seenAt or "" }
+            else
+                ids[#ids + 1] = npc
+            end
+        end
     end
     table.sort(ids)
     local tids = {}
     for npc, t in pairs(trainers or {}) do
-        if t.services and #t.services > 0 then tids[#tids + 1] = npc end
+        if t.services and #t.services > 0 and (t.seenAt or 0) > since then
+            if Share.TrainerMatches(t, opts.communityTrainers and opts.communityTrainers[npc]) then
+                confirm[#confirm + 1] = { "CT", npc, t.seenAt or "" }
+            else
+                tids[#tids + 1] = npc
+            end
+        end
     end
     table.sort(tids)
-    local out = { table.concat({ "TBV1", clean(build), clean(version), #ids, #tids }, "~") }
+    table.sort(confirm, function(a, b) return a[1] .. a[2] < b[1] .. b[2] end)
+    local nv, nt = #ids, #tids
+    for _, c in ipairs(confirm) do
+        if c[1] == "C" then nv = nv + 1 else nt = nt + 1 end
+    end
+    local out = { table.concat({ "TBV1", clean(build), clean(version), nv, nt }, "~") }
+    for _, c in ipairs(confirm) do out[#out + 1] = table.concat(c, "~") end
     for _, npc in ipairs(ids) do
         local e = vendors[npc]
         local loc = e.loc or {}
@@ -63,7 +141,7 @@ function Share.Encode(vendors, build, version, trainers)
             out[#out + 1] = "S~" .. table.concat(f, "~")
         end
     end
-    return table.concat(out, "\n"), #ids, #tids
+    return table.concat(out, "\n"), nv, nt, { vendors = #ids, trainers = #tids, confirmed = #confirm }
 end
 
 -- PURE. Parse share text back: vendors { [npcID] = { name, loc = { m, x, y }, seenAt, items } }
@@ -71,6 +149,7 @@ end
 function Share.Decode(text)
     local vendors, current = {}, nil
     local trainers, trainer = {}, nil
+    local confirmed = {}
     local header = false
     for line in (text or ""):gmatch("[^\r\n]+") do
         local f = {}
@@ -88,13 +167,17 @@ function Share.Decode(text)
                 loc = tonumber(f[5]) and { m = tonumber(f[5]), x = tonumber(f[6]), y = tonumber(f[7]) } or nil }
             trainers[tonumber(f[2])] = trainer
             current = nil
+        elseif (f[1] == "C" or f[1] == "CT") and tonumber(f[2]) then
+            confirmed[#confirmed + 1] = { kind = f[1] == "C" and "vendor" or "trainer", npc = tonumber(f[2]),
+                seenAt = tonumber(f[3]) }
+            current, trainer = nil, nil
         elseif f[1] == "S" and trainer then
             table.remove(f, 1)
             trainer.services[#trainer.services + 1] = table.concat(f, "|")
         end
     end
     if not header then return nil, "missing TBV1 header" end
-    return vendors, trainers
+    return vendors, trainers, confirmed
 end
 
 local sharePopup
@@ -144,8 +227,16 @@ local function ensure()
         popup.box:SetFocus()
         popup.box:HighlightText()
     end)
+    -- Copying counts as sharing: the next share only holds what you scan after this.
+    popup.select:HookScript("OnClick", function() ns.db.settings.lastShareAt = GetServerTime() end)
+    popup.all = W.Check(popup, L.SHARE_ALL, function(checked)
+        ns.db.settings.shareAll = checked or nil
+        Share.Show(true)
+    end)
+    popup.all:SetPoint("BOTTOMRIGHT", -150, 10)
     popup.count = W.Text(popup, "GameFontDisableSmall")
     popup.count:SetPoint("LEFT", popup.select, "RIGHT", 10, 0)
+    popup.count:SetPoint("RIGHT", popup.all, "LEFT", -6, 0)
     tinsert(UISpecialFrames, "TradebookShareFrame")
     popup:Hide()
     sharePopup = popup
@@ -156,13 +247,17 @@ function Share.Show()
     local p = ensure()
     local version = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
     local build = Compat.Call("GetBuildInfo") or "?"
-    local text, count, tcount = Share.Encode(ns.db.vendors, build, version, ns.db.trainers)
+    local s = ns.db.settings
+    p.all:SetChecked(s.shareAll == true)
+    local text, nv, nt, stats = Share.Encode(ns.db.vendors, build, version, ns.db.trainers, {
+        community = ns.CommunityVendors, communityTrainers = ns.CommunityTrainers,
+        since = not s.shareAll and s.lastShareAt or nil })
     p.text = text
     p.box:SetText(text)
     p.url:SetText(ISSUE_URL)
-    count = count + tcount
-    p.help:SetText(count > 0 and L.SHARE_HELP or L.SHARE_NOTHING)
-    p.count:SetText(L.SHARE_COUNT:format(count - tcount, tcount, #text))
+    local count = nv + nt
+    p.help:SetText(count > 0 and L.SHARE_HELP or (s.lastShareAt and not s.shareAll and L.SHARE_NOTHING_NEW or L.SHARE_NOTHING))
+    p.count:SetText(L.SHARE_COUNT:format(stats.vendors, stats.trainers, stats.confirmed))
     p:Show()
     if count > 0 then
         p.box:SetFocus()

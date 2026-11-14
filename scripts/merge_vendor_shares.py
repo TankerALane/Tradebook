@@ -7,6 +7,9 @@ Sources (any mix):
 Stored databases: docs/research/community_vendors.json and community_trainers.json (in git).
 Generated: Tradebook/Data/CommunityVendors.lua and CommunityTrainers.lua (what the addon loads).
 
+Confirmations (C and CT lines): a player's scan still matched the shipped data, so only the
+date is sent; it moves the NPC's "last seen" date forward and counts as a report.
+
 Trainers (T and S lines): a trainer's name, profession and location come from its newest
 report; each service (recipe or rank) keeps its newest fields, with the highest cost reported
 (the price before reputation discounts).
@@ -41,6 +44,7 @@ def parse(text):
     { npc: { name, skill, loc, seenAt, services: { key: fields } } })."""
     vendors, cur, ok = {}, None, False
     trainers, tcur = {}, None
+    confirmed = []
     for raw in text.splitlines():
         line = raw.strip().strip("`")
         f = line.split("~")
@@ -61,6 +65,10 @@ def parse(text):
                 pass
             seen = int(f[6]) if f[6].isdigit() else 0
             cur = vendors.setdefault(npc, {"name": name, "loc": loc, "seenAt": seen, "items": {}})
+        elif f[0] in ("C", "CT") and len(f) >= 3 and f[1].isdigit():
+            cur, tcur = None, None
+            if 0 < int(f[1]) < 10_000_000 and f[2].isdigit():
+                confirmed.append(("vendor" if f[0] == "C" else "trainer", int(f[1]), int(f[2])))
         elif f[0] == "T" and len(f) >= 8 and f[1].isdigit():
             npc, name = int(f[1]), f[2].strip()
             cur = None
@@ -93,7 +101,7 @@ def parse(text):
             s = int(f[3]) if re.match(r"^-?\d+$", f[3]) and -1 <= int(f[3]) < 100_000 else -1
             c = f[4].strip() if COST_OK.match(f[4].strip()) else None
             cur["items"][item] = {"p": p, "s": s, "c": c, "seenAt": cur["seenAt"]}
-    return (vendors, trainers) if ok else ({}, {})
+    return (vendors, trainers, confirmed) if ok else ({}, {}, [])
 
 
 def merge(db, vendors):
@@ -118,6 +126,21 @@ def merge(db, vendors):
             if it["seenAt"] >= o.get("seenAt", 0):
                 o["s"], o["c"], o["seenAt"] = it["s"], it["c"] or o.get("c"), it["seenAt"]
     return added
+
+
+def apply_confirmations(db, tdb, confirmed):
+    """Move the last-seen date of NPCs a player confirmed unchanged. Unknown NPCs are ignored."""
+    n = 0
+    for kind, npc, seen in confirmed:
+        target = (db if kind == "vendor" else tdb).get(str(npc))
+        if target is None:
+            continue
+        target["reports"] = target.get("reports", 0) + 1
+        target["confirmations"] = target.get("confirmations", 0) + 1
+        if seen > target.get("seenAt", 0):
+            target["seenAt"] = seen
+        n += 1
+    return n
 
 
 def merge_trainers(db, trainers):
@@ -220,12 +243,13 @@ def main():
     for label, text in texts:
         # One paste can hold several shares.
         for chunk in re.split(r"(?=TBV1~)", text):
-            vendors, trainers = parse(chunk)
-            if vendors or trainers:
+            vendors, trainers, confirmed = parse(chunk)
+            if vendors or trainers or confirmed:
                 added = merge(db, vendors)
                 tadded = merge_trainers(tdb, trainers)
-                print("%s: %d vendors (%d new items), %d trainers (%d new services)" % (
-                    label, len(vendors), added, len(trainers), tadded))
+                conf = apply_confirmations(db, tdb, confirmed)
+                print("%s: %d vendors (%d new items), %d trainers (%d new services), %d confirmed unchanged" % (
+                    label, len(vendors), added, len(trainers), tadded, conf))
     os.makedirs(os.path.dirname(DB), exist_ok=True)
     json.dump(db, open(DB, "w", encoding="utf-8", newline="\n"), indent=1, sort_keys=True)
     write_lua(db)

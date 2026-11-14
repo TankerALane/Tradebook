@@ -157,6 +157,11 @@ Three sources, best first (Core/VendorDB.lua):
    `docs/research/community_vendors.json`. Per item the highest gold price is kept (the price
    before reputation discounts) and the newest stock and cost; items are never dropped because a
    later report lacks them (limited stock). Close the merged issues after a release.
+   **Confirmations:** before sharing, Tradebook compares each scan with the community data it
+   ships; an NPC that still matches (same items/services and costs; gold prices equal or up to
+   25% lower, a reputation discount) is sent as one `C~npc~seenAt` / `CT~npc~seenAt` line, which
+   only moves its last-seen date forward. The share window holds only scans since the last share
+   (when "Select all" was clicked) unless "Include earlier scans" is ticked.
    Seeded 2026-11-14 from the maintainer's own scans (`scripts/research/seed_from_savedvars.lua`).
    To import the maintainer's own scans directly (no form): `/reload` in game, then
    `luajit scripts/research/seed_from_savedvars.lua <WTF/.../SavedVariables/Tradebook.lua> > scans.txt`
