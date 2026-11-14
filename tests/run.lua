@@ -13,6 +13,7 @@ local PURE_FILES = {
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
     "Tradebook/Data/RankTrainers.lua",
+    "Tradebook/Data/Specializations.lua",
     "Tradebook/Core/DB.lua",
     "Tradebook/Core/Characters.lua",
     "Tradebook/Core/Recipes.lua",
@@ -670,6 +671,18 @@ test("researched rank trainers", function()
             for _, t in ipairs(l) do assert(type(t.name) == "string" and (t.id == nil or type(t.id) == "number")) end
         end
     end
+end)
+
+test("specializations", function()
+    local S = ns.Specializations
+    eq(#S.For(202).options, 2, "Gnomish and Goblin Engineering")
+    eq(S.For(202).level, 30)
+    eq(#S.For(165).options, 3, "Dragonscale, Elemental, Tribal")
+    eq(S.For(164), nil, "Blacksmithing: not confirmed for Forever")
+    eq(S.For(197), nil, "Tailoring: none")
+    eq(S.Spells()[20222], 202)
+    eq(S.Chosen({ specs = { [202] = 20222 } }, 202).name, "Goblin Engineering")
+    eq(S.Chosen({ specs = {} }, 202), nil)
 end)
 
 ---------------------------------------------------------------------------

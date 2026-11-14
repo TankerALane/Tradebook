@@ -71,3 +71,15 @@ Left out (single source or conflict): Melanie Sable (Expert Enchanting), Patrici
 Master Mycologist Shurome (Alchemy), Lawrence Schneider (Tailoring), Edward Egan (Herbalism).
 Listed as Journeyman only: Sylvanna Forestmoon (Alchemy), Lilliam Sparkspindle and Franklin
 Lloyd (Engineering).
+
+## Specializations (Data/Specializations.lua)
+
+- Engineering: Gnomish (spell 20219) or Goblin (20222), level 30 and Engineering 200 (Wowhead,
+  Icy Veins and a third Forever source agree). Quest chain IDs from Wowhead's Forever guide only
+  (Gnomish 3640/3641 Alliance, 3642/3643 Horde; Goblin 3638/3639), so the window shows a quest
+  only when QuestieDB has it, with QuestieDB's giver, location and requirements.
+- Leatherworking: Dragonscale (10656), Elemental (10658), Tribal (10660) exist in Forever
+  (Wowhead, wow-professions, Icy Veins, Overgear). Trainers and requirements came from one
+  source, so they are read from QuestieDB's quests of the same name instead.
+- Blacksmithing (Armorsmith/Weaponsmith spells are in the game data) and Tailoring: no Forever
+  source confirms them, so they are not shown.

@@ -320,7 +320,12 @@ local function buildHeader()
         if not self.tip then return end
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
         GameTooltip:SetText(self.tip, 1, 1, 1)
+        if self.open then GameTooltip:AddLine(L.RANKBAR_CLICK, nil, nil, nil, true) end
         GameTooltip:Show()
+    end)
+    -- Click the bar: ranks, how to train the next one, specializations (UI/RankUp.lua).
+    bar:SetScript("OnMouseUp", function(self, button)
+        if button == "LeftButton" and self.open then self.open() end
     end)
     bar:SetScript("OnLeave", GameTooltip_Hide)
     -- "Train <rank>" button at the right end of the bar (UI/RankUp.lua), when the viewed
@@ -340,8 +345,9 @@ end
 function UI.SetRankBar(rank, max, tip, label, rankUp)
     local bar = frame and frame.rankBar
     if not bar then return end
-    bar.rankUp:SetShown(rankUp ~= nil)
-    if rankUp then
+    bar.rankUp:SetShown(rankUp ~= nil and rankUp.text ~= nil)
+    bar.open = rankUp and rankUp.onClick
+    if rankUp and rankUp.text then
         bar.rankUp:SetText(rankUp.text)
         bar.rankUp:SetWidth(math.max(90, bar.rankUp:GetFontString():GetStringWidth() + 24))
         bar.rankUp.action = rankUp.onClick

@@ -121,28 +121,21 @@ local function addBook(pane, nextRank, c, profName)
     pane:Gap()
 end
 
-local function addQuest(pane, nextRank, faction, c, isMe, profName)
-    pane:Add({ text = L.RANKUP_BY_QUEST, font = "GameFontNormal", color = W.GOLD })
-    local q = ns.Questie.RankQuest(nextRank.quest, faction)
-    if not q then
-        pane:Add({ indent = 1, text = L.RANKUP_QUEST_NAME:format(nextRank.quest) })
-        if not ns.Questie.Available() then pane:Add({ indent = 1, text = L.RANKUP_NEED_QUESTIE, color = W.GREY }) end
-        pane:Gap()
-        return
-    end
+-- A quest's lines: name (done?), requirements checked against the character, earlier quests,
+-- the next quest in its chain, and the quest giver's location. `base` is the indent.
+local function questDetails(pane, q, c, isMe, profName, skillLine, base)
     local done = isMe and Compat.Call("C_QuestLog.IsQuestFlaggedCompleted", q.id)
-    pane:Add({ indent = 1, text = L.RANKUP_QUEST_NAME:format(q.name),
+    pane:Add({ indent = base, text = L.RANKUP_QUEST_NAME:format(q.name),
         right = done and W.ColorText(W.GREEN, L.RANKUP_QUEST_DONE) or nil })
-    -- Its requirements, checked against the character where possible.
     if q.level and q.level > 1 then
         local ok = c and c.level and c.level >= q.level
-        pane:Add({ indent = 2, text = L.RANKUP_LEVEL:format(q.level),
+        pane:Add({ indent = base + 1, text = L.RANKUP_LEVEL:format(q.level),
             right = c and c.level and check(ok):WrapTextInColorCode(L.RANKUP_YOU:format(c.level)) or nil })
     end
     if q.skill and q.skill[2] then
-        local prof = c and c.professions[nextRank.skillLine or 0]
+        local prof = c and c.professions[skillLine or 0]
         local rank = prof and prof.rank
-        pane:Add({ indent = 2, text = L.REQUIRES_SKILL:format(profName, q.skill[2]),
+        pane:Add({ indent = base + 1, text = L.REQUIRES_SKILL:format(profName, q.skill[2]),
             right = rank and check(rank >= q.skill[2]):WrapTextInColorCode(L.RANKUP_YOU:format(rank)) or nil })
     end
     if q.rep then
@@ -152,16 +145,68 @@ local function addQuest(pane, nextRank, faction, c, isMe, profName)
         if isMe and barValue then
             right = check(barValue >= q.rep[2]):WrapTextInColorCode(L.RANKUP_YOU:format(standingName(barValue)))
         end
-        pane:Add({ indent = 2, text = text, right = right })
+        pane:Add({ indent = base + 1, text = text, right = right })
     end
     for _, pre in ipairs(q.prereqs) do
         local preDone = isMe and Compat.Call("C_QuestLog.IsQuestFlaggedCompleted", pre.id)
-        pane:Add({ indent = 2, text = L.RANKUP_PREREQ:format(pre.name),
+        pane:Add({ indent = base + 1, text = L.RANKUP_PREREQ:format(pre.name),
             right = isMe and check(preDone):WrapTextInColorCode(preDone and L.RANKUP_QUEST_DONE or L.RANKUP_QUEST_NOT_DONE) or nil })
     end
+    if q.next then pane:Add({ indent = base + 1, text = L.SPEC_THEN:format(q.next.name), color = W.GREY }) end
     if #q.givers > 0 then
-        pane:Add({ indent = 2, text = L.RANKUP_GIVER, color = W.GOLD })
-        for _, e in ipairs(q.givers) do npcLine(pane, e, 3) end
+        pane:Add({ indent = base + 1, text = L.RANKUP_GIVER, color = W.GOLD })
+        for _, e in ipairs(q.givers) do npcLine(pane, e, base + 2) end
+    end
+end
+
+local function addQuest(pane, nextRank, faction, c, isMe, profName)
+    pane:Add({ text = L.RANKUP_BY_QUEST, font = "GameFontNormal", color = W.GOLD })
+    local q = ns.Questie.RankQuest(nextRank.quest, faction)
+    if not q then
+        pane:Add({ indent = 1, text = L.RANKUP_QUEST_NAME:format(nextRank.quest) })
+        if not ns.Questie.Available() then pane:Add({ indent = 1, text = L.RANKUP_NEED_QUESTIE, color = W.GREY }) end
+    else
+        questDetails(pane, q, c, isMe, profName, nextRank.skillLine, 1)
+    end
+    pane:Gap()
+end
+
+-- Specializations (Data/Specializations.lua): the one chosen, or each option with its quest
+-- (from QuestieDB) and the requirements.
+local function addSpecs(pane, skill, c, isMe, profName)
+    local spec = ns.Specializations.For(skill)
+    if not spec then return end
+    pane:Add({ text = L.SPEC_HEADER, font = "GameFontNormal", color = W.GOLD })
+    local chosen = ns.Specializations.Chosen(c, skill)
+    if chosen then
+        pane:Add({ indent = 1, text = W.ColorText(W.GREEN, L.SPEC_CHOSEN:format(W.ClassName(c), chosen.name)) })
+        pane:Gap()
+        return
+    end
+    pane:Add({ indent = 1, text = L.SPEC_PICK_ONE, color = W.GREY })
+    local prof = c and c.professions[skill]
+    if spec.level then
+        local ok = c and c.level and c.level >= spec.level
+        pane:Add({ indent = 1, text = L.RANKUP_LEVEL:format(spec.level),
+            right = c and c.level and check(ok):WrapTextInColorCode(L.RANKUP_YOU:format(c.level)) or nil })
+    end
+    if spec.skill then
+        pane:Add({ indent = 1, text = L.REQUIRES_SKILL:format(profName, spec.skill),
+            right = prof and check((prof.rank or 0) >= spec.skill):WrapTextInColorCode(L.RANKUP_YOU:format(prof.rank or 0)) or nil })
+    end
+    local faction = c and c.faction
+    for _, o in ipairs(spec.options) do
+        pane:Gap(4)
+        pane:Add({ indent = 1, text = o.name, font = "GameFontHighlight" })
+        local q
+        local ids = o.quests and o.quests[faction]
+        if ids then q = ns.Questie.QuestInfo(ids[1], faction) end
+        if not q and o.questName then q = ns.Questie.RankQuest(o.questName, faction) end
+        if q then
+            questDetails(pane, q, c, isMe, profName, skill, 2)
+        else
+            pane:Add({ indent = 2, text = ns.Questie.Available() and L.SPEC_NO_QUEST or L.RANKUP_NEED_QUESTIE, color = W.GREY })
+        end
     end
     pane:Gap()
 end
@@ -175,17 +220,20 @@ function RankUp.Refresh()
     local def = ns.Professions.Get(skill)
     local profName = def and (L[def.name] or def.name) or ""
     local pane = popup.pane
+    local isMe = popup.charKey == ns.charKey
     pane:Begin()
     if not nextRank then
         popup.title:SetText(profName)
-        pane:Add({ text = L.RANKUP_NOTHING, color = W.GREY })
+        pane:Add({ text = prof and prof.max and prof.max >= 300 and L.RANKUP_ALL_DONE:format(W.ClassName(c), profName)
+            or L.RANKUP_NOTHING, color = W.GREY })
+        pane:Gap()
+        addSpecs(pane, skill, c, isMe, profName)
         pane:Finish()
         return
     end
     nextRank.skillLine = skill
     local rankName = L.RANK_NAMES[nextRank.rank]
     popup.title:SetText(L.RANKUP_TITLE:format(rankName, profName))
-    local isMe = popup.charKey == ns.charKey
     local who = W.ClassName(c)
     pane:Add({ text = L.RANKUP_RAISES:format(who, profName, nextRank.cap) })
     pane:Gap()
@@ -222,6 +270,7 @@ function RankUp.Refresh()
     if nextRank.book then addBook(pane, nextRank, c, profName) end
     if nextRank.quest then addQuest(pane, nextRank, faction, c, isMe, profName) end
     if not nextRank.book and not nextRank.quest then addTrainers(pane, skill, nextRank, faction, profName) end
+    addSpecs(pane, skill, c, isMe, profName)
     pane:Finish()
 end
 
@@ -241,14 +290,15 @@ function RankUp.Hide()
     if popup then popup:Hide() end
 end
 
--- The skill-bar button: { text, onClick } when the viewed character can train the next rank.
+-- For the skill bar: { text = "Train <rank>" when the viewed character can train the next
+-- rank (nil: no button), onClick = open this window (the bar itself is clickable too) }.
 function RankUp.ButtonFor(charKey, skill)
     local c = ns.db.characters[charKey]
     local prof = c and c.professions[skill]
+    if not prof then return nil end
     local ready, nextRank = ns.RankUps.Ready(skill, prof)
-    if not ready then return nil end
     return {
-        text = L.RANKUP_BUTTON:format(L.RANK_NAMES[nextRank.rank]),
+        text = ready and L.RANKUP_BUTTON:format(L.RANK_NAMES[nextRank.rank]) or nil,
         onClick = function() RankUp.Show(charKey, skill) end,
     }
 end

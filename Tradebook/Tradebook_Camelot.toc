@@ -27,6 +27,7 @@ Data\Zones.lua
 Data\Sources.lua
 Data\RankUps.lua
 Data\RankTrainers.lua
+Data\Specializations.lua
 Core\DB.lua
 Core\Characters.lua
 Core\Recipes.lua

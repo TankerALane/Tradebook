@@ -62,5 +62,12 @@ Needs a **full WoW restart** (new file `Core\Trainers.lua`).
 - [ ] Close it, `/reload`, and tell me: I'll read what was saved (every service the trainer lists, with level, skill and cost).
 - [ ] Open the rank-up window for that profession: trainers whose window you opened say **(teaches it)**, and ones that don't teach the rank are gone. The training cost is the real one (no "classic price").
 
+## H. Specializations and the clickable skill bar
+- [ ] Click the **skill bar** on any profession tab: the rank window opens even when no rank is ready (says "has trained every rank" at 300). Hover the bar: the tooltip says it's clickable.
+- [ ] **Engineering**: a **Specialization** section with level 30 / Engineering 200 checks, then Gnomish and Goblin Engineering, each with its quest (name, requirements, "Then: next quest", quest giver with waypoint). [Do the quests and givers look right?]
+- [ ] **Leatherworking**: Dragonscale, Elemental and Tribal with their quests.
+- [ ] A character who already has a specialization shows "<Name> is a Goblin Engineer..." instead. [Log in on one if you have one.]
+- [ ] Blacksmithing and Tailoring show no Specialization section.
+
 ## Notes / errors
 

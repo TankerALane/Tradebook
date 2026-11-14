@@ -63,8 +63,25 @@ function Scanner.Professions()
         end
     end
     Characters.UpdateProfessions(c, list, now())
+    Scanner.Specializations()
     Recipes.Invalidate()
     ns.Fire("PROFESSIONS_UPDATED")
+end
+
+-- Which specialization (Gnomish/Goblin Engineering, Dragonscale/Elemental/Tribal
+-- Leatherworking) the logged-in character has, from its spellbook: c.specs[skillLine] = spell.
+function Scanner.Specializations()
+    if ns.fake then return end
+    local c = ns.char
+    if not c or not ns.Specializations then return end
+    local specs = {}
+    for spell, skill in pairs(ns.Specializations.Spells()) do
+        if c.professions[skill] then
+            local known = Compat.Call("C_SpellBook.IsSpellKnown", spell) or Compat.Call("IsPlayerSpell", spell)
+            if known then specs[skill] = spell end
+        end
+    end
+    c.specs = specs
 end
 
 ---------------------------------------------------------------------------
@@ -378,6 +395,8 @@ end
 
 function Scanner.Start()
     ns.On("SKILL_LINES_CHANGED", function() ns.Throttle("professions", 1, Scanner.Professions) end)
+    -- A specialization is learned from a quest reward: re-read the spellbook.
+    ns.On("LEARNED_SPELL_IN_SKILL_LINE", function() ns.Throttle("specs", 1, Scanner.Specializations) end)
     ns.On("TRADE_SKILL_SHOW", function() ns.Throttle("recipes", 0.3, Scanner.Recipes) end)
     ns.On("TRADE_SKILL_LIST_UPDATE", function() ns.Throttle("recipes", 1, Scanner.Recipes) end)
     ns.On("TRADE_SKILL_DATA_SOURCE_CHANGED", function() ns.Throttle("recipes", 0.3, Scanner.Recipes) end)

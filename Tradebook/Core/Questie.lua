@@ -335,35 +335,49 @@ local function forFaction(races, faction)
     return false
 end
 
--- A rank-up quest by name for `faction`:
+-- One quest from QuestieDB for `faction`:
 -- { id, name, givers = { nearest NPC entries }, level, skill = { skillLine, value },
---   rep = { factionID, value }, prereqs = { { id, name } } } or nil.
+--   rep = { factionID, value }, prereqs = { { id, name } }, next = { id, name } } or nil when
+-- QuestieDB doesn't have it (or it's for the other faction).
+local function questInfo(id, faction)
+    if not (lib.Quest and get(lib.Quest, id, "name")) then return nil end
+    if not forFaction(get(lib.Quest, id, "requiredRaces"), faction) then return nil end
+    local started = get(lib.Quest, id, "startedBy")
+    local givers = nearestOf(type(started) == "table" and started[1] or nil, faction, "quest")
+    sortByDistance(givers)
+    local prereqs = {}
+    for _, key in ipairs({ "preQuestSingle", "preQuestGroup" }) do
+        for _, q in ipairs(get(lib.Quest, id, key) or {}) do
+            prereqs[#prereqs + 1] = { id = q, name = get(lib.Quest, q, "name") or ("#" .. q) }
+        end
+    end
+    local skill = get(lib.Quest, id, "requiredSkill")
+    local rep = get(lib.Quest, id, "requiredMinRep")
+    local nextID = get(lib.Quest, id, "nextQuestInChain")
+    return {
+        id = id, name = get(lib.Quest, id, "name"),
+        givers = { givers[1], givers[2], givers[3] },
+        level = get(lib.Quest, id, "requiredLevel"),
+        skill = type(skill) == "table" and { skill[1], skill[2] } or nil,
+        rep = type(rep) == "table" and { rep[1], rep[2] } or nil,
+        prereqs = prereqs,
+        next = nextID and nextID ~= 0 and { id = nextID, name = get(lib.Quest, nextID, "name") or ("#" .. nextID) } or nil,
+    }
+end
+
+function Questie.QuestInfo(id, faction)
+    if not Questie.Available() or not id then return nil end
+    return questInfo(id, faction)
+end
+
+-- A quest by name for `faction` (see questInfo), e.g. a rank-up quest.
 function Questie.RankQuest(name, faction)
     if not Questie.Available() or not lib.Quest then return nil end
     local ok, ids = pcall(lib.Quest.IdsByName, name)
     if not ok or type(ids) ~= "table" then return nil end
     for _, id in ipairs(ids) do
-        if forFaction(get(lib.Quest, id, "requiredRaces"), faction) then
-            local started = get(lib.Quest, id, "startedBy")
-            local givers = nearestOf(type(started) == "table" and started[1] or nil, faction, "quest")
-            sortByDistance(givers)
-            local prereqs = {}
-            for _, key in ipairs({ "preQuestSingle", "preQuestGroup" }) do
-                for _, q in ipairs(get(lib.Quest, id, key) or {}) do
-                    prereqs[#prereqs + 1] = { id = q, name = get(lib.Quest, q, "name") or ("#" .. q) }
-                end
-            end
-            local skill = get(lib.Quest, id, "requiredSkill")
-            local rep = get(lib.Quest, id, "requiredMinRep")
-            return {
-                id = id, name = get(lib.Quest, id, "name") or name,
-                givers = { givers[1], givers[2], givers[3] },
-                level = get(lib.Quest, id, "requiredLevel"),
-                skill = type(skill) == "table" and { skill[1], skill[2] } or nil,
-                rep = type(rep) == "table" and { rep[1], rep[2] } or nil,
-                prereqs = prereqs,
-            }
-        end
+        local q = questInfo(id, faction)
+        if q then return q end
     end
     return nil
 end

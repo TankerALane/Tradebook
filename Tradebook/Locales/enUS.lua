@@ -217,6 +217,13 @@ L.RANK_NAMES = { Journeyman = "Journeyman", Expert = "Expert", Artisan = "Artisa
 
 -- Rank-up pop-up
 L.RANKUP_BUTTON = "Train %s"
+L.RANKBAR_CLICK = "Click for how to train the next rank and specializations."
+L.RANKUP_ALL_DONE = "%s has trained every %s rank."
+L.SPEC_HEADER = "Specialization"
+L.SPEC_PICK_ONE = "Choose one, through its quest. Quest details from Questie's database."
+L.SPEC_CHOSEN = "%s is a %s."
+L.SPEC_THEN = "Then: %s"
+L.SPEC_NO_QUEST = "Its quest isn't in Questie's database."
 L.RANKUP_TITLE = "Train %s %s"
 L.RANKUP_RAISES = "Raises %s's maximum %s skill to %d."
 L.RANKUP_REQUIREMENTS = "Requirements"

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Specializations**: Engineering (Gnomish/Goblin) and Leatherworking (Dragonscale/Elemental/Tribal). The profession window (click the skill bar) shows the one a character has, or each option with its quest, quest giver and requirements.
+- Clicking the skill bar opens the rank window at any time (next rank, how to train it, specializations).
 - **Researched rank trainers**: the rank-up window lists the trainers that actually teach each rank in Forever (cross-checked across several Forever guides and trainer windows in game), the Artisan Cooking quest (Clamlette Surprise) and Journeyman Fishing's level 10.
 - **Trainers remember what they teach**: opening a profession trainer's window saves which ranks they teach and what it costs. The rank-up window then marks those trainers "(teaches it)", drops ones that don't, and shows the real cost.
 - **Browse professions you don't have**: a grey tab's guide page has **Show all recipes**, listing every recipe of that profession (from Forever's game data) with search and full details: materials, what they cost, and where to learn each recipe. **Back to the guide** returns.
