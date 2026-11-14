@@ -60,8 +60,16 @@ function W.Tooltip(owner, lines, anchor)
         GameTooltip:SetOwner(self, anchor or "ANCHOR_RIGHT")
         local list = type(lines) == "function" and lines(self) or lines
         if type(list) == "string" then list = { list } end
+        -- A line is text, or { left, right } for two columns (right column aligned, no wrap).
         for i, line in ipairs(list or {}) do
-            if i == 1 then GameTooltip:SetText(line, 1, 1, 1, 1, true) else GameTooltip:AddLine(line, nil, nil, nil, true) end
+            if type(line) == "table" then
+                if i == 1 then GameTooltip:SetText(" ") end
+                GameTooltip:AddDoubleLine(line[1], line[2], nil, nil, nil, 1, 1, 1)
+            elseif i == 1 then
+                GameTooltip:SetText(line, 1, 1, 1, 1, true)
+            else
+                GameTooltip:AddLine(line, nil, nil, nil, true)
+            end
         end
         GameTooltip:Show()
     end)

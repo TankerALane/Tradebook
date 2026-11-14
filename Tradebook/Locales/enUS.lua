@@ -103,8 +103,8 @@ L.SHOPPING_EMPTY = "You have everything you need."
 
 -- Prices (Auctionator)
 L.PRICE_PURCHASE_FROM = "Purchase from:"
-L.PRICE_AUCTION = "Auction: %s"
-L.PRICE_VENDOR = "Vendor: %s"
+L.PRICE_AUCTION = "Auction"
+L.PRICE_VENDOR = "Vendor"
 L.PRICE_AGE = "(%d |4day:days; old)"
 L.PRICE_NONE = "No price yet. Scan the auction house with Auctionator."
 L.COST = "Cost"

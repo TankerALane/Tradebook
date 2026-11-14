@@ -110,9 +110,9 @@ function Prices.TooltipLines(itemID)
     local lines = {}
     if p.auction then
         local age = p.age and p.age > 0 and (" " .. L.PRICE_AGE:format(p.age)) or ""
-        lines[#lines + 1] = INDENT .. L.PRICE_AUCTION:format(Prices.Money(p.auction)) .. age
+        lines[#lines + 1] = { INDENT .. L.PRICE_AUCTION, Prices.Money(p.auction) .. age }
     end
-    if p.vendor then lines[#lines + 1] = INDENT .. L.PRICE_VENDOR:format(Prices.Money(p.vendor)) end
+    if p.vendor then lines[#lines + 1] = { INDENT .. L.PRICE_VENDOR, Prices.Money(p.vendor) } end
     if #lines == 0 then return { L.PRICE_NONE } end
     table.insert(lines, 1, ns.W.ColorText(ns.W.GOLD, L.PRICE_PURCHASE_FROM))
     return lines

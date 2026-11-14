@@ -320,6 +320,7 @@ function Pane:AddWhereToGet(itemID, indent)
     if not data.located then self:Add({ indent = indent, text = L.WHERE_NO_POSITION, color = W.GREY }) end
 end
 
+local INDENT = "    "
 function Pane:ReagentTooltip(c, name, item)
     local lines = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank) }
     if item.fetch > 0 then lines[#lines + 1] = L.BANK_FETCH end
@@ -327,7 +328,7 @@ function Pane:ReagentTooltip(c, name, item)
     if where and #where.vendors > 0 then
         lines[#lines + 1] = " "
         lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY)
-        for _, e in ipairs(where.vendors) do lines[#lines + 1] = e.name .. "  " .. placeText(e) end
+        for _, e in ipairs(where.vendors) do lines[#lines + 1] = { INDENT .. e.name, placeText(e) } end
     end
     if ns.Prices.Available() then
         lines[#lines + 1] = " "
