@@ -339,8 +339,8 @@ ns.RecipeVendors = {
 [25129]={v={14921}}, -- Brilliant Wizard Oil
 [25130]={v={14921}}, -- Brilliant Mana Oil
 [25146]={v={12944}}, -- Transmute: Elemental Fire
-[25704]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033},u={8307,14738,242498,248198,251905,252083,254695,256731,259962,267000,270780,272646}}, -- Smoked Sagefish
-[25954]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033},u={8307,14738,242498,248198,251905,252083,254695,256731,259962,267000,270780,272646}}, -- Sagefish Delight
+[25704]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033,248198,256731},u={8307,14738,242498,251905,252083,254695,259962,267000,270780,272646}}, -- Smoked Sagefish
+[25954]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033,248198,256731},u={8307,14738,242498,251905,252083,254695,259962,267000,270780,272646}}, -- Sagefish Delight
 [26085]={v={6568,260570}}, -- Soul Pouch
 [26403]={q={8878},x=3}, -- Festival Dress
 [26407]={q={8878},x=3}, -- Festival Suit
@@ -834,8 +834,8 @@ ns.RecipeVendors = {
 [1266919]={v={248200,256733},fv=270,cr=5}, -- Emergency Field Cloak
 [1266920]={v={248200,256733},fv=270,cr=5}, -- Compact Critter Carrier
 [1266923]={v={248200,256733},fv=270,cr=5}, -- SAF-T Disposable Parachute
-[1266924]={u={248200,256733}}, -- Gnomish Army Knife
-[1266925]={u={248200,256733}}, -- Loot-A-Rang
+[1266924]={x=3}, -- Gnomish Army Knife
+[1266925]={x=3}, -- Loot-A-Rang
 [1266935]={v={248200,256733},fv=360,cr=5}, -- Ultrasafe Rechargeable Battery
 [1266936]={v={266901}}, -- Dimensional Transporter - Mt. Hyjal
 [1266937]={v={248200,256733},fv=360,cr=5}, -- Gnomish Poultryizer
@@ -1009,9 +1009,9 @@ ns.RecipeVendors = {
 [1317959]={v={248200,256733},fv=180,cr=4}, -- Satchel of Bronze Bombs
 [1317960]={v={248200,256733},fv=270,cr=5}, -- Satchel of Iron Bombs
 [1317961]={v={248200,256733},fv=270,cr=5}, -- Satchel of Dark Iron Bombs
-[1317962]={u={248197,256730},fv=30}, -- Plans: Cracked Blacksmith Hammer
-[1317963]={u={248197,256730},fv=60}, -- Plans: Mithril Blacksmith Hammer
-[1317964]={u={248197,256730},fv=90}, -- Plans: Arcanite Blacksmith Hammer
+[1317962]={v={248197,256730},fv=30}, -- Plans: Cracked Blacksmith Hammer
+[1317963]={v={248197,256730},fv=60}, -- Plans: Mithril Blacksmith Hammer
+[1317964]={v={248197,256730},fv=90}, -- Plans: Arcanite Blacksmith Hammer
 [1328948]={v={248199,256732},fv=180}, -- Enchant Boots - Speed
 }
 

@@ -108,6 +108,12 @@ Xizzer Fizzbolt's two schematics, Andorov's Obsidian plans. Re-check those in ga
 **Auction house:** recipe items that aren't soulbound (`ns.RecipeItemBound`, from ItemSparse
 Bonding 1) show their Auctionator price in the Source section.
 
+**Checked in game (`docs/research/seen_in_game.json`):** vendor windows read by Tradebook and
+checked against the data (2026-11-14: all 7 Durotar Supply and Logistics vendors, Kithas, Borya,
+Tamar, Darah, Xen'to, Hula'mahi, Tari'qa, Ronald Burch; every recipe in their windows was already
+in the data). The generator applies these last: seen selling = confirmed, not sold = removed.
+Alliance supply camp vendors mirror the Horde ones (identical lists in every source).
+
 **In game (Core/Merchants.lua):** every time a vendor window opens, Tradebook reads which
 recipe items it sells (`GetMerchantItemID`, `C_MerchantFrame.GetItemInfo().numAvailable`;
 -1 = unlimited, otherwise limited supply) and saves it in `TradebookDB.vendors`. Recipe items

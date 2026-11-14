@@ -30,6 +30,11 @@ def ids(xs):
 
 def main():
     data = json.load(open(SRC, encoding="utf-8"))["recipes"]
+    seen = {}
+    seen_path = os.path.join(ROOT, "docs", "research", "seen_in_game.json")
+    if os.path.exists(seen_path):
+        for o in json.load(open(seen_path, encoding="utf-8"))["observations"]:
+            seen.setdefault(o["recipe"], []).append(o)
     all_ids = [r["recipeSpellID"] for r in data]
     dupes = sorted({i for i in all_ids if all_ids.count(i) > 1})
     if dupes:
@@ -37,8 +42,17 @@ def main():
     names, quest_names = {}, {}
     lines = []
     for r in sorted(data, key=lambda r: r["recipeSpellID"]):
-        conf = sorted({v["npc"] for v in r["vendors"] if v["confirmed"]})
-        unconf = sorted({v["npc"] for v in r["vendors"] if not v["confirmed"]} - set(conf))
+        conf = {v["npc"] for v in r["vendors"] if v["confirmed"]}
+        unconf = {v["npc"] for v in r["vendors"] if not v["confirmed"]} - conf
+        # Checked in game (docs/research/seen_in_game.json) wins over everything else.
+        for o in seen.get(r["recipeSpellID"], []):
+            if o["sells"]:
+                conf.add(o["npc"]); unconf.discard(o["npc"])
+            else:
+                conf.discard(o["npc"]); unconf.discard(o["npc"])
+        conf, unconf = sorted(conf), sorted(unconf)
+        if r["status"] == "vendor" and not conf and not unconf and any(not o["sells"] for o in seen.get(r["recipeSpellID"], [])):
+            r = dict(r, status="none")
         # Drops and quests only where no vendor sells it (the classic data keeps the rest).
         other = r["status"] != "vendor" or r.get("set") == "deep"
         drops = sorted({d["npc"] for d in r["drops"]}) if other else []

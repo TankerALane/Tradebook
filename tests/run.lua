@@ -614,10 +614,11 @@ test("Merchant's Favor recipes: cost, camp reputation by faction, skill", functi
     eq(ns.Sources.Purchase(1254966, "Alliance").factionID, 2586, "Azeroth Commerce Authority")
     eq(ns.Sources.FactionName(2587), "Durotar Supply and Logistics")
     eq(ns.Sources.Required(1254966), 235)
-    -- Gnomish Army Knife: QuestieDB only, unconfirmed.
+    -- Gnomish Army Knife: QuestieDB said Fizzlefuse; his window (seen in game) doesn't have it.
     local c2, u2 = ns.Sources.Vendors(1266924, true)
-    eq(#c2, 0)
-    eq(#u2, 2)
+    eq(#c2 + #u2, 0)
+    -- Plans: Cracked Blacksmith Hammer: seen at Gor'mak, so confirmed (and his Alliance twin).
+    eq(table.concat(ns.Sources.Vendors(1317962, true), ","), "248197,256730")
 end)
 
 test("deep dive: drops with chances, world drops, not in Forever", function()
