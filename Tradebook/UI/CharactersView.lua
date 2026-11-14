@@ -38,7 +38,6 @@ local function createRow(row)
         local fs = W.Text(row, "GameFontHighlightSmall", justify)
         fs:SetWidth(width)
         fs:SetJustifyV("TOP")
-        fs:SetWordWrap(false)
         return fs
     end
     row.profs = column(110)

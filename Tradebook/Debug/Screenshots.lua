@@ -120,6 +120,7 @@ function Shots.Run()
         return
     end
     Shots.running = true
+    Shots.warned = false
     local wasFake = ns.Fake.IsOn()
     ns.Fake.On()
     ns.UI.Show()
@@ -155,6 +156,12 @@ function Shots.Run()
         if not ok then ns.Debug("shot step failed", s.name, err) end
         C_Timer.After(Shots.DELAY, function()
             record.steps[i] = { name = s.name, rect = frameRect(frame) }
+            -- Keep hover tooltips/highlights out of the pictures.
+            GameTooltip:Hide()
+            if frame:IsMouseOver() and not Shots.warned then
+                Shots.warned = true
+                ns.Print(L.SHOTS_MOUSE)
+            end
             Screenshot()
             C_Timer.After(1, function()
                 if s.after then pcall(s.after) end

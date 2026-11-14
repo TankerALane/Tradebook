@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets" / "screenshots"
-PAD = 6  # pixels of margin around the window
+PAD = 1  # pixels of margin around the window (more picks up chat text at the edges)
 
 
 def find_saved_variables(wow, account):
