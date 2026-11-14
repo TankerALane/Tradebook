@@ -37,8 +37,8 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] Hovering the row shows the item tooltip and the vendor; clicking sets a waypoint to the vendor.
 
 ## F. Vendors tab and sharing (fully restart WoW: new files)
-- [ ] A **Vendors** tab sits left of Legacy and Characters, with a 10px gap from the profession tabs.
-- [ ] Type "thread": items list with the nearest vendor, price and distance; click one to expand the 5 nearest vendors; **See all** shows the rest; clicking a vendor sets a waypoint.
+- [X] A **Vendors** tab sits left of Legacy and Characters, with a 10px gap from the profession tabs.
+- [X] Type "thread": items list with the nearest vendor, price and distance; click one to expand the 5 nearest vendors; **See all** shows the rest; clicking a vendor sets a waypoint.
 - [ ] The status line says how many vendors you've scanned, the community count, and Questie's item count (after a moment while it loads).
 - [ ] Filter: **Zone** lists zones from the results; choosing one with an empty search lists everything sold there. **Paid with: Tokens** shows the supply camp recipes with their Merchant's Favor cost. **Data from** narrows to your scans / community / Questie.
 - [ ] Standing near a vendor, clicking its row (Vendors tab, search results, or a mob under Dropped by) targets it and puts a purple diamond on it, as well as setting the waypoint.
