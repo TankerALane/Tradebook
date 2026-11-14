@@ -46,6 +46,9 @@ function Pane:Line()
     line.text:SetTextColor(1, 1, 1)
     line.right:SetText("")
     line.right:SetFontObject("GameFontHighlightSmall")
+    line.right:ClearAllPoints()
+    line.right:SetPoint("RIGHT", -4, 0)
+    line.right:SetJustifyH("RIGHT")
     line:SetScript("OnClick", nil)
     line:SetScript("OnEnter", nil)
     line:SetScript("OnLeave", nil)
@@ -56,7 +59,8 @@ end
 
 -- Add a line: { indent, itemID, text, right, color, font, onClick, toggle = bool|nil, expanded, onToggle,
 -- tooltip, large = true for a big icon row (reagents, like the default window's slots),
--- target = NPC name: clicking also targets it when nearby (secure button, out of combat) }
+-- target = NPC name: clicking also targets it when nearby (secure button, out of combat),
+-- rightAt = x: put the right value left-aligned at x instead of at the right edge }
 function Pane:Add(o)
     local line = self:Line()
     local height = o.large and LARGE_LINE_H or LINE_H
@@ -95,6 +99,11 @@ function Pane:Add(o)
     local fs = line.right
     local w = fs.GetUnboundedStringWidth and fs:GetUnboundedStringWidth() or fs:GetStringWidth()
     fs:SetWidth(math.ceil(w) + 2)
+    if o.rightAt then
+        fs:ClearAllPoints()
+        fs:SetPoint("LEFT", o.rightAt, 0)
+        fs:SetJustifyH("LEFT")
+    end
     if o.onClick then
         line:GetHighlightTexture():SetAlpha(1)
         line:SetScript("OnClick", o.onClick)
@@ -321,6 +330,7 @@ function Pane:AddWhereToGet(itemID, indent)
 end
 
 local INDENT = "    "
+local SKILLUP_VALUE_X = 184 -- fallback: the Shopping list button's left edge (2 + 180 + 4 - 2)
 function Pane:ReagentTooltip(c, name, item)
     local lines = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank) }
     if item.fetch > 0 then lines[#lines + 1] = L.BANK_FETCH end
@@ -458,7 +468,12 @@ function Pane:Refresh()
         -- Laid out like the other sections: colour (and what it means) on the left, the skill
         -- range on the right, starting from the character's rank; then where grey starts.
         local rank = viewed and viewed.rank
-        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD,
+        -- Values line up with the left edge of the Shopping list button below.
+        local col = SKILLUP_VALUE_X
+        if self.shopBtn:GetLeft() and self.content:GetLeft() then
+            col = math.floor(self.shopBtn:GetLeft() - self.content:GetLeft() + 0.5)
+        end
+        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD, rightAt = col,
             right = rank and W.ColorText(W.GREY, L.SKILLUP_YOUR_RANK:format(rank)) or nil })
         local from = rank
         for _, line in ipairs(lines) do
@@ -470,12 +485,12 @@ function Pane:Refresh()
             else
                 right = L.SKILLUP_NOW
             end
-            self:Add({ indent = 1, text = text, right = right })
+            self:Add({ indent = 1, text = text, right = right, rightAt = col })
             from = line.untilSkill
         end
         if from then
             self:Add({ indent = 1, text = W.DIFFICULTY[3]:WrapTextInColorCode(L.SKILLUP_COLORS[4]) .. "  "
-                .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[4]), right = L.SKILLUP_FROM:format(from) })
+                .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[4]), right = L.SKILLUP_FROM:format(from), rightAt = col })
         end
         self:Gap()
     end
