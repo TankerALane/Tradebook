@@ -55,4 +55,5 @@ jobs:
             Tradebook/Data/Zones.lua
             Tradebook/Data/VendorPrices.lua
             Tradebook/Data/RecipeItems.lua
+            Tradebook/Data/ItemPrices.lua
           delete-branch: true

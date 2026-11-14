@@ -16,8 +16,8 @@ local current = { tab = nil, view = nil }
 local hideKeepsDefault = false
 
 local CAMP = "camp"
-local LEGACY, CHARACTERS = "legacy", "characters" -- tabs at the far right
-local RIGHT_TABS = { [LEGACY] = true, [CHARACTERS] = true }
+local VENDORS, LEGACY, CHARACTERS = "vendors", "legacy", "characters" -- tabs at the far right
+local RIGHT_TABS = { [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
 local MIN_W, MIN_H = 940, 500
 
 ---------------------------------------------------------------------------
@@ -64,6 +64,7 @@ local function tabIDs()
     local ids = {}
     for _, p in ipairs(ns.Professions.list) do ids[#ids + 1] = p.id end
     ids[#ids + 1] = CAMP
+    ids[#ids + 1] = VENDORS
     ids[#ids + 1] = LEGACY
     ids[#ids + 1] = CHARACTERS
     return ids
@@ -73,6 +74,9 @@ local function tabTooltip(tab)
     GameTooltip:SetOwner(tab, "ANCHOR_TOP")
     if tab.key == CAMP then
         GameTooltip:SetText(L.CAMP_TITLE, 1, 1, 1)
+    elseif tab.key == VENDORS then
+        GameTooltip:SetText(L.TAB_VENDORS, 1, 1, 1)
+        GameTooltip:AddLine(L.TAB_VENDORS_TIP, 0.8, 0.8, 0.8, true)
     elseif tab.key == LEGACY then
         GameTooltip:SetText(L.TAB_LEGACY, 1, 1, 1)
     elseif tab.key == CHARACTERS then
@@ -108,6 +112,8 @@ local function buildTabs()
         tab.key = key
         if key == CAMP then
             tab:SetText(L.TAB_CAMP)
+        elseif key == VENDORS then
+            tab:SetText(L.TAB_VENDORS)
         elseif key == LEGACY then
             tab:SetText(L.TAB_LEGACY)
         elseif key == CHARACTERS then
@@ -261,6 +267,8 @@ function UI.SelectTab(key, fromClick)
     ns.db.settings.lastTab = key
     if key == CAMP then
         showView("camp")
+    elseif key == VENDORS then
+        showView("vendors")
     elseif key == LEGACY then
         showView("legacy")
     elseif key == CHARACTERS then

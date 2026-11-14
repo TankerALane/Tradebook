@@ -212,6 +212,71 @@ local function nearestOf(ids, faction, kind)
     return out
 end
 
+---------------------------------------------------------------------------
+-- Vendor items (the Vendors tab): every item QuestieDB lists a vendor for, read at runtime.
+---------------------------------------------------------------------------
+
+local vendorIndex          -- { { itemID, name, vendors = { npcID, ... } } } once built
+local vendorBuilding, vendorWaiting = false, {}
+local VENDOR_BATCH = 400   -- items read per frame while building (no hitch)
+
+-- Build (once) the list of items QuestieDB says a vendor sells, a batch per frame, then call
+-- done(index). Calls done(nil) when Questie isn't installed.
+function Questie.VendorItems(done)
+    if not Questie.Available() then done(nil) return end
+    if vendorIndex then done(vendorIndex) return end
+    vendorWaiting[#vendorWaiting + 1] = done
+    if vendorBuilding then return end
+    vendorBuilding = true
+    local ok, ids = pcall(lib.Item.GetAllIds)
+    if not ok or type(ids) ~= "table" then ids = {} end
+    local out, i = {}, 1
+    local function step()
+        local last = math.min(#ids, i + VENDOR_BATCH - 1)
+        for k = i, last do
+            local id = ids[k]
+            local vendors = get(lib.Item, id, "vendors")
+            if type(vendors) == "table" and #vendors > 0 then
+                out[#out + 1] = { itemID = id, name = get(lib.Item, id, "name"), vendors = vendors }
+            end
+        end
+        i = last + 1
+        if i <= #ids then
+            C_Timer.After(0, step)
+            return
+        end
+        vendorIndex, vendorBuilding = out, false
+        local waiting = vendorWaiting
+        vendorWaiting = {}
+        for _, fn in ipairs(waiting) do fn(vendorIndex) end
+    end
+    step()
+end
+
+-- Where a vendor NPC stands (nearest spawn): { name, sub, areaID, x, y, distance, zone,
+-- friendly }, or nil when QuestieDB has no spawn for it.
+local placeCache = {}
+function Questie.VendorPlace(id)
+    if not Questie.Available() then return nil end
+    local faction = Compat.Call("UnitFactionGroup", "player")
+    local _, bucket = here()
+    local hit = placeCache[id]
+    if hit and hit.bucket == bucket then return hit.place or nil end
+    local friendly = true
+    local e = nearestNpc(id, faction)
+    if not e then
+        e = nearestNpc(id, nil)
+        friendly = false
+    end
+    local place = false
+    if e then
+        place = { name = e.name, sub = e.sub, areaID = e.areaID, x = e.x, y = e.y, distance = e.distance,
+            zone = Questie.ZoneName(e.areaID), friendly = friendly }
+    end
+    placeCache[id] = { bucket = bucket, place = place }
+    return place or nil
+end
+
 -- Nearest spawn of any NPC (mobs too: no faction check), with its zone and coordinates, or nil.
 function Questie.NpcNearest(id)
     if not Questie.Available() then return nil end

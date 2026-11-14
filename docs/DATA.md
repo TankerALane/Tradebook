@@ -128,6 +128,21 @@ research file from the SavedVariables (`WTF/Account/<account>/SavedVariables/Tra
 To re-check after a patch: run `qdb_parse.py` on the new QuestieDB, `check.py`, redo the web
 pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors.py`.
 
+## Vendor database (Vendors tab)
+
+Three sources, best first (Core/VendorDB.lua):
+1. **Your scans** (`TradebookDB.vendors`): every vendor window you open, with every item, gold
+   price (with your reputation discount), token / currency cost, stock and your map position.
+2. **Community** (`Tradebook/Data/CommunityVendors.lua`): players' `/tb share` text, submitted on
+   the GitHub "Vendor data" issue form and merged with
+   `python -I scripts/merge_vendor_shares.py --issues` (or `--file`). The full history is in
+   `docs/research/community_vendors.json`. Per item the highest gold price is kept (the price
+   before reputation discounts) and the newest stock and cost; items are never dropped because a
+   later report lacks them (limited stock). Close the merged issues after a release.
+   Seeded 2026-11-14 from the maintainer's own scans (`scripts/research/seed_from_savedvars.lua`).
+3. **QuestieDB** at runtime (nothing copied; QuestieDB is GPL-3, Tradebook MIT), with the game's
+   base buy price (`Tradebook/Data/ItemPrices.lua`, from ItemSparse, weekly with the game data).
+
 ## Profession trainers (seen in game, Forever 1.60.1, Undercity, 2026-11-13)
 
 Read from the trainer windows by Core/Trainers.lua (all filters on). Costs shown were 10% lower

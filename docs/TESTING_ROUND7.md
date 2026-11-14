@@ -36,5 +36,13 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] Open a few vendors (any kind: food, reagents, the supply camp). Then type an item they sell in the search box (e.g. "thread", "water"): **Sold by vendors you've visited** lists it with the nearest vendor, price (or Merchant's Favor cost) and distance.
 - [ ] Hovering the row shows the item tooltip and the vendor; clicking sets a waypoint to the vendor.
 
+## F. Vendors tab and sharing (fully restart WoW: new files)
+- [ ] A **Vendors** tab sits left of Legacy and Characters, with a 10px gap from the profession tabs.
+- [ ] Type "thread": items list with the nearest vendor, price and distance; click one to expand the 5 nearest vendors; **See all** shows the rest; clicking a vendor sets a waypoint.
+- [ ] The status line says how many vendors you've scanned, the community count, and Questie's item count (after a moment while it loads).
+- [ ] Filter: **Zone** lists zones from the results; choosing one with an empty search lists everything sold there. **Paid with: Tokens** shows the supply camp recipes with their Merchant's Favor cost. **Data from** narrows to your scans / community / Questie.
+- [ ] Questie vendors show "(base)" prices; vendors you've opened show real prices.
+- [ ] **Share your scans** (or /tb share): a window with the share text selected and the GitHub form address. [Optional: paste it into the form to try it.]
+
 ## Notes / errors
 

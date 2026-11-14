@@ -27,6 +27,11 @@ SlashCmdList.TRADEBOOK = function(msg)
         ns.Takeover.UseDefault()
     elseif cmd == "options" or cmd == "settings" or cmd == "config" then
         ns.Settings.Open()
+    elseif cmd == "share" then
+        ns.Share.Show()
+    elseif cmd == "vendors" then
+        ns.UI.Show()
+        ns.UI.SelectTab("vendors")
     elseif cmd == "fake" then
         ns.Fake.Toggle()
     elseif cmd == "shots" then

@@ -24,6 +24,8 @@ Data\Camp.lua
 Data\SourceData.lua
 Data\RecipeVendors.lua
 Data\RecipeItems.lua
+Data\ItemPrices.lua
+Data\CommunityVendors.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua
@@ -48,6 +50,8 @@ Core\Questie.lua
 Core\Prices.lua
 Core\Trainers.lua
 Core\Merchants.lua
+Core\VendorDB.lua
+Core\Share.lua
 Core\Planner.lua
 Core\Waypoints.lua
 
@@ -61,6 +65,7 @@ UI\ProfessionView.lua
 UI\GuideView.lua
 UI\SearchView.lua
 UI\CharactersView.lua
+UI\VendorsView.lua
 UI\CampView.lua
 UI\LegacyView.lua
 UI\Shopping.lua

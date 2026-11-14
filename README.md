@@ -11,7 +11,8 @@ A profession companion for **World of Warcraft: Forever**.
 - Crafting from Tradebook for the character you're logged into: Craft, quantity, Craft All.
 - Every character's professions, skill levels and known recipes saved account-wide, with a fast **"Who can craft this?"** search.
 - Reagent counts from bags and bank, missing-reagent highlights, an expandable reagent tree and shopping lists.
-- Recipe sources for recipes you haven't learned yet, and skill-up ranges from Forever's own game data.
+- Where to get every recipe in Forever: trainers, vendors (with Merchant's Favor costs and reputation), the mobs that drop it with drop chances, world drops and quests; and the vendor price next to the auction house price.
+- A **Vendors** tab: search any item a vendor sells, nearest vendors first, with prices and waypoints. Vendor windows you open are scanned automatically.
 - **Train the next rank**: when a character can train Journeyman, Expert or Artisan, the requirements, cost, and the trainers, books or quests that teach it in Forever. Specializations (Gnomish/Goblin Engineering, Dragonscale/Elemental/Tribal Leatherworking) too.
 - **Browse any profession**, even one none of your characters have, and see which of your characters **could learn** a recipe.
 - A Camp tab for campsite recipes across all your characters.
@@ -27,6 +28,10 @@ Tradebook works on its own; these add more when installed:
 - **TomTom**: waypoints use TomTom's arrow (otherwise the game's map pin).
 - **Fellowship Ledger**: friends' profession ranks.
 - **Auctionator**: auction and vendor prices for materials, the cost to craft, what the result sells for and the profit, and sending a shopping list to Auctionator.
+
+## Help build the vendor database
+
+Type `/tb share` in game, copy the text and paste it into the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml). Shares are merged with `python -I scripts/merge_vendor_shares.py --issues` into `Tradebook/Data/CommunityVendors.lua` for the next release. Only vendor data is shared.
 
 ## Install
 

@@ -11,6 +11,8 @@ local PURE_FILES = {
     "Tradebook/Data/SourceData.lua",
     "Tradebook/Data/RecipeVendors.lua",
     "Tradebook/Data/RecipeItems.lua",
+    "Tradebook/Data/ItemPrices.lua",
+    "Tradebook/Data/CommunityVendors.lua",
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
@@ -25,6 +27,8 @@ local PURE_FILES = {
     "Tradebook/Core/Prices.lua",
     "Tradebook/Core/Trainers.lua",
     "Tradebook/Core/Merchants.lua",
+    "Tradebook/Core/VendorDB.lua",
+    "Tradebook/Core/Share.lua",
     "Tradebook/Core/Planner.lua",
     "Tradebook/Debug/FakeData.lua",
 }
@@ -702,6 +706,47 @@ test("vendor items: search finds the nearest vendor that sells it", function()
     eq(M.Distance(vendors[3].loc, pos), nil, "different continent")
     eq(#M.Search(vendors, "thread", nil), 1, "works without a position")
     eq(#M.Search(vendors, "", pos), 0)
+end)
+
+test("vendor database: sources merge, scanned first", function()
+    local V = ns.VendorDB
+    local items = {}
+    V.AddSaved(items, { [10] = { name = "Mine", loc = { m = 1, x = 1, y = 1 }, seenAt = 5,
+        items = { [2320] = { n = "Coarse Thread", p = 9, s = -1 } } } }, "scanned")
+    V.AddSaved(items, { [10] = { name = "Old", items = { [2320] = { n = "Coarse Thread", p = 10, s = -1 } } },
+        [11] = { name = "Theirs", items = { [2320] = { n = "Coarse Thread", p = 10, s = -1 } } } }, "community")
+    V.AddQuestie(items, { { itemID = 2320, name = "Coarse Thread", vendors = { 10, 11, 12 } } }, { [2320] = 10 })
+    local rec = items[2320]
+    eq(rec.vendors[10].source, "scanned")
+    eq(rec.vendors[10].price, 9, "your price wins")
+    eq(rec.vendors[11].source, "community")
+    eq(rec.vendors[12].source, "questie")
+    eq(rec.vendors[12].price, 10, "game data price")
+    eq(rec.vendors[12].priceSeen, false)
+    -- filters
+    eq(V.RowPasses({ zone = "Durotar", price = 1 }, { zone = "Barrens" }), false)
+    eq(V.RowPasses({ friendly = false }, { friendlyOnly = true }), false)
+    eq(V.RowPasses({ cost = "currency:3402:60" }, { payment = "gold" }), false)
+    eq(V.RowPasses({ cost = "currency:3402:60" }, { payment = "tokens" }), true)
+    eq(V.RowPasses({ source = "questie" }, { source = "scanned" }), false)
+end)
+
+test("share text round-trips and keeps nothing personal", function()
+    local S = ns.Share
+    local vendors = { [248201] = { name = "Pawani", loc = { m = 1413, x = 49.7, y = 29.4 }, seenAt = 100,
+        items = { [252941] = { n = "Pattern: Mystic Rugged Armor Kit", s = -1, c = "currency:3402:90" },
+            [2320] = { n = "Coarse Thread", p = 10, s = 5 } } },
+        [5] = { name = "Empty" } }
+    local text, n = S.Encode(vendors, "1.60.1", "v1")
+    eq(n, 1, "vendors without items are left out")
+    assert(text:find("^TBV1~1.60.1~v1~1"))
+    local back = assert(S.Decode(text))
+    eq(back[248201].name, "Pawani")
+    eq(back[248201].loc.x, 49.7)
+    eq(back[248201].items[252941].c, "currency:3402:90")
+    eq(back[248201].items[2320].p, 10)
+    eq(back[248201].items[2320].s, 5)
+    eq(S.Decode("nonsense"), nil)
 end)
 
 test("recipe items map to the recipe they teach", function()
