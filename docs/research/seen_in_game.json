@@ -161,6 +161,20 @@
    "sells": true,
    "date": "2026-11-14",
    "note": "Vance Undergloom: Formula: Enchant Chest - Minor Intellect (not in any source before)"
+  },
+  {
+   "recipe": 9202,
+   "npc": 4589,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Joseph Moore: Green Whelp Bracers"
+  },
+  {
+   "recipe": 23399,
+   "npc": 4589,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Joseph Moore: Barbaric Bracers not in his window (all his stock is unlimited); his wow-professions Forever page doesn't list it either"
   }
  ]
 }

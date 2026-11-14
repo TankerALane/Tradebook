@@ -111,7 +111,7 @@ ns.RecipeVendors = {
 [9072]={v={2679}}, -- Red Whelp Gloves
 [9146]={v={6731}}, -- Herbalist's Gloves
 [9147]={v={3537}}, -- Earthen Leather Shoulders
-[9202]={v={4225,7852,7854},u={4589,12245}}, -- Green Whelp Bracers
+[9202]={v={4225,4589,7852,7854},u={12245}}, -- Green Whelp Bracers
 [9269]={v={5175,6730}}, -- Gnomish Universal Remote
 [9273]={v={4086,12246}}, -- Goblin Jumper Cables
 [9513]={v={6779}}, -- Thistle Tea
@@ -260,7 +260,7 @@ ns.RecipeVendors = {
 [23077]={x=3}, -- Gyrofreeze Ice Reflector
 [23080]={x=3}, -- Powerful Seaforium Charge
 [23190]={v={3366,5128}}, -- Heavy Leather Ball
-[23399]={v={4225,4589}}, -- Barbaric Bracers
+[23399]={v={4225}}, -- Barbaric Bracers
 [23507]={v={14637}}, -- Snake Burst Firework
 [23628]={v={11557}}, -- Heavy Timbermaw Belt
 [23629]={v={11557}}, -- Heavy Timbermaw Boots
