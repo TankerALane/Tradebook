@@ -140,6 +140,20 @@
    "sells": false,
    "date": "2026-11-14",
    "note": "Nyalah Brightfire: Longjaw Mud Snapper not in her window (nor taught by her)"
+  },
+  {
+   "recipe": 25704,
+   "npc": 251905,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Zerril Softbreeze: Smoked Sagefish"
+  },
+  {
+   "recipe": 25954,
+   "npc": 251905,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Zerril Softbreeze: Sagefish Delight"
   }
  ]
 }
