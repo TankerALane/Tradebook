@@ -2194,30 +2194,6 @@
      ],
      "limited": false,
      "inClassicList": true
-    },
-    {
-     "npc": 3495,
-     "name": "Gagsprocket",
-     "zone": "The Barrens",
-     "faction": "Both",
-     "confirmed": false,
-     "evidence": [
-      "questie"
-     ],
-     "limited": false,
-     "inClassicList": true
-    },
-    {
-     "npc": 2683,
-     "name": "Namdo Bizzfizzle",
-     "zone": "Dun Morogh",
-     "faction": "Alliance",
-     "confirmed": false,
-     "evidence": [
-      "questie"
-     ],
-     "limited": false,
-     "inClassicList": true
     }
    ],
    "removed": [
@@ -2225,6 +2201,16 @@
      "npc": 41435,
      "name": "Fradd Swiftgear",
      "reason": "not in Forever"
+    },
+    {
+     "npc": 3495,
+     "name": "Gagsprocket",
+     "reason": "web sources say not sold"
+    },
+    {
+     "npc": 2683,
+     "name": "Namdo Bizzfizzle",
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -4946,36 +4932,20 @@
    "recipeItems": [
     6346
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 3346,
      "name": "Kithas",
-     "zone": "Orgrimmar",
-     "faction": "Horde",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     },
     {
      "npc": 5757,
      "name": "Lilly",
-     "zone": "Silverpine Forest",
-     "faction": "Horde",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [
@@ -6037,19 +6007,6 @@
    "status": "vendor",
    "vendors": [
     {
-     "npc": 3134,
-     "name": "Kzixx",
-     "zone": "Duskwood",
-     "faction": "Both",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
-    },
-    {
      "npc": 12246,
      "name": "Super-Seller 680",
      "zone": "Desolace",
@@ -6073,22 +6030,20 @@
      ],
      "limited": false,
      "inClassicList": true
+    }
+   ],
+   "removed": [
+    {
+     "npc": 3134,
+     "name": "Kzixx",
+     "reason": "web sources say not sold"
     },
     {
      "npc": 3537,
      "name": "Zixil",
-     "zone": "Hillsbrad Foothills",
-     "faction": "Both",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     }
    ],
-   "removed": [],
    "drops": [
     {
      "npc": 2371,
@@ -13312,10 +13267,9 @@
      "name": "Werg Thickblade",
      "zone": "Tirisfal Glades",
      "faction": "Horde",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -13720,10 +13674,9 @@
      "name": "Nergal",
      "zone": "Un'Goro Crater",
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -13747,12 +13700,11 @@
     {
      "npc": 9499,
      "name": "Plugger Spazzring",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14016,23 +13968,15 @@
    "recipeItems": [
     16221
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 11189,
      "name": "Qia",
-     "zone": "Winterspring",
-     "faction": "Both",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [],
@@ -14298,12 +14242,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14327,12 +14270,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14356,12 +14298,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14385,12 +14326,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14414,12 +14354,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -14443,12 +14382,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15119,23 +15057,15 @@
    "recipeItems": [
     18652
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 11185,
      "name": "Xizzer Fizzbolt",
-     "zone": "Winterspring",
-     "faction": "Both",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [],
@@ -15148,23 +15078,15 @@
    "recipeItems": [
     18656
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 11185,
      "name": "Xizzer Fizzbolt",
-     "zone": "Winterspring",
-     "faction": "Both",
-     "confirmed": true,
-     "evidence": [
-      "questie",
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "web sources say not sold"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [],
@@ -15485,12 +15407,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15514,12 +15435,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15543,12 +15463,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15572,12 +15491,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15601,12 +15519,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15630,12 +15547,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -15659,12 +15575,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -16352,12 +16267,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -16520,12 +16434,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -16549,12 +16462,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -17260,12 +17172,11 @@
     {
      "npc": 12944,
      "name": "Lokhtos Darkbargainer",
-     "zone": "Blackrock Depths",
+     "zone": null,
      "faction": "Both",
-     "confirmed": true,
+     "confirmed": false,
      "evidence": [
-      "questie",
-      "web:single"
+      "questie"
      ],
      "limited": false,
      "inClassicList": true
@@ -17319,7 +17230,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17345,7 +17256,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17371,7 +17282,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17397,7 +17308,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17423,7 +17334,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17449,7 +17360,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -17475,7 +17386,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19251,7 +19162,7 @@
     {
      "npc": 15176,
      "name": "Vargus",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19266,22 +19177,15 @@
    "recipeItems": [
     22219
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 15471,
      "name": "Lieutenant General Andorov",
-     "zone": "Ruins of Ahn'Qiraj",
-     "faction": "Both",
-     "confirmed": false,
-     "evidence": [
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "no Forever source"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [],
@@ -19300,7 +19204,7 @@
     {
      "npc": 15176,
      "name": "Vargus",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19315,22 +19219,15 @@
    "recipeItems": [
     22221
    ],
-   "status": "vendor",
-   "vendors": [
+   "status": "none",
+   "vendors": [],
+   "removed": [
     {
      "npc": 15471,
      "name": "Lieutenant General Andorov",
-     "zone": "Ruins of Ahn'Qiraj",
-     "faction": "Both",
-     "confirmed": false,
-     "evidence": [
-      "web:single"
-     ],
-     "limited": false,
-     "inClassicList": true
+     "reason": "no Forever source"
     }
    ],
-   "removed": [],
    "drops": [],
    "quests": [],
    "webOther": [],
@@ -19758,7 +19655,7 @@
     {
      "npc": 15176,
      "name": "Vargus",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19779,7 +19676,7 @@
     {
      "npc": 15176,
      "name": "Vargus",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19800,7 +19697,7 @@
     {
      "npc": 15176,
      "name": "Vargus",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19821,7 +19718,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19847,7 +19744,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],
@@ -19873,7 +19770,7 @@
     {
      "npc": 15293,
      "name": "Aendel Windspear",
-     "reason": "recipe notYet"
+     "reason": "web sources say not sold"
     }
    ],
    "drops": [],

@@ -22,9 +22,13 @@ for k, v in npcs.items():
         by_name.setdefault(name, int(k))
 
 BOOKS = {3413, 7732, 7924}
+# Seen in game: (recipe spell, NPC) the vendor doesn't sell.
+SEEN_NOT_SOLD = {(7776, 3346): "Kithas doesn't sell it (seen in game 2026-11-13)"}
 NOT_YET_NAMES = {"Heavy Obsidian Belt", "Light Obsidian Belt", "Ironvine Breastplate", "Ironvine Gloves",
                  "Ironvine Belt"}
 DISPUTED = {"Alchemist's Stone"}
+# Aendel Windspear's Cenarion Circle patterns (no recipe item in Forever's web databases).
+AENDEL = {24703, 24846, 24847, 24848, 24849, 24850, 24851, 28472, 28473, 28474}
 
 out = []
 for r in merged:
@@ -41,6 +45,9 @@ for r in merged:
             continue
         if r["recipeName"] == "Mooncloth" and name == "Evie Whirlbrew":
             continue
+        if (r["recipeSpellID"], npc) in SEEN_NOT_SOLD:
+            removed.append({"npc": npc, "name": name, "reason": SEEN_NOT_SOLD[(r["recipeSpellID"], npc)]})
+            continue
         evidence = []
         if e["questie"]: evidence.append("questie")
         if e["web"]: evidence.append("web:" + e["web"])
@@ -52,7 +59,7 @@ for r in merged:
     q = r.get("questieOther") or {}
     drops = [{"npc": x["id"], "name": x.get("name")} for x in q.get("npcDrops", []) if isinstance(x, dict)]
     quests = [{"quest": x["id"], "name": x.get("name")} for x in q.get("questRewards", []) if isinstance(x, dict)]
-    aendel = any(v["name"] == "Aendel Windspear" for v in vendors)
+    aendel = r["recipeSpellID"] in AENDEL
     if r["recipeName"] in DISPUTED:
         status = "disputed"
     elif r["recipeName"] in NOT_YET_NAMES or aendel:

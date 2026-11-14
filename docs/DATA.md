@@ -37,16 +37,21 @@ against two independent Forever sources:
    agreeing counts as "confirmed" on the web side.
 
 Rules (`scripts/research/merge_vendors.py`, then `make_research.py` writes the research file):
-- **Confirmed:** QuestieDB and the web agree, or two web sources agree.
+- **Confirmed:** QuestieDB and a web source that names the NPC agree, or two web sources agree.
+  Wowhead item pages only list zones ("purchasable in Orgrimmar"), so they never count as
+  naming a vendor (revised after Kithas turned out not to sell Enchant Chest - Lesser
+  Intellect, seen in game 2026-11-13).
 - **Unconfirmed** ("Vendor (unconfirmed)" in the addon): one source only.
 - **Removed:** only the classic list has it, the NPC isn't in Forever (later-expansion NPCs),
-  or the web sources show the vendor doesn't sell it (and QuestieDB doesn't list it).
-- Recipes no vendor sells show QuestieDB's drops and quests instead.
+  the vendor's own checked Forever page doesn't list it (and no web source names it), or it
+  was seen in game not to sell it (`SEEN_NOT_SOLD` in `make_research.py`).
+- Recipes no vendor sells show QuestieDB's drops and quests instead, and "No vendor is known
+  to sell this in WoW Forever."
 
-Result: 283 recipes with a vendor (most confirmed; 51 vendor entries unconfirmed), 22 with no
-vendor in Forever (drops or quests: Dig Rat Stew, Festival Dress/Suit, the firework launchers,
-Runic Plate, the four flasks, several enchants), 74 classic vendors removed, 66 Forever vendors
-added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Stitch Pinwizzle, Kor'gar,
+Result: 277 recipes with a vendor (67 vendor entries unconfirmed), 28 with no known vendor in
+Forever (drops or quests: Dig Rat Stew, Festival Dress/Suit, the firework launchers, Runic
+Plate, the four flasks, several enchants and engineering schematics), 100 classic vendors
+removed, 65 Forever vendors added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Stitch Pinwizzle, Kor'gar,
 Fizzix Boomshot, Super-Seller 680, Vendor-Tron 1000, Balai Lok'Wein and others).
 
 Judgement calls:
@@ -56,9 +61,9 @@ Judgement calls:
 - Alchemist's Stone: one source says it's bought in Mount Hyjal (vendor unnamed), another that
   it can't be obtained. Shown as "sources disagree".
 - Expert Cookbook, "The Bass and You" and "Under Wraps": QuestieDB plus the rank research above.
-- Worth checking in game: Lokhtos Darkbargainer's Blackrock Depths patterns (QuestieDB only,
-  zone matches on Wowhead), Gelvas Grimegate for Steam Tonk Controller and Andorov's Obsidian
-  plans (web only).
+- Worth checking in game: Lokhtos Darkbargainer's Blackrock Depths patterns and plans
+  (QuestieDB only, zone matches on Wowhead) and Gelvas Grimegate for Steam Tonk Controller
+  (web only). Andorov's Obsidian plans have only a Wowhead zone listing, so no vendor is shown.
 
 To re-check after a patch: run `qdb_parse.py` on the new QuestieDB, `check.py`, redo the web
 pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors.py`.

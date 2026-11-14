@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "docs", "research", "recipe_vendors.json")
 OUT = os.path.join(ROOT, "Tradebook", "Data", "RecipeVendors.lua")
 
-STATUS = {"vendor": None, "none": None, "notYet": 1, "disputed": 2}
+STATUS = {"vendor": None, "none": 3, "notYet": 1, "disputed": 2}
 
 
 def lua_str(s):
@@ -55,7 +55,8 @@ def main():
         "-- web sources; see docs/DATA.md). [recipeID] = {",
         "--   v = vendors confirmed by two sources, u = vendors from one source (unconfirmed),",
         "--   d = NPCs that drop the recipe, q = quests that reward it (QuestieDB Forever),",
-        "--   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree }",
+        "--   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree,",
+        "--       3 no vendor is known to sell it in Forever }",
         "",
         "local _, ns = ...",
         "",

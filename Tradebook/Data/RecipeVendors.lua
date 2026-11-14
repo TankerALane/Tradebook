@@ -7,7 +7,8 @@
 -- web sources; see docs/DATA.md). [recipeID] = {
 --   v = vendors confirmed by two sources, u = vendors from one source (unconfirmed),
 --   d = NPCs that drop the recipe, q = quests that reward it (QuestieDB Forever),
---   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree }
+--   x = 1 the recipe item doesn't seem to be in Forever yet, 2 sources disagree,
+--       3 no vendor is known to sell it in Forever }
 
 local _, ns = ...
 
@@ -44,7 +45,7 @@ ns.RecipeVendors = {
 [3870]={v={2394,2669,12246}}, -- Dark Silk Shirt
 [3873]={v={2663}}, -- Black Swashbuckler's Shirt
 [3939]={v={2682,6730}}, -- Lovingly Crafted Boomstick
-[3952]={v={2682},u={2683,3495}}, -- Minor Recombobulator
+[3952]={v={2682}}, -- Minor Recombobulator
 [3957]={v={2684,12246}}, -- Ice Deflector
 [3969]={v={2687}}, -- Mechanical Dragonling
 [3971]={v={6777}}, -- Gnomish Cloaking Device
@@ -56,7 +57,7 @@ ns.RecipeVendors = {
 [6414]={v={3081}}, -- Roasted Kodo Meat
 [6415]={v={4200}}, -- Fillet of Frenzy
 [6416]={v={3482}}, -- Strider Stew
-[6417]={q={862}}, -- Dig Rat Stew
+[6417]={q={862},x=3}, -- Dig Rat Stew
 [6418]={v={3482}}, -- Crispy Lizard Tail
 [6419]={v={3960,12245}}, -- Lean Venison
 [6501]={v={4305,4307}}, -- Clam Chowder
@@ -86,7 +87,7 @@ ns.RecipeVendors = {
 [7753]={v={66,1684,3027,4265,4574,5162,5748,5940,257006}}, -- Longjaw Mud Snapper
 [7754]={v={1684}}, -- Loch Frenzy Delight
 [7755]={v={2383,2397,3027,3029,3497,4553,5494,260487}}, -- Bristle Whisker Catfish
-[7776]={v={3346,5757}}, -- Enchant Chest - Lesser Intellect
+[7776]={x=3}, -- Enchant Chest - Lesser Intellect
 [7793]={v={3012,3346,5158},u={5758}}, -- Enchant 2H Weapon - Lesser Intellect
 [7827]={v={3178,3333,3497,4305,4307,4553,5494,5748,5942,10118,260487}}, -- Rainbow Fin Albacore
 [7828]={v={2383,2664,3178,3333,4307,4574,5162,12033,12962}}, -- Rockscale Cod
@@ -105,7 +106,7 @@ ns.RecipeVendors = {
 [9147]={v={3537}}, -- Earthen Leather Shoulders
 [9202]={v={4225,7852,7854},u={4589,12245}}, -- Green Whelp Bracers
 [9269]={v={5175,6730}}, -- Gnomish Universal Remote
-[9273]={v={3134,3537,4086,12246}}, -- Goblin Jumper Cables
+[9273]={v={4086,12246}}, -- Goblin Jumper Cables
 [9513]={v={6779}}, -- Thistle Tea
 [9937]={v={8161,8176}}, -- Mithril Plate Bracers
 [10013]={v={11278}}, -- Ebon Shiv
@@ -145,26 +146,26 @@ ns.RecipeVendors = {
 [15933]={v={2803,2806,11187}}, -- Monster Omelet
 [15935]={v={2118}}, -- Crispy Bat Wing
 [16661]={v={11278}}, -- Storm Gauntlets
-[16664]={d={4366}}, -- Runic Plate Shoulders
-[16665]={d={1836}}, -- Runic Plate Boots
-[16726]={d={4364}}, -- Runic Plate Helm
-[16732]={d={1885}}, -- Runic Plate Leggings
+[16664]={d={4366},x=3}, -- Runic Plate Shoulders
+[16665]={d={1836},x=3}, -- Runic Plate Boots
+[16726]={d={4364},x=3}, -- Runic Plate Helm
+[16732]={d={1885},x=3}, -- Runic Plate Leggings
 [16969]={v={11278}}, -- Ornate Thorium Handaxe
 [16971]={v={11278}}, -- Huge Thorium Battleaxe
-[16992]={}, -- Frostguard
+[16992]={x=3}, -- Frostguard
 [17187]={v={5594}}, -- Transmute: Arcanite
 [17554]={v={3348,5178}}, -- Elixir of Greater Defense
 [17559]={v={10856,10857,11536}}, -- Transmute: Air to Fire
 [17560]={v={9499}}, -- Transmute: Fire to Earth
 [17561]={v={11557}}, -- Transmute: Earth to Water
 [17562]={v={11278}}, -- Transmute: Water to Air
-[17576]={d={1812,1813}}, -- Greater Nature Protection Potion
+[17576]={d={1812,1813},x=3}, -- Greater Nature Protection Potion
 [17580]={v={11278}}, -- Major Mana Potion
 [17632]={x=2}, -- Alchemist's Stone
-[17635]={d={10363}}, -- Flask of the Titans
-[17636]={d={10813}}, -- Flask of Distilled Wisdom
-[17637]={d={10508}}, -- Flask of Supreme Power
-[17638]={d={10339}}, -- Flask of Chromatic Resistance
+[17635]={d={10363},x=3}, -- Flask of the Titans
+[17636]={d={10813},x=3}, -- Flask of Distilled Wisdom
+[17637]={d={10508},x=3}, -- Flask of Supreme Power
+[17638]={d={10339},x=3}, -- Flask of Chromatic Resistance
 [18238]={v={8137}}, -- Spotted Yellowtail
 [18239]={v={2664}}, -- Cooked Glossy Mightfish
 [18240]={v={8137}}, -- Grilled Squid
@@ -187,20 +188,20 @@ ns.RecipeVendors = {
 [19061]={v={7852},u={7854}}, -- Living Shoulders
 [19062]={v={12958}}, -- Ironfeather Shoulders
 [19066]={v={11189}}, -- Frostsaber Boots
-[19067]={v={12942,12943}}, -- Stormshroud Pants
+[19067]={v={12942},u={12943}}, -- Stormshroud Pants
 [19068]={v={11557}}, -- Warbear Harness
 [19077]={v={12957}}, -- Blue Dragonscale Breastplate
 [19080]={v={11557}}, -- Warbear Woolies
-[19084]={v={12959}}, -- Devilsaur Gauntlets
-[19085]={v={9499}}, -- Black Dragonscale Breastplate
+[19084]={u={12959}}, -- Devilsaur Gauntlets
+[19085]={u={9499}}, -- Black Dragonscale Breastplate
 [19088]={v={12956}}, -- Heavy Scorpid Helm
-[19097]={d={6556,6557,6559,9477}}, -- Devilsaur Leggings
+[19097]={d={6556,6557,6559,9477},x=3}, -- Devilsaur Leggings
 [19814]={v={11185,260565}}, -- Masterwork Target Dummy
 [19815]={v={11185}}, -- Delicate Arcanite Converter
-[19830]={d={7437}}, -- Arcanite Dragonling
+[19830]={d={7437},x=3}, -- Arcanite Dragonling
 [20015]={v={12022}}, -- Enchant Cloak - Superior Defense
 [20017]={v={4229,4561}}, -- Enchant Shield - Greater Stamina
-[20026]={v={11189}}, -- Enchant Chest - Major Stamina
+[20026]={x=3}, -- Enchant Chest - Major Stamina
 [20051]={v={12022}}, -- Runed Arcanite Rod
 [20626]={v={8139},u={255895}}, -- Undermine Clam Chowder
 [20848]={v={12944}}, -- Flarecore Mantle
@@ -208,12 +209,12 @@ ns.RecipeVendors = {
 [20853]={u={12944}}, -- Corehound Boots
 [20854]={u={12944}}, -- Molten Helm
 [20855]={u={12944}}, -- Black Dragonscale Boots
-[20872]={v={12944}}, -- Fiery Chain Girdle
-[20873]={v={12944}}, -- Fiery Chain Shoulders
-[20874]={v={12944}}, -- Dark Iron Bracers
-[20876]={v={12944}}, -- Dark Iron Leggings
-[20890]={v={12944}}, -- Dark Iron Reaver
-[20897]={v={12944}}, -- Dark Iron Destroyer
+[20872]={u={12944}}, -- Fiery Chain Girdle
+[20873]={u={12944}}, -- Fiery Chain Shoulders
+[20874]={u={12944}}, -- Dark Iron Bracers
+[20876]={u={12944}}, -- Dark Iron Leggings
+[20890]={u={12944}}, -- Dark Iron Reaver
+[20897]={u={12944}}, -- Dark Iron Destroyer
 [20916]={v={2383,2664,3178,3333,4307,4574,5162,12033,12962}}, -- Mithril Headed Trout
 [21143]={v={13420,13429,13432,13433,13435}}, -- Gingerbread Cookie
 [21144]={v={13420,13429,13432,13433,13435}}, -- Egg Nog
@@ -224,8 +225,8 @@ ns.RecipeVendors = {
 [23067]={v={1304,5175}}, -- Blue Firework
 [23068]={v={2838,3495}}, -- Green Firework
 [23069]={v={8131,260566}}, -- EZ-Thro Dynamite II
-[23077]={v={11185}}, -- Gyrofreeze Ice Reflector
-[23080]={v={11185}}, -- Powerful Seaforium Charge
+[23077]={x=3}, -- Gyrofreeze Ice Reflector
+[23080]={x=3}, -- Powerful Seaforium Charge
 [23190]={v={3366,5128}}, -- Heavy Leather Ball
 [23399]={v={4225,4589}}, -- Barbaric Bracers
 [23507]={v={14637}}, -- Snake Burst Firework
@@ -233,13 +234,13 @@ ns.RecipeVendors = {
 [23629]={v={11557}}, -- Heavy Timbermaw Boots
 [23632]={v={10856,10857,11536}}, -- Girdle of the Dawn
 [23633]={v={10856,10857,11536}}, -- Gloves of the Dawn
-[23636]={v={12944}}, -- Dark Iron Helm
-[23637]={v={12944}}, -- Dark Iron Gauntlets
-[23638]={v={12944}}, -- Black Amnesty
-[23639]={v={12944}}, -- Blackfury
-[23650]={v={12944}}, -- Ebon Hand
-[23652]={v={12944}}, -- Blackguard
-[23653]={v={12944}}, -- Nightfall
+[23636]={u={12944}}, -- Dark Iron Helm
+[23637]={u={12944}}, -- Dark Iron Gauntlets
+[23638]={u={12944}}, -- Black Amnesty
+[23639]={u={12944}}, -- Blackfury
+[23650]={u={12944}}, -- Ebon Hand
+[23652]={u={12944}}, -- Blackguard
+[23653]={u={12944}}, -- Nightfall
 [23662]={v={11557}}, -- Wisdom of the Timbermaw
 [23663]={v={11557}}, -- Mantle of the Timbermaw
 [23664]={v={10856,10857,11536}}, -- Argent Boots
@@ -255,12 +256,12 @@ ns.RecipeVendors = {
 [23709]={u={12944}}, -- Corehound Belt
 [23710]={u={12944}}, -- Molten Belt
 [23787]={v={10856,10857,11536}}, -- Powerful Anti-Venom
-[23799]={v={12944}}, -- Enchant Weapon - Strength
+[23799]={u={12944}}, -- Enchant Weapon - Strength
 [23800]={v={11557}}, -- Enchant Weapon - Agility
 [23801]={v={10856,10857,11536}}, -- Enchant Bracer - Mana Regeneration
 [23802]={v={10856,10857,11536}}, -- Enchant Bracer - Healing Power
-[23803]={v={12944}}, -- Enchant Weapon - Mighty Spirit
-[23804]={v={12944}}, -- Enchant Weapon - Mighty Intellect
+[23803]={u={12944}}, -- Enchant Weapon - Mighty Spirit
+[23804]={u={12944}}, -- Enchant Weapon - Mighty Intellect
 [24091]={v={14921}}, -- Bloodvine Vest
 [24092]={v={14921}}, -- Bloodvine Leggings
 [24093]={v={14921}}, -- Bloodvine Boots
@@ -281,7 +282,7 @@ ns.RecipeVendors = {
 [24366]={v={14921}}, -- Greater Dreamless Sleep Potion
 [24367]={v={14921}}, -- Living Action Potion
 [24368]={v={14921}}, -- Major Troll's Blood Elixir
-[24399]={v={12944}}, -- Dark Iron Boots
+[24399]={u={12944}}, -- Dark Iron Boots
 [24418]={v={4879}}, -- Heavy Crocolisk Stew
 [24703]={x=1}, -- Dreamscale Breastplate
 [24846]={x=1}, -- Spitfire Bracers
@@ -291,13 +292,13 @@ ns.RecipeVendors = {
 [24850]={x=1}, -- Sandstalker Gauntlets
 [24851]={x=1}, -- Sandstalker Breastplate
 [24940]={v={777}}, -- Black Whelp Tunic
-[25072]={d={15275}}, -- Enchant Gloves - Threat
-[25080]={}, -- Enchant Gloves - Superior Agility
+[25072]={d={15275},x=3}, -- Enchant Gloves - Threat
+[25080]={x=3}, -- Enchant Gloves - Superior Agility
 [25081]={v={15419},u={12944}}, -- Enchant Cloak - Greater Fire Resistance
 [25082]={v={15419},u={12944}}, -- Enchant Cloak - Greater Nature Resistance
-[25083]={}, -- Enchant Cloak - Stealth
-[25084]={d={15276}}, -- Enchant Cloak - Subtlety
-[25086]={}, -- Enchant Cloak - Dodge
+[25083]={x=3}, -- Enchant Cloak - Stealth
+[25084]={d={15276},x=3}, -- Enchant Cloak - Subtlety
+[25086]={x=3}, -- Enchant Cloak - Dodge
 [25124]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257020}}, -- Minor Wizard Oil
 [25125]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257020}}, -- Minor Mana Oil
 [25126]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257020}}, -- Lesser Wizard Oil
@@ -309,14 +310,14 @@ ns.RecipeVendors = {
 [25704]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033},u={8307,14738,242498,248198,251905,252083,254695,256731,259962,267000,270780,272646}}, -- Smoked Sagefish
 [25954]={v={2381,2397,2664,3027,3085,3400,4223,4265,4553,5160,5483,12033},u={8307,14738,242498,248198,251905,252083,254695,256731,259962,267000,270780,272646}}, -- Sagefish Delight
 [26085]={v={6568,260570}}, -- Soul Pouch
-[26403]={q={8878}}, -- Festival Dress
-[26407]={q={8878}}, -- Festival Suit
-[26442]={q={8877}}, -- Firework Launcher
-[26443]={q={8882}}, -- Firework Cluster Launcher
+[26403]={q={8878},x=3}, -- Festival Dress
+[26407]={q={8878},x=3}, -- Festival Suit
+[26442]={q={8877},x=3}, -- Firework Launcher
+[26443]={q={8882},x=3}, -- Firework Cluster Launcher
 [27585]={x=1}, -- Heavy Obsidian Belt
-[27586]={u={15471}}, -- Jagged Obsidian Shield
+[27586]={x=3}, -- Jagged Obsidian Shield
 [27588]={x=1}, -- Light Obsidian Belt
-[27590]={u={15471}}, -- Obsidian Mail Tunic
+[27590]={x=3}, -- Obsidian Mail Tunic
 [27658]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257020}}, -- Enchanted Mageweave Pouch
 [27659]={v={15419}}, -- Enchanted Runecloth Bag
 [27724]={v={15179}}, -- Cenarion Herb Bag
@@ -382,7 +383,6 @@ ns.RecipeVendorNames = {
 [2672]="Cowardly Crosby",
 [2679]="Wenna Silkbeard",
 [2682]="Fradd Swiftgear",
-[2683]="Namdo Bizzfizzle",
 [2684]="Rizz Loosebolt",
 [2685]="Mazk Snipeshot",
 [2687]="Gnaz Blunderflame",
@@ -567,7 +567,6 @@ ns.RecipeVendorNames = {
 [15275]="Emperor Vek'nilash",
 [15276]="Emperor Vek'lor",
 [15419]="Kania",
-[15471]="Lieutenant General Andorov",
 [242498]="Reagent Bot",
 [248198]="Aza'bek",
 [251905]="Zerril Softbreeze",

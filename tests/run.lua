@@ -584,6 +584,10 @@ test("Forever-checked recipe vendors replace the classic ones", function()
     -- 24846 Spitfire Bracers: not in Forever yet, no vendor.
     eq(ns.Sources.Raw(24846).x, 1)
     eq(ns.Sources.Get(24846)[1].text, ns.L.SOURCE_NOT_YET)
+    -- 7776 Enchant Chest - Lesser Intellect: Kithas doesn't sell it (seen in game).
+    conf, unconf = ns.Sources.Vendors(7776)
+    eq(#conf + #unconf, 0)
+    eq(ns.Sources.Get(7776)[1].text, ns.L.SOURCE_NO_VENDOR)
     -- 3957 Ice Deflector: adds the Forever vendor Super-Seller 680 (12246), confirmed.
     conf = ns.Sources.Vendors(3957)
     local has = false

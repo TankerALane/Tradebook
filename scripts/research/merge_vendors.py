@@ -3,8 +3,9 @@
 Per vendor of a recipe:
   confirmed  two independent Forever sources: Q and W, or W "confirmed" (2+ web sources)
   single     one Forever source (Q only, or W single only)
-  remove     only the classic list has it, a web source says it doesn't sell it (and Q doesn't
-             list it), or the NPC isn't in Forever
+  remove     only the classic list has it, a web source says it doesn't sell it (and no web
+             source names it), or the NPC isn't in Forever
+Wowhead item pages that only list a zone don't count as a source naming the vendor.
 Per recipe: the vendors left, and other ways to get it when none are left.
 """
 import json, os, sys, collections
@@ -48,6 +49,12 @@ for rid, L in local.items():
         e["zone"] = e["zone"] or x.get("zone"); e["faction"] = e["faction"] or x.get("faction")
     for x in W.get("vendors", []):
         e = entry(x.get("npcID"), x.get("name"))
+        srcs = x.get("sources") or []
+        if srcs and all("wowhead.com/forever/item" in u or "nether.wowhead.com" in u for u in srcs):
+            # Wowhead's item pages only list zones; a vendor in that zone isn't a source naming
+            # this NPC, so it doesn't count.
+            e["webZone"] = True
+            continue
         e["web"] = x.get("confidence") or "single"
         e["zone"] = e["zone"] or x.get("zone"); e["faction"] = e["faction"] or x.get("faction")
         if x.get("limited"): e["limited"] = True
@@ -60,7 +67,7 @@ for rid, L in local.items():
     for e in v.values():
         if e["questie"] and e["web"]: e["verdict"] = "confirmed"
         elif e["web"] == "confirmed" and not e.get("conflict"): e["verdict"] = "confirmed"
-        elif e["webNot"] and not e["questie"]: e["verdict"] = "remove"
+        elif e["webNot"]: e["verdict"] = "remove"  # the NPC's own Forever page doesn't list it
         elif e["notInForever"]: e["verdict"] = "remove"
         elif e["questie"] or e["web"]: e["verdict"] = "single"
         else: e["verdict"] = "remove"  # classic list only

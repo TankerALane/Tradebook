@@ -71,6 +71,7 @@ function Sources.Get(recipeID, resolve)
     local out = {}
     if s.x == 1 then out[#out + 1] = { text = L.SOURCE_NOT_YET, grey = true } end
     if s.x == 2 then out[#out + 1] = { text = L.SOURCE_DISPUTED, grey = true } end
+    if s.x == 3 then out[#out + 1] = { text = L.SOURCE_NO_VENDOR, grey = true } end
     if s.a == 1 then out[#out + 1] = { text = L.SOURCE_AUTO } end
     if s.t then
         out[#out + 1] = { text = L.SOURCE_TRAINER, right = L.SOURCE_LOCATIONS:format(s.tn or #s.t) }
