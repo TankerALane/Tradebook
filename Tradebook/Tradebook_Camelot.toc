@@ -26,6 +26,7 @@ Data\RecipeVendors.lua
 Data\RecipeItems.lua
 Data\ItemPrices.lua
 Data\CommunityVendors.lua
+Data\CommunityTrainers.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua

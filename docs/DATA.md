@@ -128,6 +128,24 @@ research file from the SavedVariables (`WTF/Account/<account>/SavedVariables/Tra
 To re-check after a patch: run `qdb_parse.py` on the new QuestieDB, `check.py`, redo the web
 pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors.py`.
 
+## "Import npc data" (maintainer's own scans)
+
+After `/reload` in game (SavedVariables are written then):
+1. `luajit scripts/research/seed_from_savedvars.lua <WTF/.../SavedVariables/Tradebook.lua> > scans.txt`
+   (vendors and trainers as /tb share text; older recipe-only vendor scans are converted).
+2. `python -I scripts/merge_vendor_shares.py --file scans.txt` (community vendors and trainers).
+3. `luajit scripts/research/check_npcs.lua <SavedVariables>`: every NPC visited vs the data.
+   Vendors: recipes in the window confirmed / new / data lists but not in window. Trainers: the
+   highest rank taught vs Data/RankTrainers.lua, recipes taught (trainer newly known for a recipe)
+   and the skill needed vs the classic data. Record vendor findings in
+   `docs/research/seen_in_game.json`, then `python -I scripts/build_recipe_vendors.py`.
+
+Trainer data in the addon (Core/Trainers.lua, Data/CommunityTrainers.lua): trainers read in game
+(yours or shared) list the recipes they teach under "Learn from" ("Trainer, seen teaching it"),
+give the **skill needed** (replacing the classic value) and the **training cost**, and count as
+confirmed rank trainers in the rank-up window. 2026-11-14: 24 trainers read; all ranks matched
+the researched list; 182 classic skill values were wrong (e.g. Linen Bag 5, not 45).
+
 ## Vendor database (Vendors tab)
 
 Three sources, best first (Core/VendorDB.lua):

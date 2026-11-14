@@ -1,5 +1,5 @@
 name: Vendor data
-description: Share the vendors Tradebook scanned for you (/tb share), so everyone gets them in the next update.
+description: Share the vendors and trainers Tradebook scanned for you (/tb share), so everyone gets them in the next update.
 title: "Vendor data"
 labels: ["vendor-data"]
 body:
@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for helping! In game, type **/tb share**, click **Select all**, copy (Ctrl+C) and paste below.
-        It only contains vendor data (vendor names, where they stand, what they sell and prices), nothing about your characters.
+        It only contains NPC data (vendor and trainer names, where they stand, what they sell or teach and prices), nothing about your characters.
   - type: textarea
     id: data
     attributes:

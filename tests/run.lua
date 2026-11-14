@@ -13,6 +13,7 @@ local PURE_FILES = {
     "Tradebook/Data/RecipeItems.lua",
     "Tradebook/Data/ItemPrices.lua",
     "Tradebook/Data/CommunityVendors.lua",
+    "Tradebook/Data/CommunityTrainers.lua",
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
@@ -747,6 +748,35 @@ test("share text round-trips and keeps nothing personal", function()
     eq(back[248201].items[2320].p, 10)
     eq(back[248201].items[2320].s, 5)
     eq(S.Decode("nonsense"), nil)
+end)
+
+test("trainers: services, recipes they teach, share round-trip", function()
+    local T = ns.Trainers
+    local name, skill, cost = T.ParseService("Spiced Wolf Meat||used|0|Cooking 10|45|")
+    eq(name, "Spiced Wolf Meat"); eq(skill, 10); eq(cost, 45)
+    -- a trainer (yours) teaching a recipe found by name in the recipe cache
+    local saved = ns.db
+    ns.db = { recipes = { [2539] = { n = "Spiced Wolf Meat", s = 185 } },
+        trainers = { [3399] = { name = "Zamja", skill = 185, seenAt = 1,
+            services = { "Spiced Wolf Meat||used|0|Cooking 10|50|", "Journeyman Cook||used|0|Cooking 50|500|" } } },
+        vendors = {} }
+    T.Invalidate()
+    local ok, err = pcall(function()
+        local by = T.ForRecipe(2539)
+        eq(by[3399].cost, 50)
+        eq(T.RecipeSkill(2539), 10)
+        eq(ns.Sources.Required(2539), 10, "trainer's skill beats the classic data")
+        eq(T.Get(3399).name, "Zamja")
+        -- share text carries trainers and their services
+        local text, nv, nt = ns.Share.Encode({}, "b", "v", ns.db.trainers)
+        eq(nv, 0); eq(nt, 1)
+        local _, trainers = ns.Share.Decode(text)
+        eq(trainers[3399].skill, 185)
+        eq(trainers[3399].services[1], "Spiced Wolf Meat||used|0|Cooking 10|50|")
+    end)
+    ns.db = saved
+    T.Invalidate()
+    assert(ok, err)
 end)
 
 test("recipe items map to the recipe they teach", function()

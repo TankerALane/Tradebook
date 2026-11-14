@@ -8,6 +8,8 @@
 --   TBV1~<game build>~<Tradebook version>~<vendors>
 --   V~<npcID>~<name>~<uiMapID>~<x>~<y>~<seenAt>
 --   I~<itemID>~<gold price or "">~<stock>~<cost or "">      (items of the V line above)
+--   T~<npcID>~<name>~<skillLineID>~<uiMapID>~<x>~<y>~<seenAt>   (a trainer)
+--   S~<name>~<subText>~<type>~<level>~<skill req>~<cost>~<prof>  (its services, as read)
 -- "~" and line breaks are removed from names.
 
 local _, ns = ...
@@ -24,14 +26,20 @@ local function clean(s)
     return (tostring(s or ""):gsub("[~\r\n|]", " "))
 end
 
--- PURE. The share text for a saved-vendors table. Only vendors seen with items are included.
-function Share.Encode(vendors, build, version)
+-- PURE. The share text for saved vendors and trainers. Only vendors seen with items and
+-- trainers with services are included.
+function Share.Encode(vendors, build, version, trainers)
     local ids = {}
     for npc, e in pairs(vendors or {}) do
         if e.items and next(e.items) then ids[#ids + 1] = npc end
     end
     table.sort(ids)
-    local out = { table.concat({ "TBV1", clean(build), clean(version), #ids }, "~") }
+    local tids = {}
+    for npc, t in pairs(trainers or {}) do
+        if t.services and #t.services > 0 then tids[#tids + 1] = npc end
+    end
+    table.sort(tids)
+    local out = { table.concat({ "TBV1", clean(build), clean(version), #ids, #tids }, "~") }
     for _, npc in ipairs(ids) do
         local e = vendors[npc]
         local loc = e.loc or {}
@@ -44,13 +52,25 @@ function Share.Encode(vendors, build, version)
             out[#out + 1] = table.concat({ "I", itemID, it.p or "", it.s or -1, clean(it.c or "") }, "~")
         end
     end
-    return table.concat(out, "\n"), #ids
+    for _, npc in ipairs(tids) do
+        local t = trainers[npc]
+        local loc = t.loc or {}
+        out[#out + 1] = table.concat({ "T", npc, clean(t.name), t.skill or "", loc.m or "", loc.x or "", loc.y or "",
+            t.seenAt or "" }, "~")
+        for _, line in ipairs(t.services) do
+            local f = {}
+            for field in (line .. "|"):gmatch("([^|]*)|") do f[#f + 1] = clean(field) end
+            out[#out + 1] = "S~" .. table.concat(f, "~")
+        end
+    end
+    return table.concat(out, "\n"), #ids, #tids
 end
 
--- PURE. Parse share text back: { [npcID] = { name, loc = { m, x, y }, seenAt, items } }, or nil
--- plus an error.
+-- PURE. Parse share text back: vendors { [npcID] = { name, loc = { m, x, y }, seenAt, items } }
+-- and trainers { [npcID] = { name, skill, loc, seenAt, services } }, or nil plus an error.
 function Share.Decode(text)
     local vendors, current = {}, nil
+    local trainers, trainer = {}, nil
     local header = false
     for line in (text or ""):gmatch("[^\r\n]+") do
         local f = {}
@@ -63,10 +83,18 @@ function Share.Decode(text)
             vendors[tonumber(f[2])] = current
         elseif f[1] == "I" and current and tonumber(f[2]) then
             current.items[tonumber(f[2])] = { p = tonumber(f[3]), s = tonumber(f[4]) or -1, c = f[5] ~= "" and f[5] or nil }
+        elseif f[1] == "T" and tonumber(f[2]) then
+            trainer = { name = f[3], skill = tonumber(f[4]), seenAt = tonumber(f[8]), services = {},
+                loc = tonumber(f[5]) and { m = tonumber(f[5]), x = tonumber(f[6]), y = tonumber(f[7]) } or nil }
+            trainers[tonumber(f[2])] = trainer
+            current = nil
+        elseif f[1] == "S" and trainer then
+            table.remove(f, 1)
+            trainer.services[#trainer.services + 1] = table.concat(f, "|")
         end
     end
     if not header then return nil, "missing TBV1 header" end
-    return vendors
+    return vendors, trainers
 end
 
 local sharePopup
@@ -128,12 +156,13 @@ function Share.Show()
     local p = ensure()
     local version = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
     local build = Compat.Call("GetBuildInfo") or "?"
-    local text, count = Share.Encode(ns.db.vendors, build, version)
+    local text, count, tcount = Share.Encode(ns.db.vendors, build, version, ns.db.trainers)
     p.text = text
     p.box:SetText(text)
     p.url:SetText(ISSUE_URL)
+    count = count + tcount
     p.help:SetText(count > 0 and L.SHARE_HELP or L.SHARE_NOTHING)
-    p.count:SetText(L.SHARE_COUNT:format(count, #text))
+    p.count:SetText(L.SHARE_COUNT:format(count - tcount, tcount, #text))
     p:Show()
     if count > 0 then
         p.box:SetFocus()

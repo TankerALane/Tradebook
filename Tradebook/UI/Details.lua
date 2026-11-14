@@ -573,6 +573,9 @@ function Pane:Refresh()
         if required then
             self:Add({ indent = 1, text = L.REQUIRES_SKILL:format(prof and (L[prof.name] or prof.name) or "", required) })
         end
+        -- What a trainer charges (seen in trainer windows; before reputation discounts).
+        local trainCost = ns.Trainers.RecipeCost(id)
+        if trainCost then self:Add({ indent = 1, text = L.SOURCE_TRAINING_COST, right = ns.Prices.Money(trainCost) }) end
         -- What buying it needs: Merchant's Favor and reputation (new Forever vendors).
         local buy = ns.Sources.Purchase(id, Compat.Call("UnitFactionGroup", "player"))
         if buy and buy.favor then self:Add({ indent = 1, text = L.SOURCE_COST_FAVOR:format(buy.favor) }) end
@@ -586,7 +589,7 @@ function Pane:Refresh()
         if near then
             self:Add({ indent = 1, text = L.LEARN_FROM, color = W.GOLD })
             for _, e in ipairs(near.list) do
-                local kind = e.kind == "trainer" and L.KIND_TRAINER or L.KIND_VENDOR
+                local kind = e.kind == "trainer" and (e.seen and L.KIND_TRAINER_SEEN or L.KIND_TRAINER) or L.KIND_VENDOR
                 if e.missing then
                     kind = L.KIND_VENDOR_NOT_IN_STOCK
                 elseif e.unconfirmed then

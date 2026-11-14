@@ -22,7 +22,7 @@ L.HELP_LINES = {
     "/tb chars - open the Characters view",
     "/tb search <text> - who can craft it?",
     "/tb vendors - find any item a vendor sells",
-    "/tb share - share your vendor scans with everyone",
+    "/tb share - share your vendor and trainer scans with everyone",
     "/tb default - use the default Professions window this time",
     "/tb options - open settings",
     "/tb debug - toggle diagnostics",
@@ -76,6 +76,7 @@ L.LEARN_FROM = "Nearest to learn from"
 L.KIND_TRAINER = "Trainer"
 L.KIND_VENDOR = "Vendor"
 L.KIND_VENDOR_UNCONFIRMED = "Vendor, unconfirmed"
+L.KIND_TRAINER_SEEN = "Trainer, seen teaching it"
 L.KIND_VENDOR_LIMITED = "Vendor, limited supply"
 L.KIND_VENDOR_NOT_IN_STOCK = "Vendor, not in stock when you visited"
 L.DROPPED_BY = "Dropped by"
@@ -158,6 +159,7 @@ L.SOURCE_NOT_IN_STOCK = "(not in stock when you visited)"
 L.SOURCE_COST_FAVOR = "Costs %d Merchant's Favor"
 L.SOURCE_REPUTATION = "Requires %s with %s"
 L.PURCHASE_PRICE = "Purchase price"
+L.SOURCE_TRAINING_COST = "Training cost"
 L.TAB_VENDORS = "Vendors"
 L.TAB_VENDORS_TIP = "Find any item a vendor sells: nearest vendor, price, and a waypoint."
 L.VENDORS_TITLE = "Vendors"
@@ -190,13 +192,13 @@ L.VENDOR_PAY_GOLD = "Gold"
 L.VENDOR_PAY_TOKENS = "Tokens or currency (Merchant's Favor...)"
 L.VENDOR_FILTER_SOURCE = "Data from"
 L.SHARE_BUTTON = "Share your scans"
-L.SHARE_TIP = "Send the vendors you've scanned so everyone gets them in the next update (/tb share)."
+L.SHARE_TIP = "Send the vendors and trainers you've scanned so everyone gets them in the next update (/tb share)."
 L.SHARE_TITLE = "Share vendor scans"
 L.SHARE_HELP = "1. Click Select all and copy (Ctrl+C).\n2. Open this address in your browser, paste into the form"
     .. " and submit (free GitHub account needed). Only vendor data is shared: names, places, items and prices."
-L.SHARE_NOTHING = "Nothing to share yet: open some vendors first (Tradebook scans them automatically)."
+L.SHARE_NOTHING = "Nothing to share yet: open some vendors or trainers first (Tradebook scans them automatically)."
 L.SHARE_SELECT = "Select all"
-L.SHARE_COUNT = "%d vendors, %d characters"
+L.SHARE_COUNT = "%d vendors, %d trainers, %d characters"
 L.SOLD_BY_VENDORS = "Sold by vendors you've visited (%d)"
 L.VENDOR_ITEM_TIP = "Sold by %s (%s)"
 L.VENDOR_ITEM_OTHERS = "Also sold by %d other vendor(s) you've visited."

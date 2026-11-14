@@ -48,4 +48,5 @@ files["tests/run.lua"] = { std = "lua51" }
 files["Tradebook/Data/SourceData.lua"] = { max_line_length = false } -- generated
 files["Tradebook/Data/RecipeVendors.lua"] = { max_line_length = false } -- generated
 files["Tradebook/Data/CommunityVendors.lua"] = { max_line_length = false } -- generated
+files["Tradebook/Data/CommunityTrainers.lua"] = { max_line_length = false } -- generated
 files["Tradebook/Data/ItemPrices.lua"] = { max_line_length = false } -- generated

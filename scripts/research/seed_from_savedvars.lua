@@ -1,5 +1,5 @@
--- Turn a Tradebook SavedVariables file into /tb share text (for seeding the community vendor
--- database from your own scans, including older scans that only recorded recipes).
+-- Turn a Tradebook SavedVariables file into /tb share text: vendors and trainers (for importing
+-- your own scans into the community database, including older scans that only recorded recipes).
 --   luajit scripts/research/seed_from_savedvars.lua <Tradebook.lua SavedVariables> > shares.txt
 -- Run from the repo root.
 local sv = assert(arg[1], "usage: seed_from_savedvars.lua <SavedVariables file>")
@@ -34,5 +34,5 @@ for npc, e in pairs(db.vendors or {}) do
     end
     vendors[npc] = { name = e.name, loc = e.loc, seenAt = e.seenAt, items = items }
 end
-local text = ns.Share.Encode(vendors, "1.60.1.70938", "seed")
+local text = ns.Share.Encode(vendors, "1.60.1.70938", "seed", db.trainers)
 io.write(text, "\n")

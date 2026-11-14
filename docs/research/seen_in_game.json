@@ -1,20 +1,145 @@
 {
  "about": "Vendor windows checked in game (Tradebook's vendor reading, TradebookDB.vendors). Applied last by scripts/build_recipe_vendors.py: sells=true makes the vendor confirmed (added if missing), sells=false removes it. 'mirror' rows are the Alliance supply camp vendor with the same list as the Horde one that was checked (all sources show the two camps sell identical lists).",
  "observations": [
-  {"recipe": 7776, "npc": 3346, "sells": false, "date": "2026-11-14", "note": "Kithas: Enchant Chest - Lesser Intellect (or classic 'Lesser Mana') not in his window; nothing he sells is limited"},
-  {"recipe": 1317962, "npc": 248197, "sells": true, "date": "2026-11-14", "note": "Gor'mak"},
-  {"recipe": 1317963, "npc": 248197, "sells": true, "date": "2026-11-14", "note": "Gor'mak"},
-  {"recipe": 1317964, "npc": 248197, "sells": true, "date": "2026-11-14", "note": "Gor'mak"},
-  {"recipe": 1317962, "npc": 256730, "sells": true, "date": "2026-11-14", "note": "mirror of Gor'mak (Stondry Darkhammer)"},
-  {"recipe": 1317963, "npc": 256730, "sells": true, "date": "2026-11-14", "note": "mirror of Gor'mak (Stondry Darkhammer)"},
-  {"recipe": 1317964, "npc": 256730, "sells": true, "date": "2026-11-14", "note": "mirror of Gor'mak (Stondry Darkhammer)"},
-  {"recipe": 25704, "npc": 248198, "sells": true, "date": "2026-11-14", "note": "Aza'bek: Smoked Sagefish"},
-  {"recipe": 25954, "npc": 248198, "sells": true, "date": "2026-11-14", "note": "Aza'bek: Sagefish Delight"},
-  {"recipe": 25704, "npc": 256731, "sells": true, "date": "2026-11-14", "note": "mirror of Aza'bek (Kalsey Sanden)"},
-  {"recipe": 25954, "npc": 256731, "sells": true, "date": "2026-11-14", "note": "mirror of Aza'bek (Kalsey Sanden)"},
-  {"recipe": 1266924, "npc": 248200, "sells": false, "date": "2026-11-14", "note": "Fizzlefuse: Gnomish Army Knife not sold (unlimited-stock vendor)"},
-  {"recipe": 1266925, "npc": 248200, "sells": false, "date": "2026-11-14", "note": "Fizzlefuse: Loot-A-Rang not sold"},
-  {"recipe": 1266924, "npc": 256733, "sells": false, "date": "2026-11-14", "note": "mirror of Fizzlefuse (Fritz Fizzle)"},
-  {"recipe": 1266925, "npc": 256733, "sells": false, "date": "2026-11-14", "note": "mirror of Fizzlefuse (Fritz Fizzle)"}
+  {
+   "recipe": 7776,
+   "npc": 3346,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Kithas: Enchant Chest - Lesser Intellect (or classic 'Lesser Mana') not in his window; nothing he sells is limited"
+  },
+  {
+   "recipe": 1317962,
+   "npc": 248197,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Gor'mak"
+  },
+  {
+   "recipe": 1317963,
+   "npc": 248197,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Gor'mak"
+  },
+  {
+   "recipe": 1317964,
+   "npc": 248197,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Gor'mak"
+  },
+  {
+   "recipe": 1317962,
+   "npc": 256730,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "mirror of Gor'mak (Stondry Darkhammer)"
+  },
+  {
+   "recipe": 1317963,
+   "npc": 256730,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "mirror of Gor'mak (Stondry Darkhammer)"
+  },
+  {
+   "recipe": 1317964,
+   "npc": 256730,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "mirror of Gor'mak (Stondry Darkhammer)"
+  },
+  {
+   "recipe": 25704,
+   "npc": 248198,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Aza'bek: Smoked Sagefish"
+  },
+  {
+   "recipe": 25954,
+   "npc": 248198,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Aza'bek: Sagefish Delight"
+  },
+  {
+   "recipe": 25704,
+   "npc": 256731,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "mirror of Aza'bek (Kalsey Sanden)"
+  },
+  {
+   "recipe": 25954,
+   "npc": 256731,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "mirror of Aza'bek (Kalsey Sanden)"
+  },
+  {
+   "recipe": 1266924,
+   "npc": 248200,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Fizzlefuse: Gnomish Army Knife not sold (unlimited-stock vendor)"
+  },
+  {
+   "recipe": 1266925,
+   "npc": 248200,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Fizzlefuse: Loot-A-Rang not sold"
+  },
+  {
+   "recipe": 1266924,
+   "npc": 256733,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "mirror of Fizzlefuse (Fritz Fizzle)"
+  },
+  {
+   "recipe": 1266925,
+   "npc": 256733,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "mirror of Fizzlefuse (Fritz Fizzle)"
+  },
+  {
+   "recipe": 25704,
+   "npc": 257006,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Nyalah Brightfire (Zephras Isle): Smoked Sagefish"
+  },
+  {
+   "recipe": 25954,
+   "npc": 257006,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Nyalah Brightfire (Zephras Isle): Sagefish Delight"
+  },
+  {
+   "recipe": 7751,
+   "npc": 257006,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Nyalah Brightfire: Brilliant Smallfish not in her window (nor taught by her)"
+  },
+  {
+   "recipe": 7752,
+   "npc": 257006,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Nyalah Brightfire: Slitherskin Mackerel not in her window (nor taught by her)"
+  },
+  {
+   "recipe": 7753,
+   "npc": 257006,
+   "sells": false,
+   "date": "2026-11-14",
+   "note": "Nyalah Brightfire: Longjaw Mud Snapper not in her window (nor taught by her)"
+  }
  ]
 }

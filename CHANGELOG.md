@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Trainers are scanned too.** Trainer windows you open (and trainers shared by other players) show which trainers teach each recipe ("Trainer, seen teaching it"), the real **skill needed** (the old classic values were often wrong: Linen Bag needs 5, not 45) and the **training cost**. **/tb share** includes your trainers.
 - Clicking a vendor in the Vendors tab or search results, or a mob under Dropped by, also **targets it and marks it with a purple diamond** when it's nearby, like trainers and vendors in recipe sources.
 - **Vendors tab**: search any item a vendor sells. Each item expands to its 5 nearest vendors (price in gold, Merchant's Favor or other currency, zone, distance; click for a waypoint) with **See all**. Filters: zone, only friendly vendors, only this continent, item type, paid with, and data source (your scans, community, Questie). Uses your scans, the community database and, with Questie installed, Questie's vendor lists with the game's base prices.
 - **/tb share**: share your vendor scans through a GitHub form so everyone gets them in the next update.

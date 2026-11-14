@@ -290,9 +290,19 @@ function Questie.RecipeSources(recipeID)
     if not Questie.Available() then return nil end
     local s = ns.Sources.Raw(recipeID) or {}
     local confirmed, unconfirmed, notes = ns.Sources.Vendors(recipeID)
-    if not (s.t or #confirmed > 0 or #unconfirmed > 0) then return nil end
+    -- Trainers seen teaching it (trainer windows read in game), then the bundled list.
+    local seenTrainers = ns.Trainers.ForRecipe(recipeID)
+    local trainerIDs, isSeen = {}, {}
+    for npc in pairs(seenTrainers or {}) do trainerIDs[#trainerIDs + 1] = npc; isSeen[npc] = true end
+    for _, npc in ipairs(type(s.t) == "table" and s.t or {}) do
+        if not isSeen[npc] then trainerIDs[#trainerIDs + 1] = npc end
+    end
+    if not (#trainerIDs > 0 or #confirmed > 0 or #unconfirmed > 0) then return nil end
     local faction = Compat.Call("UnitFactionGroup", "player")
-    local all = nearestOf(s.t, faction, "trainer")
+    local all = nearestOf(trainerIDs, faction, "trainer")
+    for _, e in ipairs(all) do
+        if isSeen[e.id] then e.seen, e.cost = true, seenTrainers[e.id].cost end
+    end
     for _, e in ipairs(nearestOf(confirmed, faction, "vendor")) do all[#all + 1] = e end
     for _, e in ipairs(nearestOf(unconfirmed, faction, "vendor")) do
         e.unconfirmed = true
@@ -396,8 +406,8 @@ function Questie.RankTrainers(skillLine, rank, faction)
         ids[#ids + 1] = id
         sure[id] = certain
     end
-    -- Read in game: certain.
-    for id, t in pairs(ns.db.trainers or {}) do
+    -- Read in game (yours or shared by other players): certain.
+    for id, t in pairs(ns.Trainers.All()) do
         if t.skill == skillLine and t.ranks[rank] then add(id, true) end
     end
     if known then

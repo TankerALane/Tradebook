@@ -176,6 +176,8 @@ end
 -- Required skill to learn (LibProfessionDB, Data/SourceData.lua), and whether it was
 -- borrowed from Vanilla.
 function Sources.Required(recipeID)
+    local seen = ns.Trainers and ns.Trainers.RecipeSkill and ns.Trainers.RecipeSkill(recipeID)
+    if seen then return seen, false end
     local r = ns.RecipeRequired and ns.RecipeRequired[recipeID]
     if not r then
         -- New Forever recipes: the skill from the checked vendor data.
