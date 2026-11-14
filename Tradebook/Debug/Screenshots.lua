@@ -14,7 +14,7 @@ ns.Screenshots = Shots
 Shots.DELAY = 1.5            -- seconds for the window to redraw before each picture
 Shots.WIDTH, Shots.HEIGHT = 1100, 640
 
-local TAILORING, LEATHERWORKING, ENGINEERING = 197, 165, 202
+local TAILORING, LEATHERWORKING, ENGINEERING, COOKING = 197, 165, 202, 185
 
 -- A recipe of the shown character with a reagent that can itself be crafted (so the reagent
 -- tree has something to show). Returns recipeID and that reagent's index.
@@ -100,6 +100,23 @@ Shots.PLAN = {
         profession(TAILORING)()
         ns.Shopping.ShowPinned()
     end, after = function() if ns.Shopping.Hide then ns.Shopping.Hide() end end },
+    -- Mirelle's Cooking is 75/75: the "Train Journeyman" window, nearest trainers.
+    { name = "rank-up", run = function()
+        profession(COOKING)()
+        ns.RankUp.Show(ns.charKey, COOKING)
+    end, after = function() ns.RankUp.Hide() end },
+    -- Engineering (nobody has it): every recipe, with materials and costs.
+    { name = "browse", run = function()
+        ns.UI.SetBrowse(ENGINEERING, true)
+        local view = ns.UI.views.profession
+        local items = view:BuildItems()
+        for _, item in ipairs(items) do
+            if not item.header and ns.db.recipes[item.id] and ns.db.recipes[item.id].r then
+                view:SelectRecipe(item.id)
+                break
+            end
+        end
+    end, after = function() ns.UI.SetBrowse(ENGINEERING, false) end },
 }
 
 -- Where the window is, as fractions of the screen (top-left origin), for cropping.
