@@ -523,6 +523,22 @@ test("fake data: four made-up characters, real data untouched", function()
     eq(ns.util.Count(db2.characters["Aldric-Fernhollow"].bags), ns.util.Count(aldric.bags), "same seed, same data")
 end)
 
+test("how a recipe is learned, and learnable now", function()
+    -- 2385 Brown Linen Vest: trainer recipe, required 10; 2387: learned with the profession
+    local k = ns.Sources.Kinds(2385)
+    eq(k.trainer, true)
+    eq(k.recipe, false)
+    eq(ns.Sources.Kinds(2387).auto, true)
+    eq(ns.Sources.Kinds(-1), nil)
+    local vendorRecipe
+    for id, s in pairs(ns.SourceData) do if s.v and not s.t then vendorRecipe = id break end end
+    eq(ns.Sources.Kinds(vendorRecipe).recipe, true, "vendor-sold recipe item")
+    eq(ns.Sources.Learnable(2385, 9), false)
+    eq(ns.Sources.Learnable(2385, 10), true)
+    eq(ns.Sources.Learnable(2385, nil), nil)
+    eq(ns.Sources.Learnable(-1, 100), nil, "unknown required skill")
+end)
+
 test("migration v3 clears old threshold mismatches", function()
     local db = ns.DB.Migrate({ version = 2, badThresholds = { [3852] = true } })
     eq(next(db.badThresholds), nil)

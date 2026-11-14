@@ -58,6 +58,22 @@ function Sources.Required(recipeID)
     return r[1], r[2] == true
 end
 
+-- How a recipe is learned: { trainer = bool, recipe = bool (a recipe item: vendor, drop,
+-- quest or container), auto = bool (learned with the profession) }, or nil when unknown.
+function Sources.Kinds(recipeID)
+    local s = ns.SourceData and ns.SourceData[recipeID]
+    if not s then return nil end
+    return { trainer = s.t ~= nil, recipe = (s.v or s.d or s.q or s.c) ~= nil, auto = s.a == 1 }
+end
+
+-- Can a character at `rank` learn this recipe now? true / false, or nil when the required
+-- skill isn't known.
+function Sources.Learnable(recipeID, rank)
+    local required = Sources.Required(recipeID)
+    if not required or not rank then return nil end
+    return rank >= required
+end
+
 -- Skill-up thresholds from the game itself (Data/SkillLevels.lua, regenerated per build by
 -- scripts/update_game_data.py): { skillLine, yellow, green, grey }. Scans still flag any
 -- recipe where they disagree with the game (db.badThresholds).

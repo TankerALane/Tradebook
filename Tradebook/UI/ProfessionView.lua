@@ -191,6 +191,16 @@ function View:BuildItems()
                 keep = false
             end
             if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
+            if keep and not learned then
+                -- Under "Not learned": learnable now, and how it's learned (trainer / recipe item).
+                if f.unlearnedLearnable and not ns.Sources.Learnable(id, p and p.rank) then keep = false end
+                if f.unlearnedTrainer or f.unlearnedRecipe then
+                    local kinds = ns.Sources.Kinds(id)
+                    if not (kinds and ((f.unlearnedTrainer and kinds.trainer) or (f.unlearnedRecipe and kinds.recipe))) then
+                        keep = false
+                    end
+                end
+            end
             local near = keep and byDistance and not learned and ns.Questie.RecipeSources(id)
             if near and near.best then
                 item.distance = near.best.distance
@@ -229,8 +239,8 @@ end
 ---------------------------------------------------------------------------
 
 -- Filters, with the defaults the red X on the Filter button restores.
-local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, haveMats = false,
-    skillup = false }
+local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
+    unlearnedTrainer = false, unlearnedRecipe = false, haveMats = false, skillup = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -251,6 +261,16 @@ local function resetFilters()
     View:RefreshList()
 end
 
+-- Shift a menu checkbox (box and label) one checkbox to the right, under its parent option.
+local function indent(item)
+    item:AddInitializer(function(button)
+        if button.leftTexture1 then
+            button.leftTexture1:ClearAllPoints()
+            button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
+        end
+    end)
+end
+
 local function buildFilterMenu(_, root)
     local f = ns.db.settings.filters
     local function add(text, key)
@@ -261,20 +281,19 @@ local function buildFilterMenu(_, root)
     end
     add(L.FILTER_LEARNED, "learned")
     add(L.FILTER_UNLEARNED, "unlearned")
-    -- Nearest first (under "Not learned"); needs Questie for NPC locations.
-    if ns.Questie.Available() then
-        local nearItem = root:CreateCheckbox(L.FILTER_NEAREST, function() return f.unlearnedNearest end, function()
-            f.unlearnedNearest = not f.unlearnedNearest
-            if f.unlearnedNearest then f.unlearned = true end
+    -- Options under "Not learned" (indented); ticking one turns "Not learned" on.
+    local function sub(text, key)
+        local item = root:CreateCheckbox(text, function() return f[key] end, function()
+            f[key] = not f[key]
+            if f[key] then f.unlearned = true end
             View:RefreshList()
         end)
-        nearItem:AddInitializer(function(button)
-            if button.leftTexture1 then
-                button.leftTexture1:ClearAllPoints()
-                button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
-            end
-        end)
+        indent(item)
     end
+    sub(L.FILTER_LEARNABLE, "unlearnedLearnable")
+    sub(L.FILTER_FROM_TRAINER, "unlearnedTrainer")
+    sub(L.FILTER_FROM_RECIPE, "unlearnedRecipe")
+    if ns.Questie.Available() then sub(L.FILTER_NEAREST, "unlearnedNearest") end -- needs NPC locations
     add(L.FILTER_CRAFTABLE, "haveMats")
     add(L.FILTER_SKILLUP, "skillup")
     -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.
@@ -286,13 +305,7 @@ local function buildFilterMenu(_, root)
             if f.skillupColors[i] then f.skillup = true end
             View:RefreshList()
         end)
-        -- Shift the whole item (checkbox and label) right, under "Gives skill-ups".
-        item:AddInitializer(function(button)
-            if button.leftTexture1 then
-                button.leftTexture1:ClearAllPoints()
-                button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
-            end
-        end)
+        indent(item) -- under "Gives skill-ups"
     end
 end
 
