@@ -473,19 +473,41 @@ function Pane:Refresh()
         if self.shopBtn:GetLeft() and self.content:GetLeft() then
             col = math.floor(self.shopBtn:GetLeft() - self.content:GetLeft() + 0.5)
         end
-        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD, rightAt = col,
+        -- Every range's "-" sits at one x (dashX), and the rank in the header is centred over it.
+        local function width(text)
+            self.measure = self.measure or self.content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+            self.measure:Hide()
+            self.measure:SetText(text)
+            return self.measure:GetStringWidth()
+        end
+        local dashX, prev = col, rank
+        for _, line in ipairs(lines) do
+            if prev and line.untilSkill then dashX = math.max(dashX, col + width(prev .. " ")) end
+            prev = line.untilSkill
+        end
+        local headerAt = col
+        if rank then
+            local label = L.SKILLUP_YOUR_RANK:format(rank)
+            local number = tostring(rank)
+            headerAt = dashX + width("-") / 2 - (width(label) - width(number) / 2)
+        end
+        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD, rightAt = math.floor(headerAt + 0.5),
             right = rank and W.ColorText(W.GREY, L.SKILLUP_YOUR_RANK:format(rank)) or nil })
         local from = rank
         for _, line in ipairs(lines) do
             local name = W.DIFFICULTY[line.colour]:WrapTextInColorCode(L.SKILLUP_COLORS[line.colour + 1])
             local text = name .. "  " .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[line.colour + 1])
             local right
-            if line.untilSkill then
-                right = from and L.SKILLUP_RANGE:format(from, line.untilSkill) or L.SKILLUP_UNTIL:format(line.untilSkill)
+            local at = col
+            if line.untilSkill and from then
+                right = L.SKILLUP_RANGE:format(from, line.untilSkill)
+                at = math.floor(dashX - width(from .. " ") + 0.5)
+            elseif line.untilSkill then
+                right = L.SKILLUP_UNTIL:format(line.untilSkill)
             else
                 right = L.SKILLUP_NOW
             end
-            self:Add({ indent = 1, text = text, right = right, rightAt = col })
+            self:Add({ indent = 1, text = text, right = right, rightAt = at })
             from = line.untilSkill
         end
         if from then
