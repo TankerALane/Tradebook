@@ -652,6 +652,13 @@ test("vendor windows: merging visits", function()
     eq(e.ever[7776], true, "still seen selling it once")
     eq(e.limited[7776], true)
     eq(e.seenAt, 200)
+    -- prices: kept per recipe, updated when listed again
+    e = M.Merge(e, "Kithas", { [7793] = -1 }, 300, { [7793] = 450 })
+    eq(e.prices[7793], 450)
+    e = M.Merge(e, "Kithas", { [7793] = -1 }, 400)
+    eq(e.prices[7793], 450, "kept when a visit has no price")
+    -- the game's buy price for recipe items (Smoked Sagefish 5s)
+    eq(ns.RecipeItemPrice[21099], 500)
 end)
 
 test("vendor windows: seen vendors confirm, missing ones are noted", function()

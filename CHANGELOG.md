@@ -3,7 +3,7 @@
 ## Unreleased
 
 - **Where to get recipes: deep dive.** Every recipe was checked against Forever sources. Recipe sources now list **who drops it** (top 5, with zone, level and drop chance from recorded loots, e.g. "11% (1 of 9)"; click for a waypoint), **world drops** with the mob level range, trainer and quest recipes, and **"Not available in WoW Forever"** for Season of Discovery leftovers. 302 recipes that said "Unknown source" now have one.
-- **Auction house price** for recipe items you can buy from other players (with Auctionator).
+- **Buy the recipe: vendor vs auction house.** Recipes a vendor sells for gold show the vendor price (what you saw in the vendor's window, with your reputation discount; otherwise Auctionator's or the game's base price) next to the auction house price, and mark the cheaper one.
 - **New Forever recipe vendors.** 461 recipes from WoW Forever's new vendors now show where to buy them: the Merchant's Favor supply camps (Durotar Supply and Logistics in the Barrens, Azeroth Commerce Authority in Redridge), Aisarra Nightmeadow, the Skyforged and Gustwoven quartermasters, the centaur quartermasters and more. Supply camp recipes show their **Merchant's Favor cost** and the **reputation** needed for your faction's camp.
 - Recipe sources (and vendor locations) now show for recipes you already know, too.
 - Quests in recipe sources show their name even before the game has loaded it ("Quest: Dig Rat Stew" instead of "Quest: #862").

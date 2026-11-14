@@ -6,7 +6,9 @@
 -- Saved account-wide in TradebookDB.vendors[npcID]:
 --   { name, seenAt, recipes = { [recipeID] = stock } (last visit; -1 unlimited),
 --     ever = { [recipeID] = true } (seen selling it on any visit),
---     limited = { [recipeID] = true } (seen with limited stock on any visit) }
+--     limited = { [recipeID] = true } (seen with limited stock on any visit),
+--     prices = { [recipeID] = copper } (gold price on the last visit it was listed, with your
+--       reputation discount; not for recipes bought with Merchant's Favor or other tokens) }
 -- Only vendors that sell a recipe item, or that the bundled data says sell one, are saved.
 -- A limited recipe that's sold out may be missing from the window until it restocks, so a
 -- missing recipe never removes a vendor: it's shown as "not in stock when you visited".
@@ -43,14 +45,17 @@ local function isDataVendor(id)
     return dataVendors[id] == true
 end
 
--- PURE. Merge one visit into a saved vendor entry (or a new one). seen = { [recipeID] = stock }.
-function Merchants.Merge(entry, name, seen, now)
+-- PURE. Merge one visit into a saved vendor entry (or a new one). seen = { [recipeID] = stock },
+-- prices = { [recipeID] = copper } (optional).
+function Merchants.Merge(entry, name, seen, now, prices)
     entry = entry or { ever = {}, limited = {} }
     entry.name = name or entry.name
     entry.seenAt = now
     entry.recipes = seen
     entry.ever = entry.ever or {}
     entry.limited = entry.limited or {}
+    entry.prices = entry.prices or {}
+    for recipeID, copper in pairs(prices or {}) do entry.prices[recipeID] = copper end
     for recipeID, stock in pairs(seen) do
         entry.ever[recipeID] = true
         if stock >= 0 then entry.limited[recipeID] = true end
@@ -58,12 +63,16 @@ function Merchants.Merge(entry, name, seen, now)
     return entry
 end
 
--- One item's stock: numAvailable (-1 unlimited), from the modern or the classic API.
+-- One item's stock (numAvailable, -1 unlimited) and gold price (nil when it costs tokens or
+-- currency such as Merchant's Favor), from the modern or the classic API.
 local function stockOf(i)
     local info = Compat.Call("C_MerchantFrame.GetItemInfo", i)
-    if type(info) == "table" then return info.numAvailable end
-    local _, _, _, _, numAvailable = Compat.Call("GetMerchantItemInfo", i)
-    return numAvailable
+    if type(info) == "table" then
+        local gold = not info.hasExtendedCost and info.price and info.price > 0 and info.price or nil
+        return info.numAvailable, gold
+    end
+    local _, _, price, _, numAvailable, _, _, extendedCost = Compat.Call("GetMerchantItemInfo", i)
+    return numAvailable, (not extendedCost and price and price > 0) and price or nil
 end
 
 local function itemIDOf(i)
@@ -81,18 +90,20 @@ local function read()
     if not id then return end
     local count = Compat.Call("GetMerchantNumItems") or 0
     if count == 0 then return end -- not loaded yet; MERCHANT_UPDATE reads again
-    local seen, any = {}, false
+    local seen, prices, any = {}, {}, false
     for i = 1, count do
         local itemID = itemIDOf(i)
         local recipeID = itemID and ns.RecipeItems and ns.RecipeItems[itemID]
         if recipeID then
-            seen[recipeID] = tonumber(stockOf(i)) or -1
+            local stock, price = stockOf(i)
+            seen[recipeID] = tonumber(stock) or -1
+            prices[recipeID] = price
             any = true
         end
     end
     ns.db.vendors = ns.db.vendors or {}
     if not any and not ns.db.vendors[id] and not isDataVendor(id) then return end
-    ns.db.vendors[id] = Merchants.Merge(ns.db.vendors[id], Compat.Call("UnitName", "npc"), seen, GetServerTime())
+    ns.db.vendors[id] = Merchants.Merge(ns.db.vendors[id], Compat.Call("UnitName", "npc"), seen, GetServerTime(), prices)
     index = nil
     ns.Debug("vendor", id, ns.db.vendors[id].name, "recipes", ns.util.Count(seen))
     if ns.UI and ns.UI.Refresh then ns.UI.Refresh() end
@@ -128,6 +139,17 @@ function Merchants.Visit(npc, recipeID)
     if not e then return nil end
     return { sells = e.recipes and e.recipes[recipeID] ~= nil, ever = e.ever and e.ever[recipeID] == true,
         limited = e.limited and e.limited[recipeID] == true, seenAt = e.seenAt }
+end
+
+-- Cheapest gold price you've seen a vendor ask for a recipe (with your reputation discount),
+-- and that vendor's name; nil when never seen with a gold price.
+function Merchants.Price(recipeID)
+    local best, who
+    for _, e in pairs(ns.db and ns.db.vendors or {}) do
+        local p = e.prices and e.prices[recipeID]
+        if p and (not best or p < best) then best, who = p, e.name end
+    end
+    return best, who
 end
 
 function Merchants.Name(npc)

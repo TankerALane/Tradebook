@@ -59,6 +59,12 @@ function Prices.Get(itemID)
     return { auction = auction, vendor = vendor, age = auction and call("GetAuctionAgeByItemID", itemID) or nil }
 end
 
+-- Auctionator's recorded vendor price for an item (seen at a merchant), or nil.
+function Prices.VendorPrice(itemID)
+    local v = api() and call("GetVendorPriceByItemID", itemID)
+    return type(v) == "number" and v > 0 and v or nil
+end
+
 -- PURE. The cheaper way to buy one: copper, "vendor" | "auction"; nil when neither is known.
 function Prices.Cheapest(p)
     if not p then return nil end

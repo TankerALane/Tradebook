@@ -624,22 +624,34 @@ function Pane:Refresh()
                         L.WAYPOINT_CLICK } or nil })
             end
         end
-        -- Auction house: the recipe item's price (Auctionator), for items that aren't soulbound.
+        -- Buy the recipe: vendor price (when a vendor sells it for gold) next to the auction
+        -- house price (Auctionator, items that aren't soulbound); the cheaper one is marked.
+        local vendorPrice, vendorNote = self:RecipeVendorPrice(id, buy)
         for _, itemID in ipairs(ns.Sources.RecipeItems(id)) do
-            if ns.Sources.Tradeable(itemID) then
-                local right
-                if ns.Prices.Available() then
-                    local p = ns.Prices.Get(itemID)
-                    if p.auction then
+            local tradeable = ns.Sources.Tradeable(itemID)
+            local p = tradeable and ns.Prices.Available() and ns.Prices.Get(itemID) or {}
+            local vendor = vendorPrice and vendorPrice(itemID)
+            if vendor or tradeable then
+                local cheaper = vendor and p.auction and ((p.auction < vendor) and "auction" or "vendor")
+                local mark = " " .. W.ColorText(W.GREEN, L.PRICE_CHEAPER)
+                if vendor then
+                    self:Add({ indent = 1, itemID = itemID, text = L.SOURCE_VENDOR_PRICE,
+                        right = ns.Prices.Money(vendor) .. (vendorNote and (" " .. W.ColorText(W.GREY, vendorNote)) or "")
+                            .. (cheaper == "vendor" and mark or "") })
+                end
+                if tradeable then
+                    local right
+                    if not ns.Prices.Available() then
+                        right = W.ColorText(W.GREY, L.SOURCE_AH_NO_AUCTIONATOR)
+                    elseif p.auction then
                         right = ns.Prices.Money(p.auction)
                             .. (p.age and p.age > 0 and (" " .. W.ColorText(W.GREY, L.PRICE_AGE:format(p.age))) or "")
+                            .. (cheaper == "auction" and mark or "")
                     else
                         right = W.ColorText(W.GREY, L.SOURCE_AH_NO_PRICE)
                     end
-                else
-                    right = W.ColorText(W.GREY, L.SOURCE_AH_NO_AUCTIONATOR)
+                    self:Add({ indent = 1, itemID = not vendor and itemID or nil, text = L.SOURCE_AUCTION_HOUSE, right = right })
                 end
-                self:Add({ indent = 1, itemID = itemID, text = L.SOURCE_AUCTION_HOUSE, right = right })
             end
         end
         local sources, borrowed, checked = ns.Sources.Get(id, {
@@ -664,6 +676,24 @@ function Pane:Refresh()
     end
     self:Finish()
     self:RefreshCraft()
+end
+
+-- The vendor price of a recipe's item, for recipes a vendor sells for gold: a function
+-- itemID -> copper, and a note about it. Best first: what you saw in a vendor window (with your
+-- reputation discount), Auctionator's vendor price, the game's item data (before discounts).
+-- Recipes bought with Merchant's Favor or other tokens have no gold price.
+function Pane:RecipeVendorPrice(recipeID, purchase)
+    if purchase and purchase.favor then return nil end
+    local raw = ns.Sources.Raw(recipeID)
+    if raw and raw.ct then return nil end
+    local conf, unconf = ns.Sources.Vendors(recipeID)
+    if #conf + #unconf == 0 then return nil end
+    local seen = ns.Merchants and ns.Merchants.Price(recipeID)
+    if seen then return function() return seen end, L.PRICE_SEEN end
+    return function(itemID)
+        local auctionatorVendor = ns.Prices.Available() and ns.Prices.VendorPrice and ns.Prices.VendorPrice(itemID)
+        return auctionatorVendor or (ns.RecipeItemPrice and ns.RecipeItemPrice[itemID])
+    end, L.PRICE_BEFORE_DISCOUNT
 end
 
 function Pane:RefreshCraft()
