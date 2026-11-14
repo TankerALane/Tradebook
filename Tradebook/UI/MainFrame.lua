@@ -132,6 +132,18 @@ end
 
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
 -- Gathering tabs can be hidden in settings (their data is still saved).
+-- The window's minimum width: the largest of MIN_W and what parts of it need to fit without
+-- overlapping (the tab row, the details' button row). The resize grip enforces it.
+local minWidths = {}
+function UI.SetMinWidth(key, width)
+    minWidths[key] = width and math.ceil(width) or nil
+    if not frame then return end
+    local need = MIN_W
+    for _, w in pairs(minWidths) do need = math.max(need, w) end
+    if frame.resizeButton then frame.resizeButton.minWidth = need end
+    if frame:GetWidth() < need - 0.5 then frame:SetWidth(need) end
+end
+
 local TAB_GAP = 3 -- space between tabs (no overlap)
 local GROUP_GAP = 10 -- at least this much between the profession tabs and Legacy/Characters
 local MAX_TAB_WIDTH = 110
@@ -164,6 +176,8 @@ function UI.LayoutTabs()
         rightWidth = rightWidth + tab:GetWidth() + (i > 1 and TAB_GAP or 0)
     end
     local available = frame:GetWidth() - 16 - rightWidth - GROUP_GAP
+    -- Narrowest the window can be with every tab at its smallest and the gap kept.
+    UI.SetMinWidth("tabs", 16 + rightWidth + GROUP_GAP + #visible * minWidth + TAB_GAP * math.max(0, #visible - 1))
     local natural = 0
     for _, tab in ipairs(visible) do
         PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
@@ -457,6 +471,7 @@ function UI.Create()
     resize:SetPoint("BOTTOMRIGHT", -2, 2)
     resize:SetFrameLevel(frame:GetFrameLevel() + 20)
     resize:Init(frame, MIN_W, MIN_H, 1800, 1200)
+    frame.resizeButton = resize
     resize:SetOnResizeStoppedCallback(savePosition)
 
     buildHeader()

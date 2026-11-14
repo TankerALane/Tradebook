@@ -9,6 +9,8 @@ local Recipes, Reagents = ns.Recipes, ns.Reagents
 local Details = {}
 ns.Details = Details
 
+-- Window width outside the details pane: insets plus the recipe list column (ProfessionView).
+local DETAILS_MARGIN = 6 + 8 + 330 + 22 + 8 + 6
 local LINE_H = 22
 local LARGE_LINE_H = 42 -- reagent rows
 local LARGE_ICON = 36   -- about the size of the default window's reagent slots
@@ -614,7 +616,12 @@ function Pane:RefreshCraft()
     local r = ns.db.recipes[id]
     local prof = r and ns.Professions.Get(r.s)
     self.craft:SetText(closed and prof and L.OPEN_PROFESSION:format(L[prof.name] or prof.name) or L.CRAFT)
-    self.craft:SetWidth(closed and 130 or 80)
+    self.craft:SetWidth(math.max(80, self.craft:GetFontString():GetStringWidth() + 26))
+    -- The button row (Open in default window, Shopping list | Craft, quantity, Craft All) must
+    -- fit side by side: tell the window how wide it has to stay.
+    local row = self.defaultBtn:GetWidth() + self.shopBtn:GetWidth() + self.craft:GetWidth()
+        + self.qty:GetWidth() + self.craftAll:GetWidth() + 2 + 4 + 16 + 30 + 34 + 2
+    ns.UI.SetMinWidth("craftRow", row + DETAILS_MARGIN)
     self.craft:SetEnabled(ok or (closed and not InCombatLockdown()))
     self.craftAll:SetEnabled(ok and max > 0)
     self.defaultBtn:SetEnabled(ns.Crafting.CanOpenInDefault(id))
