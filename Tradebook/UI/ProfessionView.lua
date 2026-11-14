@@ -87,6 +87,8 @@ local function createRow(row)
     row:SetScript("OnLeave", GameTooltip_Hide)
 end
 
+local RECIPE_INDENT = 20 -- where a section header's name starts
+
 local function initRow(row, data)
     row.data = data
     row.selected:SetShown(not data.header and data.id == View.selected)
@@ -105,6 +107,8 @@ local function initRow(row, data)
         return
     end
     row.toggle:Hide()
+    -- Recipes sit indented under their section header (icon lined up with the header name).
+    row.icon:SetPoint("LEFT", RECIPE_INDENT, 0)
     row.icon:Show()
     row.icon:SetTexture(data.icon or 134400)
     row.icon:SetDesaturated(not data.learned)
