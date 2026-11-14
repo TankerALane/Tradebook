@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: an icon next to your character's name. Drag it to your action bars, or click it to start tracking.
+
 ## v0.3.0-beta
 
 ### Where to get every recipe in WoW Forever

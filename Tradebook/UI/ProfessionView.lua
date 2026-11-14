@@ -407,6 +407,10 @@ function View:Build(parent)
     self.charBtn:SetPoint("TOPLEFT", 0, 0)
     self.charBtn:SetScript("OnClick", charMenu)
 
+    -- Find Herbs / Find Minerals: drag to an action bar or click to track (UI/TrackingButton.lua).
+    self.tracking = ns.TrackingButton.Create(left)
+    self.tracking:SetPoint("LEFT", self.charBtn, "RIGHT", 8, 0)
+
     -- (The rank is shown as a skill bar in the window header: ns.UI.SetRankBar.)
 
     -- Friends with this profession (Fellowship Ledger); hover to list them.
@@ -551,6 +555,8 @@ function View:Refresh()
     if prof and prof.scannedAt and not isMe then
         notices[#notices + 1] = L.LAST_SCANNED:format(W.Ago(prof.scannedAt))
     end
+    self.tracking:SetSpell(not self.browsing and self.charKey == ns.charKey and not ns.fake
+        and ns.TrackingButton.KnownSpell(self.skill) or nil)
     self.notice:SetText(table.concat(notices, "\n"))
     self.openBtn:SetShown(showOpen)
     self:Layout(showOpen)

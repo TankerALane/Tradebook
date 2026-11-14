@@ -1065,5 +1065,17 @@ test("money text", function()
     eq(ns.Prices.MoneyText(-250), "-2s 50c")
 end)
 
+test("tracking spell: newest known rank, only for herbalism and mining", function()
+    local tns = { L = {}, Compat = {}, On = function() end }
+    assert(loadfile("Tradebook/UI/TrackingButton.lua"))("Tradebook", tns)
+    local T = tns.TrackingButton
+    local knows = function(set) return function(id) return set[id] == true end end
+    eq(T.KnownSpell(182, knows({ [2383] = true })), 2383, "Find Herbs")
+    eq(T.KnownSpell(182, knows({ [2383] = true, [8387] = true })), 8387, "newer rank first")
+    eq(T.KnownSpell(186, knows({ [2580] = true })), 2580, "Find Minerals")
+    eq(T.KnownSpell(186, knows({})), nil, "not learned")
+    eq(T.KnownSpell(393, knows({ [2383] = true })), nil, "skinning has no tracking")
+end)
+
 print(string.format("%d passed, %d failed", passed, failed))
 if failed > 0 then os.exit(1) end

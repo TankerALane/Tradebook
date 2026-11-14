@@ -61,6 +61,7 @@ UI\Widgets.lua
 UI\Minimap.lua
 UI\MainFrame.lua
 UI\TargetButtons.lua
+UI\TrackingButton.lua
 UI\Details.lua
 UI\ProfessionView.lua
 UI\GuideView.lua
