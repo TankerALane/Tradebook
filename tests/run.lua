@@ -385,7 +385,7 @@ end)
 local function linesText(lines)
     local parts = {}
     for _, l in ipairs(lines) do
-        parts[#parts + 1] = ns.L.SKILLUP_COLORS[l.colour + 1] .. (l.untilSkill and (" until " .. l.untilSkill) or " now")
+        parts[#parts + 1] = ns.L.SKILLUP_COLORS[l.colour + 1]:lower() .. (l.untilSkill and (" until " .. l.untilSkill) or " now")
     end
     return table.concat(parts, " / ")
 end

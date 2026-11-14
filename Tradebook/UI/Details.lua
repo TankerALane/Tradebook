@@ -455,11 +455,27 @@ function Pane:Refresh()
     local viewed = c and c.professions[r.s]
     local lines = ns.Sources.SkillUpLines(id, viewed and viewed.rank, current, ns.db.badThresholds[id])
     if #lines > 0 then
-        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD })
+        -- Laid out like the other sections: colour (and what it means) on the left, the skill
+        -- range on the right, starting from the character's rank; then where grey starts.
+        local rank = viewed and viewed.rank
+        self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD,
+            right = rank and W.ColorText(W.GREY, L.SKILLUP_YOUR_RANK:format(rank)) or nil })
+        local from = rank
         for _, line in ipairs(lines) do
-            local name = L.SKILLUP_COLORS[line.colour + 1]
-            local text = line.untilSkill and L.SKILLUP_UNTIL:format(name, line.untilSkill) or L.SKILLUP_NOW:format(name)
-            self:Add({ indent = 1, text = text, color = W.DIFFICULTY[line.colour] })
+            local name = W.DIFFICULTY[line.colour]:WrapTextInColorCode(L.SKILLUP_COLORS[line.colour + 1])
+            local text = name .. "  " .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[line.colour + 1])
+            local right
+            if line.untilSkill then
+                right = from and L.SKILLUP_RANGE:format(from, line.untilSkill) or L.SKILLUP_UNTIL:format(line.untilSkill)
+            else
+                right = L.SKILLUP_NOW
+            end
+            self:Add({ indent = 1, text = text, right = right })
+            from = line.untilSkill
+        end
+        if from then
+            self:Add({ indent = 1, text = W.DIFFICULTY[3]:WrapTextInColorCode(L.SKILLUP_COLORS[4]) .. "  "
+                .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[4]), right = L.SKILLUP_FROM:format(from) })
         end
         self:Gap()
     end
