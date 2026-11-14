@@ -561,7 +561,7 @@ end)
 test("vendor and drop names are capped with a count", function()
     local found
     for id, s in pairs(ns.SourceData) do
-        if s.d and s.dn and s.dn > 3 and not ns.RecipeVendors[id] then found = id break end
+        if s.d and s.dn and s.dn > 3 and not ns.RecipeVendors[id] and not ns.RecipeDrops[id] then found = id break end
     end
     local lines = ns.Sources.Get(found)
     local text
@@ -612,6 +612,33 @@ test("Merchant's Favor recipes: cost, camp reputation by faction, skill", functi
     local c2, u2 = ns.Sources.Vendors(1266924, true)
     eq(#c2, 0)
     eq(#u2, 2)
+end)
+
+test("deep dive: drops with chances, world drops, not in Forever", function()
+    local S = ns.Sources
+    -- a recipe with recorded loot counts: chance and sample, highest first
+    local withChance
+    for id, d in pairs(ns.RecipeDrops) do
+        if d.n and d.n[1][4] > 0 and #d.n > 1 then withChance = id break end
+    end
+    assert(withChance, "some recipe has recorded loot counts")
+    local drops = S.Drops(withChance)
+    assert(drops[1].chance >= drops[2].chance, "highest chance first")
+    assert(drops[1].loots > 0)
+    -- a world drop shows its level range
+    local world
+    for id, d in pairs(ns.RecipeDrops) do if d.w then world = id break end end
+    local found
+    for _, l in ipairs(S.Get(world)) do if l.text:find("^World drop") then found = true end end
+    eq(found, true)
+    -- Soul Vessel (431362): a Season of Discovery leftover
+    eq(S.Get(431362)[1].text, ns.L.SOURCE_NOT_IN_FOREVER)
+    -- a recipe only known from drops counts as learned from a recipe item
+    local onlyDrops
+    for id in pairs(ns.RecipeDrops) do
+        if not ns.SourceData[id] and not ns.RecipeVendors[id] then onlyDrops = id break end
+    end
+    if onlyDrops then eq(S.Kinds(onlyDrops).recipe, true) end
 end)
 
 test("vendor windows: merging visits", function()

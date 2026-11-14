@@ -1,0 +1,2880 @@
+[
+ {
+  "recipeSpellID": 7636,
+  "recipeName": "Green Woolen Robe",
+  "profession": "Tailoring",
+  "itemID": 6273,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=7636"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 6273 has no Wowhead Forever page (404). QuestieDB Forever has no entry for it. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"not listed\". Not on the Warcraft wiki Forever tailoring list at all, so it may have been removed from Forever."
+ },
+ {
+  "recipeSpellID": 7776,
+  "recipeName": "Enchant Chest - Lesser Intellect",
+  "profession": "Enchanting",
+  "itemID": 6346,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Kithas (The Drag, Orgrimmar) and Lilly (Silverpine Forest); Horde.",
+    "npcs": [
+     {
+      "npcID": 3346,
+      "name": "Kithas",
+      "zone": "Orgrimmar"
+     },
+     {
+      "npcID": 5757,
+      "name": "Lilly",
+      "zone": "Silverpine Forest"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=6346",
+     "https://wow.gg/professions/forever/enchanting",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Item 6346 is the old \"Formula: Enchant Chest - Lesser Mana\", renamed in Forever. QuestieDB still has the old name, which may be why the addon missed it. Wowhead: \"This item can be purchased in Orgrimmar (3) and Silverpine Forest.\" QuestieDB item vendors 3346 and 5757. wow.gg vendors: Kithas and Lilly. CONFLICT: the Warcraft wiki lists the source as \"Drop\" (probably stale). The wow-professions Kithas NPC page does not list it. Cost not found."
+ },
+ {
+  "recipeSpellID": 8778,
+  "recipeName": "Boots of Darkness",
+  "profession": "Tailoring",
+  "itemID": 7093,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=8778"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 7093 has no Wowhead Forever page (404). QuestieDB Forever has no entry for it. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"not listed\". Not on the Warcraft wiki Forever tailoring list at all, so it may have been removed from Forever."
+ },
+ {
+  "recipeSpellID": 12062,
+  "recipeName": "Stormcloth Pants",
+  "profession": "Tailoring",
+  "itemID": 254681,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254681 is in QuestieDB with no droppers or vendors. wiki source: \"not listed\". wow.gg: no source data. Wowhead Forever item=254681 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). The Classic pattern (10303) is replaced by a new Forever pattern. The Classic item 10303 has no Wowhead Forever page (404). Not on the wiki Forever list."
+ },
+ {
+  "recipeSpellID": 12068,
+  "recipeName": "Stormcloth Vest",
+  "profession": "Tailoring",
+  "itemID": 254683,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254683 is in QuestieDB with no droppers or vendors. wiki source: \"not listed\". wow.gg: no source data. Wowhead Forever item=254683 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). The Classic pattern (10313) is replaced by a new Forever pattern. The Classic item 10303 has no Wowhead Forever page (404). Not on the wiki Forever list."
+ },
+ {
+  "recipeSpellID": 12083,
+  "recipeName": "Stormcloth Headband",
+  "profession": "Tailoring",
+  "itemID": 254684,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Firemane Flamecaller (Dustwallow Marsh, lvl 43). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4334,
+      "name": "Firemane Flamecaller",
+      "zone": "Dustwallow Marsh",
+      "level": 43
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"not listed\". wow.gg has no source data; its \"Trainer\" label is a default. The Classic pattern 10319 is replaced in Forever by the new pattern 254684. The Classic Stormcloth Pants pattern (10303) has no Wowhead Forever page (404). Stormcloth is not on the wiki Forever list."
+ },
+ {
+  "recipeSpellID": 12087,
+  "recipeName": "Stormcloth Shoulders",
+  "profession": "Tailoring",
+  "itemID": 254685,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Glassweb Spider (Searing Gorge, lvl 43). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 5856,
+      "name": "Glassweb Spider",
+      "zone": "Searing Gorge",
+      "level": 43
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"not listed\". wow.gg has no source data; its \"Trainer\" label is a default. The Classic pattern 10322 is replaced in Forever by the new pattern 254685. The Classic Stormcloth Pants pattern (10303) has no Wowhead Forever page (404). Stormcloth is not on the wiki Forever list."
+ },
+ {
+  "recipeSpellID": 12090,
+  "recipeName": "Stormcloth Boots",
+  "profession": "Tailoring",
+  "itemID": 254686,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Hatecrest Serpent Guard (Feralas, lvl 44). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 5333,
+      "name": "Hatecrest Serpent Guard",
+      "zone": "Feralas",
+      "level": 44
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"not listed\". wow.gg has no source data; its \"Trainer\" label is a default. The Classic pattern 10324 is replaced in Forever by the new pattern 254686. The Classic Stormcloth Pants pattern (10303) has no Wowhead Forever page (404). Stormcloth is not on the wiki Forever list."
+ },
+ {
+  "recipeSpellID": 13262,
+  "recipeName": "Disenchant",
+  "profession": "Enchanting",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "auto",
+    "detail": "Learned automatically with Apprentice Enchanting (shown in the Enchanting professions window, not the spellbook).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wow-professions.com/forever/enchanting-leveling-guide",
+     "game data: SkillLineAbility AcquireMethod=1 for spell 13262 (scratchpad/wago/sla.csv)"
+    ]
+   }
+  ],
+  "notes": "wow-professions: \"You get Disenchant together with Apprentice Enchanting.\" No recipe item."
+ },
+ {
+  "recipeSpellID": 19435,
+  "recipeName": "Mooncloth Boots",
+  "profession": "Tailoring",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=19435",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "No recipe item. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"Quest\". The Warcraft wiki also gives the source as Quest, so two sources agree on \"quest\", but neither names the quest."
+ },
+ {
+  "recipeSpellID": 20026,
+  "recipeName": "Enchant Chest - Major Stamina",
+  "profession": "Enchanting",
+  "itemID": 16221,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Qia, Everlook (Winterspring).",
+    "npcs": [
+     {
+      "npcID": 11189,
+      "name": "Qia",
+      "zone": "Winterspring"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=16221",
+     "https://wow.gg/professions/forever/enchanting",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://warcraft.wiki.gg/wiki/Forever_enchanting_formulas"
+    ]
+   }
+  ],
+  "notes": "Item 16221 is the old \"Formula: Enchant Chest - Major Health\", renamed. Wowhead: \"This item can be purchased in Winterspring\". wow.gg and QuestieDB: vendor Qia. wiki: Vendor. The wow-professions Qia page does not list it. Cost not found."
+ },
+ {
+  "recipeSpellID": 22813,
+  "recipeName": "Gordok Ogre Suit",
+  "profession": "Tailoring",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=22813",
+     "https://www.wowhead.com/forever/quest=5518"
+    ]
+   }
+  ],
+  "notes": "No recipe item. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\". Wowhead Forever quest=5518 \"The Gordok Ogre Suit\" (Knot Thimblejack, Dire Maul) rewards the suit (item 18258), not the recipe. QuestieDB also has quest 94344 \"Craftsman's Writ: Gordok Ogre Suit\", a writ to craft the suit, not to learn it."
+ },
+ {
+  "recipeSpellID": 26086,
+  "recipeName": "Felcloth Bag",
+  "profession": "Tailoring",
+  "itemID": 21369,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=26086"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 21369 has no Wowhead Forever page (404). QuestieDB Forever has no entry for it. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\"."
+ },
+ {
+  "recipeSpellID": 28205,
+  "recipeName": "Glacial Gloves",
+  "profession": "Tailoring",
+  "itemID": 22684,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=28205",
+     "https://www.wowhead.com/forever/quest=9237"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 22684 has no Wowhead Forever page (404). QuestieDB Forever has no entry for it. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\". QuestieDB has quests 9237-9240 (Glacial Cloak/Wrists/Gloves/Vest) from Craftsman Wilhelm at Light's Hope Chapel, which need Exalted with the Argent Dawn. But Wowhead Forever quest=9237 rewards the crafted Glacial Cloak (item 22658), not the pattern, so the quest is not how the recipe is learned. Naxxramas-tier recipe, probably not available yet."
+ },
+ {
+  "recipeSpellID": 28207,
+  "recipeName": "Glacial Vest",
+  "profession": "Tailoring",
+  "itemID": 22686,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=28207",
+     "https://www.wowhead.com/forever/quest=9237"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 22686 was not checked on Wowhead (rate-limited) and is not in QuestieDB. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\". QuestieDB has quests 9237-9240 (Glacial Cloak/Wrists/Gloves/Vest) from Craftsman Wilhelm at Light's Hope Chapel, which need Exalted with the Argent Dawn. But Wowhead Forever quest=9237 rewards the crafted Glacial Cloak (item 22658), not the pattern, so the quest is not how the recipe is learned. Naxxramas-tier recipe, probably not available yet."
+ },
+ {
+  "recipeSpellID": 28208,
+  "recipeName": "Glacial Cloak",
+  "profession": "Tailoring",
+  "itemID": 236691,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=28208",
+     "https://www.wowhead.com/forever/quest=9237"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 22685 was not checked on Wowhead (rate-limited) and is not in QuestieDB. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\". QuestieDB has quests 9237-9240 (Glacial Cloak/Wrists/Gloves/Vest) from Craftsman Wilhelm at Light's Hope Chapel, which need Exalted with the Argent Dawn. But Wowhead Forever quest=9237 rewards the crafted Glacial Cloak (item 22658), not the pattern, so the quest is not how the recipe is learned. Naxxramas-tier recipe, probably not available yet. The second listed item, 236691, was not checked."
+ },
+ {
+  "recipeSpellID": 28209,
+  "recipeName": "Glacial Wrists",
+  "profession": "Tailoring",
+  "itemID": 22687,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "wow.gg data flags this recipe \"byQuest\": true and lists no pattern item. No specific quest identified.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/spell=28209",
+     "https://www.wowhead.com/forever/quest=9237"
+    ]
+   }
+  ],
+  "notes": "Classic recipe item 22687 was not checked on Wowhead (rate-limited) and is not in QuestieDB. The Wowhead Forever spell page exists with no \"not in game\" notice, but it shows no source. wiki source: \"?\". QuestieDB has quests 9237-9240 (Glacial Cloak/Wrists/Gloves/Vest) from Craftsman Wilhelm at Light's Hope Chapel, which need Exalted with the Argent Dawn. But Wowhead Forever quest=9237 rewards the crafted Glacial Cloak (item 22658), not the pattern, so the quest is not how the recipe is learned. Naxxramas-tier recipe, probably not available yet."
+ },
+ {
+  "recipeSpellID": 44950,
+  "recipeName": "Green Winter Clothes",
+  "profession": "Tailoring",
+  "itemID": 34261,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 34261 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=34261 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). Feast of Winter Veil pattern (seasonal). The Wowhead Forever page is \"New in Forever\" with no source. The event has not started yet."
+ },
+ {
+  "recipeSpellID": 44958,
+  "recipeName": "Red Winter Clothes",
+  "profession": "Tailoring",
+  "itemID": 34319,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 34319 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Feast of Winter Veil pattern (seasonal). The Wowhead Forever page is \"New in Forever\" with no source. The event has not started yet."
+ },
+ {
+  "recipeSpellID": 428424,
+  "recipeName": "Phoenix Bindings",
+  "profession": "Tailoring",
+  "itemID": 211247,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Season of Discovery leftover. Wowhead Forever item page: \"This item is not available to players.\" Spell page: \"This spell is not in game.\" QuestieDB still lists SoD vendors/droppers for the item, which does not show it is in Forever. The Warcraft wiki Forever list still shows \"Old / Vendor\" (probably carried over). Based on one site, Wowhead (item and spell pages). URLs: https://www.wowhead.com/forever/item=211247 https://www.wowhead.com/forever/spell=428424"
+ },
+ {
+  "recipeSpellID": 435841,
+  "recipeName": "Invoker's Cord",
+  "profession": "Tailoring",
+  "itemID": 215369,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Season of Discovery leftover. Wowhead Forever item page: \"This item is not available to players.\" Spell page: \"This spell is not in game.\" QuestieDB still lists SoD vendors/droppers for the item, which does not show it is in Forever. The Warcraft wiki Forever list still shows \"Old / Drop\" (probably carried over). Based on one site, Wowhead (item and spell pages). URLs: https://www.wowhead.com/forever/item=215369 https://www.wowhead.com/forever/spell=435841"
+ },
+ {
+  "recipeSpellID": 435848,
+  "recipeName": "Invoker's Mantle",
+  "profession": "Tailoring",
+  "itemID": 215370,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Season of Discovery leftover. Wowhead Forever item page: \"This item is not available to players.\" QuestieDB still lists SoD vendors/droppers for the item, which does not show it is in Forever. The Warcraft wiki Forever list still shows \"Old / Drop\" (probably carried over). Based on one site, Wowhead (item and spell pages). URLs: https://www.wowhead.com/forever/item=215370"
+ },
+ {
+  "recipeSpellID": 1219577,
+  "recipeName": "Enchant Off-Hand - Superior Intellect",
+  "profession": "Enchanting",
+  "itemID": 274391,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 274391 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=274391 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). Not on the wow.gg Forever enchanting recipe list (only in its item dictionary)."
+ },
+ {
+  "recipeSpellID": 1219578,
+  "recipeName": "Enchant Off-Hand - Excellent Spirit",
+  "profession": "Enchanting",
+  "itemID": 274392,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 274392 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Not on the wow.gg Forever enchanting recipe list (only in its item dictionary)."
+ },
+ {
+  "recipeSpellID": 1219581,
+  "recipeName": "Enchant Shield - Excellent Stamina",
+  "profession": "Enchanting",
+  "itemID": 274395,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 274395 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=274395 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). Not on the wow.gg Forever enchanting recipe list (only in its item dictionary)."
+ },
+ {
+  "recipeSpellID": 1220623,
+  "recipeName": "Enchant Shield - Critical Strike",
+  "profession": "Enchanting",
+  "itemID": 274400,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 274400 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=274400 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). Not on the wow.gg Forever enchanting recipe list (only in its item dictionary)."
+ },
+ {
+  "recipeSpellID": 1248458,
+  "recipeName": "Enchant Bracer - Minor Intellect",
+  "profession": "Enchanting",
+  "itemID": 249474,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Vile Fin Tidehunter (Silverpine Forest). QuestieDB also lists Coastal Frenzy (Darkshore).",
+    "npcs": [
+     {
+      "npcID": 1768,
+      "name": "Vile Fin Tidehunter",
+      "zone": "Silverpine Forest",
+      "level": 13,
+      "dropChance": "0.09% (3 in 3,519 kills, Wowhead data via wow.gg, 2026-09-23)"
+     },
+     {
+      "npcID": 2174,
+      "name": "Coastal Frenzy",
+      "zone": "Darkshore",
+      "level": 14
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/enchanting",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://warcraft.wiki.gg/wiki/Forever_enchanting_formulas"
+    ]
+   }
+  ],
+  "notes": "wow.gg: \"Seen 3 times in 3,519 Vile Fin Tidehunter kills on Wowhead, 2026-09-23\". Only QuestieDB lists Coastal Frenzy. wiki: Drop."
+ },
+ {
+  "recipeSpellID": 1248459,
+  "recipeName": "Enchant Bracer - Minor Healing Power",
+  "profession": "Enchanting",
+  "itemID": 249475,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Dark Strand Cultist (Ashenvale, lvl 18). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 3725,
+      "name": "Dark Strand Cultist",
+      "zone": "Ashenvale",
+      "level": 18
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://warcraft.wiki.gg/wiki/Forever_enchanting_formulas"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. The Warcraft wiki gives the source type as Drop, which agrees on the type only. wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248461,
+  "recipeName": "Twisted Nether Wand",
+  "profession": "Enchanting",
+  "itemID": 249487,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Boulderfist Magus (Arathi Highlands, lvl 36). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 2567,
+      "name": "Boulderfist Magus",
+      "zone": "Arathi Highlands",
+      "level": 36
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248497,
+  "recipeName": "Enchant Bracer - Agility",
+  "profession": "Enchanting",
+  "itemID": 249488,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Mage Hunter (Desolace, lvl 38). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4681,
+      "name": "Mage Hunter",
+      "zone": "Desolace",
+      "level": 38
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248500,
+  "recipeName": "Enchant Bracer - Greater Agility",
+  "profession": "Enchanting",
+  "itemID": 249514,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Deadwood Gardener (Felwood, lvl 48). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 7154,
+      "name": "Deadwood Gardener",
+      "zone": "Felwood",
+      "level": 48
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248505,
+  "recipeName": "Lesser Eternal Wand",
+  "profession": "Enchanting",
+  "itemID": 249515,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249515 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data. conquestcapped lists the source as unknown or \"Not known yet\". Wowhead Forever item=249515 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1248509,
+  "recipeName": "Dreambough Wand",
+  "profession": "Enchanting",
+  "itemID": 249512,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Dustbelcher Ogre Mage (Badlands, lvl 43). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 2720,
+      "name": "Dustbelcher Ogre Mage",
+      "zone": "Badlands",
+      "level": 43
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248510,
+  "recipeName": "Enchant 2H Weapon - Lesser Agility",
+  "profession": "Enchanting",
+  "itemID": 249511,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Firemane Scout (Dustwallow Marsh, lvl 41). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4329,
+      "name": "Firemane Scout",
+      "zone": "Dustwallow Marsh",
+      "level": 41
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248511,
+  "recipeName": "Enchant 2H Weapon - Lesser Strength",
+  "profession": "Enchanting",
+  "itemID": 249513,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Hatecrest Sorceress (Feralas, lvl 43). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 5336,
+      "name": "Hatecrest Sorceress",
+      "zone": "Feralas",
+      "level": 43
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248515,
+  "recipeName": "Greater Eternal Wand",
+  "profession": "Enchanting",
+  "itemID": 249522,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249522 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1248528,
+  "recipeName": "Enchant Gloves - Advanced Skinning",
+  "profession": "Enchanting",
+  "itemID": 249516,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Spitelash Myrmidon (Azshara, lvl 50). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 6196,
+      "name": "Spitelash Myrmidon",
+      "zone": "Azshara",
+      "level": 50
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1248599,
+  "recipeName": "Enchant Bracer - Superior Agility",
+  "profession": "Enchanting",
+  "itemID": 249524,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249524 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. Wowhead Forever item=249524 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1248668,
+  "recipeName": "Enchant 2H Weapon - Strength",
+  "profession": "Enchanting",
+  "itemID": 249523,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249523 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1249107,
+  "recipeName": "Frozen Heart of the Mountain",
+  "profession": "Enchanting",
+  "itemID": 249519,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249519 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data. conquestcapped lists the source as unknown or \"Not known yet\". Wowhead Forever item=249519 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1249112,
+  "recipeName": "Molten Heart of the Mountain",
+  "profession": "Enchanting",
+  "itemID": 249520,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Pyroguard Emberseer (Blackrock Spire, lvl 60). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 9816,
+      "name": "Pyroguard Emberseer",
+      "zone": "Blackrock Spire",
+      "level": 60
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Pyroguard Emberseer is a Blackrock Spire boss."
+ },
+ {
+  "recipeSpellID": 1249114,
+  "recipeName": "Dormant Heart of the Mountain",
+  "profession": "Enchanting",
+  "itemID": 249521,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 249521 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1257368,
+  "recipeName": "Novice Arcanist's Sash",
+  "profession": "Tailoring",
+  "itemID": 253886,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Trainer recipe (skill 50).",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "Only the Warcraft wiki gives a source type (Trainer). wow.gg shows \"Trainer\" but its data has source:null. wow.gg shows \"Trainer\" for every tailoring recipe without source data, including known drops, so that label is not counted. The pattern item exists (Wowhead: \"New in Forever\", no acquisition sentence). No QuestieDB droppers."
+ },
+ {
+  "recipeSpellID": 1257369,
+  "recipeName": "Novice Ardent's Sash",
+  "profession": "Tailoring",
+  "itemID": 253888,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Trainer recipe (skill 50).",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "Only the Warcraft wiki gives a source type (Trainer). wow.gg shows \"Trainer\" but its data has source:null. wow.gg shows \"Trainer\" for every tailoring recipe without source data, including known drops, so that label is not counted. The pattern item exists (Wowhead: \"New in Forever\", no acquisition sentence). No QuestieDB droppers."
+ },
+ {
+  "recipeSpellID": 1257376,
+  "recipeName": "Filigreed Pristine Gown",
+  "profession": "Tailoring",
+  "itemID": 253902,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Sneed",
+      "zone": "The Deadmines",
+      "dropChance": "0.02%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Fel Steed (Shadowfang Keep) 0.02%; Sneed (The Deadmines) 0.02%. QuestieDB lists 17 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Sneed. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257377,
+  "recipeName": "Filigreed Silky Gown",
+  "profession": "Tailoring",
+  "itemID": 253904,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Gilnid",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Sneed",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Lady Anacondra",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Fel Steed (Shadowfang Keep) 0.02%; Gilnid (The Deadmines) 0.01%; Sneed (The Deadmines) 0.01%; Lady Anacondra (Wailing Caverns) n/a; Rhahk'Zor (The Deadmines) n/a. QuestieDB lists 17 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Gilnid, Sneed, Lady Anacondra, Rhahk'Zor. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257378,
+  "recipeName": "Filigreed Flame Gown",
+  "profession": "Tailoring",
+  "itemID": 253906,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines",
+      "dropChance": "0.03%"
+     },
+     {
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Gilnid",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Jergosh the Invoker",
+      "zone": "Ragefire Chasm",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Fel Steed (Shadowfang Keep) 0.04%; Rhahk'Zor (The Deadmines) 0.03%; Shadow Charger (Shadowfang Keep) 0.02%; Gilnid (The Deadmines) 0.01%; Jergosh the Invoker (Ragefire Chasm) 0.01%. QuestieDB lists 17 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Rhahk'Zor, Shadow Charger, Gilnid, Jergosh the Invoker. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257379,
+  "recipeName": "Filigreed Shadow Gown",
+  "profession": "Tailoring",
+  "itemID": 253908,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.05%"
+     },
+     {
+      "name": "Bazzalan",
+      "zone": "Ragefire Chasm",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Cookie",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Fel Steed (Shadowfang Keep) 0.05%; Bazzalan (Ragefire Chasm) 0.04%; Cookie (The Deadmines) 0.01%; Lord Cobrahn (Wailing Caverns) n/a. QuestieDB lists 18 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Cookie, Lord Cobrahn. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257380,
+  "recipeName": "Filigreed Pearly Gown",
+  "profession": "Tailoring",
+  "itemID": 253910,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.06%"
+     },
+     {
+      "name": "Bazzalan",
+      "zone": "Ragefire Chasm",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Cookie",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Fel Steed (Shadowfang Keep) 0.06%; Bazzalan (Ragefire Chasm) 0.02%; Cookie (The Deadmines) 0.01%. QuestieDB lists 17 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Cookie. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257381,
+  "recipeName": "Filigreed Shining Gown",
+  "profession": "Tailoring",
+  "itemID": 253912,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Bazzalan",
+      "zone": "Ragefire Chasm",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Cookie",
+      "zone": "The Deadmines",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Bazzalan (Ragefire Chasm) 0.02%; Fel Steed (Shadowfang Keep) 0.01%; Captain Greenskin (The Deadmines) 0.01%; Cookie (The Deadmines) 0.01%. QuestieDB lists 19 droppers, e.g. Sneed, Rhahk'Zor, Cookie, Mr. Smite, Captain Greenskin. On both lists: Fel Steed, Captain Greenskin, Cookie. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257394,
+  "recipeName": "Filigreed Pristine Leggings",
+  "profession": "Tailoring",
+  "itemID": 253938,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Ghamoo-ra",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.03%"
+     },
+     {
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Verdan the Everliving",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Ghamoo-ra (Blackfathom Deeps) 0.03%; Edwin VanCleef (The Deadmines) 0.02%; Verdan the Everliving (Wailing Caverns) n/a; Lord Pythas (Wailing Caverns) n/a. QuestieDB lists 17 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Edwin VanCleef, Lord Pythas. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257395,
+  "recipeName": "Filigreed Silky Leggings",
+  "profession": "Tailoring",
+  "itemID": 253940,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Ghamoo-ra",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.03%"
+     },
+     {
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Ghamoo-ra (Blackfathom Deeps) 0.03%; Shadow Charger (Shadowfang Keep) 0.02%; Edwin VanCleef (The Deadmines) n/a. QuestieDB lists 18 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Shadow Charger, Edwin VanCleef. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257396,
+  "recipeName": "Filigreed Flame Leggings",
+  "profession": "Tailoring",
+  "itemID": 253942,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Lady Sarevess",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Ghamoo-ra",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.03%"
+     },
+     {
+      "name": "Targorr the Dread",
+      "zone": "The Stockade",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Lady Sarevess (Blackfathom Deeps) 0.04%; Ghamoo-ra (Blackfathom Deeps) 0.03%; Targorr the Dread (The Stockade) 0.01%. QuestieDB lists 18 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Targorr the Dread. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257397,
+  "recipeName": "Filigreed Shadow Leggings",
+  "profession": "Tailoring",
+  "itemID": 253944,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Lady Sarevess",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Ghamoo-ra",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Targorr the Dread",
+      "zone": "The Stockade",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Lady Sarevess (Blackfathom Deeps) 0.04%; Ghamoo-ra (Blackfathom Deeps) 0.02%; Targorr the Dread (The Stockade) 0.01%; Skum (Wailing Caverns) n/a. QuestieDB lists 18 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Targorr the Dread, Skum. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257398,
+  "recipeName": "Filigreed Pearly Leggings",
+  "profession": "Tailoring",
+  "itemID": 253946,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"Shadow Charger, Shadowfang Keep\".",
+    "npcs": [
+     {
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Ghamoo-ra",
+      "zone": "Blackfathom Deeps"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Shadow Charger (Shadowfang Keep) 0.04%; Ghamoo-ra (Blackfathom Deeps) n/a. QuestieDB lists 18 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Shadow Charger. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257399,
+  "recipeName": "Filigreed Shining Leggings",
+  "profession": "Tailoring",
+  "itemID": 253948,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Lady Sarevess",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines",
+      "dropChance": "0.02%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Shadow Charger (Shadowfang Keep) 0.04%; Lady Sarevess (Blackfathom Deeps) 0.02%; Edwin VanCleef (The Deadmines) 0.02%. QuestieDB lists 18 droppers, e.g. Edwin VanCleef, Targorr the Dread, Mutanus the Devourer, Lord Pythas, Lord Serpentis. On both lists: Shadow Charger, Edwin VanCleef. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257414,
+  "recipeName": "Filigreed Silky Circlet",
+  "profession": "Tailoring",
+  "itemID": 253978,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Dark Iron Ambassador",
+      "zone": "Gnomeregan",
+      "dropChance": "0.34%"
+     },
+     {
+      "name": "Lorgus Jett",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.16%"
+     },
+     {
+      "name": "Old Serra'kis",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.08%"
+     },
+     {
+      "name": "Charlga Razorflank",
+      "zone": "Razorfen Kraul",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Gelihast",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.02%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Dark Iron Ambassador (Gnomeregan) 0.34%; Lorgus Jett (Blackfathom Deeps) 0.16%; Old Serra'kis (Blackfathom Deeps) 0.08%; Charlga Razorflank (Razorfen Kraul) 0.02%; Gelihast (Blackfathom Deeps) 0.02%. QuestieDB lists 26 droppers, e.g. Dextren Ward, Kam Deepfury, Bazil Thredd, Hamhock, Houndmaster Loksey. On both lists: Old Serra'kis, Charlga Razorflank. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257415,
+  "recipeName": "Filigreed Flame Circlet",
+  "profession": "Tailoring",
+  "itemID": 253980,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Lorgus Jett",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.08%"
+     },
+     {
+      "name": "Baron Aquanis",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Gelihast",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.04%"
+     },
+     {
+      "name": "Aku'mai",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Dextren Ward",
+      "zone": "The Stockade",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Lorgus Jett (Blackfathom Deeps) 0.08%; Baron Aquanis (Blackfathom Deeps) 0.04%; Gelihast (Blackfathom Deeps) 0.04%; Aku'mai (Blackfathom Deeps) 0.02%; Dextren Ward (The Stockade) 0.01%. QuestieDB lists 28 droppers, e.g. Dextren Ward, Kam Deepfury, Bazil Thredd, Hamhock, Houndmaster Loksey. On both lists: Aku'mai, Dextren Ward. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257416,
+  "recipeName": "Filigreed Shadow Circlet",
+  "profession": "Tailoring",
+  "itemID": 253982,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare drop in low-level dungeons: Ragefire Chasm, Deadmines, Shadowfang Keep, Wailing Caverns, Blackfathom Deeps, Stockade, Razorfen Kraul, Gnomeregan. The Wowhead guide lists the source as \"World Drop\".",
+    "npcs": [
+     {
+      "name": "Lorgus Jett",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.08%"
+     },
+     {
+      "name": "Old Serra'kis",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.03%"
+     },
+     {
+      "name": "Death Speaker Jargba",
+      "zone": "Razorfen Kraul",
+      "dropChance": "0.02%"
+     },
+     {
+      "name": "Kam Deepfury",
+      "zone": "The Stockade",
+      "dropChance": "0.01%"
+     },
+     {
+      "name": "Twilight Lord Kelris",
+      "zone": "Blackfathom Deeps",
+      "dropChance": "0.01%"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ],
+    "levelRange": "dungeon mobs ~16-33"
+   }
+  ],
+  "notes": "Top 5 from wow.gg (drop chances in percent, from Wowhead loot counts; samples are small): Lorgus Jett (Blackfathom Deeps) 0.08%; Old Serra'kis (Blackfathom Deeps) 0.03%; Death Speaker Jargba (Razorfen Kraul) 0.02%; Kam Deepfury (The Stockade) 0.01%; Twilight Lord Kelris (Blackfathom Deeps) 0.01%. QuestieDB lists 28 droppers, e.g. Dextren Ward, Kam Deepfury, Bazil Thredd, Hamhock, Bruegal Ironknuckle. On both lists: Death Speaker Jargba, Kam Deepfury. conquestcapped: drops in RFC, Deadmines, SFK, BFD and RFK, listed chances below 0.35%."
+ },
+ {
+  "recipeSpellID": 1257425,
+  "recipeName": "Earthen Leggings",
+  "profession": "Tailoring",
+  "itemID": 254000,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Gravelsnout Surveyor (Thousand Needles, lvl 29). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4116,
+      "name": "Gravelsnout Surveyor",
+      "zone": "Thousand Needles",
+      "level": 29
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257426,
+  "recipeName": "Gilded Slippers",
+  "profession": "Tailoring",
+  "itemID": 254002,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257427,
+  "recipeName": "Frothing Slippers",
+  "profession": "Tailoring",
+  "itemID": 254004,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257428,
+  "recipeName": "Fiery Slippers",
+  "profession": "Tailoring",
+  "itemID": 254006,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257429,
+  "recipeName": "Black Slippers",
+  "profession": "Tailoring",
+  "itemID": 254008,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257430,
+  "recipeName": "Golden Slippers",
+  "profession": "Tailoring",
+  "itemID": 254010,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257431,
+  "recipeName": "Radiant Slippers",
+  "profession": "Tailoring",
+  "itemID": 254012,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Tailoring trainers (skill 140). A pattern item also exists but no drop or vendor source is known for it.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/tailoring",
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "wow.gg data: \"trainers\": 13. Wowhead Forever tailoring guide Source column: \"Trainer\". wiki: Trainer. conquestcapped calls Gilded Slippers \"reported as a trainer recipe, not confirmed\". Crafted at a Spinning Wheel (Icy Veins Forever tailoring guide)."
+ },
+ {
+  "recipeSpellID": 1257432,
+  "recipeName": "Earthen Silk Slippers",
+  "profession": "Tailoring",
+  "itemID": 254014,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Witherbark Troll (Arathi Highlands, lvl 30). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 2552,
+      "name": "Witherbark Troll",
+      "zone": "Arathi Highlands",
+      "level": 30
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. conquestcapped: \"Not known yet\"."
+ },
+ {
+  "recipeSpellID": 1257433,
+  "recipeName": "Earthen Silk Hood",
+  "profession": "Tailoring",
+  "itemID": 254016,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Slitherblade Sea Witch (Desolace, lvl 35). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4719,
+      "name": "Slitherblade Sea Witch",
+      "zone": "Desolace",
+      "level": 35
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257434,
+  "recipeName": "Earthen Silk Gloves",
+  "profession": "Tailoring",
+  "itemID": 254018,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Bloodscalp Mystic (Stranglethorn Vale, lvl 34). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 701,
+      "name": "Bloodscalp Mystic",
+      "zone": "Stranglethorn Vale",
+      "level": 34
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257435,
+  "recipeName": "Earthen Silk Cuffs",
+  "profession": "Tailoring",
+  "itemID": 254020,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Mirefin Murloc, Dustwallow Marsh.",
+    "npcs": [
+     {
+      "npcID": 4359,
+      "name": "Mirefin Murloc",
+      "zone": "Dustwallow Marsh",
+      "level": 35
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes",
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever tailoring guide Source: \"Mirefin Murloc, Dustwallow Marsh\". QuestieDB dropper: Mirefin Murloc (lvl 35). wiki: Drop. No drop chance found."
+ },
+ {
+  "recipeSpellID": 1257436,
+  "recipeName": "Gilded Handwraps",
+  "profession": "Tailoring",
+  "itemID": 254022,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 1 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 873,
+      "name": "Saltscale Oracle",
+      "zone": "Stranglethorn Vale",
+      "level": 36
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Saltscale Oracle (Stranglethorn Vale)). wiki source: \"?\". conquestcapped: \"Not known yet\" for Gilded Cord, Gilded Handwraps and Black Cord. No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257442,
+  "recipeName": "Earthen Silk Shoulders",
+  "profession": "Tailoring",
+  "itemID": 254034,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Dustbelcher Mystic (Badlands, lvl 36). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 2907,
+      "name": "Dustbelcher Mystic",
+      "zone": "Badlands",
+      "level": 36
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. The Warcraft wiki gives the source type as Drop, which agrees on the type only. wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257444,
+  "recipeName": "Gilded Cord",
+  "profession": "Tailoring",
+  "itemID": 254038,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 12 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery",
+      "level": 37
+     },
+     {
+      "npcID": 6910,
+      "name": "Revelosh",
+      "zone": "Uldaman",
+      "level": 40
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Herod (Scarlet Monastery), Scarlet Commander Mograine (Scarlet Monastery), High Inquisitor Whitemane (Scarlet Monastery), High Inquisitor Fairbanks (Scarlet Monastery), Arcanist Doan (Scarlet Monastery), Revelosh (Uldaman)). wiki source: \"?\". conquestcapped: \"Not known yet\" for Gilded Cord, Gilded Handwraps and Black Cord. No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257445,
+  "recipeName": "Frothing Cord",
+  "profession": "Tailoring",
+  "itemID": 254040,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 16 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman",
+      "level": 45
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery",
+      "level": 37
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Herod (Scarlet Monastery), Scarlet Commander Mograine (Scarlet Monastery), High Inquisitor Whitemane (Scarlet Monastery), High Inquisitor Fairbanks (Scarlet Monastery), Grimlok (Uldaman), Arcanist Doan (Scarlet Monastery)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257447,
+  "recipeName": "Black Cord",
+  "profession": "Tailoring",
+  "itemID": 254044,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 15 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman",
+      "level": 45
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery",
+      "level": 37
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Herod (Scarlet Monastery), Scarlet Commander Mograine (Scarlet Monastery), High Inquisitor Whitemane (Scarlet Monastery), High Inquisitor Fairbanks (Scarlet Monastery), Grimlok (Uldaman), Arcanist Doan (Scarlet Monastery)). wiki source: \"?\". conquestcapped: \"Not known yet\" for Gilded Cord, Gilded Handwraps and Black Cord. No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257448,
+  "recipeName": "Golden Cord",
+  "profession": "Tailoring",
+  "itemID": 254046,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 16 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman",
+      "level": 45
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery",
+      "level": 37
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Herod (Scarlet Monastery), Scarlet Commander Mograine (Scarlet Monastery), High Inquisitor Whitemane (Scarlet Monastery), High Inquisitor Fairbanks (Scarlet Monastery), Grimlok (Uldaman), Arcanist Doan (Scarlet Monastery)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257449,
+  "recipeName": "Radiant Cord",
+  "profession": "Tailoring",
+  "itemID": 254048,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 11 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery",
+      "level": 42
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery",
+      "level": 40
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery",
+      "level": 37
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman",
+      "level": 45
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Herod (Scarlet Monastery), Scarlet Commander Mograine (Scarlet Monastery), High Inquisitor Whitemane (Scarlet Monastery), High Inquisitor Fairbanks (Scarlet Monastery), Arcanist Doan (Scarlet Monastery), Galgann Firehammer (Uldaman)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257462,
+  "recipeName": "Ghostweave Cord",
+  "profession": "Tailoring",
+  "itemID": 254074,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Haldarr Trickster (Azshara, lvl 45). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 6126,
+      "name": "Haldarr Trickster",
+      "zone": "Azshara",
+      "level": 45
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257463,
+  "recipeName": "Earthenweave Gloves",
+  "profession": "Tailoring",
+  "itemID": 254076,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Inferno Elemental (Searing Gorge, lvl 47). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 5852,
+      "name": "Inferno Elemental",
+      "zone": "Searing Gorge",
+      "level": 47
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Third-party aggregator sites (not counted) also name Inferno Elemental."
+ },
+ {
+  "recipeSpellID": 1257464,
+  "recipeName": "Earthenweave Cord",
+  "profession": "Tailoring",
+  "itemID": 254078,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Vilebranch Soothsayer (The Hinterlands, lvl 46). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 4467,
+      "name": "Vilebranch Soothsayer",
+      "zone": "The Hinterlands",
+      "level": 46
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257472,
+  "recipeName": "Earthenweave Boots",
+  "profession": "Tailoring",
+  "itemID": 254094,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Elder Rage Scar (Feralas, lvl 48). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 5297,
+      "name": "Elder Rage Scar",
+      "zone": "Feralas",
+      "level": 48
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257473,
+  "recipeName": "Gilded Gloves",
+  "profession": "Tailoring",
+  "itemID": 254096,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 8 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak",
+      "level": 47
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 8440,
+      "name": "Shade of Hakkar",
+      "zone": "The Temple of Atal'Hakkar",
+      "level": 1
+     },
+     {
+      "npcID": 9056,
+      "name": "Fineous Darkvire",
+      "zone": null,
+      "level": 54
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Chief Ukorz Sandscalp (Zul'Farrak), Witch Doctor Zum'rah (Zul'Farrak), Shadowpriest Sezz'ziz (Zul'Farrak), Nekrum Gutchewer (Zul'Farrak), Shade of Hakkar (The Temple of Atal'Hakkar), Fineous Darkvire (None)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257474,
+  "recipeName": "Frothing Gloves",
+  "profession": "Tailoring",
+  "itemID": 254098,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 9 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman",
+      "level": 47
+     },
+     {
+      "npcID": 5709,
+      "name": "Shade of Eranikus",
+      "zone": "The Temple of Atal'Hakkar",
+      "level": 55
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 8127,
+      "name": "Antu'sul",
+      "zone": "Zul'Farrak",
+      "level": 48
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Archaedas (Uldaman), Shade of Eranikus (The Temple of Atal'Hakkar), Chief Ukorz Sandscalp (Zul'Farrak), Gahz'rilla (Zul'Farrak), Ruuzlu (Zul'Farrak), Antu'sul (Zul'Farrak)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257475,
+  "recipeName": "Fiery Gloves",
+  "profession": "Tailoring",
+  "itemID": 254100,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 4 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman",
+      "level": 47
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak",
+      "level": 46
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Archaedas (Uldaman), Chief Ukorz Sandscalp (Zul'Farrak), Witch Doctor Zum'rah (Zul'Farrak), Ruuzlu (Zul'Farrak)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257476,
+  "recipeName": "Black Gloves",
+  "profession": "Tailoring",
+  "itemID": 254102,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 7 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman",
+      "level": 47
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak",
+      "level": 47
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak",
+      "level": 46
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Archaedas (Uldaman), Chief Ukorz Sandscalp (Zul'Farrak), Theka the Martyr (Zul'Farrak), Gahz'rilla (Zul'Farrak), Shadowpriest Sezz'ziz (Zul'Farrak), Nekrum Gutchewer (Zul'Farrak)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257477,
+  "recipeName": "Golden Gloves",
+  "profession": "Tailoring",
+  "itemID": 254104,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 11 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman",
+      "level": 47
+     },
+     {
+      "npcID": 5715,
+      "name": "Hukku",
+      "zone": "The Temple of Atal'Hakkar",
+      "level": 52
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak",
+      "level": 46
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Archaedas (Uldaman), Hukku (The Temple of Atal'Hakkar), Chief Ukorz Sandscalp (Zul'Farrak), Witch Doctor Zum'rah (Zul'Farrak), Theka the Martyr (Zul'Farrak), Gahz'rilla (Zul'Farrak)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257478,
+  "recipeName": "Radiant Gloves",
+  "profession": "Tailoring",
+  "itemID": 254106,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "The Source column in the Wowhead Forever tailoring guide says \"Trainer\" and links the pattern item.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/guide/professions/tailoring-overview-trainer-locations-recipes"
+    ]
+   },
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists 8 NPC(s) that drop the pattern.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman",
+      "level": 47
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak",
+      "level": 48
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak",
+      "level": 46
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak",
+      "level": 47
+     },
+     {
+      "npcID": 8127,
+      "name": "Antu'sul",
+      "zone": "Zul'Farrak",
+      "level": 48
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "CONFLICT: the Wowhead guide says Trainer, but QuestieDB lists droppers (Archaedas (Uldaman), Chief Ukorz Sandscalp (Zul'Farrak), Witch Doctor Zum'rah (Zul'Farrak), Theka the Martyr (Zul'Farrak), Shadowpriest Sezz'ziz (Zul'Farrak), Antu'sul (Zul'Farrak)). wiki source: \"?\". No drop chances found. The Slippers in the same Gilded/Frothing/Fiery/Black/Golden/Radiant family are trainer recipes in three sources."
+ },
+ {
+  "recipeSpellID": 1257485,
+  "recipeName": "Earthenweave Mantle",
+  "profession": "Tailoring",
+  "itemID": 254120,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Skeletal Terror (Western Plaguelands, lvl 52). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 1785,
+      "name": "Skeletal Terror",
+      "zone": "Western Plaguelands",
+      "level": 52
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default."
+ },
+ {
+  "recipeSpellID": 1257486,
+  "recipeName": "Earthenweave Vest",
+  "profession": "Tailoring",
+  "itemID": 254122,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254122 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=254122 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1257488,
+  "recipeName": "Earthenweave Leggings",
+  "profession": "Tailoring",
+  "itemID": 254126,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Irontree Stomper (Felwood, lvl 52). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 7139,
+      "name": "Irontree Stomper",
+      "zone": "Felwood",
+      "level": 52
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Third-party aggregator sites (not counted) also name Irontree Stomper."
+ },
+ {
+  "recipeSpellID": 1257489,
+  "recipeName": "Ghostweave Mantle",
+  "profession": "Tailoring",
+  "itemID": 254128,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254128 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=254128 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1257490,
+  "recipeName": "Ghostweave Boots",
+  "profession": "Tailoring",
+  "itemID": 254130,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254130 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1257491,
+  "recipeName": "Earthenweave Cuffs",
+  "profession": "Tailoring",
+  "itemID": 254132,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254132 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1257492,
+  "recipeName": "Mooncloth Reagent Bag",
+  "profession": "Tailoring",
+  "itemID": 254134,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Dala Fairmaw in Mount Hyjal for 10 Deadwood Tribal Beads.",
+    "npcs": [
+     {
+      "name": "Dala Fairmaw",
+      "zone": "Mount Hyjal"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=254134",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/",
+     "https://warcraft.wiki.gg/wiki/Forever_tailoring_patterns"
+    ],
+    "cost": "10 Deadwood Tribal Beads (conquestcapped only)"
+   }
+  ],
+  "notes": "Wowhead: \"New in Forever\"; \"This item can be purchased in Mount Hyjal.\" conquestcapped names Dala Fairmaw and the bead cost (NPC and cost come from one source; the zone agrees). wiki source type: Vendor. No NPC ID found."
+ },
+ {
+  "recipeSpellID": 1257493,
+  "recipeName": "Ghostweave Hood",
+  "profession": "Tailoring",
+  "itemID": 254136,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254136 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data."
+ },
+ {
+  "recipeSpellID": 1257494,
+  "recipeName": "Earthenweave Crown",
+  "profession": "Tailoring",
+  "itemID": 254138,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "QuestieDB Forever lists one dropper: Searing Ghoul (Western Plaguelands, lvl 55). Probably a rare or world drop; drop chance unknown.",
+    "npcs": [
+     {
+      "npcID": 1795,
+      "name": "Searing Ghoul",
+      "zone": "Western Plaguelands",
+      "level": 55
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (qdb_item npcDrops; local copy scratchpad/recipes/qdb)"
+    ]
+   }
+  ],
+  "notes": "Only QuestieDB names an NPC. Warcraft wiki source: \"?\". wow.gg has no source data; its \"Trainer\" label is a default. Third-party aggregator sites (not counted) also name Searing Ghoul."
+ },
+ {
+  "recipeSpellID": 1257495,
+  "recipeName": "Bottomless Reagent Bag",
+  "profession": "Tailoring",
+  "itemID": 254140,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 254140 is in QuestieDB with no droppers or vendors. wiki source: \"?\". wow.gg: no source data. conquestcapped lists the source as unknown or \"Not known yet\". Wowhead Forever item=254140 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data)."
+ },
+ {
+  "recipeSpellID": 1294054,
+  "recipeName": "Enchant Gloves - Lotus Claw",
+  "profession": "Enchanting",
+  "itemID": 274424,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Dala Fairmaw in Mount Hyjal for 10 Deadwood Tribal Beads.",
+    "npcs": [
+     {
+      "name": "Dala Fairmaw",
+      "zone": "Mount Hyjal"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=274424",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/",
+     "https://warcraft.wiki.gg/wiki/Forever_enchanting_formulas"
+    ],
+    "cost": "10 Deadwood Tribal Beads (conquestcapped only)"
+   }
+  ],
+  "notes": "Wowhead: \"New in Forever\"; \"This item can be purchased in Mount Hyjal.\" conquestcapped names Dala Fairmaw and the bead cost (NPC and cost come from one source; the zone agrees). wiki source type: Vendor. No NPC ID found."
+ },
+ {
+  "recipeSpellID": 1306520,
+  "recipeName": "Torch of Light",
+  "profession": "Enchanting",
+  "itemID": 279295,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279295 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. Wowhead Forever item=279295 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306521,
+  "recipeName": "Steadfast Libram",
+  "profession": "Enchanting",
+  "itemID": 279296,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279296 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306522,
+  "recipeName": "Libram of Infusion",
+  "profession": "Enchanting",
+  "itemID": 279297,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279297 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306523,
+  "recipeName": "Totem of Urgency",
+  "profession": "Enchanting",
+  "itemID": 279298,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279298 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306524,
+  "recipeName": "Idol of Swiftness",
+  "profession": "Enchanting",
+  "itemID": 279299,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279299 is in QuestieDB with no droppers or vendors. wiki source: \"(blank)\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306525,
+  "recipeName": "Idol of the Ursine Twins",
+  "profession": "Enchanting",
+  "itemID": 279300,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279300 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"(blank)\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306540,
+  "recipeName": "Robes of Fiery Devastation",
+  "profession": "Tailoring",
+  "itemID": 279315,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279315 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. conquestcapped lists the source as unknown or \"Not known yet\". Wowhead Forever item=279315 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306541,
+  "recipeName": "Mana-infused Cord",
+  "profession": "Tailoring",
+  "itemID": 279316,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279316 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306542,
+  "recipeName": "Rime-encrusted Boots",
+  "profession": "Tailoring",
+  "itemID": 279317,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279317 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306543,
+  "recipeName": "Fel Cape",
+  "profession": "Tailoring",
+  "itemID": 279318,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279318 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. Wowhead Forever item=279318 checked: \"New in Forever\", no acquisition sentence (so no vendor in Wowhead data). New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306544,
+  "recipeName": "Cloak of Earth and Sky",
+  "profession": "Tailoring",
+  "itemID": 279319,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279319 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ },
+ {
+  "recipeSpellID": 1306545,
+  "recipeName": "Felblood Soul Bag",
+  "profession": "Tailoring",
+  "itemID": 279320,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No source found. The recipe item 279320 is in QuestieDB with no droppers or vendors (item level 1 placeholder record). wiki source: \"?\". wow.gg: no source data. conquestcapped lists the source as unknown or \"Not known yet\". New skill-300 Forever recipe; possibly tied to raid content that is not open yet (conquestcapped says raid disenchanting opens December 9). Unverified."
+ }
+]

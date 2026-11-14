@@ -609,7 +609,9 @@ function Pane:Refresh()
             for _, d in ipairs(drops) do
                 local e = ns.Questie.NpcNearest(d.npcID)
                 local name = d.name or (e and e.name) or ("NPC " .. d.npcID)
-                local chance = (d.chance >= 1 and "%.0f%%" or "%.1f%%"):format(d.chance)
+                local chance = d.chance > 0 and ((d.chance >= 1 and "%.0f%%" or "%.2g%%"):format(d.chance)) or ""
+                if d.loots > 0 then chance = chance .. " " .. W.ColorText(W.GREY, L.DROP_SAMPLE:format(d.drops, d.loots)) end
+                if not d.confirmed then chance = chance .. " " .. W.ColorText(W.GREY, L.DROP_UNCONFIRMED) end
                 local zone = e and placeText(e) or (d.areaID and ns.Questie.ZoneName(d.areaID)) or ""
                 if e and e.minLevel then
                     local lv = (e.maxLevel and e.maxLevel ~= e.minLevel) and L.LEVEL_RANGE:format(e.minLevel, e.maxLevel)
@@ -618,7 +620,8 @@ function Pane:Refresh()
                 end
                 self:Add({ indent = 2, text = name .. "  " .. W.ColorText(W.GOLD, chance), right = zone,
                     onClick = e and function() ns.Waypoints.Set(e.areaID, e.x, e.y, d.name or e.name) end or nil,
-                    tooltip = e and { d.name or e.name, L.DROP_CHANCE_TIP:format(chance), L.WAYPOINT_CLICK } or nil })
+                    tooltip = e and { d.name or e.name, d.loots > 0 and L.DROP_SAMPLE_TIP:format(d.drops, d.loots) or nil,
+                        L.WAYPOINT_CLICK } or nil })
             end
         end
         -- Auction house: the recipe item's price (Auctionator), for items that aren't soulbound.
@@ -655,7 +658,7 @@ function Pane:Refresh()
                 self:Add({ indent = 1, text = checked and L.SOURCE_PARTLY_CHECKED or L.SOURCE_UNCONFIRMED,
                     color = W.GREY })
             end
-        else
+        elseif #drops == 0 then
             self:Add({ indent = 1, text = L.SOURCE_UNKNOWN, color = W.GREY })
         end
     end

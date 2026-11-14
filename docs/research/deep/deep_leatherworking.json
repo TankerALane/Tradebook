@@ -1,0 +1,3877 @@
+[
+ {
+  "recipeSpellID": 10550,
+  "recipeName": "Nightscape Cloak",
+  "itemID": 8388,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever gives only the zone: Shen'dralas (no single NPC).",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=8388&xml"
+    ]
+   },
+   {
+    "kind": "trainer",
+    "detail": "wow.gg Forever lists the source as \"Trainer\" (conflicts with the Wowhead drop data).",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/leatherworking"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists Nightscape Cloak (skill 205) as \"Trainer\". Wowhead Forever &xml data gives source Drop, zone Shen'dralas (zone 16651, a new Forever zone) with no NPC. Classic Nightscape Cloak was a world drop.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 19093,
+  "recipeName": "Onyxia Scale Cloak",
+  "itemID": 15769,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=15769), and the item is not on warcraftdb. The wiki Forever list shows Onyxia Scale Cloak as skill 320, \"Old\", source \"?\". There is no item page or Forever source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=15769",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 19106,
+  "recipeName": "Onyxia Scale Breastplate",
+  "itemID": 15780,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=15780), and the item is not on warcraftdb. Onyxia Scale Breastplate: no item page; this pattern was never released in Classic. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=15780",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 22815,
+  "recipeName": "Gordok Ogre Suit",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No recipe item: the recipe is taught without an item. In Classic, Knot Thimblejack in Dire Maul North taught Gordok Ogre Suit after you freed him. The wiki Forever list shows Gordok Ogre Suit at skill 285, \"Old\", source \"?\". The Wowhead Forever spell page (https://www.wowhead.com/forever/spell=22815) says nothing about how it is learned (flag only: \"Recipe Hidden Until Known\"). No Forever source found; the Classic Knot Thimblejack method is unverified for Forever.",
+  "urls": [
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wowhead.com/forever/spell=22815"
+  ]
+ },
+ {
+  "recipeSpellID": 28219,
+  "recipeName": "Polar Tunic",
+  "itemID": 22692,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22692), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22692",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 28220,
+  "recipeName": "Polar Gloves",
+  "itemID": 22694,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22694), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22694",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 28221,
+  "recipeName": "Polar Bracers",
+  "itemID": 22695,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22695), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22695",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 28222,
+  "recipeName": "Icy Scale Breastplate",
+  "itemID": 22696,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22696), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22696",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 28223,
+  "recipeName": "Icy Scale Gauntlets",
+  "itemID": 22697,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22697), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22697",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 28224,
+  "recipeName": "Icy Scale Bracers",
+  "itemID": 22698,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No Wowhead Forever item page (HTTP 404 at https://www.wowhead.com/forever/item=22698), and the item is not on warcraftdb. This is a Classic Naxxramas / Argent Dawn pattern (wiki Forever list: skill 320, source \"?\"). Naxxramas is not part of Forever 1.60.1, and there is no Forever page or source. Treated as not obtainable in Forever because no Forever source exists. No site states this outright.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=22698",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 44953,
+  "recipeName": "Winter Boots",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No recipe item in the input. Winter Boots is a Feast of Winter Veil recipe (in TBC, Greatfather Winter mailed Pattern: Winter Boots, item 34262). The wiki Forever list shows it at skill 285, \"NEW\", source \"?\". No Forever source found. Winter Veil has not run in Forever yet (launched Nov 2026), so this is probably a seasonal recipe, but that is unconfirmed.",
+  "urls": [
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wowhead.com/forever/spell=44953"
+  ]
+ },
+ {
+  "recipeSpellID": 461653,
+  "recipeName": "Brilliant Chromatic Cloak",
+  "itemID": 227910,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item page says \"This item is not available to players.\" This is a Season of Discovery item left in the game files, and no Forever source was found anywhere. The wiki Forever list shows the recipe as \"Old, Drop\", but that is the Classic/SoD source type, not a Forever source.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=227910",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 461690,
+  "recipeName": "Mastercrafted Shifting Cloak",
+  "itemID": 228276,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item page says \"This item is not available to players.\" This is a Season of Discovery item left in the game files, and no Forever source was found anywhere. The wiki Forever list shows the recipe as \"Old, Drop\", but that is the Classic/SoD source type, not a Forever source.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=228276",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1254967,
+  "recipeName": "Pristine Scorpid Leggings",
+  "itemID": 252940,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Spectral Researcher (Scholomance).",
+    "npcs": [
+     {
+      "npcID": 10499,
+      "name": "Spectral Researcher",
+      "zone": "Scholomance"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252940&xml"
+    ]
+   }
+  ],
+  "notes": "Epic pattern (wiki Forever list: skill 300, \"NEW\", source \"?\"). Wowhead Forever names one dungeon trash dropper (sourcemore dd=-1 marks a dungeon). There may be other droppers in the same instance.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254968,
+  "recipeName": "Black Dragonscale Helm",
+  "itemID": 252939,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Blackhand Assassin (Blackrock Spire).",
+    "npcs": [
+     {
+      "npcID": 10318,
+      "name": "Blackhand Assassin",
+      "zone": "Blackrock Spire"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252939&xml"
+    ]
+   }
+  ],
+  "notes": "Epic pattern (wiki Forever list: skill 300, \"NEW\", source \"?\"). Wowhead Forever names one dungeon trash dropper (sourcemore dd=-1 marks a dungeon). There may be other droppers in the same instance.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254969,
+  "recipeName": "Blue Dragonscale Helm",
+  "itemID": 252938,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Epic pattern, skill 300, marked \"NEW\" on the wiki. The parallel patterns (Black Dragonscale Helm, Red Dragonscale Leggings, Pristine Scorpid Leggings, Timbermaw Tunic) drop from level-60 dungeon mobs (Blackrock Spire, Stratholme, Scholomance, Blackmaw Hold), so this one may too. That is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252938&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1254970,
+  "recipeName": "Red Dragonscale Leggings",
+  "itemID": 252937,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Crimson Battle Mage (Stratholme).",
+    "npcs": [
+     {
+      "npcID": 10425,
+      "name": "Crimson Battle Mage",
+      "zone": "Stratholme"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252937&xml"
+    ]
+   }
+  ],
+  "notes": "Epic pattern (wiki Forever list: skill 300, \"NEW\", source \"?\"). Wowhead Forever names one dungeon trash dropper (sourcemore dd=-1 marks a dungeon). There may be other droppers in the same instance.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254971,
+  "recipeName": "Charged Scorpid Boots",
+  "itemID": 252936,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Deadwind Ogre Mage (Deadwind Pass).",
+    "npcs": [
+     {
+      "npcID": 7379,
+      "name": "Deadwind Ogre Mage",
+      "zone": "Deadwind Pass"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252936&xml"
+    ]
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript. The zone for Deadwind Ogre Mage (NPC 7379) comes from the QuestieDB NPC record (Deadwind Pass, level 55-57).",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254972,
+  "recipeName": "Supple Scorpid Sabatons",
+  "itemID": 252935,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252935&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1254973,
+  "recipeName": "Charged Scorpid Leggings",
+  "itemID": 252934,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Unliving Mossflayer (Eastern Plaguelands). QuestieDB dropper(s): Unliving Mossflayer (Eastern Plaguelands, lvl 53).",
+    "npcs": [
+     {
+      "npcID": 11291,
+      "name": "Unliving Mossflayer",
+      "zone": "Eastern Plaguelands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252934&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "53"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254975,
+  "recipeName": "Charged Scorpid Vest",
+  "itemID": 252932,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Spitelash Siren (Azshara). QuestieDB dropper(s): Spitelash Siren (Azshara, lvl 50).",
+    "npcs": [
+     {
+      "npcID": 6195,
+      "name": "Spitelash Siren",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252932&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "50"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254976,
+  "recipeName": "Supple Scorpid Helm",
+  "itemID": 252931,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Shadowsworn Adept (?). QuestieDB dropper(s): Shadowsworn Adept (Blasted Lands, lvl 52).",
+    "npcs": [
+     {
+      "npcID": 6006,
+      "name": "Shadowsworn Adept",
+      "zone": "Blasted Lands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252931&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "52"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254977,
+  "recipeName": "Charged Scorpid Gauntlets",
+  "itemID": 252930,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Skeletal Sorcerer (Western Plaguelands). QuestieDB dropper(s): Skeletal Sorcerer (Western Plaguelands, lvl 51).",
+    "npcs": [
+     {
+      "npcID": 1784,
+      "name": "Skeletal Sorcerer",
+      "zone": "Western Plaguelands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252930&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "51"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254978,
+  "recipeName": "Supple Scorpid Belt",
+  "itemID": 252929,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever gives only the zone: Azshara (no single NPC). QuestieDB dropper(s): Blood Elf Surveyor (Azshara, lvl 51).",
+    "npcs": [
+     {
+      "npcID": 6198,
+      "name": "Blood Elf Surveyor",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252929&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "51"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254979,
+  "recipeName": "Heavy Scorpid Boots",
+  "itemID": 252928,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Shadowsworn Cultist (Blasted Lands).",
+    "npcs": [
+     {
+      "npcID": 6004,
+      "name": "Shadowsworn Cultist",
+      "zone": "Blasted Lands"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252928&xml"
+    ]
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254980,
+  "recipeName": "Charged Scorpid Bracers",
+  "itemID": 252927,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Tar Creeper (Un'Goro Crater). QuestieDB dropper(s): Tar Creeper (Un'Goro Crater, lvl 51).",
+    "npcs": [
+     {
+      "npcID": 6527,
+      "name": "Tar Creeper",
+      "zone": "Un'Goro Crater"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252927&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "51"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254981,
+  "recipeName": "Supple Scorpid Shoulders",
+  "itemID": 252926,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Jaedenar Adept (Felwood). QuestieDB dropper(s): Jaedenar Adept (Felwood, lvl 51).",
+    "npcs": [
+     {
+      "npcID": 7115,
+      "name": "Jaedenar Adept",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252926&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "51"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254986,
+  "recipeName": "Mender's Mail Gauntlets",
+  "itemID": 252921,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Maraudon, The Temple of Atal'Hakkar, Uldaman, Zul'Farrak (QuestieDB lists 11 droppers; boss levels 46-55). Wowhead Forever lists no source for this item.",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 5709,
+      "name": "Shade of Eranikus",
+      "zone": "The Temple of Atal'Hakkar"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8580,
+      "name": "Atal'alarion",
+      "zone": null
+     },
+     {
+      "npcID": 12203,
+      "name": "Landslide",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 12225,
+      "name": "Celebras the Cursed",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 12236,
+      "name": "Lord Vyletongue",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13596,
+      "name": "Rotgrip",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-55",
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript. Wowhead Forever &xml data has no source key for this item, so only QuestieDB supports the drop.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254987,
+  "recipeName": "Skirmisher's Mail Gauntlets",
+  "itemID": 252920,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Zul'Farrak (QuestieDB lists 6 droppers; boss levels 46-48). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "levelRange": "46-48",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252920&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254988,
+  "recipeName": "Skycaller's Mail Gauntlets",
+  "itemID": 252919,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Maraudon, Uldaman, Zul'Farrak (QuestieDB lists 10 droppers; boss levels 46-54). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 9056,
+      "name": "Fineous Darkvire",
+      "zone": null
+     },
+     {
+      "npcID": 12201,
+      "name": "Princess Theradras",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 12225,
+      "name": "Celebras the Cursed",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 12236,
+      "name": "Lord Vyletongue",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13601,
+      "name": "Tinkerer Gizlock",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-54",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252919&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254989,
+  "recipeName": "Stalker's Mail Gauntlets",
+  "itemID": 252918,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Maraudon, Uldaman, Zul'Farrak (QuestieDB lists 6 droppers; boss levels 46-53). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8127,
+      "name": "Antu'sul",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 9543,
+      "name": "Ribbly Screwspigot",
+      "zone": null
+     },
+     {
+      "npcID": 12203,
+      "name": "Landslide",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-53",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252918&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254990,
+  "recipeName": "Charged Scorpid Shoulders",
+  "itemID": 252917,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252917&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1254991,
+  "recipeName": "Supple Scorpid Bracers",
+  "itemID": 252916,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Groddoc Thunderer (Feralas). QuestieDB dropper(s): Groddoc Thunderer (Feralas, lvl 49).",
+    "npcs": [
+     {
+      "npcID": 5262,
+      "name": "Groddoc Thunderer",
+      "zone": "Feralas"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252916&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "49"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254992,
+  "recipeName": "Charged Scorpid Helm",
+  "itemID": 252915,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Incendosaur (Searing Gorge). QuestieDB dropper(s): Incendosaur (Searing Gorge, lvl 47).",
+    "npcs": [
+     {
+      "npcID": 9318,
+      "name": "Incendosaur",
+      "zone": "Searing Gorge"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252915&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "47"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254993,
+  "recipeName": "Supple Scorpid Leggings",
+  "itemID": 252914,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Ravasaur (Un'Goro Crater). QuestieDB dropper(s): Ravasaur (Un'Goro Crater, lvl 48).",
+    "npcs": [
+     {
+      "npcID": 6505,
+      "name": "Ravasaur",
+      "zone": "Un'Goro Crater"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252914&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "48"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254998,
+  "recipeName": "Charged Scorpid Belt",
+  "itemID": 252909,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Rage Scar Yeti (Feralas). QuestieDB dropper(s): Rage Scar Yeti (Feralas, lvl 46).",
+    "npcs": [
+     {
+      "npcID": 5296,
+      "name": "Rage Scar Yeti",
+      "zone": "Feralas"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252909&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "46"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1254999,
+  "recipeName": "Supple Scorpid Boots",
+  "itemID": 252908,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Dunemaul Ogre (Tanaris). QuestieDB dropper(s): Dunemaul Ogre (Tanaris, lvl 45).",
+    "npcs": [
+     {
+      "npcID": 5471,
+      "name": "Dunemaul Ogre",
+      "zone": "Tanaris"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252908&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "45"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255008,
+  "recipeName": "Mender's Mail Boots",
+  "itemID": 252899,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 11 droppers; boss levels 37-46). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 7228,
+      "name": "Ironaya",
+      "zone": null
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7356,
+      "name": "Plaguemaw the Rotting",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 10081,
+      "name": "Dustwraith",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "levelRange": "37-46",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252899&xml",
+     "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+    ]
+   }
+  ],
+  "notes": "The wiki Forever list also shows source \"Drop\". Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255009,
+  "recipeName": "Skirmisher's Mail Boots",
+  "itemID": 252898,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 16 droppers, 15 shown; boss levels 37-45). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6910,
+      "name": "Revelosh",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7023,
+      "name": "Obsidian Sentinel",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7206,
+      "name": "Ancient Stone Keeper",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7228,
+      "name": "Ironaya",
+      "zone": null
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7356,
+      "name": "Plaguemaw the Rotting",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7604,
+      "name": "Sergeant Bly",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8567,
+      "name": "Glutton",
+      "zone": "Razorfen Downs"
+     }
+    ],
+    "levelRange": "37-45",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252898&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255012,
+  "recipeName": "Ironfeather Leggings",
+  "itemID": 252895,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Epic pattern, skill 300, marked \"NEW\" on the wiki. The parallel patterns (Black Dragonscale Helm, Red Dragonscale Leggings, Pristine Scorpid Leggings, Timbermaw Tunic) drop from level-60 dungeon mobs (Blackrock Spire, Stratholme, Scholomance, Blackmaw Hold), so this one may too. That is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252895&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255013,
+  "recipeName": "Warbear Helm",
+  "itemID": 252894,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Epic pattern, skill 300, marked \"NEW\" on the wiki. The parallel patterns (Black Dragonscale Helm, Red Dragonscale Leggings, Pristine Scorpid Leggings, Timbermaw Tunic) drop from level-60 dungeon mobs (Blackrock Spire, Stratholme, Scholomance, Blackmaw Hold), so this one may too. That is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252894&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255014,
+  "recipeName": "Timbermaw Tunic",
+  "itemID": 252893,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Blackmaw Druid (Blackmaw Hold).",
+    "npcs": [
+     {
+      "npcID": 258516,
+      "name": "Blackmaw Druid",
+      "zone": "Blackmaw Hold"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252893&xml"
+    ]
+   }
+  ],
+  "notes": "Blackmaw Druid (NPC 258516) is in Blackmaw Hold (zone 16554), the new level 55-60 Forever dungeon in Azshara (https://www.warcrafttavern.com/forever/guides/blackmaw-hold/). Wowhead sourcemore dd=-1 marks a dungeon drop.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255015,
+  "recipeName": "Dawn Armor",
+  "itemID": 252892,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Epic pattern, skill 300, marked \"NEW\" on the wiki. The parallel patterns (Black Dragonscale Helm, Red Dragonscale Leggings, Pristine Scorpid Leggings, Timbermaw Tunic) drop from level-60 dungeon mobs (Blackrock Spire, Stratholme, Scholomance, Blackmaw Hold), so this one may too. That is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252892&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255016,
+  "recipeName": "Living Crown",
+  "itemID": 252891,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Epic pattern, skill 300, marked \"NEW\" on the wiki. The parallel patterns (Black Dragonscale Helm, Red Dragonscale Leggings, Pristine Scorpid Leggings, Timbermaw Tunic) drop from level-60 dungeon mobs (Blackrock Spire, Stratholme, Scholomance, Blackmaw Hold), so this one may too. That is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252891&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255017,
+  "recipeName": "Blue Suede Hat",
+  "itemID": 252890,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Winterfall Den Watcher (Winterspring). QuestieDB dropper(s): Winterfall Den Watcher (Winterspring, lvl 55).",
+    "npcs": [
+     {
+      "npcID": 7440,
+      "name": "Winterfall Den Watcher",
+      "zone": "Winterspring"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252890&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "55"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255018,
+  "recipeName": "Tooled Leather Pants",
+  "itemID": 252889,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Sky Shadow (Deadwind Pass).",
+    "npcs": [
+     {
+      "npcID": 7376,
+      "name": "Sky Shadow",
+      "zone": "Deadwind Pass"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252889&xml"
+    ]
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript. The zone for Sky Shadow (NPC 7376) comes from the QuestieDB NPC record (Deadwind Pass, level 55-56). Wowhead gave no zone.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255019,
+  "recipeName": "Blue Suede Bracers",
+  "itemID": 252888,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Blackrock Soldier (Burning Steppes). QuestieDB dropper(s): Blackrock Soldier (Burning Steppes, lvl 55).",
+    "npcs": [
+     {
+      "npcID": 7025,
+      "name": "Blackrock Soldier",
+      "zone": "Burning Steppes"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252888&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "55"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255020,
+  "recipeName": "Tooled Leather Epaulets",
+  "itemID": 252887,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252887&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255021,
+  "recipeName": "Blue Suede Belt",
+  "itemID": 252886,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Spitelash Battlemaster (Azshara). QuestieDB dropper(s): Spitelash Battlemaster (Azshara, lvl 53).",
+    "npcs": [
+     {
+      "npcID": 7885,
+      "name": "Spitelash Battlemaster",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252886&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "53"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255022,
+  "recipeName": "Tooled Leather Bracers",
+  "itemID": 252885,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Putrid Gargoyle (Eastern Plaguelands). QuestieDB dropper(s): Putrid Gargoyle (Eastern Plaguelands, lvl 54).",
+    "npcs": [
+     {
+      "npcID": 8534,
+      "name": "Putrid Gargoyle",
+      "zone": "Eastern Plaguelands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252885&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "54"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255023,
+  "recipeName": "Wicked Leather Shoulders",
+  "itemID": 252884,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252884&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255025,
+  "recipeName": "Tooled Leather Crown",
+  "itemID": 252882,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever gives only the zone: Un'Goro Crater (no single NPC). QuestieDB dropper(s): Scorching Elemental (Un'Goro Crater, lvl 53).",
+    "npcs": [
+     {
+      "npcID": 6520,
+      "name": "Scorching Elemental",
+      "zone": "Un'Goro Crater"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252882&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "53"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript. Wowhead Forever gives only the zone, Un'Goro Crater. QuestieDB names Scorching Elemental (NPC 6520).",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255026,
+  "recipeName": "Blue Suede Shoulders",
+  "itemID": 252881,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252881&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255027,
+  "recipeName": "Tooled Leather Gauntlets",
+  "itemID": 252880,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever &xml data for this item has no source key, QuestieDB lists no droppers, and the wiki Forever list shows source \"?\". No Forever guide mentions it. Uncommon pattern from the same family as the world-drop-looking Scorpid/Blue Suede/Tooled/Wicked patterns, but no dropper is recorded yet.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=252880&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1255028,
+  "recipeName": "Wicked Leather Boots",
+  "itemID": 252879,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Entropic Beast (Felwood). QuestieDB dropper(s): Entropic Beast (Felwood, lvl 51).",
+    "npcs": [
+     {
+      "npcID": 9878,
+      "name": "Entropic Beast",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252879&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "51"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255029,
+  "recipeName": "Blue Suede Pants",
+  "itemID": 252878,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Primal Ooze (Un'Goro Crater).",
+    "npcs": [
+     {
+      "npcID": 6557,
+      "name": "Primal Ooze",
+      "zone": "Un'Goro Crater"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252878&xml"
+    ]
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255036,
+  "recipeName": "Mender's Leather Gauntlets",
+  "itemID": 252871,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Maraudon, Uldaman, Zul'Farrak (QuestieDB lists 5 droppers; boss levels 47-51). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 12201,
+      "name": "Princess Theradras",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 12258,
+      "name": "Razorlash",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13282,
+      "name": "Noxxion",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "47-51",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252871&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255037,
+  "recipeName": "Skycaller's Leather Gauntlets",
+  "itemID": 252870,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Maraudon, Zul'Farrak (QuestieDB lists 10 droppers; boss levels 46-55). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 9502,
+      "name": "Phalanx",
+      "zone": null
+     },
+     {
+      "npcID": 12225,
+      "name": "Celebras the Cursed",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13282,
+      "name": "Noxxion",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13596,
+      "name": "Rotgrip",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13601,
+      "name": "Tinkerer Gizlock",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-55",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252870&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255038,
+  "recipeName": "Warden's Leather Gauntlets",
+  "itemID": 252869,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Maraudon, Uldaman, Zul'Farrak (QuestieDB lists 5 droppers; boss levels 46-48). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 12236,
+      "name": "Lord Vyletongue",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13282,
+      "name": "Noxxion",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-48",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252869&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255039,
+  "recipeName": "Skulker's Leather Gauntlets",
+  "itemID": 252868,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Maraudon, Uldaman, Zul'Farrak (QuestieDB lists 10 droppers; boss levels 46-50). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8127,
+      "name": "Antu'sul",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 12236,
+      "name": "Lord Vyletongue",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13282,
+      "name": "Noxxion",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13596,
+      "name": "Rotgrip",
+      "zone": "Maraudon"
+     },
+     {
+      "npcID": 13601,
+      "name": "Tinkerer Gizlock",
+      "zone": "Maraudon"
+     }
+    ],
+    "levelRange": "46-50",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252868&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255041,
+  "recipeName": "Blue Suede Gloves",
+  "itemID": 252866,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Deadwood Warrior (Felwood). QuestieDB dropper(s): Deadwood Warrior (Felwood, lvl 48).",
+    "npcs": [
+     {
+      "npcID": 7153,
+      "name": "Deadwood Warrior",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252866&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "48"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255042,
+  "recipeName": "Tooled Leather Boots",
+  "itemID": 252865,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Deadwood Shaman (Felwood). QuestieDB dropper(s): Deadwood Shaman (Felwood, lvl 53).",
+    "npcs": [
+     {
+      "npcID": 7158,
+      "name": "Deadwood Shaman",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252865&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "53"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255048,
+  "recipeName": "Blue Suede Shoes",
+  "itemID": 252859,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). QuestieDB dropper(s): Dark Iron Taskmaster (Searing Gorge, lvl 47). Wowhead Forever lists no source for this item.",
+    "npcs": [
+     {
+      "npcID": 5846,
+      "name": "Dark Iron Taskmaster",
+      "zone": "Searing Gorge"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "47"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255049,
+  "recipeName": "Tooled Leather Belt",
+  "itemID": 252858,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Highborne Apparition (Azshara). QuestieDB dropper(s): Highborne Apparition (Azshara, lvl 45).",
+    "npcs": [
+     {
+      "npcID": 6116,
+      "name": "Highborne Apparition",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252858&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "45"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255060,
+  "recipeName": "Mender's Leather Shoes",
+  "itemID": 252847,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Razorfen Downs, Scarlet Monastery, Uldaman (QuestieDB lists 17 droppers, 15 shown; boss levels 37-45). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6906,
+      "name": "Baelog",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6907,
+      "name": "Eric \"The Swift\"",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6910,
+      "name": "Revelosh",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7023,
+      "name": "Obsidian Sentinel",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7206,
+      "name": "Ancient Stone Keeper",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7354,
+      "name": "Ragglesnout",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7356,
+      "name": "Plaguemaw the Rotting",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     }
+    ],
+    "levelRange": "37-45",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252847&xml",
+     "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+    ]
+   }
+  ],
+  "notes": "The wiki Forever list also shows source \"Drop\". Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255061,
+  "recipeName": "Skycaller's Leather Shoes",
+  "itemID": 252846,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 18 droppers, 15 shown; boss levels 37-46). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 7023,
+      "name": "Obsidian Sentinel",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7356,
+      "name": "Plaguemaw the Rotting",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7604,
+      "name": "Sergeant Bly",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8567,
+      "name": "Glutton",
+      "zone": "Razorfen Downs"
+     }
+    ],
+    "levelRange": "37-46",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252846&xml",
+     "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever top source: Arcanist Doan (Scarlet Monastery). The wiki Forever list also shows source \"Drop\". Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255062,
+  "recipeName": "Warden's Leather Shoes",
+  "itemID": 252845,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 16 droppers, 15 shown; boss levels 37-45). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6906,
+      "name": "Baelog",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7023,
+      "name": "Obsidian Sentinel",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7206,
+      "name": "Ancient Stone Keeper",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7228,
+      "name": "Ironaya",
+      "zone": null
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7604,
+      "name": "Sergeant Bly",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "levelRange": "37-45",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252845&xml",
+     "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+    ]
+   }
+  ],
+  "notes": "The wiki Forever list also shows source \"Drop\". Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255063,
+  "recipeName": "Skulker's Leather Shoes",
+  "itemID": 252844,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 16 droppers, 15 shown; boss levels 37-45). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6906,
+      "name": "Baelog",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6907,
+      "name": "Eric \"The Swift\"",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7206,
+      "name": "Ancient Stone Keeper",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7354,
+      "name": "Ragglesnout",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7356,
+      "name": "Plaguemaw the Rotting",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7604,
+      "name": "Sergeant Bly",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8567,
+      "name": "Glutton",
+      "zone": "Razorfen Downs"
+     }
+    ],
+    "levelRange": "37-45",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252844&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255064,
+  "recipeName": "Prowler's Leather Shoes",
+  "itemID": 252843,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Razorfen Downs, Scarlet Monastery, Uldaman, Zul'Farrak (QuestieDB lists 18 droppers, 15 shown; boss levels 37-46). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6906,
+      "name": "Baelog",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7023,
+      "name": "Obsidian Sentinel",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7228,
+      "name": "Ironaya",
+      "zone": null
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7291,
+      "name": "Galgann Firehammer",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7354,
+      "name": "Ragglesnout",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7355,
+      "name": "Tuten'kash",
+      "zone": null
+     },
+     {
+      "npcID": 7357,
+      "name": "Mordresh Fire Eye",
+      "zone": "Razorfen Downs"
+     },
+     {
+      "npcID": 7358,
+      "name": "Amnennar the Coldbringer",
+      "zone": "Razorfen Downs"
+     }
+    ],
+    "levelRange": "37-46",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252843&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255088,
+  "recipeName": "Wisdom's Leather Helm",
+  "itemID": 252819,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Blackfathom Deeps, Razorfen Kraul, Scarlet Monastery, The Stockade (QuestieDB lists 27 droppers, 15 shown; boss levels 26-34). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1720,
+      "name": "Bruegal Ironknuckle",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3983,
+      "name": "Interrogator Vishas",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4420,
+      "name": "Overlord Ramtusk",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4421,
+      "name": "Charlga Razorflank",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4422,
+      "name": "Agathelos the Raging",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4424,
+      "name": "Aggem Thorncurse",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4425,
+      "name": "Blind Hunter",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4428,
+      "name": "Death Speaker Jargba",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4543,
+      "name": "Bloodmage Thalnos",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4829,
+      "name": "Aku'mai",
+      "zone": "Blackfathom Deeps"
+     }
+    ],
+    "levelRange": "26-34",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252819&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255090,
+  "recipeName": "Totemic Leather Helm",
+  "itemID": 252817,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Blackfathom Deeps, Razorfen Kraul, Scarlet Monastery, The Stockade (QuestieDB lists 28 droppers, 15 shown; boss levels 26-34). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1720,
+      "name": "Bruegal Ironknuckle",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3983,
+      "name": "Interrogator Vishas",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4420,
+      "name": "Overlord Ramtusk",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4421,
+      "name": "Charlga Razorflank",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4422,
+      "name": "Agathelos the Raging",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4424,
+      "name": "Aggem Thorncurse",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4425,
+      "name": "Blind Hunter",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4428,
+      "name": "Death Speaker Jargba",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4543,
+      "name": "Bloodmage Thalnos",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4829,
+      "name": "Aku'mai",
+      "zone": "Blackfathom Deeps"
+     }
+    ],
+    "levelRange": "26-34",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252817&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255092,
+  "recipeName": "Trapper's Leather Helm",
+  "itemID": 252815,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Blackfathom Deeps, Razorfen Kraul, Scarlet Monastery, The Stockade (QuestieDB lists 27 droppers, 15 shown; boss levels 26-34). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1720,
+      "name": "Bruegal Ironknuckle",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3983,
+      "name": "Interrogator Vishas",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4420,
+      "name": "Overlord Ramtusk",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4421,
+      "name": "Charlga Razorflank",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4422,
+      "name": "Agathelos the Raging",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4424,
+      "name": "Aggem Thorncurse",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4428,
+      "name": "Death Speaker Jargba",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4543,
+      "name": "Bloodmage Thalnos",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4829,
+      "name": "Aku'mai",
+      "zone": "Blackfathom Deeps"
+     },
+     {
+      "npcID": 4830,
+      "name": "Old Serra'kis",
+      "zone": "Blackfathom Deeps"
+     }
+    ],
+    "levelRange": "26-34",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252815&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255093,
+  "recipeName": "Brawler's Leather Helm",
+  "itemID": 252814,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Blackfathom Deeps, Razorfen Kraul, Scarlet Monastery, The Stockade (QuestieDB lists 26 droppers, 15 shown; boss levels 26-34). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3983,
+      "name": "Interrogator Vishas",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4420,
+      "name": "Overlord Ramtusk",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4421,
+      "name": "Charlga Razorflank",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4422,
+      "name": "Agathelos the Raging",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4424,
+      "name": "Aggem Thorncurse",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4428,
+      "name": "Death Speaker Jargba",
+      "zone": "Razorfen Kraul"
+     },
+     {
+      "npcID": 4543,
+      "name": "Bloodmage Thalnos",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4829,
+      "name": "Aku'mai",
+      "zone": "Blackfathom Deeps"
+     },
+     {
+      "npcID": 4830,
+      "name": "Old Serra'kis",
+      "zone": "Blackfathom Deeps"
+     },
+     {
+      "npcID": 4832,
+      "name": "Twilight Lord Kelris",
+      "zone": "Blackfathom Deeps"
+     }
+    ],
+    "levelRange": "26-34",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252814&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255103,
+  "recipeName": "Hillman's Leather Boots",
+  "itemID": 252804,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from mobs (not a vendor or quest). Wowhead Forever top dropper: Shadowhorn Stag (Ashenvale). QuestieDB dropper(s): Shadowhorn Stag (Ashenvale, lvl 22).",
+    "npcs": [
+     {
+      "npcID": 3817,
+      "name": "Shadowhorn Stag",
+      "zone": "Ashenvale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=252804&xml",
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)"
+    ],
+    "levelRange": "22"
+   }
+  ],
+  "notes": "Uncommon pattern with only one recorded dropper per source. Across this set (Charged/Supple/Heavy Scorpid, Blue Suede, Tooled Leather, Wicked Leather) the droppers are ordinary level 45-60 mobs in many zones. That suggests a random world drop, but no Forever source says so. Drop chances could not be read: the Wowhead tabs are rendered by JavaScript. Conflict: wow.gg Forever lists Hillman's Leather Boots as \"Vendor: Harlown Darkweave, Ashenvale (Alliance), limited stock\". The wow-professions Forever page for Harlown (marked unchecked) lists only Pattern: Herbalist's Gloves (also skill 110). The wow.gg row may be a summarizer mix-up; it was not re-verified.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255110,
+  "recipeName": "Wisdom's Leather Pants",
+  "itemID": 252797,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Shadowfang Keep, The Deadmines, The Stockade, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 20-26). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3674,
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3872,
+      "name": "Deathsworn Captain",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3886,
+      "name": "Razorclaw the Butcher",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3887,
+      "name": "Baron Silverlaine",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3927,
+      "name": "Wolf Master Nandos",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4274,
+      "name": "Fenrus the Devourer",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4275,
+      "name": "Archmage Arugal",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4278,
+      "name": "Commander Springvale",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4279,
+      "name": "Odo the Blindwatcher",
+      "zone": "Shadowfang Keep"
+     }
+    ],
+    "levelRange": "20-26",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252797&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255111,
+  "recipeName": "Stormrider's Leather Pants",
+  "itemID": 252796,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Shadowfang Keep, The Deadmines, The Stockade, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 20-26). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3674,
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3872,
+      "name": "Deathsworn Captain",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3886,
+      "name": "Razorclaw the Butcher",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3887,
+      "name": "Baron Silverlaine",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3927,
+      "name": "Wolf Master Nandos",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4274,
+      "name": "Fenrus the Devourer",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4275,
+      "name": "Archmage Arugal",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4278,
+      "name": "Commander Springvale",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4279,
+      "name": "Odo the Blindwatcher",
+      "zone": "Shadowfang Keep"
+     }
+    ],
+    "levelRange": "20-26",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252796&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255112,
+  "recipeName": "Totemic Leather Pants",
+  "itemID": 252795,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Shadowfang Keep, The Deadmines, The Stockade, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 20-26). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3674,
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3872,
+      "name": "Deathsworn Captain",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3886,
+      "name": "Razorclaw the Butcher",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3887,
+      "name": "Baron Silverlaine",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3927,
+      "name": "Wolf Master Nandos",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4274,
+      "name": "Fenrus the Devourer",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4275,
+      "name": "Archmage Arugal",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4278,
+      "name": "Commander Springvale",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4279,
+      "name": "Odo the Blindwatcher",
+      "zone": "Shadowfang Keep"
+     }
+    ],
+    "levelRange": "20-26",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252795&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255114,
+  "recipeName": "Trapper's Leather Pants",
+  "itemID": 252793,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Shadowfang Keep, The Deadmines, The Stockade, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 20-26). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3674,
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3872,
+      "name": "Deathsworn Captain",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3886,
+      "name": "Razorclaw the Butcher",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3887,
+      "name": "Baron Silverlaine",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3927,
+      "name": "Wolf Master Nandos",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4274,
+      "name": "Fenrus the Devourer",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4275,
+      "name": "Archmage Arugal",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4278,
+      "name": "Commander Springvale",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4279,
+      "name": "Odo the Blindwatcher",
+      "zone": "Shadowfang Keep"
+     }
+    ],
+    "levelRange": "20-26",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252793&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255115,
+  "recipeName": "Brawler's Leather Pants",
+  "itemID": 252792,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in Shadowfang Keep, The Deadmines, The Stockade, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 20-26). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3674,
+      "name": "Skum",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3872,
+      "name": "Deathsworn Captain",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3886,
+      "name": "Razorclaw the Butcher",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3887,
+      "name": "Baron Silverlaine",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3927,
+      "name": "Wolf Master Nandos",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4274,
+      "name": "Fenrus the Devourer",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4275,
+      "name": "Archmage Arugal",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4278,
+      "name": "Commander Springvale",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 4279,
+      "name": "Odo the Blindwatcher",
+      "zone": "Shadowfang Keep"
+     }
+    ],
+    "levelRange": "20-26",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252792&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255131,
+  "recipeName": "Wisdom's Leather Armor",
+  "itemID": 252776,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Ragefire Chasm, Shadowfang Keep, The Deadmines, Wailing Caverns (QuestieDB lists 19 droppers, 15 shown; boss levels 16-20). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1763,
+      "name": "Gilnid",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3586,
+      "name": "Miner Johnson",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3653,
+      "name": "Kresh",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3669,
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3671,
+      "name": "Lady Anacondra",
+      "zone": null
+     },
+     {
+      "npcID": 3864,
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3914,
+      "name": "Rethilgore",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 5912,
+      "name": "Deviate Faerie Dragon",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 11517,
+      "name": "Oggleflint",
+      "zone": "Ragefire Chasm"
+     }
+    ],
+    "levelRange": "16-20",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252776&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255132,
+  "recipeName": "Stormrider's Leather Armor",
+  "itemID": 252775,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Ragefire Chasm, Shadowfang Keep, The Deadmines, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 16-20). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1763,
+      "name": "Gilnid",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3586,
+      "name": "Miner Johnson",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3653,
+      "name": "Kresh",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3669,
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3671,
+      "name": "Lady Anacondra",
+      "zone": null
+     },
+     {
+      "npcID": 3864,
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3914,
+      "name": "Rethilgore",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 5912,
+      "name": "Deviate Faerie Dragon",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 11517,
+      "name": "Oggleflint",
+      "zone": "Ragefire Chasm"
+     }
+    ],
+    "levelRange": "16-20",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252775&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255133,
+  "recipeName": "Totemic Leather Armor",
+  "itemID": 252774,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Ragefire Chasm, Shadowfang Keep, The Deadmines, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 16-20). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1763,
+      "name": "Gilnid",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3586,
+      "name": "Miner Johnson",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3653,
+      "name": "Kresh",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3669,
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3671,
+      "name": "Lady Anacondra",
+      "zone": null
+     },
+     {
+      "npcID": 3864,
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3914,
+      "name": "Rethilgore",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 5912,
+      "name": "Deviate Faerie Dragon",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 11517,
+      "name": "Oggleflint",
+      "zone": "Ragefire Chasm"
+     }
+    ],
+    "levelRange": "16-20",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252774&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255135,
+  "recipeName": "Trapper's Leather Armor",
+  "itemID": 252772,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Ragefire Chasm, Shadowfang Keep, The Deadmines, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 16-20). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1763,
+      "name": "Gilnid",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3586,
+      "name": "Miner Johnson",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3653,
+      "name": "Kresh",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3669,
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3671,
+      "name": "Lady Anacondra",
+      "zone": null
+     },
+     {
+      "npcID": 3864,
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3914,
+      "name": "Rethilgore",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 5912,
+      "name": "Deviate Faerie Dragon",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 11517,
+      "name": "Oggleflint",
+      "zone": "Ragefire Chasm"
+     }
+    ],
+    "levelRange": "16-20",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252772&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1255136,
+  "recipeName": "Brawler's Leather Armor",
+  "itemID": 252771,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Rare-quality pattern dropped by dungeon bosses in ?, Ragefire Chasm, Shadowfang Keep, The Deadmines, Wailing Caverns (QuestieDB lists 18 droppers, 15 shown; boss levels 16-20). Wowhead Forever source type: Drop (no single top dropper given).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1763,
+      "name": "Gilnid",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3586,
+      "name": "Miner Johnson",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 3653,
+      "name": "Kresh",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3669,
+      "name": "Lord Cobrahn",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3671,
+      "name": "Lady Anacondra",
+      "zone": null
+     },
+     {
+      "npcID": 3864,
+      "name": "Fel Steed",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3865,
+      "name": "Shadow Charger",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 3914,
+      "name": "Rethilgore",
+      "zone": "Shadowfang Keep"
+     },
+     {
+      "npcID": 5912,
+      "name": "Deviate Faerie Dragon",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 11517,
+      "name": "Oggleflint",
+      "zone": "Ragefire Chasm"
+     }
+    ],
+    "levelRange": "16-20",
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever item/NPC DB (local copy; droppers list)",
+     "https://www.wowhead.com/forever/item=252771&xml"
+    ]
+   }
+  ],
+  "notes": "Conflict: wow.gg Forever lists this recipe as \"Trainer\". That looks like a wow.gg default for patterns with no vendor (every dungeon-set helm, pants and armor pattern is labeled this way). Drop chances could not be read: the Wowhead tabs are rendered by JavaScript.",
+  "urls": []
+ },
+ {
+  "recipeSpellID": 1297126,
+  "recipeName": "Bileblister Claws",
+  "itemID": 275586,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Friendly. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275586&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297127,
+  "recipeName": "Bileblister Girdle",
+  "itemID": 275587,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) reputation (standing not read). Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275587&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297128,
+  "recipeName": "Bileblister Boots",
+  "itemID": 275588,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275588&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297129,
+  "recipeName": "Hivethrasher's Claws",
+  "itemID": 275589,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Friendly. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275589&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297130,
+  "recipeName": "Hivethrasher's Girdle",
+  "itemID": 275590,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275590&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297131,
+  "recipeName": "Hivethrasher's Boots",
+  "itemID": 275591,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275591&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297132,
+  "recipeName": "Scalegut Clenchers",
+  "itemID": 275592,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Friendly. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275592&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297133,
+  "recipeName": "Scalegut Belt",
+  "itemID": 275593,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275593&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297134,
+  "recipeName": "Scalegut Treaders",
+  "itemID": 275594,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275594&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297135,
+  "recipeName": "Broodwatcher's Clenchers",
+  "itemID": 275595,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Friendly. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275595&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297136,
+  "recipeName": "Broodwatcher's Belt",
+  "itemID": 275596,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275596&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1297137,
+  "recipeName": "Broodwatcher's Treaders",
+  "itemID": 275597,
+  "obtainable": null,
+  "sources": [],
+  "notes": "The Wowhead Forever item is marked \"New in Forever\" but lists no source: no drop, vendor or quest data. The item tooltip data requires Cenarion Circle (faction 609) Honored. Analogy only, not a source: the matching new Silithus Blacksmithing plans (Clutchlord/Goregasher, items 275598-275603) are sold by Vargus, Cenarion Hold, at Cenarion Circle Friendly/Honored for 750 copper (https://www.wow-professions.com/forever/npc/vargus). The Tailoring ones (275580-275585) are sold by Mishta, Silithus (https://www.wow-professions.com/forever/npc/mishta). The wow-professions Forever page for the Silithus leatherworking vendor Aendel Windspear has an empty recipe table, and the wiki Forever list shows source \"?\". A Cenarion Circle vendor is likely but unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=275597&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns",
+   "https://www.wow-professions.com/forever/npc/aendel-windspear"
+  ]
+ },
+ {
+  "recipeSpellID": 1306526,
+  "recipeName": "Elderwild Waistcord",
+  "itemID": 279301,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279301&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306527,
+  "recipeName": "Outlaw's Collar",
+  "itemID": 279302,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279302&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306528,
+  "recipeName": "Elderwild Pants",
+  "itemID": 279303,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279303&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306529,
+  "recipeName": "Eternity Pauldrons",
+  "itemID": 279304,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279304&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306530,
+  "recipeName": "Tranquil Wristguards",
+  "itemID": 279305,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279305&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306531,
+  "recipeName": "Mourning Handguards",
+  "itemID": 279306,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279306&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ },
+ {
+  "recipeSpellID": 1306532,
+  "recipeName": "Wild Leather Armor Kit",
+  "itemID": 279307,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Wowhead Forever: Epic pattern, item level 1, no source or requirement data. The wiki Forever list shows skill 300, \"NEW\", source \"?\". Web searches found no Forever source. It may be unreleased or tied to content not yet out, but that is unconfirmed.",
+  "urls": [
+   "https://www.wowhead.com/forever/item=279307&xml",
+   "https://warcraft.wiki.gg/wiki/Forever_leatherworking_patterns"
+  ]
+ }
+]

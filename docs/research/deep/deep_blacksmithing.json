@@ -1,0 +1,2889 @@
+[
+ {
+  "recipeSpellID": 2671,
+  "recipeName": "Rough Bronze Bracers",
+  "itemID": 5577,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 5577, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 8366,
+  "recipeName": "Ironforge Chain",
+  "itemID": 6734,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 6734, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 8368,
+  "recipeName": "Ironforge Gauntlets",
+  "itemID": 6736,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 6736, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 9942,
+  "recipeName": "Mithril Plate Gloves",
+  "itemID": 7977,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7977, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 9957,
+  "recipeName": "Orcish War Leggings",
+  "itemID": 7994,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7994, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 9972,
+  "recipeName": "Ornate Mithril Breastplate",
+  "itemID": 7986,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7986, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 9979,
+  "recipeName": "Ornate Mithril Boots",
+  "itemID": 7988,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7988, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 9980,
+  "recipeName": "Ornate Mithril Helm",
+  "itemID": 7987,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 7987, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 16960,
+  "recipeName": "Thorium Greatsword",
+  "itemID": 12816,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12816, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 16965,
+  "recipeName": "Bleakwood Hew",
+  "itemID": 12817,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12817, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 16967,
+  "recipeName": "Inlaid Thorium Hammer",
+  "itemID": 12818,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Old plan item 12818 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling items 12816/12817/12831/12832 all 404 on Wowhead Forever). Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 16980,
+  "recipeName": "Rune Edge",
+  "itemID": 12826,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Rune Edge: plan item 12826 returns 404 on Wowhead Forever; the spell is absent from the wow.gg Forever Blacksmithing list (437 recipes) and from the warcraft.wiki.gg Forever plans list. Evidence is absence only. URLs checked: https://www.wowhead.com/forever/item=12826, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 16986,
+  "recipeName": "Blood Talon",
+  "itemID": 12831,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12831, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 16987,
+  "recipeName": "Darkspear",
+  "itemID": 12832,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Listed in the wow.gg Forever Blacksmithing recipe table with no teaching item; wow.gg shows the source as \"Trainer\".",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever returns 404 (\"Item not found!\") for the old plan item 12832, so that plan item is not in Forever. Caveat: wow.gg shows \"Trainer\" for every recipe whose data has no source and no plan item, so this is inferred from data, not from a trainer list. Not in the warcraft.wiki.gg Forever plans list. Verify at a trainer in game."
+ },
+ {
+  "recipeSpellID": 27586,
+  "recipeName": "Jagged Obsidian Shield",
+  "itemID": 22219,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Lieutenant General Andorov in Ruins of Ahn'Qiraj (AQ20).",
+    "npcs": [
+     {
+      "name": "Lieutenant General Andorov",
+      "zone": "Ruins of Ahn'Qiraj"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=22219",
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever: \"This item can be purchased in Ruins of Ahn'Qiraj.\" wow.gg Forever data: vendor Lieutenant General Andorov, Ruins of Ahn'Qiraj. Wiki: Vendor. No cost or reputation found in Forever sources (Classic needed Cenarion Circle reputation; not verified for Forever). Only usable once AQ20 is open in Forever."
+ },
+ {
+  "recipeSpellID": 27590,
+  "recipeName": "Obsidian Mail Tunic",
+  "itemID": 22221,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Lieutenant General Andorov in Ruins of Ahn'Qiraj (AQ20).",
+    "npcs": [
+     {
+      "name": "Lieutenant General Andorov",
+      "zone": "Ruins of Ahn'Qiraj"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=22221",
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever: \"This item can be purchased in Ruins of Ahn'Qiraj.\" wow.gg Forever data: vendor Lieutenant General Andorov, Ruins of Ahn'Qiraj. Wiki: Vendor. No cost or reputation found in Forever sources (Classic needed Cenarion Circle reputation; not verified for Forever). Only usable once AQ20 is open in Forever."
+ },
+ {
+  "recipeSpellID": 28242,
+  "recipeName": "Icebane Breastplate",
+  "itemID": 22703,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Classic Naxxramas-era plan (item 22703) exists in Forever data: wow.gg lists the recipe with this plan item but no source; the Wowhead Forever item page has no source or availability text; wiki shows \"?\". Probably tied to content not yet released in Forever. No Forever source found. URLs checked: https://www.wowhead.com/forever/item=22703, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 28243,
+  "recipeName": "Icebane Gauntlets",
+  "itemID": 22704,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Classic Naxxramas-era plan (item 22704) exists in Forever data: wow.gg lists the recipe with this plan item but no source; the Wowhead Forever item page has no source or availability text; wiki shows \"?\". Probably tied to content not yet released in Forever. No Forever source found. URLs checked: https://www.wowhead.com/forever/item=22704, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 28244,
+  "recipeName": "Icebane Bracers",
+  "itemID": 22705,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Classic Naxxramas-era plan (item 22705) exists in Forever data: wow.gg lists the recipe with this plan item but no source; the Wowhead Forever item page has no source or availability text; wiki shows \"?\". Probably tied to content not yet released in Forever. No Forever source found. URLs checked: https://www.wowhead.com/forever/item=22705, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 427061,
+  "recipeName": "Mantle of the Second War",
+  "itemID": 210779,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 210779: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Conflict: Wowhead still lists SoD city vendors on the page and warcraft.wiki.gg (game-data based) says Vendor. URLs checked: https://www.wowhead.com/forever/item=210779, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 429348,
+  "recipeName": "Shifting Silver Breastplate",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 430397,
+  "recipeName": "Blackfathom Sharpening Stone",
+  "itemID": 211846,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 211846. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=211846, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 435906,
+  "recipeName": "Reflective Truesilver Braincage",
+  "itemID": 215383,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 215383: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Wowhead page also says \"can be purchased in Gnomeregan\" (SoD data); wiki says Vendor. URLs checked: https://www.wowhead.com/forever/item=215383, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 435908,
+  "recipeName": "Tempered Interference-Negating Helmet",
+  "itemID": 215155,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Wowhead Forever: \"This item can be purchased in Gnomeregan.\" (no vendor name, no availability banner). warcraft.wiki.gg: Vendor.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215155",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "SoD Gnomeregan plan (item 215155). Unlike its siblings 215383/215384 (which say \"may not be in WoW: Forever\"), this page has no availability banner. Spell absent from the wow.gg Forever list. Conflict: likely an SoD leftover; do not show as obtainable without an in-game check."
+ },
+ {
+  "recipeSpellID": 435910,
+  "recipeName": "Low-Background Truesilver Plates",
+  "itemID": 215384,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 215384: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Wowhead page also says \"can be purchased in Gnomeregan\" (SoD data); wiki says Vendor. URLs checked: https://www.wowhead.com/forever/item=215384, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439122,
+  "recipeName": "Golden Scale Boots",
+  "itemID": 217276,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217276: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data.  URLs checked: https://www.wowhead.com/forever/item=217276, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439124,
+  "recipeName": "Golden Scale Cuirass",
+  "itemID": 217278,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217278: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data.  URLs checked: https://www.wowhead.com/forever/item=217278, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439126,
+  "recipeName": "Golden Scale Coif",
+  "itemID": 217280,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217280: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data. Wowhead: \"can be purchased in Tanaris (2)\" (SoD data). URLs checked: https://www.wowhead.com/forever/item=217280, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439128,
+  "recipeName": "Moonsteel Broadsword",
+  "itemID": 217282,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217282: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data. Wowhead: \"can be purchased in Stranglethorn Vale\" (SoD data). URLs checked: https://www.wowhead.com/forever/item=217282, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439130,
+  "recipeName": "Golden Scale Shoulders",
+  "itemID": 217284,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217284: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data.  URLs checked: https://www.wowhead.com/forever/item=217284, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 439132,
+  "recipeName": "Golden Scale Leggings",
+  "itemID": 217286,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 217286: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Forever uses the Classic version of this recipe (different spell and plan item) instead. QuestieDB droppers for this SoD item are inherited SoD/Classic data.  URLs checked: https://www.wowhead.com/forever/item=217286, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 446179,
+  "recipeName": "Shoulderplates of Dread",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 446188,
+  "recipeName": "Fearmonger's Shoulderguards",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 446191,
+  "recipeName": "Baleful Pauldrons",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461647,
+  "recipeName": "Skyrider's Masterwork Stormhammer",
+  "itemID": 227905,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 227905: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=227905, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461667,
+  "recipeName": "Tempered Dark Iron Plate",
+  "itemID": 227901,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 227901: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=227901, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461669,
+  "recipeName": "Refined Arcanite Champion",
+  "itemID": 228117,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228117: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228117, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461671,
+  "recipeName": "Stronger-hold Gauntlets",
+  "itemID": 228250,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228250: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228250, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461675,
+  "recipeName": "Refined Arcanite Reaper",
+  "itemID": 228114,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228114: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228114, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461712,
+  "recipeName": "Refined Hammer of the Titans",
+  "itemID": 228305,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 228305. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=228305, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461714,
+  "recipeName": "Desecration",
+  "itemID": 228306,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 228306. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=228306, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461716,
+  "recipeName": "Deadly Heartseeker",
+  "itemID": 228307,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 228307 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=228307, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461718,
+  "recipeName": "Tranquility",
+  "itemID": 228308,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 228308 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=228308, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461730,
+  "recipeName": "Hardened Frostguard",
+  "itemID": 228310,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228310: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228310, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461735,
+  "recipeName": "Invincible Mail",
+  "itemID": 228312,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228312: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228312, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461737,
+  "recipeName": "Tempest Gauntlets",
+  "itemID": 228313,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228313: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Wowhead: \"can be purchased in Western Plaguelands (2)\" (SoD data). URLs checked: https://www.wowhead.com/forever/item=228313, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461739,
+  "recipeName": "Warcrest of the Great Chief",
+  "itemID": 228314,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228314: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228314, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 461743,
+  "recipeName": "Sageblade of the Archmagus",
+  "itemID": 228315,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 228315: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB droppers for this item are SoD data. URLs checked: https://www.wowhead.com/forever/item=228315, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213481,
+  "recipeName": "Razorspike Headcage",
+  "itemID": 234220,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 234220. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234220, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213484,
+  "recipeName": "Razorspike Shoulderplate",
+  "itemID": 234221,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234221 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234221, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213490,
+  "recipeName": "Razorspike Battleplate",
+  "itemID": 234222,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234222 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234222, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213492,
+  "recipeName": "Obsidian Reaver",
+  "itemID": 234223,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234223 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234223, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213498,
+  "recipeName": "Obsidian Champion",
+  "itemID": 234224,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234224 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234224, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213500,
+  "recipeName": "Obsidian Destroyer",
+  "itemID": 234225,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234225 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234225, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213502,
+  "recipeName": "Obsidian Stormhammer",
+  "itemID": 234226,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234226 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234226, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213504,
+  "recipeName": "Obsidian Sageblade",
+  "itemID": 234227,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234227 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234227, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213506,
+  "recipeName": "Obsidian Defender",
+  "itemID": 234228,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234228 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234228, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213643,
+  "recipeName": "Obsidian Grinding Stone",
+  "itemID": 234279,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234279 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234279, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213709,
+  "recipeName": "Ironvine Belt",
+  "itemID": 234289,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234289 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234289, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213711,
+  "recipeName": "Ironvine Gloves",
+  "itemID": 234291,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234291 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234291, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213715,
+  "recipeName": "Ironvine Breastplate",
+  "itemID": 234293,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234293 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234293, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213746,
+  "recipeName": "Heavy Obsidian Belt",
+  "itemID": 234320,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234320 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234320, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1213748,
+  "recipeName": "Light Obsidian Belt",
+  "itemID": 234322,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234322 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234322, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1214137,
+  "recipeName": "Obsidian Heartseeker",
+  "itemID": 234429,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234429 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234429, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1214257,
+  "recipeName": "Black Grasp of the Destroyer",
+  "itemID": 234085,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 234085. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234085, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1214270,
+  "recipeName": "Jagged Obsidian Shield",
+  "itemID": 234458,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever returns 404 for item 234458. Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234458, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1214274,
+  "recipeName": "Obsidian Mail Tunic",
+  "itemID": 234461,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234461 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234461, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1214309,
+  "recipeName": "Dreamscale Visor",
+  "itemID": 234488,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 234488 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=234488, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1215507,
+  "recipeName": "Thick Obsidian Breastplate",
+  "itemID": 235039,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Item 235039 is not in Forever data per the input (no name, not on warcraftdb); not re-checked individually (sibling SoD items 234220/234458/234085/228305/228306 all 404 on Wowhead Forever). Spell absent from the wow.gg Forever Blacksmithing list. Season of Discovery leftover (wiki lists it with \"?\"). URLs checked: https://www.wowhead.com/forever/item=235039, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1223787,
+  "recipeName": "Icebane Breastplate",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1223789,
+  "recipeName": "Icebane Gauntlets",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1223791,
+  "recipeName": "Icebane Bracers",
+  "itemID": null,
+  "obtainable": false,
+  "sources": [],
+  "notes": "No teaching item in the input; spell absent from the wow.gg Forever Blacksmithing list; warcraft.wiki.gg lists it with \"?\". Season of Discovery leftover spell. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224631,
+  "recipeName": "Scarlet Soldier's Helmet",
+  "itemID": 238322,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238322: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB lists droppers in Scarlet Enclave (SoD raid): SoD data, not Forever. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238322, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224632,
+  "recipeName": "Scarlet Soldier's Spaulders",
+  "itemID": 238323,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238323: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB lists droppers in Scarlet Enclave (SoD raid): SoD data, not Forever. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238323, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224633,
+  "recipeName": "Scarlet Soldier's Chestplate",
+  "itemID": 238324,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238324: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB lists droppers in Scarlet Enclave (SoD raid): SoD data, not Forever. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238324, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224635,
+  "recipeName": "Scarlet Soldier's Protectors",
+  "itemID": 238325,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238325: \"This item is not available to players.\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. QuestieDB lists droppers in Scarlet Enclave (SoD raid): SoD data, not Forever. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238325, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224636,
+  "recipeName": "Scarlet Soldier's Grips",
+  "itemID": 238326,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238326: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Second item 250390: only 250390 was checked and returns \"Item not found!\" on Wowhead Forever. QuestieDB droppers (Scarlet Enclave / Scarlet Praetorian etc.) are SoD data. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238326, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224637,
+  "recipeName": "Scarlet Soldier's Waistguard",
+  "itemID": 238327,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238327: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Second item 250391: only 250390 was checked and returns \"Item not found!\" on Wowhead Forever. QuestieDB droppers (Scarlet Enclave / Scarlet Praetorian etc.) are SoD data. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238327, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224638,
+  "recipeName": "Scarlet Soldier's Legplates",
+  "itemID": 238328,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238328: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Second item 250392: only 250390 was checked and returns \"Item not found!\" on Wowhead Forever. QuestieDB droppers (Scarlet Enclave / Scarlet Praetorian etc.) are SoD data. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238328, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1224639,
+  "recipeName": "Scarlet Soldier's Stompers",
+  "itemID": 238329,
+  "obtainable": false,
+  "sources": [],
+  "notes": "Wowhead Forever item 238329: \"This item may not be in WoW: Forever\" Spell absent from the wow.gg Forever Blacksmithing list (437 recipes). Season of Discovery leftover. Second item 250393: only 250390 was checked and returns \"Item not found!\" on Wowhead Forever. QuestieDB droppers (Scarlet Enclave / Scarlet Praetorian etc.) are SoD data. Wiki says Drop (game data). URLs checked: https://www.wowhead.com/forever/item=238329, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1230171,
+  "recipeName": "Sharpening Wheel",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainer, skill 20 (Sharpening Wheel camp item). No plan item.",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever table: Trainer (learn 20); warcraft.wiki.gg Forever plans: Trainer (skill 20)."
+ },
+ {
+  "recipeSpellID": 1252229,
+  "recipeName": "Gemmed Copper Boots",
+  "itemID": 251332,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainer, skill 35 (per wiki). A plan item 251332 also exists.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans",
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251332 has no source."
+ },
+ {
+  "recipeSpellID": 1252230,
+  "recipeName": "Strange Copper Boots",
+  "itemID": 251333,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainer, skill 35 (per wiki). A plan item 251333 also exists.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans",
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251333 has no source."
+ },
+ {
+  "recipeSpellID": 1252231,
+  "recipeName": "Glowing Copper Boots",
+  "itemID": 251334,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainer, skill 35 (per wiki). A plan item 251334 also exists.",
+    "npcs": [],
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans",
+     "https://wow.gg/professions/forever/blacksmithing"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans: Trainer. wow.gg shows \"Trainer\" but its data has no source for this plan (its default display), so it does not count as a second source. Wowhead Forever xml for item 251334 has no source."
+ },
+ {
+  "recipeSpellID": 1252234,
+  "recipeName": "Sterling Silver Gauntlet",
+  "itemID": 251337,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Wrathtail Myrmidon (Ashenvale) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 3711,
+      "name": "Wrathtail Myrmidon",
+      "zone": "Ashenvale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251337&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252236,
+  "recipeName": "Sterling Silver Breastplate",
+  "itemID": 251339,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Grimtotem Bandit (Thousand Needles) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 10758,
+      "name": "Grimtotem Bandit",
+      "zone": "Thousand Needles"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251339&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252238,
+  "recipeName": "Guard's Chain Shirt",
+  "itemID": 251341,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 18 droppers: mostly The Deadmines (7), Wailing Caverns (3), Shadowfang Keep (3), Ragefire Chasm (1).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251341&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252240,
+  "recipeName": "Acolyte's Chain Shirt",
+  "itemID": 251343,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 19 droppers: mostly The Deadmines (7), Wailing Caverns (3), Shadowfang Keep (3), Ragefire Chasm (1).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251343&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252241,
+  "recipeName": "Crusader's Chain Shirt",
+  "itemID": 251344,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 17 droppers: mostly The Deadmines (6), Wailing Caverns (3), Shadowfang Keep (3), Ragefire Chasm (2).",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 644,
+      "name": "Rhahk'Zor",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 645,
+      "name": "Cookie",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 646,
+      "name": "Mr. Smite",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 647,
+      "name": "Captain Greenskin",
+      "zone": "The Deadmines"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251344&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252242,
+  "recipeName": "Veteran's Chain Leggings",
+  "itemID": 251345,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 18 droppers: mostly Shadowfang Keep (9), Wailing Caverns (4), The Deadmines (1), The Stockade (1).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251345&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252243,
+  "recipeName": "Guard's Chain Leggings",
+  "itemID": 251346,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 17 droppers: mostly Shadowfang Keep (8), Wailing Caverns (4), The Deadmines (1), The Stockade (1), Blackfathom Deeps (1).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251346&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252244,
+  "recipeName": "Protector's Chain Leggings",
+  "itemID": 251347,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 18 droppers: mostly Shadowfang Keep (9), Wailing Caverns (4), The Deadmines (1), The Stockade (1).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251347&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252245,
+  "recipeName": "Acolyte's Chain Leggings",
+  "itemID": 251348,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 18 droppers: mostly Shadowfang Keep (9), Wailing Caverns (4), The Deadmines (1), The Stockade (1).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251348&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252246,
+  "recipeName": "Crusader's Chain Leggings",
+  "itemID": 251349,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 17 droppers: mostly Shadowfang Keep (8), Wailing Caverns (4), The Deadmines (1), The Stockade (1), Blackfathom Deeps (1).",
+    "npcs": [
+     {
+      "npcID": 639,
+      "name": "Edwin VanCleef",
+      "zone": "The Deadmines"
+     },
+     {
+      "npcID": 1696,
+      "name": "Targorr the Dread",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3654,
+      "name": "Mutanus the Devourer",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3670,
+      "name": "Lord Pythas",
+      "zone": "Wailing Caverns"
+     },
+     {
+      "npcID": 3673,
+      "name": "Lord Serpentis",
+      "zone": "Wailing Caverns"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251349&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252248,
+  "recipeName": "Guard's Chain Helm",
+  "itemID": 251351,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 29 droppers: mostly The Stockade (5), Razorfen Kraul (5), Scarlet Monastery (3), Blackfathom Deeps (2).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1720,
+      "name": "Bruegal Ironknuckle",
+      "zone": "The Stockade"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251351&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252249,
+  "recipeName": "Protector's Chain Helm",
+  "itemID": 251352,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 28 droppers: mostly Razorfen Kraul (6), The Stockade (4), Scarlet Monastery (3), Blackfathom Deeps (2).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251352&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252250,
+  "recipeName": "Acolyte's Chain Helm",
+  "itemID": 251353,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 27 droppers: mostly Razorfen Kraul (5), The Stockade (4), Scarlet Monastery (3), Blackfathom Deeps (3).",
+    "npcs": [
+     {
+      "npcID": 1663,
+      "name": "Dextren Ward",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1666,
+      "name": "Kam Deepfury",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1716,
+      "name": "Bazil Thredd",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 1717,
+      "name": "Hamhock",
+      "zone": "The Stockade"
+     },
+     {
+      "npcID": 3974,
+      "name": "Houndmaster Loksey",
+      "zone": "Scarlet Monastery"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251353&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252282,
+  "recipeName": "Hard Gold Cuirass",
+  "itemID": 251385,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Screeching Roguefeather (Thousand Needles) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 4101,
+      "name": "Screeching Roguefeather",
+      "zone": "Thousand Needles"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251385&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252284,
+  "recipeName": "Hard Gold Bracers",
+  "itemID": 251387,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Slitherblade Naga (Desolace) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 4711,
+      "name": "Slitherblade Naga",
+      "zone": "Desolace"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251387&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252285,
+  "recipeName": "Hard Gold Leggings",
+  "itemID": 251388,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Kurzen Jungle Fighter (Stranglethorn Vale) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 937,
+      "name": "Kurzen Jungle Fighter",
+      "zone": "Stranglethorn Vale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251388&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252286,
+  "recipeName": "Hard Gold Coif",
+  "itemID": 251389,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Dustbelcher Warrior (Badlands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2906,
+      "name": "Dustbelcher Warrior",
+      "zone": "Badlands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251389&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252288,
+  "recipeName": "Hard Gold Pauldrons",
+  "itemID": 251391,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Crushridge Ogre (Alterac Mountains) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2252,
+      "name": "Crushridge Ogre",
+      "zone": "Alterac Mountains"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251391&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252289,
+  "recipeName": "Shining Mithril Breastplate",
+  "itemID": 251392,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 2 droppers: mostly Desolace (1), Shen'dralas (1).",
+    "npcs": [
+     {
+      "npcID": 11559,
+      "name": "Outcast Necromancer",
+      "zone": "Desolace"
+     },
+     {
+      "npcID": 253272,
+      "name": "Magram Necromancer",
+      "zone": "Shen'dralas"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251392&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252290,
+  "recipeName": "Shining Mithril Pauldrons",
+  "itemID": 251393,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Daggerspine Sorceress (Arathi Highlands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2596,
+      "name": "Daggerspine Sorceress",
+      "zone": "Arathi Highlands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251393&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252291,
+  "recipeName": "Shining Mithril Boots",
+  "itemID": 251394,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Stonevault Shaman (Badlands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2894,
+      "name": "Stonevault Shaman",
+      "zone": "Badlands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251394&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252292,
+  "recipeName": "Shining Mithril Helm",
+  "itemID": 251395,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Naga Explorer (Stranglethorn Vale) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 1907,
+      "name": "Naga Explorer",
+      "zone": "Stranglethorn Vale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251395&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252293,
+  "recipeName": "Shining Mithril Pants",
+  "itemID": 251396,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Witherbark Sadist (The Hinterlands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2653,
+      "name": "Witherbark Sadist",
+      "zone": "The Hinterlands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251396&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252294,
+  "recipeName": "Shining Mithril Gauntlet",
+  "itemID": 251397,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Southsea Pirate (Tanaris) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 7855,
+      "name": "Southsea Pirate",
+      "zone": "Tanaris"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251397&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252296,
+  "recipeName": "Sentinel's Boots",
+  "itemID": 251399,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 17 droppers: mostly Scarlet Monastery (5), Uldaman (4), Razorfen Downs (3), Zul'Farrak (1).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251399&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252297,
+  "recipeName": "Warder's Boots",
+  "itemID": 251400,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 15 droppers: mostly Scarlet Monastery (5), Uldaman (5), Razorfen Downs (4).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4854,
+      "name": "Grimlok",
+      "zone": "Uldaman"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251400&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252298,
+  "recipeName": "Prefect's Boots",
+  "itemID": 251401,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 14 droppers: mostly Scarlet Monastery (4), Razorfen Downs (4), Uldaman (2), Zul'Farrak (2).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6910,
+      "name": "Revelosh",
+      "zone": "Uldaman"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251401&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252299,
+  "recipeName": "Justicar's Boots",
+  "itemID": 251402,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 13 droppers: mostly Scarlet Monastery (5), Uldaman (2), Razorfen Downs (2), Zul'Farrak (2).",
+    "npcs": [
+     {
+      "npcID": 3975,
+      "name": "Herod",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3976,
+      "name": "Scarlet Commander Mograine",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 3977,
+      "name": "High Inquisitor Whitemane",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 4542,
+      "name": "High Inquisitor Fairbanks",
+      "zone": "Scarlet Monastery"
+     },
+     {
+      "npcID": 6487,
+      "name": "Arcanist Doan",
+      "zone": "Scarlet Monastery"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251402&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252300,
+  "recipeName": "Officer's Gloves",
+  "itemID": 251403,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 9 droppers: mostly Zul'Farrak (5), Maraudon (2), The Temple of Atal'Hakkar (1).",
+    "npcs": [
+     {
+      "npcID": 5710,
+      "name": "Jammal'an the Prophet",
+      "zone": "The Temple of Atal'Hakkar"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7272,
+      "name": "Theka the Martyr",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251403&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252301,
+  "recipeName": "Sentinel's Gloves",
+  "itemID": 251404,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 9 droppers: mostly Zul'Farrak (5), Maraudon (4).",
+    "npcs": [
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 8127,
+      "name": "Antu'sul",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251404&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252302,
+  "recipeName": "Warder's Gloves",
+  "itemID": 251405,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 8 droppers: mostly Zul'Farrak (6), Maraudon (2).",
+    "npcs": [
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7797,
+      "name": "Ruuzlu",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251405&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252303,
+  "recipeName": "Prefect's Gloves",
+  "itemID": 251406,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 12 droppers: mostly Zul'Farrak (4), Maraudon (4), The Temple of Atal'Hakkar (2), Uldaman (1).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 5709,
+      "name": "Shade of Eranikus",
+      "zone": "The Temple of Atal'Hakkar"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7796,
+      "name": "Nekrum Gutchewer",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251406&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252304,
+  "recipeName": "Justicar's Gloves",
+  "itemID": 251407,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 10 droppers: mostly Zul'Farrak (6), Maraudon (3), Uldaman (1).",
+    "npcs": [
+     {
+      "npcID": 2748,
+      "name": "Archaedas",
+      "zone": "Uldaman"
+     },
+     {
+      "npcID": 7267,
+      "name": "Chief Ukorz Sandscalp",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7271,
+      "name": "Witch Doctor Zum'rah",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7273,
+      "name": "Gahz'rilla",
+      "zone": "Zul'Farrak"
+     },
+     {
+      "npcID": 7275,
+      "name": "Shadowpriest Sezz'ziz",
+      "zone": "Zul'Farrak"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251407&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252305,
+  "recipeName": "Officer's Belt",
+  "itemID": 251408,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainers, skill 150. wow.gg data links the plan to 12 trainer NPCs (\"trainers\": 12).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever data (read \"db\"): source trainers=12; warcraft.wiki.gg Forever plans: Trainer. Wowhead Forever lists no source for item 251408. conquestcapped lists these as trainer recipes but \"not confirmed\" (https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/)."
+ },
+ {
+  "recipeSpellID": 1252306,
+  "recipeName": "Sentinel's Belt",
+  "itemID": 251409,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainers, skill 150. wow.gg data links the plan to 12 trainer NPCs (\"trainers\": 12).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever data (read \"db\"): source trainers=12; warcraft.wiki.gg Forever plans: Trainer. Wowhead Forever lists no source for item 251409. conquestcapped lists these as trainer recipes but \"not confirmed\" (https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/)."
+ },
+ {
+  "recipeSpellID": 1252307,
+  "recipeName": "Warder's Belt",
+  "itemID": 251410,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainers, skill 150. wow.gg data links the plan to 12 trainer NPCs (\"trainers\": 12).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever data (read \"db\"): source trainers=12; warcraft.wiki.gg Forever plans: Trainer. Wowhead Forever lists no source for item 251410. conquestcapped lists these as trainer recipes but \"not confirmed\" (https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/)."
+ },
+ {
+  "recipeSpellID": 1252308,
+  "recipeName": "Prefect's Belt",
+  "itemID": 251411,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainers, skill 150. wow.gg data links the plan to 12 trainer NPCs (\"trainers\": 12).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever data (read \"db\"): source trainers=12; warcraft.wiki.gg Forever plans: Trainer. Wowhead Forever lists no source for item 251411. conquestcapped lists these as trainer recipes but \"not confirmed\" (https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/)."
+ },
+ {
+  "recipeSpellID": 1252309,
+  "recipeName": "Justicar's Belt",
+  "itemID": 251412,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Blacksmithing trainers, skill 150. wow.gg data links the plan to 12 trainer NPCs (\"trainers\": 12).",
+    "npcs": [],
+    "confidence": "confirmed",
+    "urls": [
+     "https://wow.gg/professions/forever/blacksmithing",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "wow.gg Forever data (read \"db\"): source trainers=12; warcraft.wiki.gg Forever plans: Trainer. Wowhead Forever lists no source for item 251412. conquestcapped lists these as trainer recipes but \"not confirmed\" (https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/)."
+ },
+ {
+  "recipeSpellID": 1252335,
+  "recipeName": "Blessed Plate Pauldrons",
+  "itemID": 251438,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Highborne Lichling (Azshara) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 6117,
+      "name": "Highborne Lichling",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251438&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252336,
+  "recipeName": "Blessed Plate Boots",
+  "itemID": 251439,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Dark Iron Lookout (Searing Gorge) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 8566,
+      "name": "Dark Iron Lookout",
+      "zone": "Searing Gorge"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251439&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252337,
+  "recipeName": "Blessed Plate Gauntlet",
+  "itemID": 251440,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Deadwood Pathfinder (Felwood) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 7155,
+      "name": "Deadwood Pathfinder",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251440&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252338,
+  "recipeName": "Imperial Plate Gauntlets",
+  "itemID": 251441,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Blood Elf Reclaimer (Azshara) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 6199,
+      "name": "Blood Elf Reclaimer",
+      "zone": "Azshara"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251441&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252339,
+  "recipeName": "Blessed Plate Bracers",
+  "itemID": 251442,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Jadefire Betrayer (Felwood) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 7108,
+      "name": "Jadefire Betrayer",
+      "zone": "Felwood"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251442&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252340,
+  "recipeName": "Blessed Plate Leggings",
+  "itemID": 251443,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Raging Owlbeast (Winterspring) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 7451,
+      "name": "Raging Owlbeast",
+      "zone": "Winterspring"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251443&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252341,
+  "recipeName": "Blessed Plate Belt",
+  "itemID": 251444,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Plaguebat (Eastern Plaguelands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 8600,
+      "name": "Plaguebat",
+      "zone": "Eastern Plaguelands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251444&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252342,
+  "recipeName": "Blessed Plate Helm",
+  "itemID": 251445,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=251445&xml, https://www.wowhead.com/forever/item=251445, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1252343,
+  "recipeName": "Blessed Plate Chest",
+  "itemID": 251446,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drop (Wowhead source=Drop, multiple droppers). QuestieDB lists 4 droppers: mostly Mount Hyjal (4).",
+    "npcs": [
+     {
+      "npcID": 249220,
+      "name": "Wormwing Harpy",
+      "zone": "Mount Hyjal"
+     },
+     {
+      "npcID": 249221,
+      "name": "Wormwing Windwitch",
+      "zone": "Mount Hyjal"
+     },
+     {
+      "npcID": 249222,
+      "name": "Wormwing Ambusher",
+      "zone": "Mount Hyjal"
+     },
+     {
+      "npcID": 260826,
+      "name": "Zarrat Wormwing",
+      "zone": "Mount Hyjal"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251446&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "Wowhead sourcemore gives only the zone: Mount Hyjal (z=616); agrees with the QuestieDB droppers (Wormwing harpies, Mount Hyjal). warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252347,
+  "recipeName": "Champion's Legplates",
+  "itemID": 251450,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=251450&xml, https://www.wowhead.com/forever/item=251450, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1252348,
+  "recipeName": "Stalwart Helm",
+  "itemID": 251451,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Bloodaxe Veteran (Blackrock Spire) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Dungeon drop (Wowhead marks it as a dungeon source). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 9583,
+      "name": "Bloodaxe Veteran",
+      "zone": "Blackrock Spire"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251451&xml"
+    ]
+   }
+  ],
+  "notes": "No QuestieDB droppers; Wowhead is the only source for the NPC. warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252349,
+  "recipeName": "Martyr's Legplates",
+  "itemID": 251452,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Gordok Brute (Dire Maul) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Dungeon drop (Wowhead marks it as a dungeon source). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 11441,
+      "name": "Gordok Brute",
+      "zone": "Dire Maul"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251452&xml"
+    ]
+   }
+  ],
+  "notes": "No QuestieDB droppers; Wowhead is the only source for the NPC. warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252350,
+  "recipeName": "Breastplate of Salvation",
+  "itemID": 251453,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Legashi Summoner (Blackmaw Hold) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Dungeon drop (Wowhead marks it as a dungeon source). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 247248,
+      "name": "Legashi Summoner",
+      "zone": "Blackmaw Hold"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251453&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "Blackmaw Hold = AreaTable 16554 (Forever area, from local wago AreaTable.csv). QuestieDB also lists Legashi Summoner (npc 247248) with no zone. warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252351,
+  "recipeName": "Brass Knuckles",
+  "itemID": 251454,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Gogger Rock Keeper (Stonetalon Mountains) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 11915,
+      "name": "Gogger Rock Keeper",
+      "zone": "Stonetalon Mountains"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251454&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252352,
+  "recipeName": "Bronze Dory",
+  "itemID": 251455,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Dark Strand Enforcer (Ashenvale) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 3727,
+      "name": "Dark Strand Enforcer",
+      "zone": "Ashenvale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251455&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252353,
+  "recipeName": "Iron Fists",
+  "itemID": 251456,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Bleakheart Hellcaller (Ashenvale) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 3771,
+      "name": "Bleakheart Hellcaller",
+      "zone": "Ashenvale"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251456&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252354,
+  "recipeName": "Steel Spear",
+  "itemID": 251457,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Saltstone Crystalhide (Thousand Needles) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 4151,
+      "name": "Saltstone Crystalhide",
+      "zone": "Thousand Needles"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251457&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252356,
+  "recipeName": "Mithril Shortsword",
+  "itemID": 251459,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Mirefin Coastrunner (Dustwallow Marsh) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 4362,
+      "name": "Mirefin Coastrunner",
+      "zone": "Dustwallow Marsh"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251459&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252358,
+  "recipeName": "Mithril Claws",
+  "itemID": 251461,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Stonevault Bonesnapper (Badlands) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 2893,
+      "name": "Stonevault Bonesnapper",
+      "zone": "Badlands"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251461&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252359,
+  "recipeName": "Mithril Claymore",
+  "itemID": 251462,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Woodpaw Mongrel (Feralas) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 5249,
+      "name": "Woodpaw Mongrel",
+      "zone": "Feralas"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251462&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252360,
+  "recipeName": "Mithril Stiletto",
+  "itemID": 251463,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Lost One Hunter (Swamp of Sorrows) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 759,
+      "name": "Lost One Hunter",
+      "zone": "Swamp of Sorrows"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251463&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+    ]
+   }
+  ],
+  "notes": "Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252361,
+  "recipeName": "Charged Mithril Battleaxe",
+  "itemID": 251464,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Gordunni Brute (Feralas) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 5232,
+      "name": "Gordunni Brute",
+      "zone": "Feralas"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251464&xml",
+     "QuestieDB Forever item npcDrops (local qdb_item.json)"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252364,
+  "recipeName": "Thorium Poleaxe",
+  "itemID": 251467,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Anvilrage Soldier (Blackrock Depths) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Dungeon drop (Wowhead marks it as a dungeon source). Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 8893,
+      "name": "Anvilrage Soldier",
+      "zone": "Blackrock Depths"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=251467&xml"
+    ]
+   }
+  ],
+  "notes": "No QuestieDB droppers; Wowhead is the only source for the NPC. Wiki shows \"?\". warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1252366,
+  "recipeName": "Stormcarver",
+  "itemID": 251469,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=251469&xml, https://www.wowhead.com/forever/item=251469, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1252367,
+  "recipeName": "Bagh Nakh",
+  "itemID": 251470,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=251470&xml, https://www.wowhead.com/forever/item=251470, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1263073,
+  "recipeName": "Master Forge",
+  "itemID": 273113,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Drops from Golem Lord Argelmach (Blackrock Depths) - the only dropper Wowhead Forever records so far (Wowhead source=Drop with a single sourcemore NPC). Dungeon drop (Wowhead marks it as a dungeon source). Boss drop. Only one dropper is recorded so far, so the plan may also drop from other mobs; treat this NPC as the only observed source, not an exclusive one.",
+    "npcs": [
+     {
+      "npcID": 8983,
+      "name": "Golem Lord Argelmach",
+      "zone": "Blackrock Depths"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=273113&xml"
+    ]
+   }
+  ],
+  "notes": "warcraft.wiki.gg Blueprint: Master Forge page says it \"drops from ...?\" (drop, source unknown): https://warcraft.wiki.gg/wiki/Blueprint:_Master_Forge. Wowhead sourcemore flags Golem Lord Argelmach as a boss (bd=1). Blueprint teaches the Master Forge camp item. warcraft.wiki.gg Forever plans list shows source ['?']. Drop chances not available: Wowhead Forever item pages expose no Dropped-by percentages to the fetch tool; wow.gg has no source data for this plan."
+ },
+ {
+  "recipeSpellID": 1277780,
+  "recipeName": "",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No name and no item in the input; Wowhead Forever spell=1277780 returns 404; not in the wow.gg list. Nothing found. URLs checked: https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans"
+ },
+ {
+  "recipeSpellID": 1306533,
+  "recipeName": "Ironwood Blade",
+  "itemID": 279308,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279308&xml, https://www.wowhead.com/forever/item=279308, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306534,
+  "recipeName": "Forest Defender's Axe",
+  "itemID": 279309,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279309&xml, https://www.wowhead.com/forever/item=279309, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306535,
+  "recipeName": "Greenhammer",
+  "itemID": 279310,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279310&xml, https://www.wowhead.com/forever/item=279310, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306536,
+  "recipeName": "Evergreen Shield",
+  "itemID": 279311,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279311&xml, https://www.wowhead.com/forever/item=279311, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306537,
+  "recipeName": "Depleted Thorium Sabatons",
+  "itemID": 279312,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279312&xml, https://www.wowhead.com/forever/item=279312, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306538,
+  "recipeName": "Heavy Thorium Gauntlets",
+  "itemID": 279313,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279313&xml, https://www.wowhead.com/forever/item=279313, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ },
+ {
+  "recipeSpellID": 1306539,
+  "recipeName": "Azerothium Legplates",
+  "itemID": 279314,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found. URLs checked: https://www.wowhead.com/forever/item=279314&xml, https://www.wowhead.com/forever/item=279314, https://wow.gg/professions/forever/blacksmithing, https://warcraft.wiki.gg/wiki/Forever_blacksmithing_plans. Wowhead Forever item exists but lists no source (xml has no source field). warcraft.wiki.gg Forever plans list shows source ['?'] (source type only)."
+ }
+]

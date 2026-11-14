@@ -85,6 +85,28 @@ were added (456 with a vendor confirmed by QuestieDB plus a Forever web source n
 - Not shown yet: costs in other currencies (Malleable Essence of Nature, Carved Centaur Totems)
   and vendor-side reputation gates (Guardians of Hyjal, centaur clans).
 
+**Deep dive (2026-11-14, `scripts/research/merge_deep.py`):** every recipe the game knows (2081,
+from Tradebook's recipe cache) was checked; 582 had no source. Sources:
+- forever.warcraftdb.com API (`warcraftdb_fetch.py` / `warcraftdb_build.py`;
+  `api/data/node/item/<id>` and `.../tab/<dropped-by|sold-by|reward-from>`): players' recorded
+  loots in Forever, so drop chances are drops / times looted and often small samples. The addon
+  shows the sample ("11% (1 of 9)").
+- Wowhead Forever `item=<id>&xml` (source type, top dropper, "not available to players"),
+  QuestieDB droppers, wow.gg's embedded data (its "Trainer" label means "no data" and was not
+  counted), warcraft.wiki.gg Forever lists (source type only). Per-profession results in
+  `docs/research/deep/`.
+Result: 221 resolved (drops, trainer, quests, vendors), 100 marked "Not available in WoW Forever"
+(Season of Discovery leftovers, Naxxramas/Onyxia, unreleased), 166 still unknown (mostly new
+Forever epics and rockets with no source anywhere yet). Drops: top 5 droppers per recipe
+(highest chance first; "(unconfirmed)" when only one source names the NPC); items QuestieDB lists
+20+ droppers for are shown as "World drop: mobs level X-Y" (middle 80% of the droppers' levels).
+Earlier decisions were kept where the deep dive disagreed: Kithas/Lilly (Enchant Chest - Lesser
+Intellect, which is classic's "Lesser Mana" renamed), Qia (Major Stamina, classic "Major Health"),
+Xizzer Fizzbolt's two schematics, Andorov's Obsidian plans. Re-check those in game.
+
+**Auction house:** recipe items that aren't soulbound (`ns.RecipeItemBound`, from ItemSparse
+Bonding 1) show their Auctionator price in the Source section.
+
 **In game (Core/Merchants.lua):** every time a vendor window opens, Tradebook reads which
 recipe items it sells (`GetMerchantItemID`, `C_MerchantFrame.GetItemInfo().numAvailable`;
 -1 = unlimited, otherwise limited supply) and saves it in `TradebookDB.vendors`. Recipe items

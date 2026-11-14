@@ -1,0 +1,2291 @@
+[
+ {
+  "recipeSpellID": 12719,
+  "recipeName": "Explosive Arrow",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "On wow.gg Forever engineering page (displayed \"Trainer\", but its data has source=null: wow.gg shows \"Trainer\" whenever it has no source). Not on the warcraft.wiki.gg Forever list. Wowhead Forever spell page has no \"not in game\" notice. Unused recipe in Classic. No source found."
+ },
+ {
+  "recipeSpellID": 12720,
+  "recipeName": "Goblin \\\"Boom\\\" Box",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Not on wow.gg or warcraft.wiki.gg Forever engineering lists; no recipe item; unused recipe in Classic. No Forever source found. Wowhead Forever spell page has no notice."
+ },
+ {
+  "recipeSpellID": 12722,
+  "recipeName": "Goblin Radio",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Not on wow.gg or warcraft.wiki.gg Forever engineering lists; no recipe item; unused recipe in Classic. No Forever source found."
+ },
+ {
+  "recipeSpellID": 12900,
+  "recipeName": "Mobile Alarm",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "On wow.gg Forever engineering page (displayed \"Trainer\", but its data has source=null: wow.gg shows \"Trainer\" whenever it has no source). Not on the warcraft.wiki.gg Forever list. Wowhead Forever spell page has no \"not in game\" notice. Unused recipe in Classic. No source found."
+ },
+ {
+  "recipeSpellID": 12904,
+  "recipeName": "Gnomish Ham Radio",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Not on wow.gg or warcraft.wiki.gg Forever engineering lists; no recipe item; unused recipe in Classic. No Forever source found."
+ },
+ {
+  "recipeSpellID": 13028,
+  "recipeName": "Goldthorn Tea",
+  "profession": "Cooking",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Classic/TBC-era recipe ID with no recipe item; wiki \"?\"; wow.gg lists it with no source; Wowhead Forever spell page has no notice. No source found."
+ },
+ {
+  "recipeSpellID": 22704,
+  "recipeName": "Field Repair Bot 74A",
+  "profession": "Engineering",
+  "itemID": 18235,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "No Forever source: Wowhead Forever item page has no acquisition text; item not in QuestieDB Forever; wiki source \"?\"; wow.gg lists the recipe with no source",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=18235",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics",
+     "https://wow.gg/professions/forever/engineering"
+    ]
+   }
+  ],
+  "notes": "Recipe is on Forever recipe lists (wiki, wow.gg) but nobody gives a source."
+ },
+ {
+  "recipeSpellID": 23077,
+  "recipeName": "Gyrofreeze Ice Reflector",
+  "profession": "Engineering",
+  "itemID": 18652,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Xizzer Fizzbolt (Engineering Supplies), Everlook, Winterspring; limited stock",
+    "npcs": [
+     {
+      "npcID": 11185,
+      "name": "Xizzer Fizzbolt",
+      "zone": "Winterspring"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=18652",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://wow.gg/professions/forever/engineering",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   },
+   {
+    "kind": "other",
+    "detail": "Conflict: the wow-professions Forever page for Xizzer Fizzbolt lists only Masterwork Target Dummy, Thorium Tube and Delicate Arcanite Converter, not this schematic",
+    "confidence": "single",
+    "urls": [
+     "https://www.wow-professions.com/forever/npc/xizzer-fizzbolt"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever: \"This item can be purchased in Winterspring (2).\"; QuestieDB Forever vendor = Xizzer Fizzbolt (11185); wow.gg data vendor Xizzer Fizzbolt, limited (record marked read:\"classic\"); wiki type Vendor. wow-professions omits it (possible omission or real change) - verify in game."
+ },
+ {
+  "recipeSpellID": 23080,
+  "recipeName": "Powerful Seaforium Charge",
+  "profession": "Engineering",
+  "itemID": 18656,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Xizzer Fizzbolt (Engineering Supplies), Everlook, Winterspring; limited stock",
+    "npcs": [
+     {
+      "npcID": 11185,
+      "name": "Xizzer Fizzbolt",
+      "zone": "Winterspring"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=18656",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://wow.gg/professions/forever/engineering",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   },
+   {
+    "kind": "other",
+    "detail": "Conflict: the wow-professions Forever page for Xizzer Fizzbolt lists only Masterwork Target Dummy, Thorium Tube and Delicate Arcanite Converter, not this schematic",
+    "confidence": "single",
+    "urls": [
+     "https://www.wow-professions.com/forever/npc/xizzer-fizzbolt"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever: \"This item can be purchased in Winterspring (2).\"; QuestieDB Forever vendor = Xizzer Fizzbolt (11185); wow.gg data vendor Xizzer Fizzbolt, limited (record marked read:\"classic\"); wiki type Vendor. wow-professions omits it (possible omission or real change) - verify in game."
+ },
+ {
+  "recipeSpellID": 23486,
+  "recipeName": "Dimensional Ripper - Everlook",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Goblin Engineering specialization recipe: wow-professions Forever spec guide says \"If You Choose Goblin You get Dimensional Ripper - Everlook\" (spec-exclusive item). The teaching NPC is not named.",
+    "confidence": "single",
+    "urls": [
+     "https://www.wow-professions.com/forever/gnomish-vs-goblin-engineering"
+    ]
+   }
+  ],
+  "notes": "Forever guide ties it to the specialization but does not name who teaches it; wiki \"?\"; wow.gg no source; no recipe item."
+ },
+ {
+  "recipeSpellID": 23489,
+  "recipeName": "Ultrasafe Transporter - Gadgetzan",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Gnomish Engineering specialization recipe: wow-professions Forever spec guide says \"If You Choose Gnomish You get Ultrasafe Transporter - Gadgetzan\" (spec-exclusive item). The teaching NPC is not named.",
+    "confidence": "single",
+    "urls": [
+     "https://www.wow-professions.com/forever/gnomish-vs-goblin-engineering"
+    ]
+   }
+  ],
+  "notes": "Forever guide ties it to the specialization but does not name who teaches it; wiki \"?\"; wow.gg no source; no recipe item."
+ },
+ {
+  "recipeSpellID": 24801,
+  "recipeName": "Smoked Desert Dumplings",
+  "profession": "Cooking",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Classic/TBC-era recipe ID with no recipe item; wiki \"?\"; wow.gg lists it with no source; Wowhead Forever spell page has no notice. No source found."
+ },
+ {
+  "recipeSpellID": 26011,
+  "recipeName": "Tranquil Mechanical Yeti",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "No source: wiki \"?\"; wow.gg lists it with no source; Wowhead Forever spell page has no notice",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics",
+     "https://wow.gg/professions/forever/engineering",
+     "https://www.wowhead.com/forever/spell=26011"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 30021,
+  "recipeName": "Crystal Infused Bandage",
+  "profession": "First Aid",
+  "itemID": 23689,
+  "obtainable": null,
+  "sources": [],
+  "notes": "TBC recipe ID; item 23689 has no Wowhead Forever page (404) and is not in QuestieDB; not on the wiki Forever list; wow.gg lists the recipe with no source. No Forever source found."
+ },
+ {
+  "recipeSpellID": 424641,
+  "recipeName": "Shredder Autosalvage Unit",
+  "profession": "Engineering",
+  "itemID": 210178,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs)",
+    "npcs": [
+     {
+      "npcID": 643,
+      "name": "Sneed",
+      "zone": "The Deadmines",
+      "level": 20
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=210178",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   },
+   {
+    "kind": "other",
+    "detail": "Wowhead Forever item and spell pages show no unavailability notice",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=210178",
+     "https://www.wowhead.com/forever/spell=424641"
+    ]
+   }
+  ],
+  "notes": "SoD-era item ID (210178), but QuestieDB Forever lists Sneed (The Deadmines) as dropper and the wiki marks it Drop. Treated as obtainable; verify in game."
+ },
+ {
+  "recipeSpellID": 431362,
+  "recipeName": "Soul Vessel",
+  "profession": "Engineering",
+  "itemID": 212230,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item says \"This item is not available to players.\" and spell says \"This spell is not in game.\"",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=212230",
+     "https://www.wowhead.com/forever/spell=431362"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (game-data rows only): QuestieDB Forever vendors = SoD Supply Officers (Elaine Compton, Jornah, Dokimi, Gishah, Tamelyn Aldridge, Marcy Baker); wiki type Vendor; Wowhead lists capital-city purchase zones",
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics",
+     "https://www.wowhead.com/forever/item=212230"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Vendor rows remain in the data, but Wowhead marks the item unavailable and the spell not in game."
+ },
+ {
+  "recipeSpellID": 435956,
+  "recipeName": "Polished Truesilver Gears",
+  "profession": "Engineering",
+  "itemID": 215429,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" (vendor zone Gnomeregan); the QuestieDB vendor Ziri \"The Wrench\" Littlesprocket (217689, SoD Gnomeregan Gearhead) has no spawn in QuestieDB Forever",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215429",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (type only): warcraft.wiki.gg Forever list gives source type \"Vendor\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (SoD Gnomeregan vendor)."
+ },
+ {
+  "recipeSpellID": 435958,
+  "recipeName": "Whirling Truesilver Gearwall",
+  "profession": "Engineering",
+  "itemID": 215153,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" (vendor zone Gnomeregan); the QuestieDB vendor Ziri \"The Wrench\" Littlesprocket (217689, SoD Gnomeregan Gearhead) has no spawn in QuestieDB Forever",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215153",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (type only): warcraft.wiki.gg Forever list gives source type \"Vendor\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (SoD Gnomeregan vendor)."
+ },
+ {
+  "recipeSpellID": 435960,
+  "recipeName": "Hyperconductive Goldwap",
+  "profession": "Engineering",
+  "itemID": 215156,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" (vendor zone Gnomeregan); the QuestieDB vendor Ziri \"The Wrench\" Littlesprocket (217689, SoD Gnomeregan Gearhead) has no spawn in QuestieDB Forever",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215156",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (type only): warcraft.wiki.gg Forever list gives source type \"Vendor\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (SoD Gnomeregan vendor)."
+ },
+ {
+  "recipeSpellID": 435964,
+  "recipeName": "High-Yield Radiation Bomb",
+  "profession": "Engineering",
+  "itemID": 215431,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" (vendor zone Gnomeregan); the QuestieDB vendor Ziri \"The Wrench\" Littlesprocket (217689, SoD Gnomeregan Gearhead) has no spawn in QuestieDB Forever",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215431",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (type only): warcraft.wiki.gg Forever list gives source type \"Vendor\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (SoD Gnomeregan vendor)."
+ },
+ {
+  "recipeSpellID": 435966,
+  "recipeName": "Ez-Thro Radiation Bomb",
+  "profession": "Engineering",
+  "itemID": 215432,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" (vendor zone Gnomeregan); the QuestieDB vendor Ziri \"The Wrench\" Littlesprocket (217689, SoD Gnomeregan Gearhead) has no spawn in QuestieDB Forever",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=215432",
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (type only): warcraft.wiki.gg Forever list gives source type \"Vendor\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (SoD Gnomeregan vendor)."
+ },
+ {
+  "recipeSpellID": 446236,
+  "recipeName": "Void-Powered Invoker's Vambraces",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "SoD spell ID range (446xxx); no recipe item; Wowhead Forever spell pages (446236, 446237 checked) show no notice; wiki \"?\"; not in wow.gg. No Forever source found."
+ },
+ {
+  "recipeSpellID": 446237,
+  "recipeName": "Void-Powered Slayer's Vambraces",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "SoD spell ID range (446xxx); no recipe item; Wowhead Forever spell pages (446236, 446237 checked) show no notice; wiki \"?\"; not in wow.gg. No Forever source found."
+ },
+ {
+  "recipeSpellID": 446238,
+  "recipeName": "Void-Powered Protector's Vambraces",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "SoD spell ID range (446xxx); no recipe item; Wowhead Forever spell pages (446236, 446237 checked) show no notice; wiki \"?\"; not in wow.gg. No Forever source found."
+ },
+ {
+  "recipeSpellID": 461710,
+  "recipeName": "Fiery Core Sharpshooter Rifle",
+  "profession": "Engineering",
+  "itemID": 228304,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=461710",
+     "https://www.wowhead.com/forever/item=228304"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 470349,
+  "recipeName": "Dense Runecloth Bandage",
+  "profession": "First Aid",
+  "itemID": 232434,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item says \"This item is not available to players.\" and spell says \"This spell is not in game.\"",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=232434",
+     "https://www.wowhead.com/forever/spell=470349"
+    ]
+   },
+   {
+    "kind": "vendor",
+    "detail": "Conflict (game-data rows only): QuestieDB Forever vendors Chief Expeditionary Requisitioner Enkles (Alliance) / Apothecary Quinard (Horde), Silithus; wiki type Vendor; Wowhead \"purchased in Silithus (2)\"",
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://www.wowhead.com/forever/item=232434"
+    ]
+   }
+  ],
+  "notes": "SoD leftover."
+ },
+ {
+  "recipeSpellID": 1213573,
+  "recipeName": "Arcane Megabomb",
+  "profession": "Engineering",
+  "itemID": 234261,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213573",
+     "https://www.wowhead.com/forever/item=234261"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1213576,
+  "recipeName": "The Fumigator",
+  "profession": "Engineering",
+  "itemID": 234262,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213576",
+     "https://www.wowhead.com/forever/item=234262"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1213578,
+  "recipeName": "Obsidian Bomb",
+  "profession": "Engineering",
+  "itemID": 234263,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213578",
+     "https://www.wowhead.com/forever/item=234263"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1213586,
+  "recipeName": "G00 DV-1B3 Generator",
+  "profession": "Engineering",
+  "itemID": 234264,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213586",
+     "https://www.wowhead.com/forever/item=234264"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1213588,
+  "recipeName": "Tuned Force Reactive Disk",
+  "profession": "Engineering",
+  "itemID": 234265,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213588",
+     "https://www.wowhead.com/forever/item=234265"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1213646,
+  "recipeName": "Obsidian Blasting Powder",
+  "profession": "Engineering",
+  "itemID": 234280,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1213646",
+     "https://www.wowhead.com/forever/item=234280"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1214145,
+  "recipeName": "Obsidian Shotgun",
+  "profession": "Engineering",
+  "itemID": 234435,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1214145",
+     "https://www.wowhead.com/forever/item=234435"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1217207,
+  "recipeName": "Obsidian Scope",
+  "profession": "Engineering",
+  "itemID": 235530,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever spell page says \"This spell is not in game.\"; the recipe item has no Wowhead Forever page (404) and is not in QuestieDB Forever",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1217207",
+     "https://www.wowhead.com/forever/item=235530"
+    ]
+   }
+  ],
+  "notes": "SoD leftover. Not in wow.gg Forever data; wiki lists it with source \"?\"."
+ },
+ {
+  "recipeSpellID": 1221012,
+  "recipeName": "Creepy Censor Sensors",
+  "profession": "Engineering",
+  "itemID": 236872,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item says \"This item is not available to players.\" and spell says \"This spell is not in game.\"",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/item=236872",
+     "https://www.wowhead.com/forever/spell=1221012"
+    ]
+   }
+  ],
+  "notes": "SoD leftover."
+ },
+ {
+  "recipeSpellID": 1226206,
+  "recipeName": "Tinkerbox",
+  "profession": "Engineering",
+  "itemID": 238782,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238782"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\". Second item [250400] has no Wowhead Forever page (404).",
+  "otherItemIDs": [
+   250400
+  ]
+ },
+ {
+  "recipeSpellID": 1226207,
+  "recipeName": "Tinkerbox: Teleport",
+  "profession": "Engineering",
+  "itemID": 238783,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238783"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\". Second item [250401] has no Wowhead Forever page (404).",
+  "otherItemIDs": [
+   250401
+  ]
+ },
+ {
+  "recipeSpellID": 1226208,
+  "recipeName": "Tinkerbox: Nitro Boosts",
+  "profession": "Engineering",
+  "itemID": 238784,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238784"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\"."
+ },
+ {
+  "recipeSpellID": 1226209,
+  "recipeName": "Tinkerbox: Magnetic Displacement",
+  "profession": "Engineering",
+  "itemID": 238785,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238785"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\"."
+ },
+ {
+  "recipeSpellID": 1226210,
+  "recipeName": "Tinker: Teleport",
+  "profession": "Engineering",
+  "itemID": 238786,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238786"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\"."
+ },
+ {
+  "recipeSpellID": 1226211,
+  "recipeName": "Tinker: Nitro Boosts",
+  "profession": "Engineering",
+  "itemID": 238787,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238787"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\"."
+ },
+ {
+  "recipeSpellID": 1226212,
+  "recipeName": "Tinker: Magnetic Displacement",
+  "profession": "Engineering",
+  "itemID": 238788,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item page says \"This item is not available to players.\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238788"
+    ]
+   }
+  ],
+  "notes": "SoD leftover (Tinker system). Not in wow.gg Forever data; wiki \"?\"."
+ },
+ {
+  "recipeSpellID": 1226213,
+  "recipeName": "Semisafe Transporter: New Avalon",
+  "profession": "Engineering",
+  "itemID": 238789,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever says \"This item may not be in WoW: Forever\" and \"It was added in Season of Discovery and is still in WoW: Forever's game data\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=238789"
+    ]
+   }
+  ],
+  "notes": "SoD leftover."
+ },
+ {
+  "recipeSpellID": 1228088,
+  "recipeName": "Pop-Up Shrub",
+  "profession": "Engineering",
+  "itemID": 239222,
+  "obtainable": false,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Not in Forever: Wowhead Forever item says \"This item may not be in WoW: Forever\"",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/item=239222"
+    ]
+   }
+  ],
+  "notes": "SoD leftover; the Wowhead spell page has no notice."
+ },
+ {
+  "recipeSpellID": 1230656,
+  "recipeName": "Reagent Bot",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "quest",
+    "detail": "Reward of \"Camping 101: Engineering\" (one version per starting area): Mukdrak in Razor Hill (quest 97902); Twizwick Sprocketgrind in the Venture Co. Mine, Mulgore (quest 97930). Reward: learn Reagent Bot.",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wowhead.com/forever/quest=97902",
+     "https://www.wowhead.com/forever/quest=97930",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   },
+   {
+    "kind": "trainer",
+    "detail": "warcraft.wiki.gg Reagent Bot page says \"taught by trainers\"",
+    "confidence": "single",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Reagent_Bot"
+    ]
+   }
+  ],
+  "notes": "Quest confirmed by Wowhead Forever quest pages + wiki list (type Quest). Other starting-zone versions probably exist (not listed here). wow.gg has no source."
+ },
+ {
+  "recipeSpellID": 1235244,
+  "recipeName": "Engineering",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Profession-skill spell (\"Learn Skill (Engineering)\"), not a craftable recipe",
+    "confidence": "single",
+    "urls": [
+     "https://www.wowhead.com/forever/spell=1235244"
+    ]
+   }
+  ],
+  "notes": "Wowhead Forever spell \"Engineering\" is a buff/ability whose Effect #2 is \"Learn Skill (Engineering)\". Exclude from recipe lists."
+ },
+ {
+  "recipeSpellID": 1244431,
+  "recipeName": "Minor Healing Potion",
+  "profession": "First Aid",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by First Aid trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer + conquestcapped \"Trainer\". No recipe item exists."
+ },
+ {
+  "recipeSpellID": 1244432,
+  "recipeName": "Lesser Healing Potion",
+  "profession": "First Aid",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by First Aid trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer + conquestcapped \"Trainer\". No recipe item exists."
+ },
+ {
+  "recipeSpellID": 1244433,
+  "recipeName": "Healing Potion",
+  "profession": "First Aid",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by First Aid trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer + conquestcapped \"Trainer\". No recipe item exists."
+ },
+ {
+  "recipeSpellID": 1244435,
+  "recipeName": "Superior Healing Potion",
+  "profession": "First Aid",
+  "itemID": 255725,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 5236,
+      "name": "Gordunni Shaman",
+      "zone": "Feralas",
+      "level": 44
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=255725"
+    ]
+   }
+  ],
+  "notes": "conquestcapped: \"Source not known yet\"; wiki \"?\". Only one QuestieDB dropper. Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1247741,
+  "recipeName": "Spinefin Halibut",
+  "profession": "Cooking",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "New Forever recipe with no recipe item. wiki \"?\"; wow.gg no source; Wowhead spell page no notice. No source found (could be trainer/quest, but no source says so)."
+ },
+ {
+  "recipeSpellID": 1249634,
+  "recipeName": "Sandpaper",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by Engineering trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer + conquestcapped \"Trainer\". No recipe item exists."
+ },
+ {
+  "recipeSpellID": 1249957,
+  "recipeName": "Peace Tea",
+  "profession": "Cooking",
+  "itemID": 249879,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs); wow.gg data lists the same NPC (wow.gg record source \"db\")",
+    "npcs": [
+     {
+      "npcID": 1397,
+      "name": "Frostmane Seer",
+      "zone": "Dun Morogh",
+      "level": 8
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=249879",
+     "https://warcraft.wiki.gg/wiki/Forever_cooking_recipes",
+     "https://wow.gg/professions/forever/cooking"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 1249958,
+  "recipeName": "Royal Tea",
+  "profession": "Cooking",
+  "itemID": 249880,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs); wow.gg data lists the same NPC at 0.05% (wow.gg record source \"db\")",
+    "npcs": [
+     {
+      "npcID": 4003,
+      "name": "Windshear Geomancer",
+      "zone": "Stonetalon Mountains",
+      "level": 20,
+      "dropChance": "0.05% (wow.gg)"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=249880",
+     "https://warcraft.wiki.gg/wiki/Forever_cooking_recipes",
+     "https://wow.gg/professions/forever/cooking"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 1249960,
+  "recipeName": "Triage Tea",
+  "profession": "Cooking",
+  "itemID": 249882,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 5254,
+      "name": "Woodpaw Mystic",
+      "zone": "Feralas",
+      "level": 42
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=249882"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1249961,
+  "recipeName": "Sunny Tea",
+  "profession": "Cooking",
+  "itemID": 249883,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 752,
+      "name": "Marsh Oracle",
+      "zone": "Swamp of Sorrows",
+      "level": 44
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=249883"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1249962,
+  "recipeName": "Sage's Tea",
+  "profession": "Cooking",
+  "itemID": 249884,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source. conquestcapped: \"Unknown\"."
+ },
+ {
+  "recipeSpellID": 1250142,
+  "recipeName": "Savory Stag Sliders",
+  "profession": "Cooking",
+  "itemID": 250173,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Qia (Trade Goods Supplies), bank building in Everlook, Winterspring; BoP recipe",
+    "npcs": [
+     {
+      "name": "Qia",
+      "zone": "Winterspring"
+     }
+    ],
+    "cost": "\"2\" in wow-professions cost column (unit not captured)",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.wow-professions.com/forever/npc/qia",
+     "https://www.wowhead.com/forever/item=250173"
+    ]
+   }
+  ],
+  "notes": "wow-professions Forever NPC page (not marked unchecked) + Wowhead Forever \"This item can be purchased in Winterspring.\""
+ },
+ {
+  "recipeSpellID": 1250143,
+  "recipeName": "Soaring Pamplona",
+  "profession": "Cooking",
+  "itemID": 250174,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source."
+ },
+ {
+  "recipeSpellID": 1250144,
+  "recipeName": "Bat Hachee",
+  "profession": "Cooking",
+  "itemID": 250175,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 8602,
+      "name": "Monstrous Plaguebat",
+      "zone": "Eastern Plaguelands",
+      "level": 56
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250175"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1250145,
+  "recipeName": "Savory Turtle Stew",
+  "profession": "Cooking",
+  "itemID": 250176,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source."
+ },
+ {
+  "recipeSpellID": 1250146,
+  "recipeName": "Flank au Poivre",
+  "profession": "Cooking",
+  "itemID": 250177,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source. conquestcapped: \"Unknown\"."
+ },
+ {
+  "recipeSpellID": 1250147,
+  "recipeName": "Bear Bruscitti",
+  "profession": "Cooking",
+  "itemID": 250178,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 7446,
+      "name": "Rabid Shardtooth",
+      "zone": "Winterspring",
+      "level": 59
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250178"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1250149,
+  "recipeName": "Swiftstrike Steak",
+  "profession": "Cooking",
+  "itemID": 250180,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source. conquestcapped: \"Unknown\"."
+ },
+ {
+  "recipeSpellID": 1250150,
+  "recipeName": "Raging Raptor Ribs",
+  "profession": "Cooking",
+  "itemID": 250181,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 6508,
+      "name": "Venomhide Ravasaur",
+      "zone": "Un'Goro Crater",
+      "level": 50
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250181"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1250151,
+  "recipeName": "Bear Brisket",
+  "profession": "Cooking",
+  "itemID": 250182,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs); wow.gg data lists the same NPC at 0.15% (wow.gg record source \"db\")",
+    "npcs": [
+     {
+      "npcID": 3809,
+      "name": "Ashenvale Bear",
+      "zone": "Ashenvale",
+      "level": 21,
+      "dropChance": "0.15% (wow.gg)"
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250182",
+     "https://warcraft.wiki.gg/wiki/Forever_cooking_recipes",
+     "https://wow.gg/professions/forever/cooking"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 1250152,
+  "recipeName": "Prehistoric Pulled Raptor",
+  "profession": "Cooking",
+  "itemID": 250183,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Recipe item exists (Wowhead Forever \"New in Forever\", no acquisition text); no QuestieDB droppers; wiki \"?\"; wow.gg no source."
+ },
+ {
+  "recipeSpellID": 1250153,
+  "recipeName": "Raptor Rouladen",
+  "profession": "Cooking",
+  "itemID": 250184,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 4357,
+      "name": "Bloodfen Lashtail",
+      "zone": "Dustwallow Marsh",
+      "level": 40
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250184"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1250155,
+  "recipeName": "Giant Scrambled Eggs",
+  "profession": "Cooking",
+  "itemID": 250186,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); wow.gg data lists the same NPC at 100% (wow.gg record source \"addon\")",
+    "npcs": [
+     {
+      "npcID": 1106,
+      "name": "Lost One Cook",
+      "zone": "Swamp of Sorrows",
+      "level": 37,
+      "dropChance": "100% (wow.gg)"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250186",
+     "https://wow.gg/professions/forever/cooking"
+    ]
+   }
+  ],
+  "notes": "The wow.gg record is marked read:\"addon\" (likely from addon/Questie-type data), so it is not counted as independent. 100% from one NPC suggests a guaranteed drop from Lost One Cook (Swamp of Sorrows). Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1250158,
+  "recipeName": "Clam Linguine",
+  "profession": "Cooking",
+  "itemID": 250189,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 7886,
+      "name": "Spitelash Enchantress",
+      "zone": "Azshara",
+      "level": 54
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=250189"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1252566,
+  "recipeName": "Savory Whimsyfin Delight",
+  "profession": "Cooking",
+  "itemID": 251526,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Zone-wide drop from Redridge Mountains mobs: Recipe item drops; QuestieDB Forever lists 33 dropping NPCs (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs)",
+    "npcs": [
+     {
+      "npcID": 334,
+      "name": "Gath'Ilzogg",
+      "zone": "Redridge Mountains",
+      "level": 26
+     },
+     {
+      "npcID": 345,
+      "name": "Bellygrub",
+      "zone": "Redridge Mountains",
+      "level": 24
+     },
+     {
+      "npcID": 422,
+      "name": "Murloc Flesheater",
+      "zone": "Redridge Mountains",
+      "level": 18
+     },
+     {
+      "npcID": 423,
+      "name": "Redridge Mongrel",
+      "zone": "Redridge Mountains",
+      "level": 15
+     },
+     {
+      "npcID": 424,
+      "name": "Redridge Poacher",
+      "zone": "Redridge Mountains",
+      "level": 16
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=251526",
+     "https://warcraft.wiki.gg/wiki/Forever_cooking_recipes"
+    ],
+    "levelRange": "15-26"
+   }
+  ],
+  "notes": "All QuestieDB droppers shown are Redridge Mountains mobs (levels about 15-26), 33 NPCs in total, so it works like a Redridge world drop. wow.gg data has no source for it (the wow.gg page summary that names Brontus/Captain Fairmount belongs to a neighbouring row)."
+ },
+ {
+  "recipeSpellID": 1255241,
+  "recipeName": "Cleansing Stew",
+  "profession": "Cooking",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "New Forever recipe (reagent Cleansed Felbloom). Not on the wiki or wow.gg lists; Wowhead spell page no notice. No source found."
+ },
+ {
+  "recipeSpellID": 1259341,
+  "recipeName": "Potent Anti-Venom",
+  "profession": "First Aid",
+  "itemID": 255728,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs)",
+    "npcs": [
+     {
+      "npcID": 760,
+      "name": "Lost One Muckdweller",
+      "zone": "Swamp of Sorrows",
+      "level": 36
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=255728",
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes"
+    ]
+   }
+  ],
+  "notes": "conquestcapped groups it under \"Trainer and drops\"; the manual item drops."
+ },
+ {
+  "recipeSpellID": 1259342,
+  "recipeName": "Simple Poultice",
+  "profession": "First Aid",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by First Aid trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer; conquestcapped groups Simple Poultice, Woolen Tourniquet and Potent Anti-Venom as \"Trainer and drops\". No recipe item exists, which fits trainer-taught."
+ },
+ {
+  "recipeSpellID": 1259344,
+  "recipeName": "Superior Poultice",
+  "profession": "First Aid",
+  "itemID": 255727,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 2243,
+      "name": "Syndicate Sentry",
+      "zone": "Alterac Mountains",
+      "level": 36
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=255727"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1259347,
+  "recipeName": "Woolen Tourniquet",
+  "profession": "First Aid",
+  "itemID": null,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "trainer",
+    "detail": "Taught by First Aid trainers",
+    "confidence": "confirmed",
+    "urls": [
+     "https://warcraft.wiki.gg/wiki/Forever_first_aid_recipes",
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/"
+    ]
+   }
+  ],
+  "notes": "wiki type Trainer; conquestcapped groups Simple Poultice, Woolen Tourniquet and Potent Anti-Venom as \"Trainer and drops\". No recipe item exists, which fits trainer-taught."
+ },
+ {
+  "recipeSpellID": 1259348,
+  "recipeName": "Leather Tourniquet",
+  "profession": "First Aid",
+  "itemID": 255726,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 2739,
+      "name": "Shadowforge Tunneler",
+      "zone": "Badlands",
+      "level": 35
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=255726"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1259349,
+  "recipeName": "Surgical Tourniquet",
+  "profession": "First Aid",
+  "itemID": 255730,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 6575,
+      "name": "Scarlet Trainee",
+      "zone": "Scarlet Monastery",
+      "level": 30
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=255730"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1263083,
+  "recipeName": "Anarchist's Workbench",
+  "profession": "Engineering",
+  "itemID": 273117,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266910,
+  "recipeName": "SAF-T Bronze Bomb",
+  "profession": "Engineering",
+  "itemID": 264207,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs)",
+    "npcs": [
+     {
+      "npcID": 4281,
+      "name": "Scarlet Scout",
+      "zone": "Tirisfal Glades",
+      "level": 29
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264207",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 1266911,
+  "recipeName": "SAF-T Jumbo Dynamite",
+  "profession": "Engineering",
+  "itemID": 264208,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 2 dropping NPCs (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 1054,
+      "name": "Dark Iron Demolitionist",
+      "zone": "Wetlands",
+      "level": 30
+     },
+     {
+      "npcID": 275045,
+      "name": "Dragonmaw Saboteur",
+      "zone": null
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264208"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266913,
+  "recipeName": "Shafety Sheep",
+  "profession": "Engineering",
+  "itemID": 264210,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 1094,
+      "name": "Venture Co. Miner",
+      "zone": "Stranglethorn Vale",
+      "level": 34
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264210"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266915,
+  "recipeName": "EZ-Thro Bronze Mortar",
+  "profession": "Engineering",
+  "itemID": 264212,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 2570,
+      "name": "Boulderfist Shaman",
+      "zone": "Arathi Highlands",
+      "level": 38
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264212"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266916,
+  "recipeName": "EZ-Thro Grenade",
+  "profession": "Engineering",
+  "itemID": 264213,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 7030,
+      "name": "Shadowforge Geologist",
+      "zone": "Uldaman",
+      "level": 40
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264213"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266917,
+  "recipeName": "SAF-T Casing",
+  "profession": "Engineering",
+  "itemID": 264214,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 5839,
+      "name": "Dark Iron Geologist",
+      "zone": "Searing Gorge",
+      "level": 43
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264214"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266918,
+  "recipeName": "SAF-T Bomb",
+  "profession": "Engineering",
+  "itemID": 264215,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 5616,
+      "name": "Wastewander Thief",
+      "zone": "Tanaris",
+      "level": 40
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264215"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266921,
+  "recipeName": "EZ-Thro Tru-Trigger",
+  "profession": "Engineering",
+  "itemID": 264218,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 2656,
+      "name": "Jade Ooze",
+      "zone": "The Hinterlands",
+      "level": 47
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264218"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266922,
+  "recipeName": "Tru-Trigger Frag Bomb",
+  "profession": "Engineering",
+  "itemID": 264219,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 5474,
+      "name": "Dunemaul Brute",
+      "zone": "Tanaris",
+      "level": 46
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264219"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266926,
+  "recipeName": "SAF-T Tube",
+  "profession": "Engineering",
+  "itemID": 264223,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266927,
+  "recipeName": "SAF-T Clever Dynamite",
+  "profession": "Engineering",
+  "itemID": 264224,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 7033,
+      "name": "Firegut Ogre",
+      "zone": "Burning Steppes",
+      "level": 50
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264224"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266928,
+  "recipeName": "EZ-Thro Shell",
+  "profession": "Engineering",
+  "itemID": 264225,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266929,
+  "recipeName": "EZ-Thro Thorium Grenade",
+  "profession": "Engineering",
+  "itemID": 264226,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266930,
+  "recipeName": "EZ-Thro Dark Bomb",
+  "profession": "Engineering",
+  "itemID": 264227,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266931,
+  "recipeName": "EZ-Thro Mana Bomb",
+  "profession": "Engineering",
+  "itemID": 264228,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 9862,
+      "name": "Jaedenar Legionnaire",
+      "zone": "Felwood",
+      "level": 55
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=264228"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1266932,
+  "recipeName": "EZ-Thro Field Transporter: Gadgetzan",
+  "profession": "Engineering",
+  "itemID": 264229,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266933,
+  "recipeName": "SAF-T Emergency Ripper: Everlook",
+  "profession": "Engineering",
+  "itemID": 264230,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266934,
+  "recipeName": "EZ and SAF Field Transporter: Mt. Hyjal",
+  "profession": "Engineering",
+  "itemID": 264231,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266939,
+  "recipeName": "Gnomish Weather Machine",
+  "profession": "Engineering",
+  "itemID": 264236,
+  "obtainable": null,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "Warcraft Tavern Forever article says Gnomish Weather Machine is marked \"NYI\" (not yet implemented) with no effects; wow.gg data names the recipe \"Gnomish Weather Machine NYI\"",
+    "confidence": "confirmed",
+    "urls": [
+     "https://www.warcrafttavern.com/forever/news/new-engineering-schematics-for-world-of-warcraft-forever/",
+     "https://wow.gg/professions/forever/engineering",
+     "https://www.wowhead.com/forever/item=264236"
+    ]
+   }
+  ],
+  "notes": "Probably not obtainable yet (NYI), but no source says the schematic is unavailable. Wowhead item page shows only \"New in Forever\". Left obtainable=null."
+ },
+ {
+  "recipeSpellID": 1266941,
+  "recipeName": "SAF-T Nitro Boosts",
+  "profession": "Engineering",
+  "itemID": 264238,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266942,
+  "recipeName": "EZ-Thro Magnetic Displacer",
+  "profession": "Engineering",
+  "itemID": 264239,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1266943,
+  "recipeName": "SAF-T Teleport",
+  "profession": "Engineering",
+  "itemID": 264240,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1270632,
+  "recipeName": "Critter Cookie",
+  "profession": "Cooking",
+  "itemID": 263505,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Item 263505 has no Wowhead Forever page (404) and is not in QuestieDB; wiki \"?\"; not in wow.gg data. No source found."
+ },
+ {
+  "recipeSpellID": 1277782,
+  "recipeName": "",
+  "profession": "Engineering",
+  "itemID": null,
+  "obtainable": null,
+  "sources": [],
+  "notes": "Spell has no name; its Wowhead Forever spell page is 404; not on any Forever list. Probably internal/placeholder: exclude or keep as unknown."
+ },
+ {
+  "recipeSpellID": 1293088,
+  "recipeName": "9-60 Battery Pack",
+  "profession": "Engineering",
+  "itemID": 274049,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances); warcraft.wiki.gg Forever list also gives source type \"Drop\" (type only, no NPCs)",
+    "npcs": [
+     {
+      "npcID": 6229,
+      "name": "Crowd Pummeler 9-60",
+      "zone": "Gnomeregan",
+      "level": 32
+     }
+    ],
+    "confidence": "confirmed",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=274049",
+     "https://warcraft.wiki.gg/wiki/Forever_engineering_schematics"
+    ]
+   }
+  ],
+  "notes": ""
+ },
+ {
+  "recipeSpellID": 1293849,
+  "recipeName": "Swiftfeather Arrow",
+  "profession": "Engineering",
+  "itemID": 274389,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1293850,
+  "recipeName": "Swiftstrike Shot",
+  "profession": "Engineering",
+  "itemID": 274390,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1294014,
+  "recipeName": "Sweetpaw Jam",
+  "profession": "Cooking",
+  "itemID": 274415,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "vendor",
+    "detail": "Sold by Dala Fairmaw, Mount Hyjal, for 10 Deadwood Tribal Beads",
+    "npcs": [
+     {
+      "name": "Dala Fairmaw",
+      "zone": "Mount Hyjal"
+     }
+    ],
+    "cost": "10 Deadwood Tribal Beads",
+    "confidence": "confirmed",
+    "urls": [
+     "https://conquestcapped.com/guides/wow-forever/wow-forever-new-recipes/",
+     "https://www.wowhead.com/forever/item=274415",
+     "https://warcraft.wiki.gg/wiki/Forever_cooking_recipes"
+    ]
+   }
+  ],
+  "notes": "conquestcapped names the vendor and cost; Wowhead Forever \"This item can be purchased in Mount Hyjal.\"; wiki type Vendor."
+ },
+ {
+  "recipeSpellID": 1306546,
+  "recipeName": "SAF-T Ultra Precision Scope",
+  "profession": "Engineering",
+  "itemID": 279321,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1306547,
+  "recipeName": "Hyper Deluxe Sniper Rifle Mk XVII",
+  "profession": "Engineering",
+  "itemID": 279322,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1308182,
+  "recipeName": "Serrated Strap",
+  "profession": "Engineering",
+  "itemID": 280324,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1317270,
+  "recipeName": "Unsanctified Grenade",
+  "profession": "Engineering",
+  "itemID": 284870,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "drop",
+    "detail": "Recipe item drops; QuestieDB Forever lists 1 dropping NPC (QuestieDB has no drop chances)",
+    "npcs": [
+     {
+      "npcID": 2287,
+      "name": "Crushridge Warmonger",
+      "zone": "Alterac Mountains",
+      "level": 39
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=284870"
+    ]
+   }
+  ],
+  "notes": "Drop known only from QuestieDB Forever (Wowhead page: \"New in Forever\", no data readable; wiki \"?\"; wow.gg no source)."
+ },
+ {
+  "recipeSpellID": 1319154,
+  "recipeName": "Small Purple Rocket",
+  "profession": "Engineering",
+  "itemID": 286076,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319155,
+  "recipeName": "Small White Rocket",
+  "profession": "Engineering",
+  "itemID": 286077,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319156,
+  "recipeName": "Small Yellow Rocket",
+  "profession": "Engineering",
+  "itemID": 286078,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319157,
+  "recipeName": "Large Purple Rocket",
+  "profession": "Engineering",
+  "itemID": 286079,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319158,
+  "recipeName": "Large White Rocket",
+  "profession": "Engineering",
+  "itemID": 286080,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319159,
+  "recipeName": "Large Yellow Rocket",
+  "profession": "Engineering",
+  "itemID": 286081,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319160,
+  "recipeName": "Purple Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286082,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319161,
+  "recipeName": "White Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286083,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319162,
+  "recipeName": "Yellow Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286084,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319163,
+  "recipeName": "Large Purple Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286085,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319164,
+  "recipeName": "Large White Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286086,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319165,
+  "recipeName": "Large Yellow Rocket Cluster",
+  "profession": "Engineering",
+  "itemID": 286087,
+  "obtainable": null,
+  "sources": [],
+  "notes": "No Forever source found: Wowhead Forever item page \"New in Forever\" only, no QuestieDB droppers/vendors, wiki \"?\", wow.gg source null, not in wow-professions or conquestcapped."
+ },
+ {
+  "recipeSpellID": 1319313,
+  "recipeName": "Plated Armorfish",
+  "profession": "Cooking",
+  "itemID": 286153,
+  "obtainable": true,
+  "sources": [
+   {
+    "kind": "other",
+    "detail": "World object \"Recipe: Raw Plated Armorfish\" (object 694054) in Deadwind Pass at about 52.4, 34.5",
+    "npcs": [
+     {
+      "name": "Recipe: Raw Plated Armorfish (object)",
+      "zone": "Deadwind Pass"
+     }
+    ],
+    "confidence": "single",
+    "urls": [
+     "QuestieDB Forever (local parse: scratchpad/recipes/qdb/qdb_item.json, qdb_npc.json, qdb_object.json)",
+     "https://www.wowhead.com/forever/item=286153"
+    ]
+   }
+  ],
+  "notes": "QuestieDB Forever: item objectDrops -> object 694054 (zone 41 = Deadwind Pass). No second source; conquestcapped says \"Unknown\"; Wowhead \"New in Forever\" only."
+ }
+]

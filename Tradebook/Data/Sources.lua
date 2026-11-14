@@ -41,9 +41,21 @@ end
 function Sources.Raw(recipeID)
     local s = ns.SourceData and ns.SourceData[recipeID]
     local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
-    if not o then return s end
+    local drops = ns.RecipeDrops and ns.RecipeDrops[recipeID]
+    if not o then
+        -- Only drop data (deep dive): a source of its own.
+        if not s and drops then return { drops = true } end
+        if s and drops then
+            local out = {}
+            for k, v in pairs(s) do out[k] = v end
+            out.drops = true
+            return out
+        end
+        return s
+    end
     s = s or {}
-    local out = { t = s.t, tn = s.tn, a = s.a, c = s.c, checked = true, x = o.x, v = o.v, u = o.u }
+    local out = { t = s.t, tn = s.tn, a = s.a or o.a, c = s.c, checked = true, x = o.x, v = o.v, u = o.u,
+        tr = o.tr, nt = o.nt, ct = o.ct, drops = drops ~= nil }
     local replaced = (o.d or o.q) ~= nil
     if replaced then
         out.d, out.q = o.d, o.q
@@ -115,6 +127,7 @@ function Sources.Get(recipeID, resolve)
         if s.x == 1 then out[#out + 1] = { text = L.SOURCE_NOT_YET, grey = true } end
         if s.x == 2 then out[#out + 1] = { text = L.SOURCE_DISPUTED, grey = true } end
         if s.x == 3 and #unconf == 0 then out[#out + 1] = { text = L.SOURCE_NO_VENDOR, grey = true } end
+        if s.x == 4 then out[#out + 1] = { text = L.SOURCE_NOT_IN_FOREVER, grey = true } end
     end
     local function decorate(id, name)
         local n = notes[id]
@@ -125,7 +138,10 @@ function Sources.Get(recipeID, resolve)
     if s.a == 1 then out[#out + 1] = { text = L.SOURCE_AUTO } end
     if s.t then
         out[#out + 1] = { text = L.SOURCE_TRAINER, right = L.SOURCE_LOCATIONS:format(s.tn or #s.t) }
+    elseif s.tr then
+        out[#out + 1] = { text = L.SOURCE_TRAINER }
     end
+    if s.ct then out[#out + 1] = { text = L.SOURCE_COST_TEXT:format(s.ct) } end
     if #conf > 0 then
         out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(conf, nil, decorate) }
     end
@@ -133,9 +149,14 @@ function Sources.Get(recipeID, resolve)
         out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": "
             .. npcNames(unconf, not s.checked and s.vn or nil, decorate) }
     end
-    -- Drops with chances are listed separately (Sources.Drops); otherwise the names.
-    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
-    if s.d and not (o and o.dr) then out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) } end
+    -- Droppers from the deep dive are listed separately (Sources.Drops, with chances); world
+    -- drops get a level range; otherwise the classic names.
+    local drops = ns.RecipeDrops and ns.RecipeDrops[recipeID]
+    if drops and drops.w then
+        out[#out + 1] = { text = L.SOURCE_WORLD_DROP:format(drops.w[1], drops.w[2]) }
+    elseif s.d and not (drops and drops.n) then
+        out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) }
+    end
     for _, q in ipairs(s.q or {}) do
         local name = resolve.quest and resolve.quest(q)
         out[#out + 1] = { text = L.SOURCE_QUEST .. ": " .. (name or ("#" .. q)) }
@@ -144,6 +165,7 @@ function Sources.Get(recipeID, resolve)
         local name = resolve.item and resolve.item(item)
         out[#out + 1] = { text = L.SOURCE_CONTAINER .. ": " .. (name or ("item " .. item)) }
     end
+    if s.nt then out[#out + 1] = { text = s.nt, grey = true } end
     if #out == 0 then return nil end
     return out, s.b == true, s.checked == true
 end
@@ -163,12 +185,14 @@ end
 
 -- NPCs that drop a recipe, with the drop chance in percent, highest first:
 -- { { npcID, chance, name, areaID } } (Data/RecipeVendors.lua `dr`), or {}.
+-- chance 0 = not known; drops / loots = recorded loot counts (0 when unknown); confirmed = two
+-- sources name this NPC.
 function Sources.Drops(recipeID)
-    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    local d = ns.RecipeDrops and ns.RecipeDrops[recipeID]
     local out = {}
-    for _, d in ipairs(o and o.dr or {}) do
-        out[#out + 1] = { npcID = d[1], chance = d[2] / 100, name = npcName(d[1]),
-            areaID = ns.RecipeNpcZones and ns.RecipeNpcZones[d[1]] }
+    for _, n in ipairs(d and d.n or {}) do
+        out[#out + 1] = { npcID = n[1], chance = n[2] / 100, drops = n[3], loots = n[4], confirmed = n[5] == 1,
+            name = npcName(n[1]), areaID = ns.RecipeNpcZones and ns.RecipeNpcZones[n[1]] }
     end
     return out
 end
@@ -221,7 +245,8 @@ end
 function Sources.Kinds(recipeID)
     local s = Sources.Raw(recipeID)
     if not s then return nil end
-    return { trainer = s.t ~= nil, recipe = (s.v or s.u or s.d or s.q or s.c) ~= nil, auto = s.a == 1 }
+    return { trainer = (s.t or s.tr) ~= nil, recipe = (s.v or s.u or s.d or s.q or s.c) ~= nil or s.drops == true,
+        auto = s.a == 1 }
 end
 
 -- Can a character at `rank` learn this recipe now? true / false, or nil when the required
