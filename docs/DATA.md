@@ -141,7 +141,7 @@ After `/reload` in game (SavedVariables are written then):
    `docs/research/seen_in_game.json`, then `python -I scripts/build_recipe_vendors.py`.
 
 Trainer data in the addon (Core/Trainers.lua, Data/CommunityTrainers.lua): trainers read in game
-(yours or shared) list the recipes they teach under "Learn from" ("Trainer, seen teaching it"),
+(yours or shared) list the recipes they teach under "Learn from" (trainers nobody has seen teaching it say "Trainer, unconfirmed"),
 give the **skill needed** (replacing the classic value) and the **training cost**, and count as
 confirmed rank trainers in the rank-up window. 2026-11-14: 24 trainers read; all ranks matched
 the researched list; 182 classic skill values were wrong (e.g. Linen Bag 5, not 45).

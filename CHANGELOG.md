@@ -2,27 +2,30 @@
 
 ## Unreleased
 
-- Only information that isn't confirmed is labelled: confirmed trainers, vendors and prices carry no tag; vendors only Questie lists say "Questie"; anything only one weaker source names says "(unconfirmed)".
-- **/tb share sends only what's new.** Vendors and trainers that still match the data Tradebook ships are sent as a short "confirmed" line (so the data stays fresh) instead of in full, and only scans since your last share are included (tick **Include earlier scans** for everything).
-- **Trainers are scanned too.** Trainer windows you open (and trainers shared by other players) show which trainers teach each recipe ("Trainer, seen teaching it"), the real **skill needed** (the old classic values were often wrong: Linen Bag needs 5, not 45) and the **training cost**. **/tb share** includes your trainers.
-- Clicking a vendor in the Vendors tab or search results, or a mob under Dropped by, also **targets it and marks it with a purple diamond** when it's nearby, like trainers and vendors in recipe sources.
-- **Vendors tab**: search any item a vendor sells. Each item expands to its 5 nearest vendors (price in gold, Merchant's Favor or other currency, zone, distance; click for a waypoint) with **See all**. Filters: zone, only friendly vendors, only this continent, item type, paid with, and data source (your scans, community, Questie). Uses your scans, the community database and, with Questie installed, Questie's vendor lists with the game's base prices.
-- **/tb share**: share your vendor scans through a GitHub form so everyone gets them in the next update.
-- **Vendor database.** Every vendor you open is saved with everything it sells (gold price, Merchant's Favor or other costs, stock) and where it stands. The search box also lists **items sold by vendors you've visited**, at the nearest vendor with its price; click for a waypoint.
-- **Filter: From a vendor / From a mob** under "Not learned > From a recipe". A recipe that's both sold and dropped shows under either.
-- **Where to get recipes: deep dive.** Every recipe was checked against Forever sources. Recipe sources now list **who drops it** (top 5, with zone, level and drop chance from recorded loots, e.g. "11% (1 of 9)"; click for a waypoint), **world drops** with the mob level range, trainer and quest recipes, and **"Not available in WoW Forever"** for Season of Discovery leftovers. 302 recipes that said "Unknown source" now have one.
-- **Buy the recipe: vendor vs auction house.** Recipes a vendor sells for gold show the vendor price (what you saw in the vendor's window, with your reputation discount; otherwise Auctionator's or the game's base price) next to the auction house price, and mark the cheaper one.
-- **New Forever recipe vendors.** 461 recipes from WoW Forever's new vendors now show where to buy them: the Merchant's Favor supply camps (Durotar Supply and Logistics in the Barrens, Azeroth Commerce Authority in Redridge), Aisarra Nightmeadow, the Skyforged and Gustwoven quartermasters, the centaur quartermasters and more. Supply camp recipes show their **Merchant's Favor cost** and the **reputation** needed for your faction's camp.
-- Recipe sources (and vendor locations) now show for recipes you already know, too.
-- Quests in recipe sources show their name even before the game has loaded it ("Quest: Dig Rat Stew" instead of "Quest: #862").
-- **Tradebook learns from vendor windows.** Opening any vendor records which recipes it sells and whether they're limited supply. Recipe sources then show those vendors as confirmed (added if the bundled data missed them), mark limited recipes "(limited supply)", and mark a vendor whose window didn't have the recipe "(not in stock when you visited)" (limited recipes disappear while sold out, so the vendor isn't removed).
-- **Recipe vendors checked for WoW Forever.** The vendor list came from classic; every one of the 321 vendor-sold recipes was checked against Questie's Forever data and Forever websites. 100 vendors that don't sell the recipe in Forever (or aren't in Forever) are gone, 65 Forever vendors are added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Super-Seller 680, Vendor-Tron 1000 and more), and vendors only one source names say "(unconfirmed)". Recipes no vendor sells (Dig Rat Stew, the flasks, Runic Plate, several enchants) show their drop or quest instead, and recipes that don't seem to be in Forever yet say so.
-- **Fixed:** with **Not learned** and **Gives skill-ups** both ticked, recipes you haven't learned that would give skill-ups now show too, with a dot after the name in their skill-up colour. Recipes needing more skill than you have don't count.
-- **Enchants and other recipes without a result item** now say what they do on hover: the recipe's icon in the details pane, the Camp list and the leveling plan, the recipe list on the left, and search results (which now show a tooltip for every recipe).
-- **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, each item with its price per unit and total, and a subtotal per section. Send to Auctionator sends only the auction house items.
-- The leveling plan works without Auctionator too: it uses your own materials and vendor prices, then recipes needing the fewest other materials.
-- **Vendor prices from the game**: thread, dyes, vials, spices and other vendor goods now have their vendor price (from Forever's item data, for items Questie lists a vendor for) even if you haven't visited that vendor with Auctionator. Costs to craft and the leveling plan use it.
-- **Leveling plan**: the cheapest way to raise a profession to its cap. Open it with the **Leveling plan** button left of the skill bar. It lists steps ("131-137 craft about 9 x Gray Woolen Shirt"), the materials (need / have / buy), the total cost from Auctionator prices, and a shopping list you can send to Auctionator. Uses materials in your bags and bank first, and can include trainer recipes you haven't learned yet.
+## v0.3.0-beta
+
+### Where to get every recipe in WoW Forever
+- **Recipe sources checked for Forever.** Every recipe was checked against Forever's own game data, Questie's Forever data and Forever websites. Wrong classic vendors are gone (100), Forever vendors added (65), and **461 recipes from Forever's new vendors** now show where to buy them: the Merchant's Favor supply camps (Durotar Supply and Logistics in the Barrens, Azeroth Commerce Authority in Redridge), Aisarra Nightmeadow, the Skyforged and Gustwoven quartermasters, the centaur quartermasters and more. Supply camp recipes show their **Merchant's Favor cost** and the **reputation** needed with your faction's camp.
+- **Who drops it**: the top 5 mobs with zone, level and drop chance from recorded loots (e.g. "11% (1 of 9)"), **world drops** with the mob level range, trainer and quest recipes, and **"Not available in WoW Forever"** for Season of Discovery leftovers. 302 recipes that said "Unknown source" now have one.
+- **Trainers seen in game**: trainers that teach a recipe, the real **skill needed** (the old classic values were often wrong: Linen Bag needs 5, not 45) and the **training cost**.
+- **Purchase price**: the vendor price next to the auction house price for a recipe, with the cheaper one marked.
+- Recipe sources (and vendor locations) show for recipes you already know too, and quests show their name before the game has loaded it.
+- Only information that isn't confirmed is labelled: "(unconfirmed)" when only one weaker source names it, "Questie" for vendors only Questie lists.
+
+### Vendors tab and the community database
+- **Vendors tab** (next to Legacy and Characters): search any item a vendor sells. Each item expands to its 5 nearest vendors (price in gold, Merchant's Favor or other currency, zone, distance) with **See all**. Filters: zone, only friendly vendors, only this continent, item type, paid with, and data source.
+- **Vendor and trainer windows are scanned automatically**: everything a vendor sells, prices, stock and where it stands; every trainer's list. Limited-supply recipes are marked, and a vendor whose window didn't have a recipe says "(not in stock when you visited)".
+- **Community database**: 127 vendors (1,834 items) and 53 trainers already scanned in game ship with this version.
+- **/tb share**: send your scans through the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml) on GitHub so everyone gets them in the next update. NPCs that still match are sent as a short "confirmed" line, and only scans since your last share are included. Only NPC data is shared, nothing about your characters.
+- Clicking a vendor or a mob also **targets it and marks it with a purple diamond** when it's nearby.
+
+### Recipes and crafting
+- **Leveling plan**: the cheapest way to raise a profession to its cap (button left of the skill bar): steps, materials (need / have / buy), cost and a shopping list. Uses your bags and bank first, works without Auctionator.
+- **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, with prices and subtotals.
+- **Vendor prices from the game** for thread, dyes, vials and other vendor goods.
+- New filters: **From a vendor** / **From a mob** under From a recipe. With **Not learned** and **Gives skill-ups** ticked, unlearned recipes that would give skill-ups show with a dot in their skill-up colour.
+- **Enchants** say what they do on hover.
+- Legacy and Characters moved to tabs at the far right; the window keeps its parts from overlapping when made narrow.
 
 ## v0.2.1-beta
 
