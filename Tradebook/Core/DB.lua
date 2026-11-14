@@ -39,6 +39,7 @@ DB.DEFAULTS = {
             unlearnedTrainer = false, unlearnedRecipe = false, haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
         collapsed = {},
+        browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
     },
     characters = {},
     account = { bank = {} },

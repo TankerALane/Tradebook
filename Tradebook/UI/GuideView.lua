@@ -49,6 +49,12 @@ function View:Build(parent)
     self.friendsNote = W.Text(f, "GameFontDisableSmall")
     self.friendsNote:SetWidth(640)
     self.rows = {}
+
+    -- List every recipe of this profession (materials, costs, where to learn them).
+    self.browseBtn = W.Button(f, L.BROWSE_SHOW, 150, 22)
+    self.browseBtn:SetPoint("TOPRIGHT", -30, -30)
+    self.browseBtn:SetScript("OnClick", function() ns.UI.SetBrowse(self.skill, true) end)
+    W.Tooltip(self.browseBtn, { L.BROWSE_SHOW, L.BROWSE_TIP })
 end
 
 -- One aligned row: name | rank (right-aligned) | ago.
@@ -70,7 +76,9 @@ function View:Row(i)
 end
 
 function View:Show(skillLineID)
+    self.skill = skillLineID
     local p = ns.Professions.Get(skillLineID)
+    self.browseBtn:SetShown(not p.noRecipes)
     local name = L[p.name] or p.name
     self.icon:SetTexture(ns.Compat.ProfessionTexture(skillLineID))
     self.title:SetText(L.GUIDE_TITLE:format(name))

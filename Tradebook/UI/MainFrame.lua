@@ -192,6 +192,15 @@ function UI.UpdateTabs()
 end
 
 -- Select a bottom tab. fromClick: a real click (allowed to open the profession).
+-- Browse every recipe of a profession none of your characters have (or go back to its
+-- guide page). Remembered per profession.
+function UI.SetBrowse(skillLineID, on)
+    ns.db.settings.browse = ns.db.settings.browse or {}
+    ns.db.settings.browse[skillLineID] = on or nil
+    if on then ns.Scanner.CacheProfession(ns.db, skillLineID) end
+    UI.SelectTab(skillLineID)
+end
+
 function UI.SelectTab(key, fromClick)
     if not frame then UI.Create() end
     current.tab = key
@@ -201,7 +210,8 @@ function UI.SelectTab(key, fromClick)
     else
         local mine = ns.char and ns.char.professions[key]
         if fromClick and mine then ns.Crafting.OpenProfession(key) end
-        if #ns.Characters.WithProfession(ns.db, key, ns.charKey) == 0 then
+        local browse = ns.db.settings.browse and ns.db.settings.browse[key]
+        if #ns.Characters.WithProfession(ns.db, key, ns.charKey) == 0 and not browse then
             showView("guide", key)
         else
             showView("profession", key)

@@ -161,6 +161,20 @@ function Scanner.CacheRecipeInto(db, id, skillLineID)
     return true
 end
 
+-- Cache every recipe of a profession from Forever's game data (Data/SkillLevels.lua), so a
+-- profession none of your characters have can still be browsed. Returns how many are
+-- cached now (0 when the game returns nothing for them).
+function Scanner.CacheProfession(db, skillLineID)
+    local count = 0
+    for id, lv in pairs(ns.RecipeLevels or {}) do
+        if lv[1] == skillLineID then
+            if db.recipes[id] or Scanner.CacheRecipeInto(db, id, skillLineID) then count = count + 1 end
+        end
+    end
+    if count > 0 then ns.Recipes.Invalidate() end
+    return count
+end
+
 -- Skill-up colour (0 orange .. 3 grey) of a recipe for a saved character:
 --   1. live from the game when it's the logged-in character with that profession open;
 --   2. from the bundled thresholds and the character's current rank, unless a scan found

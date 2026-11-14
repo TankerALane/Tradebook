@@ -191,11 +191,13 @@ function View:BuildItems()
             if db.favorites[id] then starred[#starred + 1] = item end
             if item.pinned then pinnedList[#pinnedList + 1] = item end
             local keep = (learned and f.learned) or (not learned and f.unlearned)
-            if f.skillup and not (learned and item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
+            if self.browsing then keep = true end -- nobody has it: every recipe, search only
+            if not self.browsing and f.skillup
+                and not (learned and item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
                 keep = false
             end
-            if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
-            if keep and not learned then
+            if not self.browsing and f.haveMats and not (item.possible and item.possible > 0) then keep = false end
+            if keep and not learned and not self.browsing then
                 -- Under "Not learned": learnable now, and how it's learned (trainer / recipe item).
                 if f.unlearnedLearnable and not ns.Sources.Learnable(id, p and p.rank) then keep = false end
                 if f.unlearnedTrainer or f.unlearnedRecipe then
@@ -362,6 +364,7 @@ function View:Build(parent)
     self.openBtn = W.Button(left, "", 170, 22)
     self.openBtn:SetPoint("TOPLEFT", self.notice, "BOTTOMLEFT", -2, -4)
     self.openBtn:SetScript("OnClick", function()
+        if View.browsing then ns.UI.SetBrowse(View.skill, false) return end
         ns.Crafting.OpenProfession(View.skill)
     end)
 
@@ -462,11 +465,20 @@ function View:Refresh()
     self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))
 
     local notices, showOpen = {}, false
+    -- Browsing a profession none of your characters have (from its guide page).
+    self.browsing = #Characters.WithProfession(ns.db, self.skill, ns.charKey) == 0
+    if self.browsing then
+        notices[#notices + 1] = L.BROWSE_NOTE:format(profName)
+        showOpen = true
+        self.openBtn:SetText(L.BROWSE_BACK)
+        self.openBtn:SetEnabled(true)
+        isMe = true -- the logged-in character's bags count for the materials
+    end
     if not isMe then notices[#notices + 1] = L.VIEWING_ALT:format(c and ns.CharName(c.key) or "?") end
     if prof and not prof.scannedAt and not pInfo.noRecipes then
         notices[#notices + 1] = (prof.quickAt and L.QUICK_SCANNED or L.NOT_SCANNED):format(profName)
     end
-    if isMe and prof and not self:IsLive() and not pInfo.noRecipes and not ns.fake then
+    if not self.browsing and isMe and prof and not self:IsLive() and not pInfo.noRecipes and not ns.fake then
         showOpen = true
         self.openBtn:SetText(L.OPEN_PROFESSION:format(profName))
         self.openBtn:SetEnabled(not InCombatLockdown())
@@ -484,7 +496,7 @@ function View:RefreshList()
     if self.filterBtn and self.filterBtn.ValidateResetState then self.filterBtn:ValidateResetState() end
     local items = self:BuildItems()
     self.list:SetItems(items)
-    self.empty:SetText(#items == 0 and L.NO_RECIPES or "")
+    self.empty:SetText(#items == 0 and (self.browsing and L.BROWSE_NONE or L.NO_RECIPES) or "")
     if not self.selected then
         for _, item in ipairs(items) do
             if not item.header then

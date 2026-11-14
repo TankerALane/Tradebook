@@ -47,5 +47,13 @@ Find a character whose skill is at 50+ with a cap of 75, 125+ with 150, or 200+ 
 - [ ] Open a recipe none of your characters know but one has the profession: under **Who can craft this** there's **Could learn it:** with the character, their skill, and "Learnable now" (green), "N more skill (X)" (gold) or "Train <rank> first (X)" (red).
 - [ ] **Who can craft…?** search: such recipes say "<Name> could learn it: …" instead of "No saved character knows this."
 
+## F. Browse a profession nobody has
+- [ ] On a **grey tab** (e.g. Engineering), the guide page has a **Show all recipes** button at the top right (not on Herbalism or Skinning).
+- [ ] Click it: the tab shows the recipe list, with the note "None of your characters have Engineering. Showing all its recipes." and a **Back to the guide** button. [How long did it take the first time?]
+- [ ] Recipes are grouped into their categories, with names and icons (some may show item:123 for a moment, then fill in).
+- [ ] **Search** works. Selecting a recipe shows its materials (with your bag counts), the Cost section (Auctionator), Sold by / where to get each material, and where to learn the recipe.
+- [ ] Craft buttons are disabled; filters don't hide anything here.
+- [ ] Switch tabs and come back: still showing the list. **Back to the guide** returns to the guide page.
+
 ## Notes / errors
 

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Browse professions you don't have**: a grey tab's guide page has **Show all recipes**, listing every recipe of that profession (from Forever's game data) with search and full details: materials, what they cost, and where to learn each recipe. **Back to the guide** returns.
 - **Train the next rank**: once a character can train the next rank (skill 50, 125, 200), a **Train <rank>** button appears in the skill bar. It opens a window with the requirements (skill and level: Journeyman 10, Expert 20, Artisan 35) and how to get it: the nearest trainers, the Expert Cooking/Fishing/First Aid books (auction price and where they're sold), or the Artisan Fishing/First Aid quests (giver, level, reputation and prerequisite quests). Waypoints, target and mark included. Locations need Questie; prices need Auctionator.
 - **Could learn it**: when none of your characters know a recipe, its details (and the Who can craft search) show which of your characters with that profession could learn it: now, with N more skill, or after training the next rank.
 - **Auctionator prices** (optional): auction and vendor prices in material tooltips, a Cost section in recipe details (cost to craft, sells for, profit), the cost of a shopping list, and **Send to Auctionator** to create an Auctionator shopping list.
