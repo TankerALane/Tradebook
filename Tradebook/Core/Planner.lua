@@ -45,7 +45,7 @@ function Planner.Plan(opts)
 
     -- Cost of `crafts` crafts of a recipe with the current inventory (without using it up).
     local function costOf(id, crafts)
-        local total, unpriced = 0, false
+        local total, unpricedUnits = 0, 0
         for _, r in ipairs(opts.reagents(id)) do
             local need = r.count * crafts
             local buy = math.max(0, need - (inv[r.itemID] or 0))
@@ -53,10 +53,10 @@ function Planner.Plan(opts)
                 total = total + buy
             elseif buy > 0 then
                 local p = opts.price(r.itemID)
-                if p then total = total + p * buy else unpriced = true end
+                if p then total = total + p * buy else unpricedUnits = unpricedUnits + buy end
             end
         end
-        return total, unpriced
+        return total, unpricedUnits > 0, unpricedUnits
     end
 
     local function useUp(id, crafts, materials)
@@ -83,9 +83,10 @@ function Planner.Plan(opts)
                 local chance = Planner.Chance(opts.thresholds(id), rank)
                 if chance > 0 then
                     local crafts = 1 / chance
-                    local cost, unpriced = costOf(id, crafts)
-                    -- Unpriced recipes sort after every priced one; then cost per point.
-                    local score = (unpriced and 1e15 or 0) + cost
+                    local cost, unpriced, unpricedUnits = costOf(id, crafts)
+                    -- Recipes needing materials with no known price sort after every priced
+                    -- one, fewest of those materials first; then cost per point.
+                    local score = (unpriced and (1e15 + unpricedUnits * 1e6) or 0) + cost
                     if not best or score < bestScore then
                         best, bestScore, bestCrafts, bestCost, bestUnpriced = id, score, crafts, cost, unpriced
                     end

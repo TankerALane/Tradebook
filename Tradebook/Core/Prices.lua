@@ -88,6 +88,26 @@ function Prices.Profit(cost, auctionUnit, count)
     return value, value - cost
 end
 
+-- PURE. Split a shopping list { { itemID, missing, ... } } by where to buy each item, at its
+-- cheapest known price: vendor or auction house (no price: auction house, unpriced).
+-- lookup(itemID) -> { auction, vendor }. Returns
+-- { vendor = { items, total }, auction = { items, total, unpriced } }, each item with
+-- unit (copper or nil) and cost (unit * missing, or nil).
+function Prices.SplitShopping(list, lookup)
+    local out = { vendor = { items = {}, total = 0 }, auction = { items = {}, total = 0, unpriced = 0 } }
+    for _, item in ipairs(list) do
+        local unit, source = Prices.Cheapest(lookup(item.itemID))
+        local group = source == "vendor" and out.vendor or out.auction
+        local entry = {}
+        for k, v in pairs(item) do entry[k] = v end
+        entry.unit = unit
+        entry.cost = unit and math.floor(unit * item.missing + 0.5) or nil
+        group.items[#group.items + 1] = entry
+        if entry.cost then group.total = group.total + entry.cost else out.auction.unpriced = out.auction.unpriced + 1 end
+    end
+    return out
+end
+
 -- PURE fallback money text ("1g 20s 5c"); the game's GetMoneyString is used when present.
 function Prices.MoneyText(copper)
     copper = math.floor((copper or 0) + 0.5)

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, each item with its price per unit and total, and a subtotal per section. Send to Auctionator sends only the auction house items.
+- The leveling plan works without Auctionator too: it uses your own materials and vendor prices, then recipes needing the fewest other materials.
 - **Vendor prices from the game**: thread, dyes, vials, spices and other vendor goods now have their vendor price (from Forever's item data, for items Questie lists a vendor for) even if you haven't visited that vendor with Auctionator. Costs to craft and the leveling plan use it.
 - **Leveling plan**: the cheapest way to raise a profession to its cap. Open it with the **Leveling plan** button left of the skill bar. It lists steps ("131-137 craft about 9 x Gray Woolen Shirt"), the materials (need / have / buy), the total cost from Auctionator prices, and a shopping list you can send to Auctionator. Uses materials in your bags and bank first, and can include trainer recipes you haven't learned yet.
 

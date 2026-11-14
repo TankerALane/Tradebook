@@ -93,7 +93,6 @@ local function planFor(c, skill)
         price = function(itemID) return ns.Prices.Cheapest(ns.Prices.Get(itemID)) end,
         inventory = inventory,
         learnAt = function(id) return learnAt[id] end,
-        noPrices = not priced,
     })
     return plan, priced
 end
@@ -129,17 +128,13 @@ function PlannerUI.Refresh()
     pane:Gap()
 
     -- Steps.
-    pane:Add({ text = L.PLAN_STEPS, font = "GameFontNormal", color = W.GOLD,
-        right = priced and ns.Prices.Money(plan.cost) or nil })
+    pane:Add({ text = L.PLAN_STEPS, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(plan.cost) })
     local entries = {}
     for _, step in ipairs(plan.steps) do
         local r = ns.db.recipes[step.recipeID]
         local text = L.PLAN_STEP:format(step.from, step.to, step.crafts, r.n)
         if step.learn then text = text .. "  " .. W.ColorText(W.GREY, L.PLAN_LEARN) end
-        local right
-        if priced then
-            right = step.unpriced and W.ColorText(W.GREY, L.PLAN_PRICE_UNKNOWN) or ns.Prices.Money(step.cost)
-        end
+        local right = step.unpriced and W.ColorText(W.GREY, L.PLAN_PRICE_UNKNOWN) or ns.Prices.Money(step.cost)
         pane:Add({ indent = 1, itemID = r.o, text = text, right = right,
             onClick = function() ns.UI.OpenRecipe(step.recipeID, popup.charKey, true) end,
             tooltip = { r.n, L.PLAN_STEP_TIP } })

@@ -736,6 +736,16 @@ test("planner: stops when nothing gives skill-ups; trainer recipes wait for thei
     eq(#plan.steps, 1)
 end)
 
+test("planner: without prices, fewest unknown-price materials first", function()
+    local plan = ns.Planner.Plan({
+        rank = 50, target = 51, recipes = { 1, 2 },
+        thresholds = function() return { 60, 70, 80 } end,
+        reagents = function(id) return { { itemID = 100 + id, count = id == 1 and 5 or 2 } } end,
+        price = function() return nil end,
+    })
+    eq(plan.steps[1].recipeID, 2, "2 unknown materials beat 5")
+end)
+
 test("planner: unpriced recipes only when nothing priced works", function()
     local plan = ns.Planner.Plan({
         rank = 50, target = 52, recipes = { 1, 2 },
@@ -787,6 +797,19 @@ test("game vendor prices only for items a vendor sells", function()
     eq(ns.Prices.GameVendorPrice(3371, sold), nil, "has a buy price but no vendor sells it")
     eq(ns.Prices.GameVendorPrice(999, sold), nil)
     ns.VendorPrices = real
+end)
+
+test("shopping list split: vendor vs auction house", function()
+    local prices = { [1] = { vendor = 10 }, [2] = { auction = 50, vendor = 80 }, [3] = { auction = 5, vendor = 10 }, [4] = {} }
+    local split = ns.Prices.SplitShopping({
+        { itemID = 1, missing = 3 }, { itemID = 2, missing = 2 }, { itemID = 3, missing = 1 }, { itemID = 4, missing = 7 },
+    }, function(id) return prices[id] end)
+    eq(#split.vendor.items, 1, "thread: vendor")
+    eq(split.vendor.total, 30)
+    eq(#split.auction.items, 3, "cheaper at auction, or no price")
+    eq(split.auction.total, 105)
+    eq(split.auction.unpriced, 1)
+    eq(split.vendor.items[1].unit, 10)
 end)
 
 test("money text", function()
