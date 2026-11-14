@@ -17,14 +17,16 @@ ns.TargetButtons = TargetButtons
 local pool, used = {}, 0
 local DIAMOND = 3 -- raid target icon 3 = purple diamond
 
--- After the secure macro ran: if it really targeted this NPC (it was in range), put a
--- purple diamond on it. SetRaidTarget sets (never toggles), so repeat clicks keep it.
--- In a group this needs lead/assist; otherwise the game just ignores it.
-local function mark(name)
-    if UnitExists("target") and UnitName("target") == name
-        and GetRaidTargetIndex("target") ~= DIAMOND then
-        SetRaidTarget("target", DIAMOND)
-    end
+-- The macro, built just before each click (PreClick runs out of combat only, where
+-- attributes can change). Marking is protected, so it's done in the macro with /tm:
+--   /cleartarget first, so an out-of-range NPC leaves no target and /tm marks nothing
+--     (instead of marking whatever was targeted before);
+--   /tm toggles, so it's left out when this NPC is already the target with the diamond.
+local function macroFor(name)
+    local alreadyMarked = UnitExists("target") and UnitName("target") == name
+        and GetRaidTargetIndex("target") == DIAMOND
+    if alreadyMarked then return "/targetexact " .. name end
+    return "/cleartarget\n/targetexact " .. name .. "\n/tm " .. DIAMOND
 end
 
 local function detachAll()
@@ -41,11 +43,16 @@ local function create()
     b:RegisterForClicks("AnyUp", "AnyDown")
     b:SetAttribute("type", "macro")
     b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
-    -- The secure click targets; this post-hook marks it and sets the waypoint (on mouse up).
+    -- Rebuilt on both down and up: the macro runs on one of them, depending on the
+    -- ActionButtonUseKeyDown setting; nothing has run yet when it's rebuilt.
+    b:SetScript("PreClick", function(self)
+        if not InCombatLockdown() and self.targetName then
+            self:SetAttribute("macrotext", macroFor(self.targetName))
+        end
+    end)
+    -- The secure click targets and marks; this post-hook sets the waypoint (on mouse up).
     b:HookScript("OnClick", function(self, _, down)
-        if down then return end
-        if self.targetName then mark(self.targetName) end
-        if self.onClick then self.onClick() end
+        if not down and self.onClick then self.onClick() end
     end)
     W.Tooltip(b, function(self) return self.tooltip end)
     b:Hide()
@@ -72,7 +79,7 @@ function TargetButtons.Attach(line, name, onClick, tooltip)
     b:ClearAllPoints()
     b:SetAllPoints(line)
     b:SetFrameLevel(line:GetFrameLevel() + 5)
-    b:SetAttribute("macrotext", "/targetexact " .. name)
+    b:SetAttribute("macrotext", macroFor(name))
     b.onClick, b.tooltip, b.targetName = onClick, tooltip, name
     b:Show()
     return true
