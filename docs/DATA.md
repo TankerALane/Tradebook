@@ -21,3 +21,18 @@ Tradebook ships two generated data files. Never edit them by hand; re-run the sc
 3. Run the tests, check `git diff`, commit.
 
 LibProfessionDB's Forever sources are borrowed from classic and flagged unconfirmed; Tradebook says so in the recipe details. Its skill-up thresholds are not used (they were wrong for ~400 recipes).
+
+## Profession trainers (seen in game, Forever 1.60.1, Undercity, 2026-11-13)
+
+Read from the trainer windows by Core/Trainers.lua (all filters on). Costs shown were 10% lower
+than base (reputation discount): base prices are Journeyman 5s, Expert 50s, Artisan 5g.
+
+| Trainer | Profession | Ranks taught | Notes |
+|---|---|---|---|
+| Lavinia Crowe (4616), "Expert Enchanter" | Enchanting | Apprentice, Journeyman (level 10) | No Expert, despite the title; recipes up to 150 |
+| Malcomb Wynn (11067) | Enchanting | Apprentice | Recipes up to 70 |
+| Eunice Burch (4552) | Cooking | Apprentice, Journeyman | No Expert (book) or Artisan; no level requirement |
+| Martha Alliestar (4614) | Herbalism | Apprentice, Journeyman, Expert, Artisan | No level requirement |
+
+Service names are "<Rank> <profession>" ("Journeyman Enchanting", "Journeyman Cook"); the game
+flags only Apprentice as a profession service. NPC titles don't say which ranks a trainer teaches.

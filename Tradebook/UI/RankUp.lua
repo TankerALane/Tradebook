@@ -198,7 +198,7 @@ function RankUp.Refresh()
         pane:Add({ indent = 1, text = text, right = right })
     end
     -- Cost: the trainer's fee, or the book's price. Gold is checked for the character you're on.
-    local cost, costNote = nextRank.cost, not ns.RankUps.costConfirmed and L.RANKUP_COST_CLASSIC or nil
+    local cost, costNote = nextRank.cost, L.RANKUP_COST_BASE
     -- A trainer's window was read for this rank: its real cost.
     local seen = not nextRank.book and not nextRank.quest and ns.Trainers.RankInfo(skill, nextRank.rank)
     if seen and seen.cost then cost, costNote = seen.cost, nil end

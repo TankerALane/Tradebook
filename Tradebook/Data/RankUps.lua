@@ -3,7 +3,8 @@
 --
 -- Ranks: you can train the next rank 25 points before your cap (50 for Journeyman, 125 for
 -- Expert, 200 for Artisan). Character levels confirmed in game (Forever 1.60.1): Apprentice
--- none, Journeyman 10, Expert 20, Artisan 35, the same for every profession.
+-- none, Journeyman 10, Expert 20, Artisan 35, for the crafting professions. Gathering and
+-- secondary professions have no level requirement (trainer windows show level 0).
 --
 -- Most ranks come from a trainer. The exceptions (from classic, checked against Forever's
 -- item data where a book is involved; see docs/DATA.md):
@@ -16,14 +17,14 @@ local RankUps = {}
 ns.RankUps = RankUps
 
 -- cap -> the rank trained next, the skill it can be trained at, and the character level.
--- cost: what the trainer charges, in copper. Trainer prices live on the server, so these are
--- the classic prices (5s, 1g, 5g) until confirmed in game (costConfirmed).
+-- cost: the trainer's base price in copper (5s, 50s, 5g), seen in game; reputation discounts
+-- lower it (Core/Trainers.lua keeps what a trainer actually charged you).
 RankUps.byCap = {
     [75] = { rank = "Journeyman", skill = 50, level = 10, cap = 150, cost = 500 },
-    [150] = { rank = "Expert", skill = 125, level = 20, cap = 225, cost = 10000 },
+    [150] = { rank = "Expert", skill = 125, level = 20, cap = 225, cost = 5000 },
     [225] = { rank = "Artisan", skill = 200, level = 35, cap = 300, cost = 50000 },
 }
-RankUps.costConfirmed = false
+RankUps.costConfirmed = true
 
 -- Trainers that teach a rank also teach recipes needing at least this much skill
 -- (used to pick them from the recipe source data: an Apprentice-only trainer teaches
@@ -51,7 +52,10 @@ RankUps.special = {
 function RankUps.Next(skillLine, prof)
     local step = prof and RankUps.byCap[prof.max]
     if not step then return nil end
-    local out = { rank = step.rank, skill = step.skill, level = step.level, cap = step.cap, cost = step.cost }
+    local def = ns.Professions and ns.Professions.Get(skillLine)
+    local crafting = def and def.primary and not def.gathering
+    local out = { rank = step.rank, skill = step.skill, level = crafting and step.level or nil, cap = step.cap,
+        cost = step.cost }
     local special = RankUps.special[skillLine] and RankUps.special[skillLine][step.rank]
     for k, v in pairs(special or {}) do out[k] = v end
     -- A book or quest replaces the trainer, so there is no training fee.
@@ -69,10 +73,8 @@ end
 -- Requirement checks for display: { { text-key, need, have, ok } }.
 -- level: the character's level (nil when unknown).
 function RankUps.Requirements(nextRank, prof, level)
-    local list = {
-        { key = "skill", need = nextRank.skill, have = prof and prof.rank },
-        { key = "level", need = nextRank.level, have = level },
-    }
+    local list = { { key = "skill", need = nextRank.skill, have = prof and prof.rank } }
+    if nextRank.level then list[2] = { key = "level", need = nextRank.level, have = level } end
     for _, r in ipairs(list) do r.ok = r.have ~= nil and r.have >= r.need end
     return list
 end

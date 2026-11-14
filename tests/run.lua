@@ -578,6 +578,9 @@ test("rank-up button shows 25 points before the cap", function()
     eq(select(2, R.Ready(197, { rank = 200, max = 225 })).level, 35)
     eq(R.Ready(197, { rank = 210, max = 300 }), false, "nothing after Artisan")
     eq(R.Ready(197, nil), false)
+    eq(R.Next(185, { max = 75 }).level, nil, "Cooking: no level requirement")
+    eq(R.Next(182, { max = 150 }).level, nil, "Herbalism: no level requirement")
+    eq(R.Next(197, { max = 150 }).cost, 5000, "Expert base price 50s")
 end)
 
 test("rank-up routes: books and quests for the secondary professions", function()
@@ -625,11 +628,23 @@ end)
 
 test("trainer services: rank and profession from the trainer window", function()
     local T = ns.Trainers
-    eq(T.ParseRank("Cooking", "Artisan"), "Artisan")
-    eq(T.ParseRank("Journeyman Cook", ""), "Journeyman")
-    eq(T.ParseRank("Expert Cookbook", nil), "Expert")
-    eq(T.ParseRank("Cooking", "Mastery"), nil, "whole words only")
-    eq(T.ParseRank("Roasted Boar Meat", ""), nil)
+    -- Service names as Forever's trainers list them (Undercity, 1.60.1).
+    eq(T.ParseRank("Journeyman Enchanting"), "Journeyman")
+    eq(T.ParseRank("Expert Herbalism"), "Expert")
+    eq(T.ParseRank("Journeyman Cook"), "Journeyman")
+    eq(T.ParseRank("Enchant Chest - Minor Stats"), nil)
+    eq(T.ParseRank("Mastery"), nil)
+    local ranks = T.RanksFromServices({
+        "Apprentice Herbalism||available|0| 0|9|prof",
+        "Journeyman Herbalism||unavailable|0|Herbalism 50|450|",
+        "Expert Herbalism||unavailable|0|Herbalism 125|4500|",
+        "Artisan Herbalism||unavailable|0|Herbalism 200|45000|",
+        "Incense Candle|Tier 1|unavailable|0|Herbalism 20|90|",
+    })
+    eq(ranks.Expert.cost, 4500)
+    eq(ranks.Artisan.skill, 200)
+    eq(ranks.Journeyman.level, 0)
+    eq(ranks["Incense Candle"], nil)
     eq(T.SkillLineFor("Cooking"), 185)
     eq(T.SkillLineFor("First Aid"), 129)
     eq(T.SkillLineFor("Swords"), nil)

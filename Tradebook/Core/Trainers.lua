@@ -16,15 +16,28 @@ ns.Trainers = Trainers
 
 local RANK_WORDS = { "Apprentice", "Journeyman", "Expert", "Artisan", "Master" }
 
--- PURE. The rank a trainer service teaches ("Journeyman" ...) from its name or subtext,
--- or nil. Matches whole words in either text ("Artisan Cooking", "Cooking (Artisan)").
-function Trainers.ParseRank(name, subText)
-    for _, text in ipairs({ subText or "", name or "" }) do
-        for _, word in ipairs(RANK_WORDS) do
-            if text:find("%f[%a]" .. word .. "%f[%A]") then return word end
-        end
+-- PURE. The rank a trainer service teaches, or nil. Forever names them "<Rank> <profession>"
+-- ("Journeyman Enchanting", "Expert Herbalism", "Journeyman Cook"); the game only flags
+-- Apprentice as a profession service, so the name is what counts.
+function Trainers.ParseRank(name)
+    for _, word in ipairs(RANK_WORDS) do
+        if (name or ""):find("^" .. word .. " %a") then return word end
     end
     return nil
+end
+
+-- PURE. Rebuild a trainer's ranks from its saved raw service lines
+-- ("name|subText|type|level|skill rank|cost|prof").
+function Trainers.RanksFromServices(services)
+    local ranks = {}
+    for _, line in ipairs(services or {}) do
+        local name, _, _, level, skill, cost = line:match("^([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)")
+        local rank = name and Trainers.ParseRank(name)
+        if rank then
+            ranks[rank] = { level = tonumber(level), skill = tonumber(skill:match("(%d+)%s*$")), cost = tonumber(cost) }
+        end
+    end
+    return ranks
 end
 
 -- PURE. Skill line ID for a profession name as the trainer shows it, or nil.
@@ -64,12 +77,12 @@ local function read()
         if name then
             local skillName, skillRank = Compat.Call("GetTrainerServiceSkillReq", i)
             local cost, isProfession = Compat.Call("GetTrainerServiceCost", i)
+            local rank = Trainers.ParseRank(name)
             local line = Compat.Call("GetTrainerServiceSkillLine", i)
             entry.skill = entry.skill or Trainers.SkillLineFor(line)
             entry.services[#entry.services + 1] = table.concat({ tostring(name), tostring(subText or ""),
                 tostring(serviceType or ""), tostring(reqLevel or ""), tostring(skillName or "") .. " "
                 .. tostring(skillRank or ""), tostring(cost or ""), isProfession and "prof" or "" }, "|")
-            local rank = isProfession and Trainers.ParseRank(name, subText)
             if rank then
                 entry.ranks[rank] = { level = reqLevel, skill = skillRank, cost = cost }
             end
@@ -106,5 +119,9 @@ function Trainers.RankInfo(skillLine, rank)
 end
 
 function Trainers.Start()
+    -- Trainers read by an earlier version: rebuild their ranks from the saved services.
+    for _, t in pairs(ns.db.trainers or {}) do
+        if t.services then t.ranks = Trainers.RanksFromServices(t.services) end
+    end
     ns.On("TRAINER_SHOW", function() C_Timer.After(0.2, read) end)
 end
