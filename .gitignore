@@ -17,3 +17,6 @@ luacov.*.out
 
 # Local copies of embedded libs (releases use .pkgmeta externals)
 Tradebook/Libs/
+
+# Cropped screenshots from /tb shots (kept locally; upload the final ones to CurseForge)
+assets/screenshots/
