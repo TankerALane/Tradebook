@@ -19,6 +19,7 @@ function Fake.On()
         ns.Scanner.CacheRecipeInto(target, id, skillLineID)
     end)
     ns.db, ns.char, ns.charKey, ns.fake = db, db.characters[key], key, true
+    ns.fakeOpen = 197 -- Tailoring counts as the open profession
     ns.Recipes.Invalidate()
     if ns.UI.SetFakeBanner then ns.UI.SetFakeBanner(true) end
     if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end -- settings were swapped (gathering tabs)
@@ -29,7 +30,7 @@ end
 function Fake.Off()
     if not ns.fake then return end
     ns.db, ns.char, ns.charKey = ns.real.db, ns.real.char, ns.real.key
-    ns.real, ns.fake = nil, nil
+    ns.real, ns.fake, ns.fakeOpen = nil, nil, nil
     ns.Recipes.Invalidate()
     if ns.UI.SetFakeBanner then ns.UI.SetFakeBanner(false) end
     if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end

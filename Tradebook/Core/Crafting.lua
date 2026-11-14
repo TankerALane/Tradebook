@@ -17,8 +17,14 @@ function Crafting.State(recipeID)
     if ns.fake then
         -- Made-up account (screenshots): look like the real thing from the fake bags; the
         -- Craft call itself does nothing (Crafting.Craft returns early).
+        -- One profession counts as open (ns.fakeOpen), like a real character, so other
+        -- professions show "Open <profession>".
         local mine = recipe and ns.char and ns.char.professions[recipe.s]
         if not (mine and mine.recipes[recipeID]) then return "notlearned", 0, L.CRAFT_NOT_LEARNED end
+        if recipe.s ~= ns.fakeOpen then
+            local def = ns.Professions.Get(recipe.s)
+            return "closed", 0, L.CRAFT_NEED_OPEN:format(def and (L[def.name] or def.name) or "?")
+        end
         local _, possible = ns.Reagents.Shortage(ns.db, ns.char, recipe, 1)
         if possible > 0 then return "ok", possible end
         return "missing", 0, L.CRAFT_MISSING
@@ -55,7 +61,13 @@ end
 
 -- Open one of the current character's professions. Must be called from a click.
 function Crafting.OpenProfession(skillLineID)
-    if ns.fake then return false end
+    if ns.fake then
+        -- Made-up account: "open" it by remembering it, so the buttons switch to Craft.
+        if not (ns.char and ns.char.professions[skillLineID]) then return false end
+        ns.fakeOpen = skillLineID
+        ns.UI.Refresh()
+        return true
+    end
     if InCombatLockdown() then return false end
     if not (ns.char and ns.char.professions[skillLineID]) then return false end
     local open = ns.Scanner.OpenProfession()

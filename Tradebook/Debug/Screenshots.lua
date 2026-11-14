@@ -87,7 +87,10 @@ Shots.PLAN = {
         profession(LEATHERWORKING, { expand = true })() -- only Thornick has it: shown read-only
     end },
     { name = "characters", run = function() ns.UI.ShowCharacters() end },
-    { name = "camp", run = function() ns.UI.SelectTab("camp") end },
+    { name = "camp", run = function()
+        ns.fakeOpen = TAILORING -- Tailoring open: its camp recipes show Craft, Enchanting shows Open
+        ns.UI.SelectTab("camp")
+    end },
     { name = "who-can-craft", run = function() ns.UI.GlobalSearch("bolt") end },
     { name = "friends-guide", run = function()
         ns.UI.GlobalSearch("")
