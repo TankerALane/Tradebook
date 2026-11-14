@@ -100,17 +100,21 @@ function Prices.Money(copper)
     return (copper < 0 and "-" or "") .. text
 end
 
--- Tooltip lines for one material: auction price (with age) and vendor price.
+-- Tooltip lines for one material: a "Purchase from:" header with the auction price (and its
+-- age) and vendor price indented under it, so they read as buying prices (the item's own
+-- tooltip shows what it sells to a vendor for).
+local INDENT = "    "
 function Prices.TooltipLines(itemID)
     if not api() then return {} end
     local p = Prices.Get(itemID)
     local lines = {}
     if p.auction then
         local age = p.age and p.age > 0 and (" " .. L.PRICE_AGE:format(p.age)) or ""
-        lines[#lines + 1] = L.PRICE_AUCTION:format(Prices.Money(p.auction)) .. age
+        lines[#lines + 1] = INDENT .. L.PRICE_AUCTION:format(Prices.Money(p.auction)) .. age
     end
-    if p.vendor then lines[#lines + 1] = L.PRICE_VENDOR:format(Prices.Money(p.vendor)) end
-    if #lines == 0 then lines[1] = L.PRICE_NONE end
+    if p.vendor then lines[#lines + 1] = INDENT .. L.PRICE_VENDOR:format(Prices.Money(p.vendor)) end
+    if #lines == 0 then return { L.PRICE_NONE } end
+    table.insert(lines, 1, ns.W.ColorText(ns.W.GOLD, L.PRICE_PURCHASE_FROM))
     return lines
 end
 

@@ -102,6 +102,7 @@ L.SHOPPING_PINNED = "Shopping list (pinned)"
 L.SHOPPING_EMPTY = "You have everything you need."
 
 -- Prices (Auctionator)
+L.PRICE_PURCHASE_FROM = "Purchase from:"
 L.PRICE_AUCTION = "Auction: %s"
 L.PRICE_VENDOR = "Vendor: %s"
 L.PRICE_AGE = "(%d |4day:days; old)"

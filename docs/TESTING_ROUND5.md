@@ -8,7 +8,7 @@ Auctionator prices, plus the features added since round 4. Tick `[X]` and add no
 Before you start, scan the auction house once with Auctionator (Auctionator's "Full Scan", or search for a few materials), and open a vendor that sells thread or vials so Auctionator records its prices.
 
 - [ ] `/tb debug` shows `Auctionator API v1 found`. Turn debug off again.
-- [ ] Hover a **material** in recipe details: the tooltip shows **Auction: …** (with "(N days old)" when the price is old) and/or **Vendor: …**. A material with no price says "No price yet…".
+- [ ] Hover a **material's name** in recipe details: the tooltip has a gold **Purchase from:** line with **Auction: …** (with "(N days old)" when the price is old) and/or **Vendor: …** indented under it. A material with no price says "No price yet…". Hovering the **icon** still shows the item's own tooltip (its sell price).
 - [ ] Recipe details have a **Cost** section under Materials: **Cost to craft** (the materials at their cheapest price, vendor or auction).
 - [ ] Changing the **quantity** next to Craft changes the cost.
 - [ ] If the result has an auction price: **Sells for (after the auction house cut)** and **Profit** (green, or red for a loss). [Do the numbers look right?]
