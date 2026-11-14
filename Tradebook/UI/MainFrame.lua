@@ -51,6 +51,7 @@ function UI.Refresh()
     local view = UI.CurrentView()
     if view and view.Refresh then view:Refresh() end
     ns.RankUp.Refresh()
+    ns.PlannerUI.Refresh()
 end
 
 ---------------------------------------------------------------------------

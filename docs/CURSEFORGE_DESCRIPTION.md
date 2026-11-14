@@ -15,6 +15,7 @@ A profession companion for **World of Warcraft: Forever**: a better Professions 
 - **Recipe list** with search, filters (learned; not learned — learnable now, from a trainer, from a recipe, nearest first; have materials; gives skill-ups by colour), and **Starred** and **Pinned** sections.
 - **Recipe details**: result tooltip, materials with bag and bank counts (and which of your other characters have them), a tree of materials you can craft, skill-up ranges ("orange until 125"), and where to learn recipes you don't know yet.
 - **Specializations**: Gnomish/Goblin Engineering and Dragonscale/Elemental/Tribal Leatherworking, with their quests and requirements.
+- **Leveling plan**: the cheapest way to reach your skill cap, step by step, with the materials, the cost (Auctionator) and a shopping list.
 - **Train the next rank**: a button in the skill bar when you can train Journeyman, Expert or Artisan, with the requirements and where to train it (trainers, books or quests).
 - **Browse any profession**, even one none of your characters have: every recipe, its materials and their cost.
 - **Could learn it**: for recipes none of your characters know, which of them could learn it and how far they are.

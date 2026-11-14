@@ -44,6 +44,7 @@ Core\Takeover.lua
 Core\Questie.lua
 Core\Prices.lua
 Core\Trainers.lua
+Core\Planner.lua
 Core\Waypoints.lua
 
 # UI
@@ -60,6 +61,7 @@ UI\CampView.lua
 UI\LegacyView.lua
 UI\Shopping.lua
 UI\RankUp.lua
+UI\Planner.lua
 UI\Settings.lua
 
 # Screenshots (made-up data, /tb fake and /tb shots)

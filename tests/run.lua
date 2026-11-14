@@ -22,6 +22,7 @@ local PURE_FILES = {
     "Tradebook/Core/Locations.lua",
     "Tradebook/Core/Prices.lua",
     "Tradebook/Core/Trainers.lua",
+    "Tradebook/Core/Planner.lua",
     "Tradebook/Debug/FakeData.lua",
 }
 
@@ -683,6 +684,67 @@ test("specializations", function()
     eq(S.Spells()[20222], 202)
     eq(S.Chosen({ specs = { [202] = 20222 } }, 202).name, "Goblin Engineering")
     eq(S.Chosen({ specs = {} }, 202), nil)
+end)
+
+---------------------------------------------------------------------------
+-- leveling planner
+---------------------------------------------------------------------------
+
+test("planner: skill-up chance", function()
+    local P = ns.Planner
+    local t = { 100, 110, 120 }
+    eq(P.Chance(t, 90), 1, "orange")
+    eq(P.Chance(t, 100), 1, "yellow starts: (120-100)/(120-100)")
+    eq(P.Chance(t, 110), 0.5)
+    eq(P.Chance(t, 120), 0, "grey")
+    eq(P.Chance(nil, 100), 0)
+end)
+
+test("planner: cheapest recipe per point, merged steps, materials", function()
+    -- A: cheap but grey at 105. B: dearer, orange until 110, grey at 130.
+    local recipes = {
+        A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
+        B = { t = { 110, 120, 130 }, r = { { itemID = 2, count = 2 } } },
+    }
+    local prices = { [1] = 10, [2] = 30 }
+    local plan = ns.Planner.Plan({
+        rank = 100, target = 110, recipes = { "A", "B" },
+        thresholds = function(id) return recipes[id].t end,
+        reagents = function(id) return recipes[id].r end,
+        price = function(item) return prices[item] end,
+        inventory = { [2] = 4 }, -- two crafts of B are free
+    })
+    eq(plan.reached, 110)
+    eq(plan.steps[1].recipeID, "B", "owned materials: two free crafts of B first")
+    eq(plan.steps[1].from, 100)
+    eq(plan.steps[2].recipeID, "A", "then the cheap one while it still gives points")
+    eq(plan.steps[#plan.steps].recipeID, "B")
+    eq(plan.steps[#plan.steps].to, 110)
+    assert(plan.materials[2].need >= 4, "B's materials counted")
+    eq(plan.materials[2].have, 4)
+end)
+
+test("planner: stops when nothing gives skill-ups; trainer recipes wait for their skill", function()
+    local plan = ns.Planner.Plan({
+        rank = 100, target = 120, recipes = { 1, 2 },
+        thresholds = function(id) return id == 1 and { 90, 95, 105 } or { 110, 115, 125 } end,
+        reagents = function() return { { itemID = 9, count = 1 } } end,
+        price = function() return 5 end,
+        learnAt = function(id) return id == 2 and 115 or nil end,
+    })
+    eq(plan.reached, 105, "recipe 2 can't be learned until 115")
+    eq(#plan.steps, 1)
+end)
+
+test("planner: unpriced recipes only when nothing priced works", function()
+    local plan = ns.Planner.Plan({
+        rank = 50, target = 52, recipes = { 1, 2 },
+        thresholds = function() return { 60, 70, 80 } end,
+        reagents = function(id) return { { itemID = id, count = 1 } } end,
+        price = function(item) return item == 2 and 100 or nil end,
+    })
+    eq(plan.steps[1].recipeID, 2, "priced beats unpriced")
+    eq(plan.unpriced, false)
 end)
 
 ---------------------------------------------------------------------------

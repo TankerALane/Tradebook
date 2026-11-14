@@ -211,6 +211,15 @@ local function addSpecs(pane, skill, c, isMe, profName)
     pane:Gap()
 end
 
+-- "Leveling plan" line: opens the planner (UI/Planner.lua) when below the cap.
+local function addPlanLine(pane, c, skill, prof)
+    if not (prof and prof.rank and prof.max and prof.rank < prof.max) then return end
+    pane:Add({ text = L.PLAN_OPEN:format(prof.max), font = "GameFontNormal", color = W.GOLD,
+        onClick = function() ns.PlannerUI.Show(c.key, skill) end,
+        tooltip = { L.PLAN_OPEN:format(prof.max), L.PLAN_OPEN_TIP } })
+    pane:Gap()
+end
+
 function RankUp.Refresh()
     if not (popup and popup:IsShown() and popup.charKey) then return end
     local c = ns.db.characters[popup.charKey]
@@ -227,6 +236,7 @@ function RankUp.Refresh()
         pane:Add({ text = prof and prof.max and prof.max >= 300 and L.RANKUP_ALL_DONE:format(W.ClassName(c), profName)
             or L.RANKUP_NOTHING, color = W.GREY })
         pane:Gap()
+        addPlanLine(pane, c, skill, prof)
         addSpecs(pane, skill, c, isMe, profName)
         pane:Finish()
         return
@@ -237,6 +247,7 @@ function RankUp.Refresh()
     local who = W.ClassName(c)
     pane:Add({ text = L.RANKUP_RAISES:format(who, profName, nextRank.cap) })
     pane:Gap()
+    addPlanLine(pane, c, skill, prof)
 
     -- Requirements.
     pane:Add({ text = L.RANKUP_REQUIREMENTS, font = "GameFontNormal", color = W.GOLD })

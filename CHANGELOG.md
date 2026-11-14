@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Leveling plan**: the cheapest way to raise a profession to its cap. Open it from the rank window (click the skill bar, then "Leveling plan to N"). It lists steps ("131-137 craft about 9 x Gray Woolen Shirt"), the materials (need / have / buy), the total cost from Auctionator prices, and a shopping list you can send to Auctionator. Uses materials in your bags and bank first, and can include trainer recipes you haven't learned yet.
+
 ## v0.2.1-beta
 
 - **Browse professions you don't have**: recipes are grouped by the rank they need (Apprentice 1-74, Journeyman 75-149, Expert 150-224, Artisan 225-300) instead of one "Other" list (the game gives no category names for a profession that isn't open).
