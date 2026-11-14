@@ -65,6 +65,17 @@ Judgement calls:
   (QuestieDB only, zone matches on Wowhead) and Gelvas Grimegate for Steam Tonk Controller
   (web only). Andorov's Obsidian plans have only a Wowhead zone listing, so no vendor is shown.
 
+**In game (Core/Merchants.lua):** every time a vendor window opens, Tradebook reads which
+recipe items it sells (`GetMerchantItemID`, `C_MerchantFrame.GetItemInfo().numAvailable`;
+-1 = unlimited, otherwise limited supply) and saves it in `TradebookDB.vendors`. Recipe items
+are recognised with `Data/RecipeItems.lua` (generated weekly by `update_game_data.py` from
+`ItemEffect` / `ItemXItemEffect` / `SpellEffect`). A vendor seen selling a recipe counts as
+confirmed and is added if the data doesn't have it; limited stock is shown as "limited supply".
+A sold-out limited recipe may be missing from the window, so a vendor whose window didn't list
+it is never removed, only marked "not in stock when you visited". `/tb debug` lists recipes
+seen at vendors the data doesn't have; fold those (and `SEEN_NOT_SOLD` cases) back into the
+research file from the SavedVariables (`WTF/Account/<account>/SavedVariables/Tradebook.lua`).
+
 To re-check after a patch: run `qdb_parse.py` on the new QuestieDB, `check.py`, redo the web
 pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors.py`.
 

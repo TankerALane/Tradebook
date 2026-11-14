@@ -579,7 +579,13 @@ function Pane:Refresh()
             self:Add({ indent = 1, text = L.LEARN_FROM, color = W.GOLD })
             for _, e in ipairs(near.list) do
                 local kind = e.kind == "trainer" and L.KIND_TRAINER or L.KIND_VENDOR
-                if e.unconfirmed then kind = L.KIND_VENDOR_UNCONFIRMED end
+                if e.missing then
+                    kind = L.KIND_VENDOR_NOT_IN_STOCK
+                elseif e.unconfirmed then
+                    kind = L.KIND_VENDOR_UNCONFIRMED
+                elseif e.limited then
+                    kind = L.KIND_VENDOR_LIMITED
+                end
                 self:Add({ indent = 2, text = e.name .. "  " .. W.ColorText(W.GREY, "(" .. kind .. ")"),
                     right = placeText(e),
                     onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,

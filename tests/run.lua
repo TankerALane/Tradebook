@@ -10,6 +10,7 @@ local PURE_FILES = {
     "Tradebook/Data/Camp.lua",
     "Tradebook/Data/SourceData.lua",
     "Tradebook/Data/RecipeVendors.lua",
+    "Tradebook/Data/RecipeItems.lua",
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
@@ -23,6 +24,7 @@ local PURE_FILES = {
     "Tradebook/Core/Locations.lua",
     "Tradebook/Core/Prices.lua",
     "Tradebook/Core/Trainers.lua",
+    "Tradebook/Core/Merchants.lua",
     "Tradebook/Core/Planner.lua",
     "Tradebook/Debug/FakeData.lua",
 }
@@ -593,6 +595,40 @@ test("Forever-checked recipe vendors replace the classic ones", function()
     local has = false
     for _, id in ipairs(conf) do if id == 12246 then has = true end end
     eq(has, true)
+end)
+
+test("vendor windows: merging visits", function()
+    local M = ns.Merchants
+    local e = M.Merge(nil, "Kithas", { [7793] = -1, [7776] = 1 }, 100)
+    eq(e.ever[7776], true)
+    eq(e.limited[7776], true, "stock 1 is limited")
+    eq(e.limited[7793], nil, "-1 is unlimited")
+    e = M.Merge(e, "Kithas", { [7793] = -1 }, 200)
+    eq(e.recipes[7776], nil, "sold out on the second visit")
+    eq(e.ever[7776], true, "still seen selling it once")
+    eq(e.limited[7776], true)
+    eq(e.seenAt, 200)
+end)
+
+test("vendor windows: seen vendors confirm, missing ones are noted", function()
+    local S = ns.Sources
+    -- 10 confirmed, 20 unconfirmed but seen selling it, 30 seen selling it and not in the data,
+    -- 40 unconfirmed and visited without it (never seen selling it).
+    local seen = { [20] = { ever = true }, [30] = { ever = true, limited = true } }
+    local visits = { [20] = { sells = true, ever = true }, [30] = { sells = true, ever = true, limited = true },
+        [40] = { sells = false, ever = false } }
+    local conf, unconf, notes = S.MergeSeen({ 10 }, { 20, 40 }, seen, function(npc) return visits[npc] end)
+    eq(table.concat(conf, ","), "10,20,30")
+    eq(table.concat(unconf, ","), "40")
+    eq(notes[30].limited, true)
+    eq(notes[40].missing, true)
+    eq(notes[10].missing, false, "never visited")
+end)
+
+test("recipe items map to the recipe they teach", function()
+    eq(ns.RecipeItems[2598], 2389, "Pattern: Red Linen Robe")
+    eq(ns.RecipeItems[6346], 7776, "Formula: Enchant Chest - Lesser Intellect")
+    eq(ns.RecipeItems[16072], 3413, "Expert Cookbook teaches Expert Cooking")
 end)
 
 ---------------------------------------------------------------------------

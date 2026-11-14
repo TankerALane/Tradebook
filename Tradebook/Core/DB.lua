@@ -43,6 +43,7 @@ DB.DEFAULTS = {
     },
     characters = {},
     trainers = {}, -- [npcID] = what a trainer teaches, read from its window (Core/Trainers.lua)
+    vendors = {}, -- [npcID] = recipes a vendor sells, read from its window (Core/Merchants.lua)
     account = { bank = {} },
     recipes = {},
     categories = {},

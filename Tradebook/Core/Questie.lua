@@ -211,15 +211,19 @@ end
 -- "trainer" or "vendor".
 function Questie.RecipeSources(recipeID)
     if not Questie.Available() then return nil end
-    local s = ns.Sources.Raw(recipeID)
-    local confirmed, unconfirmed = ns.Sources.Vendors(recipeID)
-    if not s or not (s.t or #confirmed > 0 or #unconfirmed > 0) then return nil end
+    local s = ns.Sources.Raw(recipeID) or {}
+    local confirmed, unconfirmed, notes = ns.Sources.Vendors(recipeID)
+    if not (s.t or #confirmed > 0 or #unconfirmed > 0) then return nil end
     local faction = Compat.Call("UnitFactionGroup", "player")
     local all = nearestOf(s.t, faction, "trainer")
     for _, e in ipairs(nearestOf(confirmed, faction, "vendor")) do all[#all + 1] = e end
     for _, e in ipairs(nearestOf(unconfirmed, faction, "vendor")) do
         e.unconfirmed = true
         all[#all + 1] = e
+    end
+    for _, e in ipairs(all) do
+        local n = e.kind == "vendor" and notes[e.id]
+        if n then e.limited, e.missing = n.limited, n.missing end
     end
     table.sort(all, function(a, b)
         if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end

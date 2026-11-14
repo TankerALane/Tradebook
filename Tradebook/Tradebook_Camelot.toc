@@ -23,6 +23,7 @@ Data\Professions.lua
 Data\Camp.lua
 Data\SourceData.lua
 Data\RecipeVendors.lua
+Data\RecipeItems.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua
@@ -46,6 +47,7 @@ Core\Takeover.lua
 Core\Questie.lua
 Core\Prices.lua
 Core\Trainers.lua
+Core\Merchants.lua
 Core\Planner.lua
 Core\Waypoints.lua
 

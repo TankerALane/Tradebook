@@ -39,6 +39,8 @@ SlashCmdList.TRADEBOOK = function(msg)
                 "characters", ns.util.Count(ns.db.characters), "recipes", ns.util.Count(ns.db.recipes),
                 "open", ns.Scanner.OpenProfession() and ns.Scanner.OpenProfession().professionName or "none",
                 ns.Takeover.DebugState(), ns.Questie.DebugState(), ns.Prices.DebugState())
+            -- Vendor windows read, and recipes seen sold by a vendor the data doesn't list.
+            for _, line in ipairs(ns.Merchants.DebugLines()) do ns.Debug(line) end
         end
     else
         ns.Print(L.HELP_HEADER)

@@ -14,12 +14,15 @@ local MAX_NAMES = 3
 
 local function npcName(id)
     return (ns.RecipeVendorNames and ns.RecipeVendorNames[id]) or (ns.SourceNames and ns.SourceNames[id])
+        or (ns.Merchants and ns.Merchants.Name(id))
 end
 
-local function npcNames(ids, total)
+-- decorate(id, name) -> name with a note, optional.
+local function npcNames(ids, total, decorate)
     local names = {}
     for _, id in ipairs(ids or {}) do
         local n = npcName(id)
+        if n and decorate then n = decorate(id, n) end
         if n and #names < MAX_NAMES then names[#names + 1] = n end
     end
     local count = total or #(ids or {})
@@ -53,12 +56,49 @@ function Sources.Raw(recipeID)
     return out
 end
 
--- Vendors that sell a recipe: confirmed { npcID }, unconfirmed { npcID } (either may be empty).
-function Sources.Vendors(recipeID)
+-- PURE. Combine the bundled vendors with what you've seen in vendor windows.
+-- seen: { [npcID] = { ever, limited } } of vendors seen selling it (Merchants.ForRecipe);
+-- visit(npcID) -> { sells, ever, limited } or nil (never visited). A vendor seen selling it is
+-- confirmed; one visited whose window didn't list it (and never did) is kept but noted, since
+-- a limited recipe that's sold out isn't listed until it restocks.
+-- Returns confirmed, unconfirmed, notes { [npcID] = { limited = bool, missing = bool } }.
+function Sources.MergeSeen(confirmed, unconfirmed, seen, visit)
+    local conf, unconf, notes = {}, {}, {}
+    for _, npc in ipairs(confirmed) do conf[#conf + 1] = npc end
+    for _, npc in ipairs(unconfirmed) do
+        if seen and seen[npc] then conf[#conf + 1] = npc else unconf[#unconf + 1] = npc end
+    end
+    local listed = {}
+    for _, npc in ipairs(conf) do listed[npc] = true end
+    local extra = {}
+    for npc in pairs(seen or {}) do if not listed[npc] then extra[#extra + 1] = npc end end
+    table.sort(extra)
+    for _, npc in ipairs(extra) do conf[#conf + 1] = npc end
+    for _, list in ipairs({ conf, unconf }) do
+        for _, npc in ipairs(list) do
+            local v = visit and visit(npc)
+            local s = seen and seen[npc]
+            notes[npc] = { limited = (s and s.limited) or (v and v.limited) or false,
+                missing = v ~= nil and not v.sells and not v.ever }
+        end
+    end
+    return conf, unconf, notes
+end
+
+-- Vendors that sell a recipe: confirmed { npcID }, unconfirmed { npcID } (either may be empty),
+-- and notes { [npcID] = { limited, missing } } from vendor windows you've opened. dataOnly:
+-- just the bundled data.
+function Sources.Vendors(recipeID, dataOnly)
     local s = Sources.Raw(recipeID)
-    if not s then return {}, {} end
-    if s.checked then return s.v or {}, s.u or {} end
-    return {}, s.v or {} -- not checked for Forever: classic data, unconfirmed
+    local conf, unconf = {}, {}
+    if s and s.checked then
+        conf, unconf = s.v or {}, s.u or {}
+    elseif s then
+        unconf = s.v or {} -- not checked for Forever: classic data, unconfirmed
+    end
+    if dataOnly or not ns.Merchants then return conf, unconf, {} end
+    return Sources.MergeSeen(conf, unconf, ns.Merchants.ForRecipe(recipeID),
+        function(npc) return ns.Merchants.Visit(npc, recipeID) end)
 end
 
 -- Source lines for the details pane: { { text, right, grey } }, or nil when unknown.
@@ -69,18 +109,29 @@ function Sources.Get(recipeID, resolve)
     if not s then return nil end
     resolve = resolve or {}
     local out = {}
-    if s.x == 1 then out[#out + 1] = { text = L.SOURCE_NOT_YET, grey = true } end
-    if s.x == 2 then out[#out + 1] = { text = L.SOURCE_DISPUTED, grey = true } end
-    if s.x == 3 then out[#out + 1] = { text = L.SOURCE_NO_VENDOR, grey = true } end
+    local conf, unconf, notes = Sources.Vendors(recipeID)
+    -- Seen selling it in a vendor window beats "not in Forever yet" / "no vendor known".
+    if #conf == 0 then
+        if s.x == 1 then out[#out + 1] = { text = L.SOURCE_NOT_YET, grey = true } end
+        if s.x == 2 then out[#out + 1] = { text = L.SOURCE_DISPUTED, grey = true } end
+        if s.x == 3 and #unconf == 0 then out[#out + 1] = { text = L.SOURCE_NO_VENDOR, grey = true } end
+    end
+    local function decorate(id, name)
+        local n = notes[id]
+        if n and n.missing then return name .. " " .. L.SOURCE_NOT_IN_STOCK end
+        if n and n.limited then return name .. " " .. L.SOURCE_LIMITED end
+        return name
+    end
     if s.a == 1 then out[#out + 1] = { text = L.SOURCE_AUTO } end
     if s.t then
         out[#out + 1] = { text = L.SOURCE_TRAINER, right = L.SOURCE_LOCATIONS:format(s.tn or #s.t) }
     end
-    if s.v then
-        out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(s.v, not s.checked and s.vn or nil) }
+    if #conf > 0 then
+        out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(conf, nil, decorate) }
     end
-    if s.u then
-        out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": " .. npcNames(s.u) }
+    if #unconf > 0 then
+        out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": "
+            .. npcNames(unconf, not s.checked and s.vn or nil, decorate) }
     end
     if s.d then out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) } end
     for _, q in ipairs(s.q or {}) do
