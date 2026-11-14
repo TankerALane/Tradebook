@@ -19,11 +19,15 @@ def load(name):
     return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
 
 base = json.load(open(os.path.join(D, "new_vendor_recipes.json"), encoding="utf-8"))
-web, extras = {}, []
+web, extras, not_in_forever = {}, [], set()
 for f in ("favor_lw_tailoring.json", "favor_other.json", "new_other_vendors.json"):
     d = load(f)
     for r in d.get("recipes", []):
         web.setdefault(r["recipeSpellID"], []).append(r)
+        # Season of Discovery / AQ-era recipe items QuestieDB still lists, with no Forever
+        # source (Wowhead Forever: "not available to players", or no item at all): skipped.
+        if r.get("likelyNotInForever"):
+            not_in_forever.add(r["recipeSpellID"])
     extras += d.get("extraRecipes", [])
 
 STANDINGS = ("Neutral", "Friendly", "Honored", "Revered", "Exalted")
@@ -35,8 +39,17 @@ def standing_of(text):
     return None
 
 out = []
+# Recipes the classic-vendor check already decided (e.g. Kithas doesn't sell Enchant Chest -
+# Lesser Intellect, seen in game) keep that decision.
+checked = {r["recipeSpellID"] for r in json.load(open(OUT, encoding="utf-8"))["recipes"] if r.get("set") != "forever-new"}
+skipped = 0
 for r in base:
     sp = r["recipeSpellID"]
+    if sp in checked:
+        continue
+    if sp in not_in_forever:
+        skipped += 1
+        continue
     checks = web.get(sp, [])
     named = {}
     for c in checks:
@@ -49,11 +62,20 @@ for r in base:
         vendors.append({"npc": v["npcID"], "name": v["name"], "zone": v.get("zone"), "faction": None,
                         "confirmed": ok, "evidence": ["questie"] + (["web"] if ok else []),
                         "sources": named.get(v["npcID"], []), "limited": False, "inClassicList": False})
+    # Vendors only the web names (QuestieDB doesn't): one source, unconfirmed.
+    have = {v["npc"] for v in vendors}
+    for c in checks:
+        for v in c.get("vendors", []):
+            if v.get("webConfirmed") and v.get("npcID") and v["npcID"] not in have:
+                have.add(v["npcID"])
+                vendors.append({"npc": v["npcID"], "name": v.get("name"), "zone": v.get("zone"), "faction": None,
+                                "confirmed": False, "evidence": ["web"], "sources": v.get("sources", []),
+                                "limited": False, "inClassicList": False})
     favor = standing = skill = None
     for c in checks:
-        cost = c.get("cost") or {}
+        cost = c.get("cost") if isinstance(c.get("cost"), dict) else {}  # text costs: other currencies
         favor = favor or cost.get("favor")
-        rep = c.get("reputation") or {}
+        rep = c.get("reputation") if isinstance(c.get("reputation"), dict) else {}
         if rep and ("Supply" in str(rep.get("faction")) or "Commerce" in str(rep.get("faction"))):
             standing = standing or standing_of(rep.get("standing"))
         skill = skill or c.get("requiredSkill")
@@ -92,5 +114,5 @@ doc["about"] = ("WoW Forever recipe vendors, checked 2026-11-13: classic list (L
                 "and others). See docs/DATA.md.")
 json.dump(doc, open(OUT, "w", encoding="utf-8", newline="\n"), indent=1, ensure_ascii=False)
 conf = sum(1 for r in out if any(v["confirmed"] for v in r["vendors"]))
-print(len(out), "new recipes,", conf, "with a confirmed vendor,",
+print(skipped, "skipped (not in Forever);", len(out), "new recipes,", conf, "with a confirmed vendor,",
       sum(1 for r in out if r["favor"]), "with a Favor cost,", sum(1 for r in out if r["campStanding"]), "need camp standing")

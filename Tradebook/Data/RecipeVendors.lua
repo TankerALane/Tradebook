@@ -80,6 +80,7 @@ ns.RecipeVendors = {
 [7257]={v={2380,4083}}, -- Fire Protection Potion
 [7258]={v={2812,2848}}, -- Frost Protection Potion
 [7259]={v={2848,5594,8157,8158}}, -- Nature Protection Potion
+[7443]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257004,257020}}, -- Enchant Chest - Minor Intellect
 [7630]={v={66,3364,3485,3522,4189}}, -- Blue Linen Vest
 [7633]={v={1250,3485,3499,3556,4168}}, -- Blue Linen Robe
 [7639]={v={843,1347,2394,3364,5944}}, -- Blue Overalls
@@ -122,6 +123,7 @@ ns.RecipeVendors = {
 [11477]={v={8177,8178}}, -- Potion of Demon Slaying
 [11479]={v={5594}}, -- Transmute: Iron to Gold
 [11480]={v={5594}}, -- Transmute: Mithril to Truesilver
+[12063]={v={253139}}, -- Stormcloth Gloves
 [12064]={v={3005,4168}}, -- Orange Martial Shirt
 [12075]={v={3364,8681}}, -- Lavender Mageweave Shirt
 [12080]={v={3364,8681}}, -- Pink Mageweave Shirt
@@ -157,6 +159,7 @@ ns.RecipeVendors = {
 [16971]={v={11278}}, -- Huge Thorium Battleaxe
 [16992]={x=3}, -- Frostguard
 [17187]={v={5594}}, -- Transmute: Arcanite
+[17553]={v={4226,4610}}, -- Superior Mana Potion
 [17554]={v={3348,5178}}, -- Elixir of Greater Defense
 [17559]={v={10856,10857,11536}}, -- Transmute: Air to Fire
 [17560]={v={9499}}, -- Transmute: Fire to Earth
@@ -182,7 +185,9 @@ ns.RecipeVendors = {
 [18405]={v={11189}}, -- Runecloth Bag
 [18406]={v={7940}}, -- Runecloth Robe
 [18409]={v={7940}}, -- Runecloth Cloak
+[18417]={v={11189}}, -- Runecloth Gloves
 [18419]={v={12022}}, -- Felcloth Pants
+[18423]={v={7940}}, -- Runecloth Boots
 [18560]={v={11189}}, -- Mooncloth
 [19048]={v={12956}}, -- Heavy Scorpid Bracers
 [19049]={v={12942,12943}}, -- Wicked Leather Gauntlets
@@ -195,10 +200,14 @@ ns.RecipeVendors = {
 [19068]={v={11557}}, -- Warbear Harness
 [19077]={v={12957}}, -- Blue Dragonscale Breastplate
 [19080]={v={11557}}, -- Warbear Woolies
+[19082]={v={12941}}, -- Runic Leather Headband
 [19084]={u={12959}}, -- Devilsaur Gauntlets
 [19085]={u={9499}}, -- Black Dragonscale Breastplate
 [19088]={v={12956}}, -- Heavy Scorpid Helm
 [19097]={d={6556,6557,6559,9477},x=3}, -- Devilsaur Leggings
+[19790]={v={5175}}, -- Thorium Grenade
+[19791]={v={5175}}, -- Thorium Widget
+[19795]={v={11185,260565}}, -- Thorium Tube
 [19814]={v={11185,260565}}, -- Masterwork Target Dummy
 [19815]={v={11185}}, -- Delicate Arcanite Converter
 [19830]={d={7437},x=3}, -- Arcanite Dragonling
@@ -228,6 +237,7 @@ ns.RecipeVendors = {
 [23067]={v={1304,5175}}, -- Blue Firework
 [23068]={v={2838,3495}}, -- Green Firework
 [23069]={v={8131,260566}}, -- EZ-Thro Dynamite II
+[23071]={v={2685}}, -- Truesilver Transformer
 [23077]={x=3}, -- Gyrofreeze Ice Reflector
 [23080]={x=3}, -- Powerful Seaforium Charge
 [23190]={v={3366,5128}}, -- Heavy Leather Ball
@@ -337,6 +347,457 @@ ns.RecipeVendors = {
 [28480]={v={15179}}, -- Sylvan Vest
 [28481]={v={15179}}, -- Sylvan Crown
 [28482]={v={15179}}, -- Sylvan Shoulders
+[1213622]={v={248199,256732},fv=240,cr=5}, -- Enchant Gloves - Holy Power
+[1213626]={v={248199,256732},fv=240,cr=5}, -- Enchant Gloves - Arcane Power
+[1219579]={v={248199,256732},fv=240,cr=5}, -- Enchant Off-Hand - Wisdom
+[1219580]={v={248199,256732},fv=240,cr=5}, -- Enchant 2H Weapon - Spellblasting
+[1219587]={v={248199,256732},fv=240,cr=5}, -- Enchant Cloak - Agility
+[1220624]={v={248199,256732},fv=240,cr=5}, -- Enchant Bracer - Greater Spellpower
+[1244436]={v={266901}}, -- Major Healing Potion
+[1248460]={v={253139}}, -- Enchant Bracer - Lesser Agility
+[1248498]={v={253139,253140}}, -- Enchant Bracer - Lesser Healing Power
+[1248607]={v={248199,256732},fv=240,cr=5}, -- Enchant 2H Weapon - Mighty Spell Power
+[1248636]={v={248199,256732},fv=240,cr=5}, -- Enchant 2H Weapon - Mighty Healing Power
+[1248640]={v={248199,256732},fv=240,cr=5}, -- Enchant Gloves - Superior Strength
+[1248645]={v={248199,256732},fv=240,cr=5}, -- Enchant Gloves - Natural Power
+[1248650]={v={248199,256732},fv=180,cr=5}, -- Brilliant Wand
+[1248661]={v={248199,256732},fv=240,cr=5}, -- Enchant Bracer - Superior Intellect
+[1248665]={v={248199,256732},fv=240,cr=5}, -- Enchant Bracer - Superior Deflection
+[1248703]={v={248199,256732},fv=45}, -- Glimmering Staff
+[1248739]={v={248199,256732},fv=45}, -- Soulstaff
+[1248745]={v={248199,256732},fv=45}, -- Orb of Mystic Insight
+[1248748]={v={248199,256732},fv=45}, -- Orb of Souls
+[1248752]={v={248199,256732},fv=45}, -- Mystic Mushroom
+[1248754]={v={248199,256732},fv=45}, -- Tenets of the Silver Hand
+[1248755]={v={248199,256732},fv=45}, -- Polished Driftwood Icon
+[1248757]={v={248199,256732},fv=45}, -- Enchant Weapon - Insight
+[1248760]={v={248199,256732},fv=45}, -- Enchant Weapon - Recovery
+[1248805]={v={248199,256732},fv=45}, -- Enchant Weapon - Revelation
+[1248974]={v={248199,256732},fv=120,cr=4}, -- Talons of Wrath
+[1249006]={v={248199,256732},fv=120,cr=4}, -- Libram of Invocation
+[1249015]={v={248199,256732},fv=120,cr=4}, -- Totem of Ancestral Protection
+[1249019]={v={248199,256732},fv=120,cr=4}, -- Enchant Necklace - Strength
+[1249057]={v={248199,256732},fv=120,cr=4}, -- Enchant Necklace - Spell Power
+[1249058]={v={248199,256732},fv=120,cr=4}, -- Enchant Necklace - Healing Power
+[1249059]={v={248199,256732},fv=120,cr=4}, -- Enchant Necklace - Agility
+[1249060]={v={248199,256732},fv=120,cr=4}, -- Enchant Necklace - Deflection
+[1249061]={v={248199,256732},fv=120,cr=4}, -- Radiant Staff
+[1249064]={v={248199,256732},fv=120,cr=4}, -- Dreamstaff
+[1249069]={v={248199,256732},fv=120,cr=4}, -- Truesilver Conduit
+[1249070]={v={248199,256732},fv=120,cr=4}, -- Twisting Essence Jar
+[1249071]={v={248199,256732},fv=120,cr=4}, -- Enchant Chest - Absorption
+[1249128]={v={248199,256732},fv=240,cr=5}, -- Idol of the Dream
+[1249152]={v={248199,256732},fv=240,cr=5}, -- Libram of Holy Alacrity
+[1249154]={v={248199,256732},fv=240,cr=5}, -- Totem of Thunder
+[1249963]={v={248198,256731},fv=30}, -- Venomous Smoothie
+[1249964]={v={248198,256731},fv=30}, -- Slimy Smoothie
+[1249965]={v={248198,256731},fv=30}, -- Mrrggl Smrrthle
+[1249966]={v={248198,256731},fv=60,cr=4}, -- Calcified Smoothie
+[1249967]={v={248198,256731},fv=60,cr=4}, -- Spicy Smoothie
+[1249968]={v={248198,256731},fv=90,cr=5}, -- Wicked Smoothie
+[1250777]={v={248196,256729},fv=180,cr=5}, -- Elixir of Cunning
+[1250778]={v={248196,256729},fv=180,cr=5}, -- Elixir of the Phalanx
+[1250780]={v={248196,256729},fv=45}, -- Lesser Cleric's Elixir
+[1250782]={v={248196,256729},fv=120,cr=4}, -- Greater Cleric's Elixir
+[1250784]={v={248196,256729},fv=120,cr=4}, -- Elixir of Greater Fortitude
+[1250785]={v={248196,256729},fv=180,cr=5}, -- Elixir of Wicked Regeneration
+[1250786]={v={248196,256729},fv=180,cr=5}, -- Elixir of the Owl
+[1250787]={v={248196,256729},fv=180,cr=5}, -- Elixir of Sages
+[1250789]={v={248196,256729},fv=45}, -- Lesser Mageblood Elixir
+[1250790]={v={248196,256729},fv=120,cr=4}, -- Greater Mageblood Elixir
+[1250791]={v={248196,256729},fv=45}, -- Lesser Arcane Elixir
+[1250792]={v={248196,256729},fv=180,cr=5}, -- Elixir of Nature Power
+[1250794]={v={248196,256729},fv=45}, -- Elixir of Lesser Spirit
+[1250796]={v={248196,256729},fv=120,cr=4}, -- Elixir of Greater Spirit
+[1250797]={v={248196,256729},fv=180,cr=5}, -- Elixir of the Whale
+[1250799]={v={248196,256729},fv=180,cr=5}, -- Elixir of Ferocity
+[1250800]={v={248196,256729},fv=240,cr=5}, -- Elixir of the Grizzly
+[1250801]={v={248196,256729},fv=45}, -- Elixir of Lesser Intellect
+[1251731]={v={248196,256729},fv=45}, -- Spellblasting Potion
+[1251732]={v={253139}}, -- Greater Spellblasting Potion
+[1251734]={v={248196,256729},fv=180,cr=5}, -- Major Spellblasting Potion
+[1251737]={v={248196,256729},fv=45}, -- Frenzy Potion
+[1251738]={v={253139}}, -- Greater Frenzy Potion
+[1251740]={v={248196,256729},fv=240,cr=5}, -- Major Frenzy Potion
+[1251743]={v={248196,256729},fv=45}, -- Mender's Potion
+[1251747]={v={248196,256729},fv=180,cr=5}, -- Major Mender's Potion
+[1251748]={v={248196,256729},fv=180,cr=5}, -- Potion of Venomous Blood
+[1251749]={v={248196,256729},fv=180,cr=5}, -- Caustic Smog Potion
+[1251751]={v={248196,256729},fv=120,cr=4}, -- Dragonfire Potion
+[1251752]={v={248196,256729},fv=180,cr=5}, -- Potion of Elemental Purging
+[1252252]={v={248197,256730},fv=30}, -- Veteran's Boots
+[1252253]={v={248197,256730},fv=30}, -- Guard's Boots
+[1252254]={v={248197,256730},fv=30}, -- Protector's Boots
+[1252255]={v={248197,256730},fv=30}, -- Acolyte's Boots
+[1252256]={v={248197,256730},fv=30}, -- Crusader's Boots
+[1252257]={v={248197,256730},fv=30}, -- Veteran's Gloves
+[1252258]={v={248197,256730},fv=30}, -- Guard's Gloves
+[1252259]={v={248197,256730},fv=30}, -- Protector's Gloves
+[1252260]={v={248197,256730},fv=30}, -- Acolyte's Gloves
+[1252261]={v={248197,256730},fv=30}, -- Crusader's Gloves
+[1252262]={v={248197,256730},fv=30}, -- Veteran's Chain Belt
+[1252263]={v={248197,256730},fv=30}, -- Guard's Chain Belt
+[1252264]={v={248197,256730},fv=30}, -- Protector's Chain Belt
+[1252265]={v={248197,256730},fv=30}, -- Acolyte's Chain Belt
+[1252266]={v={248197,256730},fv=30}, -- Crusader's Chain Belt
+[1252267]={v={248197,256730},fv=30}, -- Veteran's Silvered Chain Shirt
+[1252268]={v={248197,256730},fv=30}, -- Guard's Silvered Chain Shirt
+[1252269]={v={248197,256730},fv=30}, -- Protector's Silvered Chain Shirt
+[1252270]={v={248197,256730},fv=30}, -- Acolyte's Silvered Chain Shirt
+[1252271]={v={248197,256730},fv=30}, -- Crusader's Silvered Chain Shirt
+[1252272]={v={248197,256730},fv=30}, -- Veteran's Silvered Chain Leggings
+[1252273]={v={248197,256730},fv=30}, -- Guard's Silvered Chain Leggings
+[1252274]={v={248197,256730},fv=30}, -- Protector's Silvered Chain Leggings
+[1252275]={v={248197,256730},fv=30}, -- Acolyte's Silvered Chain Leggings
+[1252276]={v={248197,256730},fv=30}, -- Crusader's Silvered Chain Leggings
+[1252277]={v={248197,256730},fv=30}, -- Veteran's Silvered Chain Helm
+[1252278]={v={248197,256730},fv=30}, -- Guard's Silvered Chain Helm
+[1252279]={v={248197,256730},fv=30}, -- Protector's Silvered Chain Helm
+[1252280]={v={248197,256730},fv=30}, -- Acolyte's Silvered Chain Helm
+[1252281]={v={248197,256730},fv=30}, -- Crusader's Silvered Chain Helm
+[1252287]={v={253139}}, -- Hard Gold Gauntlet
+[1252310]={v={248197,256730},fv=90,cr=5}, -- Officer's Sabatons
+[1252311]={v={248197,256730},fv=90,cr=5}, -- Sentinel's Sabatons
+[1252312]={v={248197,256730},fv=90,cr=5}, -- Warder's Sabatons
+[1252313]={v={248197,256730},fv=90,cr=5}, -- Prefect's Sabatons
+[1252314]={v={248197,256730},fv=90,cr=5}, -- Justicar's Sabatons
+[1252315]={v={248197,256730},fv=60,cr=4}, -- Officer's Gauntlet
+[1252316]={v={248197,256730},fv=60,cr=4}, -- Sentinel's Gauntlet
+[1252317]={v={248197,256730},fv=60,cr=4}, -- Warder's Gauntlet
+[1252318]={v={248197,256730},fv=60,cr=4}, -- Prefect's Gauntlet
+[1252319]={v={248197,256730},fv=60,cr=4}, -- Justicar's Gauntlet
+[1252320]={v={248197,256730},fv=90,cr=5}, -- Officer's Waistguard
+[1252321]={v={248197,256730},fv=90,cr=5}, -- Sentinel's Waistguard
+[1252322]={v={248197,256730},fv=90,cr=5}, -- Warder's Waistguard
+[1252323]={v={248197,256730},fv=90,cr=5}, -- Prefect's Waistguard
+[1252324]={v={248197,256730},fv=90,cr=5}, -- Justicar's Waistguard
+[1252325]={v={248197,256730},fv=60,cr=4}, -- Officer's Pauldrons
+[1252326]={v={248197,256730},fv=60,cr=4}, -- Sentinel's Pauldrons
+[1252327]={v={248197,256730},fv=60,cr=4}, -- Warder's Pauldrons
+[1252328]={v={248197,256730},fv=60,cr=4}, -- Prefect's Pauldrons
+[1252329]={v={248197,256730},fv=60,cr=4}, -- Justicar's Pauldrons
+[1252330]={v={248197,256730},fv=90,cr=5}, -- Officer's Wristguards
+[1252331]={v={248197,256730},fv=90,cr=5}, -- Sentinel's Wristguards
+[1252332]={v={248197,256730},fv=90,cr=5}, -- Warder's Wristguards
+[1252333]={v={248197,256730},fv=90,cr=5}, -- Prefect's Wristguards
+[1252334]={v={248197,256730},fv=90,cr=5}, -- Justicar's Wristguards
+[1252344]={v={248197,256730},fv=120,cr=5}, -- Enriched Thorium Breastplate
+[1252345]={v={248197,256730},fv=120,cr=5}, -- Enriched Thorium Leggings
+[1252346]={v={248197,256730},fv=120,cr=5}, -- Enriched Thorium Helm
+[1252355]={v={253139}}, -- Iron Morningstar
+[1252357]={v={259860}}, -- Mithril Warhammer
+[1252362]={v={248197,256730},fv=90,cr=5}, -- Thorium Greatmace
+[1252363]={v={248197,256730},fv=90,cr=5}, -- Thorium Cestus
+[1252365]={v={266901}}, -- Bold Dirk
+[1252368]={v={248197,256730},fv=120,cr=5}, -- Legionite Glaive
+[1254965]={v={7854}}, -- Forceful Rugged Armor Kit
+[1254966]={v={248201,256734},fv=90,cr=5,k=235}, -- Mystic Rugged Armor Kit
+[1254974]={v={266901}}, -- Supple Scorpid Vest
+[1254982]={v={248201,256734},fv=90,cr=5,k=250}, -- Mender's Mail Belt
+[1254983]={v={248201,256734},fv=90,cr=5,k=250}, -- Skirmisher's Mail Belt
+[1254984]={v={248201,256734},fv=90,cr=5,k=250}, -- Skycaller's Mail Belt
+[1254985]={v={248201,256734},fv=90,cr=5,k=250}, -- Stalker's Mail Belt
+[1254994]={v={248201,256734},fv=90,cr=5,k=235}, -- Mender's Mail Sabatons
+[1254995]={v={248201,256734},fv=90,cr=5,k=235}, -- Skirmisher's Mail Sabatons
+[1254996]={v={248201,256734},fv=90,cr=5,k=235}, -- Skycaller's Mail Sabatons
+[1254997]={v={248201,256734},fv=90,cr=5,k=235}, -- Stalker's Mail Sabatons
+[1255000]={v={248201,256734},fv=90,cr=5,k=225}, -- Mender's Mail Bracers
+[1255001]={v={248201,256734},fv=90,cr=5,k=225}, -- Skirmisher's Mail Bracers
+[1255002]={v={248201,256734},fv=90,cr=5,k=225}, -- Skycaller's Mail Bracers
+[1255003]={v={248201,256734},fv=90,cr=5,k=225}, -- Stalker's Mail Bracers
+[1255004]={v={248201,256734},fv=60,cr=4,k=210}, -- Mender's Mail Shoulders
+[1255005]={v={248201,256734},fv=60,cr=4,k=210}, -- Skirmisher's Mail Shoulders
+[1255006]={v={248201,256734},fv=60,cr=4,k=210}, -- Skycaller's Mail Shoulders
+[1255007]={v={248201,256734},fv=60,cr=4,k=210}, -- Stalker's Mail Shoulders
+[1255030]={v={266901}}, -- Tooled Leather Armor
+[1255031]={v={248201,256734},fv=90,cr=5,k=250}, -- Mender's Leather Waistguard
+[1255032]={v={248201,256734},fv=90,cr=5,k=250}, -- Skycaller's Leather Waistguard
+[1255033]={v={248201,256734},fv=90,cr=5,k=250}, -- Warden's Leather Waistguard
+[1255034]={v={248201,256734},fv=90,cr=5,k=250}, -- Skulker's Leather Waistguard
+[1255035]={v={248201,256734},fv=90,cr=5,k=250}, -- Prowler's Leather Waistguard
+[1255043]={v={248201,256734},fv=90,cr=5,k=235}, -- Mender's Leather Boots
+[1255044]={v={248201,256734},fv=90,cr=5,k=235}, -- Skycaller's Leather Boots
+[1255045]={v={248201,256734},fv=90,cr=5,k=235}, -- Warden's Leather Boots
+[1255046]={v={248201,256734},fv=90,cr=5,k=235}, -- Skulker's Leather Boots
+[1255047]={v={248201,256734},fv=90,cr=5,k=235}, -- Prowler's Leather Boots
+[1255050]={v={248201,256734},fv=90,cr=5,k=225}, -- Mender's Leather Bracers
+[1255051]={v={248201,256734},fv=90,cr=5,k=225}, -- Skycaller's Leather Bracers
+[1255052]={v={248201,256734},fv=90,cr=5,k=225}, -- Warden's Leather Bracers
+[1255053]={v={248201,256734},fv=90,cr=5,k=225}, -- Skulker's Leather Bracers
+[1255054]={v={248201,256734},fv=90,cr=5,k=225}, -- Prowler's Leather Bracers
+[1255055]={v={248201,256734},fv=60,cr=4,k=210}, -- Mender's Leather Shoulders
+[1255056]={v={248201,256734},fv=60,cr=4,k=210}, -- Skycaller's Leather Shoulders
+[1255057]={v={248201,256734},fv=60,cr=4,k=210}, -- Warden's Leather Shoulders
+[1255058]={v={248201,256734},fv=60,cr=4,k=210}, -- Skulker's Leather Shoulders
+[1255059]={v={248201,256734},fv=60,cr=4,k=210}, -- Prowler's Leather Shoulders
+[1255065]={v={248201,256734},fv=60,cr=4,k=175}, -- Mender's Leather Gloves
+[1255066]={v={248201,256734},fv=60,cr=4,k=175}, -- Skycaller's Leather Gloves
+[1255067]={v={248201,256734},fv=60,cr=4,k=175}, -- Skirmisher's Leather Gloves
+[1255068]={v={248201,256734},fv=60,cr=4,k=175}, -- Warden's Leather Gloves
+[1255069]={v={248201,256734},fv=60,cr=4,k=175}, -- Stalker's Leather Gloves
+[1255070]={v={248201,256734},fv=60,cr=4,k=175}, -- Skulker's Leather Gloves
+[1255071]={v={248201,256734},fv=60,cr=4,k=175}, -- Prowler's Leather Gloves
+[1255073]={v={248201,256734},fv=60,cr=4,k=185}, -- Forceful Thick Armor Kit
+[1255074]={v={253139}}, -- Mystic Thick Armor Kit
+[1255075]={v={258306}}, -- Mender's Leather Belt
+[1255076]={v={258306}}, -- Skycaller's Leather Belt
+[1255077]={v={258306}}, -- Skirmisher's Leather Belt
+[1255078]={v={258306}}, -- Warden's Leather Belt
+[1255079]={v={258306}}, -- Stalker's Leather Belt
+[1255080]={v={258306}}, -- Skulker's Leather Belt
+[1255081]={v={258306}}, -- Prowler's Leather Belt
+[1255082]={v={248201,256734},fv=30,k=125}, -- Wisdom's Leather Leggings
+[1255083]={v={248201,256734},fv=30,k=125}, -- Stormrider's Leather Kilt
+[1255084]={v={248201,256734},fv=30,k=125}, -- Totemic Leather Leggings
+[1255085]={v={248201,256734},fv=30,k=125}, -- Defender's Leather Kilt
+[1255086]={v={248201,256734},fv=30,k=125}, -- Trapper's Leather Legguards
+[1255087]={v={248201,256734},fv=30,k=125}, -- Brawler's Leather Legguards
+[1255095]={v={3005,4225,7854}}, -- Forceful Heavy Armor Kit
+[1255096]={v={3005,4225,7854}}, -- Mystic Heavy Armor Kit
+[1255097]={v={248201,256734},fv=30,k=110}, -- Wisdom's Leather Tunic
+[1255098]={v={248201,256734},fv=30,k=110}, -- Stormrider's Leather Tunic
+[1255099]={v={248201,256734},fv=30,k=110}, -- Totemic Leather Tunic
+[1255100]={v={248201,256734},fv=30,k=110}, -- Defender's Leather Tunic
+[1255101]={v={248201,256734},fv=30,k=110}, -- Trapper's Leather Tunic
+[1255102]={v={248201,256734},fv=30,k=110}, -- Brawler's Leather Tunic
+[1255104]={v={248201,256734},fv=30,k=100}, -- Wisdom's Leather Hood
+[1255105]={v={248201,256734},fv=30,k=100}, -- Stormrider's Leather Hood
+[1255106]={v={248201,256734},fv=30,k=100}, -- Totemic Leather Hood
+[1255107]={v={248201,256734},fv=30,k=100}, -- Defender's Leather Hood
+[1255108]={v={248201,256734},fv=30,k=100}, -- Trapper's Leather Hood
+[1255109]={v={248201,256734},fv=30,k=100}, -- Brawler's Leather Hood
+[1255116]={v={248201,256734},fv=30,k=85}, -- Wisdom's Leather Boots
+[1255117]={v={248201,256734},fv=30,k=85}, -- Stormrider's Leather Boots
+[1255118]={v={248201,256734},fv=30,k=85}, -- Totemic Leather Boots
+[1255119]={v={248201,256734},fv=30,k=85}, -- Defender's Leather Boots
+[1255120]={v={248201,256734},fv=30,k=85}, -- Trapper's Leather Boots
+[1255121]={v={248201,256734},fv=30,k=85}, -- Brawler's Leather Boots
+[1255123]={v={3005,3366,4225,4589,5128,5565,7854}}, -- Forceful Medium Armor Kit
+[1255124]={v={3005,3366,4225,4589,5128,5565,7854}}, -- Mystic Medium Armor Kit
+[1255125]={v={248201,256734},fv=30,k=75}, -- Wisdom's Leather Gloves
+[1255126]={v={248201,256734},fv=30,k=75}, -- Stormrider's Leather Gloves
+[1255127]={v={248201,256734},fv=30,k=75}, -- Totemic Leather Gloves
+[1255128]={v={248201,256734},fv=30,k=75}, -- Defender's Leather Gloves
+[1255129]={v={248201,256734},fv=30,k=75}, -- Trapper's Leather Gloves
+[1255130]={v={248201,256734},fv=30,k=75}, -- Brawler's Leather Gloves
+[1255137]={v={248201,256734},fv=30,k=60}, -- Wisdom's Leather Belt
+[1255138]={v={248201,256734},fv=30,k=60}, -- Stormrider's Leather Belt
+[1255139]={v={248201,256734},fv=30,k=60}, -- Totemic Leather Belt
+[1255140]={v={248201,256734},fv=30,k=60}, -- Defender's Leather Belt
+[1255141]={v={248201,256734},fv=30,k=60}, -- Trapper's Leather Belt
+[1255142]={v={248201,256734},fv=30,k=60}, -- Brawler's Leather Belt
+[1255143]={v={258306}}, -- Moonglow Boots
+[1255144]={v={258306}}, -- Murloc Scale Shoes
+[1255145]={v={258306}}, -- Dark Leather Boots
+[1255146]={v={258306}}, -- Black Whelp Slippers
+[1257013]={v={1347,1454,1474,1672,2394,2668,2669,2670,3005,3091,3096,3364,3485,4168,4189,4577,5154,5944,6567,6568,6574,7940,8681,242498,251973,251991,252380,258415,258463,258466,258548,258568,258572,260570},u={6576,254695}}, -- Linen Reagent Bag
+[1257017]={v={1347,1454,1474,1672,2394,2668,2669,2670,3005,3091,3096,3364,3485,4168,4189,4577,5154,5944,6567,6568,6574,7940,8681,242498,251973,251991,252380,258415,258463,258466,258548,258568,258572,260570},u={6576,254695}}, -- Woolen Reagent Bag
+[1257370]={v={248202,256735},fv=30,k=60}, -- Pristine Boots
+[1257371]={v={248202,256735},fv=30,k=60}, -- Silky Boots
+[1257372]={v={248202,256735},fv=30,k=60}, -- Flame Boots
+[1257373]={v={248202,256735},fv=30,k=60}, -- Shadow Boots
+[1257374]={v={248202,256735},fv=30,k=60}, -- Pearly Boots
+[1257375]={v={248202,256735},fv=30,k=60}, -- Shining Boots
+[1257382]={v={248202,256735},fv=30,k=75}, -- Pristine Gloves
+[1257383]={v={248202,256735},fv=30,k=75}, -- Silky Gloves
+[1257384]={v={248202,256735},fv=30,k=75}, -- Flame Gloves
+[1257385]={v={248202,256735},fv=30,k=75}, -- Shadow Gloves
+[1257386]={v={248202,256735},fv=30,k=75}, -- Pearly Gloves
+[1257387]={v={248202,256735},fv=30,k=75}, -- Shining Gloves
+[1257388]={v={248202,256735},fv=30,k=85}, -- Pristine Sash
+[1257389]={v={248202,256735},fv=30,k=85}, -- Silky Sash
+[1257390]={v={248202,256735},fv=30,k=85}, -- Flame Sash
+[1257391]={v={248202,256735},fv=30,k=85}, -- Shadow Sash
+[1257392]={v={248202,256735},fv=30,k=85}, -- Pearly Sash
+[1257393]={v={248202,256735},fv=30,k=85}, -- Shining Sash
+[1257400]={v={248202,256735},fv=30,k=100}, -- Pristine Circlet
+[1257401]={v={248202,256735},fv=30,k=100}, -- Silky Circlet
+[1257402]={v={248202,256735},fv=30,k=100}, -- Flame Circlet
+[1257403]={v={248202,256735},fv=30,k=100}, -- Shadow Circlet
+[1257404]={v={248202,256735},fv=30,k=100}, -- Pearly Circlet
+[1257405]={v={248202,256735},fv=30,k=100}, -- Shining Circlet
+[1257406]={v={248202,256735},fv=30,k=110}, -- Pristine Gown
+[1257407]={v={248202,256735},fv=30,k=110}, -- Silky Gown
+[1257408]={v={248202,256735},fv=30,k=110}, -- Flame Gown
+[1257409]={v={248202,256735},fv=30,k=110}, -- Shadow Gown
+[1257410]={v={248202,256735},fv=30,k=110}, -- Pearly Gown
+[1257411]={v={248202,256735},fv=30,k=110}, -- Shining Gown
+[1257412]={v={253139}}, -- Silk Reagent Bag
+[1257419]={v={248202,256735},fv=30,k=125}, -- Pristine Leggings
+[1257420]={v={248202,256735},fv=30,k=125}, -- Silky Leggings
+[1257421]={v={248202,256735},fv=30,k=125}, -- Flame Leggings
+[1257422]={v={248202,256735},fv=30,k=125}, -- Shadow Leggings
+[1257423]={v={248202,256735},fv=30,k=125}, -- Pearly Leggings
+[1257424]={v={248202,256735},fv=30,k=125}, -- Shining Leggings
+[1257437]={v={248202,256735},fv=60,cr=4,k=165}, -- Frothing Handwraps
+[1257438]={v={248202,256735},fv=60,cr=4,k=165}, -- Fiery Handwraps
+[1257439]={v={248202,256735},fv=60,cr=4,k=165}, -- Black Handwraps
+[1257440]={v={248202,256735},fv=60,cr=4,k=165}, -- Golden Handwraps
+[1257441]={v={248202,256735},fv=60,cr=4,k=165}, -- Radiant Handwraps
+[1257443]={v={248202,256735},fv=60,cr=4,k=190}, -- Mageweave Reagent Bag
+[1257450]={v={248202,256735},fv=60,cr=4,k=195}, -- Nethergeld Shoulders
+[1257451]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherfroth Shoulders
+[1257452]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherflame Shoulders
+[1257453]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherpearl Shoulders
+[1257454]={v={248202,256735},fv=60,cr=4,k=195}, -- Nethershine Shoulders
+[1257455]={v={248202,256735},fv=60,cr=4,k=195}, -- Netherlight Shoulders
+[1257456]={v={248202,256735},fv=60,cr=4,k=205}, -- Nethergeld Cuffs
+[1257457]={v={248202,256735},fv=60,cr=4,k=205}, -- Netherfroth Cuffs
+[1257458]={v={248202,256735},fv=60,cr=4,k=205}, -- Netherflame Cuffs
+[1257459]={v={248202,256735},fv=60,cr=4,k=205}, -- Netherpearl Cuffs
+[1257460]={v={248202,256735},fv=60,cr=4,k=205}, -- Nethershine Cuffs
+[1257461]={v={248202,256735},fv=60,cr=4,k=205}, -- Netherlight Cuffs
+[1257465]={v={248202,256735},fv=60,cr=4,k=215}, -- Runecloth Reagent Bag
+[1257466]={v={248202,256735},fv=60,cr=4,k=215}, -- Gilded Waistcord
+[1257467]={v={248202,256735},fv=60,cr=4,k=215}, -- Frothing Waistcord
+[1257468]={v={248202,256735},fv=60,cr=4,k=215}, -- Fiery Waistcord
+[1257469]={v={248202,256735},fv=60,cr=4,k=215}, -- Black Waistcord
+[1257470]={v={248202,256735},fv=60,cr=4,k=215}, -- Golden Waistcord
+[1257471]={v={248202,256735},fv=60,cr=4,k=215}, -- Radiant Waistcord
+[1257479]={v={248202,256735},fv=90,cr=5,k=235}, -- Gilded Sandals
+[1257480]={v={248202,256735},fv=90,cr=5,k=235}, -- Frothing Sandals
+[1257481]={v={248202,256735},fv=90,cr=5,k=235}, -- Fiery Sandals
+[1257482]={v={248202,256735},fv=90,cr=5,k=235}, -- Black Sandals
+[1257483]={v={248202,256735},fv=90,cr=5,k=235}, -- Golden Sandals
+[1257484]={v={248202,256735},fv=90,cr=5,k=235}, -- Radiant Sandals
+[1257487]={v={266901}}, -- Runecloth Cuffs
+[1266893]={v={248200,256733},fv=45}, -- SAF-T Tabs
+[1266905]={v={248200,256733},fv=45}, -- SAF-T Dynamite
+[1266906]={v={248200,256733},fv=45}, -- SAF-T Copper Bomb
+[1266907]={v={248200,256733},fv=45}, -- EZ-Thro Wrap
+[1266908]={v={248200,256733},fv=45}, -- EZ-Thro Copper Bomb XL
+[1266909]={v={248200,256733},fv=45}, -- No Slip SAF-T Padding
+[1266912]={v={248200,256733},fv=180,cr=4}, -- SAF-T Bell
+[1266914]={v={248200,256733},fv=180,cr=4}, -- EZ-Thro Fireproof Fuse
+[1266919]={v={248200,256733},fv=270,cr=5}, -- Emergency Field Cloak
+[1266920]={v={248200,256733},fv=270,cr=5}, -- Compact Critter Carrier
+[1266923]={v={248200,256733},fv=270,cr=5}, -- SAF-T Disposable Parachute
+[1266924]={u={248200,256733}}, -- Gnomish Army Knife
+[1266925]={u={248200,256733}}, -- Loot-A-Rang
+[1266935]={v={248200,256733},fv=360,cr=5}, -- Ultrasafe Rechargeable Battery
+[1266936]={v={266901}}, -- Dimensional Transporter - Mt. Hyjal
+[1266937]={v={248200,256733},fv=360,cr=5}, -- Gnomish Poultryizer
+[1266938]={v={248200,256733},fv=360,cr=5}, -- Ultralight Goblin Glider
+[1266940]={v={248200,256733},fv=360,cr=5}, -- Stealthman 52
+[1286792]={v={253139}}, -- Centaur Banner Deployment Device
+[1286796]={v={253139}}, -- Hoof-Shaped Foot Pedal
+[1292920]={v={264797}}, -- Grovekeeper Trousers
+[1292921]={v={264797}}, -- Grovekeeper Grips
+[1292923]={v={264797}}, -- Grovekeeper Shoulderpads
+[1292924]={v={264797}}, -- Grovekeeper Stompers
+[1292925]={v={264797}}, -- Grovekeeper Kilt
+[1292926]={v={264797}}, -- Grovekeeper Mitts
+[1292927]={v={264797}}, -- Grovekeeper Mantle
+[1292928]={v={264797}}, -- Grovekeeper Sandals
+[1292929]={v={264797}}, -- Grovekeeper Legguards
+[1292930]={v={264797}}, -- Grovekeeper Handguards
+[1292931]={v={264797}}, -- Grovekeeper Pauldrons
+[1292932]={v={264797}}, -- Grovekeeper Boots
+[1292933]={v={264797}}, -- Grovekeeper Leggings
+[1292934]={v={264797}}, -- Grovekeeper Gauntlets
+[1292935]={v={264797}}, -- Grovekeeper Spaulders
+[1292936]={v={264797}}, -- Grovekeeper Treads
+[1292937]={v={264797}}, -- Wildstalker's Legguards
+[1292938]={v={264797}}, -- Wildstalker's Gauntlets
+[1292939]={v={264797}}, -- Wildstalker's Spaulders
+[1292940]={v={264797}}, -- Wildstalker's Greaves
+[1292941]={v={264797}}, -- Manaflare Pants
+[1292942]={v={264797}}, -- Manaflare Gloves
+[1292943]={v={264797}}, -- Manaflare Mantle
+[1292944]={v={264797}}, -- Manaflare Boots
+[1292945]={v={264797}}, -- Justice Leggings
+[1292946]={v={264797}}, -- Justice Gauntlets
+[1292947]={v={264797}}, -- Justice Spaulders
+[1292948]={v={264797}}, -- Justice Greaves
+[1292949]={v={264797}}, -- Justice Legplates
+[1292950]={v={264797}}, -- Justice Gloves
+[1292951]={v={264797}}, -- Justice Epaulets
+[1292952]={v={264797}}, -- Justice Treads
+[1292953]={v={264797}}, -- Justice Legguards
+[1292954]={v={264797}}, -- Justice Handguards
+[1292955]={v={264797}}, -- Justice Pauldrons
+[1292956]={v={264797}}, -- Justice Sabatons
+[1292957]={v={264797}}, -- Pants of Conviction
+[1292958]={v={264797}}, -- Gloves of Conviction
+[1292959]={v={264797}}, -- Mantle of Conviction
+[1292960]={v={264797}}, -- Treads of Conviction
+[1292961]={v={264797}}, -- Leggings of Conviction
+[1292962]={v={264797}}, -- Handguards of Conviction
+[1292963]={v={264797}}, -- Pauldrons of Conviction
+[1292964]={v={264797}}, -- Boots of Conviction
+[1292965]={v={264797}}, -- Grimstitch Pants
+[1292966]={v={264797}}, -- Grimstitch Gloves
+[1292967]={v={264797}}, -- Grimstitch Spaulders
+[1292968]={v={264797}}, -- Grimstitch Boots
+[1292969]={v={264797}}, -- Spiritcaller Leggings
+[1292970]={v={264797}}, -- Spiritcaller Grips
+[1292971]={v={264797}}, -- Spiritcaller Spaulders
+[1292972]={v={264797}}, -- Spiritcaller Treads
+[1292973]={v={264797}}, -- Spiritcaller Pants
+[1292974]={v={264797}}, -- Spiritcaller Gauntlets
+[1292975]={v={264797}}, -- Spiritcaller Epaulets
+[1292976]={v={264797}}, -- Spiritcaller Greaves
+[1292977]={v={264797}}, -- Demonheart Leggings
+[1292978]={v={264797}}, -- Demonheart Gloves
+[1292979]={v={264797}}, -- Demonheart Spaulders
+[1292980]={v={264797}}, -- Demonheart Boots
+[1292981]={v={264797}}, -- Legplates of Glory
+[1292982]={v={264797}}, -- Gauntlets of Glory
+[1292983]={v={264797}}, -- Shoulders of Glory
+[1292984]={v={264797}}, -- Greaves of Glory
+[1292985]={v={264797}}, -- Legguards of Glory
+[1292986]={v={264797}}, -- Handguards of Glory
+[1292987]={v={264797}}, -- Pauldrons of Glory
+[1292988]={v={264797}}, -- Sabatons of Glory
+[1295834]={v={259860}}, -- Plain Ol' Paletusk
+[1297120]={v={15179},rf={609,4}}, -- Venomspew Gloves
+[1297121]={v={15179},rf={609,5}}, -- Venomspew Cord
+[1297122]={v={15179},rf={609,5}}, -- Venomspew Footpads
+[1297123]={v={15179},rf={609,4}}, -- Swarmtender's Gloves
+[1297124]={v={15179},rf={609,5}}, -- Swarmtender's Cord
+[1297125]={v={15179},rf={609,5}}, -- Swarmtender's Footpads
+[1297138]={v={15176},rf={609,4}}, -- Goregasher Grips
+[1297139]={v={15176},rf={609,5}}, -- Goregasher Support
+[1297140]={v={15176},rf={609,5}}, -- Goregasher Stompers
+[1297141]={v={15176},rf={609,4}}, -- Clutchlord's Grips
+[1297142]={v={15176},rf={609,5}}, -- Clutchlord's Support
+[1297143]={v={15176},rf={609,5}}, -- Clutchlord's Stompers
+[1299914]={v={264797}}, -- Spiritcaller Kilt
+[1299915]={v={264797}}, -- Spiritcaller Gloves
+[1299916]={v={264797}}, -- Spiritcaller Mantle
+[1299917]={v={264797}}, -- Spiritcaller Boots
+[1301526]={v={264078},rf={2787,4}}, -- Cloudy Skyforged Helm
+[1301527]={v={264078},rf={2787,4}}, -- Cloudy Skyforged Pauldrons
+[1301528]={v={264078},rf={2787,4}}, -- Cloudy Gustwoven Hood
+[1301529]={v={264078},rf={2787,4}}, -- Cloudy Gustwoven Spaulders
+[1301530]={v={264078},rf={2787,4}}, -- Cloudy Windraveled Cover
+[1301531]={v={264078},rf={2787,4}}, -- Cloudy Windraveled Drapes
+[1301532]={v={264078},rf={2787,4}}, -- Cloudy Stormsewn Cowl
+[1301533]={v={264078},rf={2787,4}}, -- Cloudy Stormsewn Epaulets
+[1301534]={v={32287},rf={2740,4}}, -- Azure Skyforged Helm
+[1301535]={v={32287},rf={2740,4}}, -- Azure Skyforged Pauldrons
+[1301536]={v={32287},rf={2740,4}}, -- Azure Gustwoven Hood
+[1301537]={v={32287},rf={2740,4}}, -- Azure Gustwoven Spaulders
+[1301538]={v={32287},rf={2740,4}}, -- Azure Windraveled Cover
+[1301539]={v={32287},rf={2740,4}}, -- Azure Windraveled Drapes
+[1301540]={v={32287},rf={2740,4}}, -- Azure Stormsewn Cowl
+[1301541]={v={32287},rf={2740,4}}, -- Azure Stormsewn Epaulets
+[1302604]={v={4225}}, -- Light Leather Reagent Bag
+[1308178]={v={248200,256733},fv=180,cr=4}, -- Whimsical Waistwrap
+[1308179]={v={248200,256733},fv=180,cr=4}, -- Gizmo Girdle
+[1308180]={v={248200,256733},fv=180,cr=4}, -- Clanking Cord
+[1308183]={v={248200,256733},fv=180,cr=4}, -- Floppy Goggles
+[1308184]={v={248200,256733},fv=180,cr=4}, -- Bent Goggles
+[1308185]={v={248200,256733},fv=180,cr=4}, -- Stuckbutton Goggles
+[1308186]={v={248200,256733},fv=180,cr=4}, -- Dented Goggles
+[1317958]={v={248200,256733},fv=45}, -- Satchel of Copper Bombs
+[1317959]={v={248200,256733},fv=180,cr=4}, -- Satchel of Bronze Bombs
+[1317960]={v={248200,256733},fv=270,cr=5}, -- Satchel of Iron Bombs
+[1317961]={v={248200,256733},fv=270,cr=5}, -- Satchel of Dark Iron Bombs
+[1317962]={u={248197,256730},fv=30}, -- Plans: Cracked Blacksmith Hammer
+[1317963]={u={248197,256730},fv=60}, -- Plans: Mithril Blacksmith Hammer
+[1317964]={u={248197,256730},fv=90}, -- Plans: Arcanite Blacksmith Hammer
+[1328948]={v={248199,256732},fv=180}, -- Enchant Boots - Speed
 }
 
 -- Names of the NPCs above (English).
@@ -360,6 +821,7 @@ ns.RecipeVendorNames = {
 [1471]="Jannos Ironwill",
 [1474]="Rann Flamespinner",
 [1669]="Defias Profiteer",
+[1672]="Lohgan Eva",
 [1684]="Khara Deepwater",
 [1685]="Xandar Goodbeard",
 [1812]="Rotting Behemoth",
@@ -412,6 +874,8 @@ ns.RecipeVendorNames = {
 [3029]="Sewa Mistrunner",
 [3081]="Wunna Darkmane",
 [3085]="Gloria Femmel",
+[3091]="Franklin Hamar",
+[3096]="Captured Servant of Azora",
 [3134]="Kzixx",
 [3178]="Stuart Fleming",
 [3333]="Shankys",
@@ -470,6 +934,7 @@ ns.RecipeVendorNames = {
 [4879]="Ogg'marr",
 [4897]="Helenia Olden",
 [5128]="Bombus Finespindle",
+[5154]="Poranna Snowbraid",
 [5158]="Tilli Thistlefuzz",
 [5160]="Emrul Riknussun",
 [5162]="Tansy Puddlefizz",
@@ -479,6 +944,7 @@ ns.RecipeVendorNames = {
 [5483]="Erika Tate",
 [5494]="Catherine Leland",
 [5512]="Kaita Deepforge",
+[5565]="Jillian Tanner",
 [5594]="Alchemist Pestlezugg",
 [5748]="Killian Sanatha",
 [5757]="Lilly",
@@ -547,6 +1013,7 @@ ns.RecipeVendorNames = {
 [12043]="Kulwia",
 [12245]="Vendor-Tron 1000",
 [12246]="Super-Seller 680",
+[12941]="Jase Farlane",
 [12942]="Leonard Porter",
 [12943]="Werg Thickblade",
 [12944]="Lokhtos Darkbargainer",
@@ -566,27 +1033,58 @@ ns.RecipeVendorNames = {
 [14738]="Otho Moji'ko",
 [14828]="Gelvas Grimegate",
 [14921]="Rin'wosho the Trader",
+[15176]="Vargus",
 [15179]="Mishta",
 [15275]="Emperor Vek'nilash",
 [15276]="Emperor Vek'lor",
 [15419]="Kania",
+[32287]="Archmage Alvareaux",
 [242498]="Reagent Bot",
+[248196]="Apothecary Durelle",
+[248197]="Gor'mak",
 [248198]="Aza'bek",
+[248199]="Beneris",
+[248200]="Fizzlefuse",
+[248201]="Pawani",
+[248202]="Jim'bek",
 [251905]="Zerril Softbreeze",
+[251973]="Dominique Stefano",
+[251991]="Taleen Shimmerthread",
 [251997]="Norvin Alderman",
 [252083]="Derek Odds",
+[252380]="Othesia Evengale",
+[253139]="Gorhak",
+[253140]="Molkar",
 [254695]="Repair Bot",
 [255894]="Innkeeper Zizplink",
 [255895]="Grizzek",
+[256729]="Nina Surefire",
+[256730]="Stondry Darkhammer",
 [256731]="Kalsey Sanden",
+[256732]="Alynsia",
+[256733]="Fritz Fizzle",
+[256734]="Daniel Stitchsong",
+[256735]="Mivin Shadowweave",
+[257004]="Eaysaa Brightgust",
 [257006]="Nyalah Brightfire",
 [257020]="Nasalanna Windsinger",
+[258306]="Granny Finespindle",
+[258415]="Angela Ward",
+[258463]="Darah",
+[258466]="Boramu",
+[258548]="Ellie Stonebrow",
+[258568]="Antonio Bolero",
+[258572]="Dani'ill",
+[259860]="Martha Wellsworth",
 [259962]="Fimbo Greasemitz",
 [260487]="Gritta Chumwater",
 [260565]="Kor'gar",
 [260566]="Fizzix Boomshot",
 [260570]="Stitch Pinwizzle",
 [261313]="Naluk",
+[264078]="Sutara Plainstalker",
+[264797]="Aisarra Nightmeadow",
+[266901]="Pexmit",
 [267000]="Paige",
 [270780]="Qujo",
 [272646]="Miranda Turner",

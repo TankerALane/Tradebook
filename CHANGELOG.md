@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **New Forever recipe vendors.** 461 recipes from WoW Forever's new vendors now show where to buy them: the Merchant's Favor supply camps (Durotar Supply and Logistics in the Barrens, Azeroth Commerce Authority in Redridge), Aisarra Nightmeadow, the Skyforged and Gustwoven quartermasters, the centaur quartermasters and more. Supply camp recipes show their **Merchant's Favor cost** and the **reputation** needed for your faction's camp.
+- Recipe sources (and vendor locations) now show for recipes you already know, too.
+- Quests in recipe sources show their name even before the game has loaded it ("Quest: Dig Rat Stew" instead of "Quest: #862").
 - **Tradebook learns from vendor windows.** Opening any vendor records which recipes it sells and whether they're limited supply. Recipe sources then show those vendors as confirmed (added if the bundled data missed them), mark limited recipes "(limited supply)", and mark a vendor whose window didn't have the recipe "(not in stock when you visited)" (limited recipes disappear while sold out, so the vendor isn't removed).
 - **Recipe vendors checked for WoW Forever.** The vendor list came from classic; every one of the 321 vendor-sold recipes was checked against Questie's Forever data and Forever websites. 100 vendors that don't sell the recipe in Forever (or aren't in Forever) are gone, 65 Forever vendors are added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Super-Seller 680, Vendor-Tron 1000 and more), and vendors only one source names say "(unconfirmed)". Recipes no vendor sells (Dig Rat Stew, the flasks, Runic Plate, several enchants) show their drop or quest instead, and recipes that don't seem to be in Forever yet say so.
 - **Fixed:** with **Not learned** and **Gives skill-ups** both ticked, recipes you haven't learned that would give skill-ups now show too, with a dot after the name in their skill-up colour. Recipes needing more skill than you have don't count.

@@ -597,6 +597,23 @@ test("Forever-checked recipe vendors replace the classic ones", function()
     eq(has, true)
 end)
 
+test("Merchant's Favor recipes: cost, camp reputation by faction, skill", function()
+    -- 1254966 Mystic Rugged Armor Kit: Pawani / Daniel Stitchsong, 90 Favor, Honored, skill 235.
+    local conf = ns.Sources.Vendors(1254966, true)
+    eq(table.concat(conf, ","), "248201,256734")
+    local h = ns.Sources.Purchase(1254966, "Horde")
+    eq(h.favor, 90)
+    eq(h.factionID, 2587, "Durotar Supply and Logistics")
+    eq(h.standing, 5, "Honored")
+    eq(ns.Sources.Purchase(1254966, "Alliance").factionID, 2586, "Azeroth Commerce Authority")
+    eq(ns.Sources.FactionName(2587), "Durotar Supply and Logistics")
+    eq(ns.Sources.Required(1254966), 235)
+    -- Gnomish Army Knife: QuestieDB only, unconfirmed.
+    local c2, u2 = ns.Sources.Vendors(1266924, true)
+    eq(#c2, 0)
+    eq(#u2, 2)
+end)
+
 test("vendor windows: merging visits", function()
     local M = ns.Merchants
     local e = M.Merge(nil, "Kithas", { [7793] = -1, [7776] = 1 }, 100)

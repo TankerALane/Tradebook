@@ -30,6 +30,10 @@ def ids(xs):
 
 def main():
     data = json.load(open(SRC, encoding="utf-8"))["recipes"]
+    all_ids = [r["recipeSpellID"] for r in data]
+    dupes = sorted({i for i in all_ids if all_ids.count(i) > 1})
+    if dupes:
+        raise SystemExit("recipes listed twice in the research file: %s" % dupes)
     names, quest_names = {}, {}
     lines = []
     for r in sorted(data, key=lambda r: r["recipeSpellID"]):

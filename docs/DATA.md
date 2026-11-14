@@ -65,6 +65,26 @@ Judgement calls:
   (QuestieDB only, zone matches on Wowhead) and Gelvas Grimegate for Steam Tonk Controller
   (web only). Andorov's Obsidian plans have only a Wowhead zone listing, so no vendor is shown.
 
+**New Forever vendors (added 2026-11-13, `scripts/research/make_new_research.py`):** QuestieDB
+Forever lists 525 recipe items sold by vendors Tradebook had none for. After the web check, 461
+were added (456 with a vendor confirmed by QuestieDB plus a Forever web source naming it):
+- Merchant's Favor supply camps (Durotar Supply and Logistics, the Barrens / Azeroth Commerce
+  Authority, Redridge): Apothecary Durelle / Nina Surefire, Gor'mak / Stondry Darkhammer,
+  Aza'bek / Kalsey Sanden, Beneris / Alynsia, Fizzlefuse / Fritz Fizzle, Pawani / Daniel
+  Stitchsong, Jim'bek / Mivin Shadowweave. Same lists and prices on both sides. Favor cost and
+  standing from wow-professions.com/forever NPC pages, forever.warcraftdb.com and conquestcapped's
+  camp guides (they agree). Shown as "Costs N Merchant's Favor" and "Requires <standing> with
+  <your faction's camp>". Gnomish Army Knife and Loot-A-Rang are QuestieDB only (unconfirmed).
+- Aisarra Nightmeadow (Hyjal, 72 patterns; wow.gg + conquestcapped), the Skyforged / Gustwoven
+  quartermasters, Granny Finespindle, Gorhak and Molkar (Molkar is web-only for 11, unconfirmed),
+  Pexmit, Vargus and Mishta's new plans, reagent bag patterns at tailoring suppliers.
+- Reputation from the game's item data (ItemSparse MinFactionID / MinReputation) where present.
+- Left out (63): Season of Discovery recipe items QuestieDB still lists (Wowhead Forever: "not
+  available to players"), AQ-era items with no Forever item, and recipes the classic check
+  above already decided.
+- Not shown yet: costs in other currencies (Malleable Essence of Nature, Carved Centaur Totems)
+  and vendor-side reputation gates (Guardians of Hyjal, centaur clans).
+
 **In game (Core/Merchants.lua):** every time a vendor window opens, Tradebook reads which
 recipe items it sells (`GetMerchantItemID`, `C_MerchantFrame.GetItemInfo().numAvailable`;
 -1 = unlimited, otherwise limited supply) and saves it in `TradebookDB.vendors`. Recipe items
