@@ -11,7 +11,8 @@
 -- "~" and line breaks are removed from names.
 
 local _, ns = ...
-local L, W, Compat = ns.L, ns.W, ns.Compat
+local L, Compat = ns.L, ns.Compat
+-- ns.W (UI/Widgets.lua) loads after the core files: looked up when the window is built.
 
 local Share = {}
 ns.Share = Share
@@ -68,10 +69,11 @@ function Share.Decode(text)
     return vendors
 end
 
-local popup
+local sharePopup
 local function ensure()
-    if popup then return popup end
-    popup = CreateFrame("Frame", "TradebookShareFrame", UIParent, "BasicFrameTemplateWithInset")
+    if sharePopup then return sharePopup end
+    local W = ns.W
+    local popup = _G.TradebookShareFrame or CreateFrame("Frame", "TradebookShareFrame", UIParent, "BasicFrameTemplateWithInset")
     popup:SetSize(520, 380)
     popup:SetPoint("CENTER")
     popup:SetFrameStrata("DIALOG")
@@ -118,6 +120,7 @@ local function ensure()
     popup.count:SetPoint("LEFT", popup.select, "RIGHT", 10, 0)
     tinsert(UISpecialFrames, "TradebookShareFrame")
     popup:Hide()
+    sharePopup = popup
     return popup
 end
 
