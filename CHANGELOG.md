@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.1-beta
+
+- **Browse professions you don't have**: recipes are grouped by the rank they need (Apprentice 1-74, Journeyman 75-149, Expert 150-224, Artisan 225-300) instead of one "Other" list (the game gives no category names for a profession that isn't open).
+- Recipes the game returns without a name are no longer listed.
+- `/tb shots`: the rank window no longer shows your real gold.
+
 ## v0.2.0-beta
 
 Second beta for WoW Forever (1.60.1). Please report problems on GitHub.
