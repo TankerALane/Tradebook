@@ -93,6 +93,38 @@ function Recipes.KnownBy(db, recipeID, includeHidden)
     return out
 end
 
+-- Characters who have the profession but not this recipe, and how close they are to it:
+-- { { key, rank, max, required, status } }, closest first. status:
+--   "now"   - skill is high enough to learn it now
+--   "skill" - needs (required - rank) more skill, within the current cap
+--   "rank"  - needs more than the cap: train the next rank first
+--   "unknown" - the recipe's required skill isn't known
+function Recipes.CouldLearn(db, recipeID)
+    local r = db.recipes[recipeID]
+    if not r or not r.s then return {} end
+    local required = ns.Sources and ns.Sources.Required(recipeID)
+    local out = {}
+    for key, c in pairs(db.characters) do
+        local prof = not c.hidden and c.professions and c.professions[r.s]
+        if prof and not (prof.recipes and prof.recipes[recipeID]) then
+            local rank, max = prof.rank or 0, prof.max or 0
+            local status
+            if not required then status = "unknown"
+            elseif rank >= required then status = "now"
+            elseif required <= max then status = "skill"
+            else status = "rank" end
+            out[#out + 1] = { key = key, rank = rank, max = max, required = required, status = status }
+        end
+    end
+    local order = { now = 1, skill = 2, rank = 3, unknown = 4 }
+    table.sort(out, function(a, b)
+        if order[a.status] ~= order[b.status] then return order[a.status] < order[b.status] end
+        if a.rank ~= b.rank then return a.rank > b.rank end
+        return a.key < b.key
+    end)
+    return out
+end
+
 -- Recipes that produce an item (for the reagent tree).
 function Recipes.ProducedBy(db, itemID)
     return getIndex(db).byOutput[itemID] or {}

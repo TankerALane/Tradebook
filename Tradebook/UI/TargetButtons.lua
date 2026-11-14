@@ -14,7 +14,7 @@ local W = ns.W
 local TargetButtons = {}
 ns.TargetButtons = TargetButtons
 
-local pool, used = {}, 0
+local pool = {} -- every button; b.owner is the list using it (nil = free)
 local DIAMOND = 3 -- raid target icon 3 = purple diamond
 local NL = string.char(10)
 
@@ -40,13 +40,15 @@ local function macroFor(name)
     return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm " .. DIAMOND
 end
 
+local function detach(b)
+    b:Hide()
+    b:ClearAllPoints()
+    b:SetParent(UIParent)
+    b.owner = nil
+end
+
 local function detachAll()
-    for _, b in ipairs(pool) do
-        b:Hide()
-        b:ClearAllPoints()
-        b:SetParent(UIParent)
-    end
-    used = 0
+    for _, b in ipairs(pool) do detach(b) end
 end
 
 local function create()
@@ -76,22 +78,28 @@ local function create()
     return b
 end
 
--- Release every button (call before laying out the lines again). Out of combat only.
-function TargetButtons.Release()
+-- Release the buttons one list (owner) uses, before laying its lines out again.
+-- Out of combat only.
+function TargetButtons.Release(owner)
     if InCombatLockdown() then return end
-    detachAll()
+    for _, b in ipairs(pool) do
+        if b.owner == owner then detach(b) end
+    end
 end
 
 -- Cover `line` with a secure button that targets `name` and then calls onClick.
 -- Returns false (and does nothing) in combat; the line's own click still works then.
-function TargetButtons.Attach(line, name, onClick, tooltip)
+function TargetButtons.Attach(owner, line, name, onClick, tooltip)
     if InCombatLockdown() or not name or name == "" then return false end
-    used = used + 1
-    local b = pool[used]
+    local b
+    for _, free in ipairs(pool) do
+        if not free.owner then b = free break end
+    end
     if not b then
         b = create()
-        pool[used] = b
+        pool[#pool + 1] = b
     end
+    b.owner = owner
     b:SetParent(line)
     b:ClearAllPoints()
     b:SetAllPoints(line)

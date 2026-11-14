@@ -25,6 +25,7 @@ Data\SourceData.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\Sources.lua
+Data\RankUps.lua
 Core\DB.lua
 Core\Characters.lua
 Core\Recipes.lua
@@ -55,6 +56,7 @@ UI\CharactersView.lua
 UI\CampView.lua
 UI\LegacyView.lua
 UI\Shopping.lua
+UI\RankUp.lua
 UI\Settings.lua
 
 # Screenshots (made-up data, /tb fake and /tb shots)

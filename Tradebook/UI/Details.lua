@@ -110,7 +110,7 @@ function Pane:Add(o)
     end
     if o.tooltip then W.Tooltip(line, o.tooltip) end
     if o.target and o.onClick then
-        ns.TargetButtons.Attach(line, o.target, o.onClick,
+        ns.TargetButtons.Attach(self, line, o.target, o.onClick,
             o.targetTooltip or o.tooltip)
     end
     return line
@@ -122,12 +122,31 @@ end
 
 function Pane:Begin()
     self.used, self.y = 0, 0
-    ns.TargetButtons.Release()
+    ns.TargetButtons.Release(self)
 end
 
 function Pane:Finish()
     for i = self.used + 1, #self.lines do self.lines[i]:Hide() end
     self.content:SetHeight(math.max(1, self.y))
+end
+
+-- A scrolling line pane (Add/Gap/Begin/Finish) inside `parent`, for other windows.
+-- Fills `parent` (leave room for a scroll bar on the right).
+function Details.NewLinePane(parent)
+    local self = setmetatable({ lines = {}, used = 0, y = 0, expanded = {} }, Pane)
+    local scroll = CreateFrame("ScrollFrame", nil, parent)
+    scroll:SetPoint("TOPLEFT")
+    scroll:SetPoint("BOTTOMRIGHT", -14, 0)
+    local bar = CreateFrame("EventFrame", nil, parent, "MinimalScrollBar")
+    bar:SetPoint("TOPLEFT", scroll, "TOPRIGHT", 4, 0)
+    bar:SetPoint("BOTTOMLEFT", scroll, "BOTTOMRIGHT", 4, 0)
+    self.content = CreateFrame("Frame", nil, scroll)
+    self.content:SetSize(1, 1)
+    scroll:SetScrollChild(self.content)
+    scroll:SetScript("OnSizeChanged", function(_, w) self.content:SetWidth(w) end)
+    ScrollUtil.InitScrollFrameWithScrollBar(scroll, bar)
+    self.scroll = scroll
+    return self
 end
 
 ---------------------------------------------------------------------------
@@ -306,6 +325,20 @@ local function placeText(e)
     if d then text = text .. "  " .. W.ColorText(W.GREY, d) end
     return text
 end
+Details.PlaceText = placeText
+
+-- "Learnable now" / "15 more skill (190)" / "Train Artisan first (190)" for Recipes.CouldLearn.
+function Details.CouldLearnText(cl)
+    if cl.status == "now" then return W.ColorText(W.GREEN, L.COULD_NOW) end
+    if cl.status == "skill" then return W.ColorText(W.GOLD, L.COULD_MORE:format(cl.required - cl.rank, cl.required)) end
+    if cl.status == "rank" then
+        local step = ns.RankUps.byCap[cl.max]
+        local rank = step and L.RANK_NAMES[step.rank]
+        return W.ColorText(W.RED, rank and L.COULD_TRAIN:format(rank, cl.required) or L.COULD_NEEDS:format(cl.required))
+    end
+    return W.ColorText(W.GREY, L.COULD_UNKNOWN)
+end
+
 
 -- Where to get a material (QuestieDB): nearest vendors, mobs and gathering nodes; click a
 -- line to set a waypoint.
@@ -420,6 +453,19 @@ function Pane:Refresh()
     local who = Recipes.KnownBy(ns.db, id)
     self:Add({ text = L.WHO_CAN_CRAFT, font = "GameFontNormal", color = W.GOLD })
     self:Add({ indent = 1, text = #who > 0 and knownByText(who) or L.NOBODY, color = (#who == 0) and W.GREY or nil })
+    -- Nobody knows it: which of your characters with this profession could learn it.
+    if #who == 0 then
+        local could = Recipes.CouldLearn(ns.db, id)
+        if #could > 0 then
+            self:Add({ indent = 1, text = L.COULD_LEARN, color = W.GOLD })
+            for i, cl in ipairs(could) do
+                if i > 4 then break end
+                local ch = ns.db.characters[cl.key]
+                self:Add({ indent = 2, text = (ch and W.ClassName(ch) or cl.key) .. "  "
+                    .. W.ColorText(W.GREY, L.SKILL_RANK:format(cl.rank, cl.max)), right = Details.CouldLearnText(cl) })
+            end
+        end
+    end
     self:Gap()
 
     -- Reagents for the viewed character (bags usable; bank shown as fetch-first).

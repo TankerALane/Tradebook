@@ -44,7 +44,14 @@ local function initRow(row, data)
         row.who:SetText(table.concat(names, ", "))
         row.name:SetTextColor(1, 1, 1)
     else
-        row.who:SetText(W.ColorText(W.GREY, L.NOBODY))
+        -- Nobody knows it: the character closest to learning it, if any has the profession.
+        local cl = ns.Recipes.CouldLearn(ns.db, data.id)[1]
+        local ch = cl and ns.db.characters[cl.key]
+        if ch then
+            row.who:SetText(L.COULD_LEARN_WHO:format(W.ClassName(ch)) .. "  " .. ns.Details.CouldLearnText(cl))
+        else
+            row.who:SetText(W.ColorText(W.GREY, L.NOBODY))
+        end
         row.name:SetTextColor(0.6, 0.6, 0.6)
     end
 end

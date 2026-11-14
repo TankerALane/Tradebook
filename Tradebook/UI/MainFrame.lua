@@ -50,6 +50,7 @@ function UI.Refresh()
     UI.UpdateTabs()
     local view = UI.CurrentView()
     if view and view.Refresh then view:Refresh() end
+    ns.RankUp.Refresh()
 end
 
 ---------------------------------------------------------------------------
@@ -312,15 +313,29 @@ local function buildHeader()
         GameTooltip:Show()
     end)
     bar:SetScript("OnLeave", GameTooltip_Hide)
+    -- "Train <rank>" button at the right end of the bar (UI/RankUp.lua), when the viewed
+    -- character can train the next rank.
+    bar.rankUp = W.Button(overlay, "", 110, 18)
+    bar.rankUp:SetPoint("RIGHT", bar.fill, "RIGHT", -2, 0)
+    bar.rankUp:SetFrameLevel(overlay:GetFrameLevel() + 2)
+    bar.rankUp:SetScript("OnClick", function(self) if self.action then self.action() end end)
+    bar.rankUp:Hide()
     bar:Hide()
     frame.rankBar = bar
 end
 
 -- Show the skill bar for a character's profession, or hide it (rank == nil).
 -- label: shown in front of the numbers (the profession name).
-function UI.SetRankBar(rank, max, tip, label)
+-- rankUp: { text, onClick } shows the "Train <rank>" button.
+function UI.SetRankBar(rank, max, tip, label, rankUp)
     local bar = frame and frame.rankBar
     if not bar then return end
+    bar.rankUp:SetShown(rankUp ~= nil)
+    if rankUp then
+        bar.rankUp:SetText(rankUp.text)
+        bar.rankUp:SetWidth(math.max(90, bar.rankUp:GetFontString():GetStringWidth() + 24))
+        bar.rankUp.action = rankUp.onClick
+    end
     if not rank or not max or max <= 0 then
         bar:Hide()
         return

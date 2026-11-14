@@ -214,6 +214,120 @@ function Questie.RecipeSources(recipeID)
     return { list = list, best = all[1] }
 end
 
+---------------------------------------------------------------------------
+-- Rank-ups: trainers for a rank, and rank-up quests
+---------------------------------------------------------------------------
+
+local function sortByDistance(list)
+    table.sort(list, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return tostring(a.name) < tostring(b.name)
+    end)
+end
+
+-- Trainer NPC IDs for a profession that teach recipes needing at least `minRecipe` skill
+-- (bundled recipe source data). Cached per profession and level.
+local trainerIDs = {}
+local function trainersFromRecipes(skillLine, minRecipe)
+    local key = skillLine .. ":" .. minRecipe
+    if trainerIDs[key] then return trainerIDs[key] end
+    local seen, ids = {}, {}
+    for recipeID, s in pairs(ns.SourceData or {}) do
+        local lv = s.t and ns.RecipeLevels and ns.RecipeLevels[recipeID]
+        local required = lv and lv[1] == skillLine and ns.Sources.Required(recipeID)
+        if required and required >= minRecipe then
+            for _, id in ipairs(s.t) do
+                if not seen[id] then seen[id] = true; ids[#ids + 1] = id end
+            end
+        end
+    end
+    trainerIDs[key] = ids
+    return ids
+end
+
+-- Fallback for professions without trainer data (Herbalism, Skinning): NPCs whose title
+-- mentions the profession and "Trainer" (one pass over QuestieDB's NPCs, cached).
+local titleIDs = {}
+local function trainersByTitle(word)
+    if titleIDs[word] then return titleIDs[word] end
+    local ids = {}
+    local ok, all = pcall(lib.Npc.GetAllIds)
+    if ok and type(all) == "table" then
+        for _, id in ipairs(all) do
+            local sub = get(lib.Npc, id, "subName")
+            if type(sub) == "string" and sub:find(word, 1, true) and sub:find("Trainer", 1, true) then
+                ids[#ids + 1] = id
+            end
+        end
+    end
+    titleIDs[word] = ids
+    return ids
+end
+
+-- Nearest trainers (friendly to `faction`) that can teach `rank` of a profession:
+-- up to LIMIT entries, nearest first, or {} when none are known.
+function Questie.RankTrainers(skillLine, rank, faction)
+    if not Questie.Available() then return {} end
+    local ids = trainersFromRecipes(skillLine, ns.RankUps.trainerMinRecipe[rank] or 0)
+    if #ids == 0 then
+        local p = ns.Professions.Get(skillLine)
+        if p then ids = trainersByTitle(p.name) end
+    end
+    local all = nearestOf(ids, faction, "trainer")
+    local out = {}
+    for i = 1, math.min(LIMIT, #all) do out[i] = all[i] end
+    return out
+end
+
+-- Race masks for the two factions (classic races).
+local ALLIANCE_RACES = 1 + 4 + 8 + 64   -- Human, Dwarf, Night Elf, Gnome
+local HORDE_RACES = 2 + 16 + 32 + 128   -- Orc, Undead, Tauren, Troll
+local function forFaction(races, faction)
+    if not races or races == 0 then return true end
+    local mask = faction == "Alliance" and ALLIANCE_RACES or faction == "Horde" and HORDE_RACES or nil
+    if not mask then return true end
+    -- bit.band without the bit library: test each faction race bit.
+    for b = 0, 7 do
+        local bitValue = 2 ^ b
+        if math.floor(races / bitValue) % 2 == 1 and math.floor(mask / bitValue) % 2 == 1 then return true end
+    end
+    return false
+end
+
+-- A rank-up quest by name for `faction`:
+-- { id, name, givers = { nearest NPC entries }, level, skill = { skillLine, value },
+--   rep = { factionID, value }, prereqs = { { id, name } } } or nil.
+function Questie.RankQuest(name, faction)
+    if not Questie.Available() or not lib.Quest then return nil end
+    local ok, ids = pcall(lib.Quest.IdsByName, name)
+    if not ok or type(ids) ~= "table" then return nil end
+    for _, id in ipairs(ids) do
+        if forFaction(get(lib.Quest, id, "requiredRaces"), faction) then
+            local started = get(lib.Quest, id, "startedBy")
+            local givers = nearestOf(type(started) == "table" and started[1] or nil, faction, "quest")
+            sortByDistance(givers)
+            local prereqs = {}
+            for _, key in ipairs({ "preQuestSingle", "preQuestGroup" }) do
+                for _, q in ipairs(get(lib.Quest, id, key) or {}) do
+                    prereqs[#prereqs + 1] = { id = q, name = get(lib.Quest, q, "name") or ("#" .. q) }
+                end
+            end
+            local skill = get(lib.Quest, id, "requiredSkill")
+            local rep = get(lib.Quest, id, "requiredMinRep")
+            return {
+                id = id, name = get(lib.Quest, id, "name") or name,
+                givers = { givers[1], givers[2], givers[3] },
+                level = get(lib.Quest, id, "requiredLevel"),
+                skill = type(skill) == "table" and { skill[1], skill[2] } or nil,
+                rep = type(rep) == "table" and { rep[1], rep[2] } or nil,
+                prereqs = prereqs,
+            }
+        end
+    end
+    return nil
+end
+
 -- Clear distances when the player moves to another zone.
 function Questie.Start()
     ns.On("ZONE_CHANGED_NEW_AREA", function() cache = {} end)

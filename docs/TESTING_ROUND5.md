@@ -30,5 +30,21 @@ Before you start, scan the auction house once with Auctionator (Auctionator's "F
 - [ ] Click a far-away one: waypoint only, nothing marked.
 - [ ] In combat: clicking sets the waypoint only, and the X still closes the window.
 
+## D. Train the next rank
+Find a character whose skill is at 50+ with a cap of 75, 125+ with 150, or 200+ with 225 (`/tb fake` has Mirelle at Cooking 75/75).
+
+- [ ] The profession's skill bar shows a **Train Journeyman / Expert / Artisan** button at its right end. It's not there below the threshold, or after training (cap went up).
+- [ ] Click it: a **Train <rank> <profession>** window opens (drag to move, Escape closes). It says what it raises the cap to.
+- [ ] **Requirements**: skill and level, with "You: N" in green or red.
+- [ ] A crafting profession (e.g. Tailoring) lists the **nearest trainers** for that rank with distance; clicking one sets a waypoint (and targets and marks it nearby). [Are they really trainers who teach that rank?]
+- [ ] **Expert Cooking / Fishing / First Aid**: shows the **book** (icon, requirements, which characters have one), its auction/vendor price, and the nearest vendors that sell it.
+- [ ] **Artisan Fishing / First Aid**: shows the **quest** (name, level, reputation if any, prerequisite quests with Done/Not done) and the quest giver's location.
+- [ ] Viewing an **alt's** profession shows the button for that alt (their level and skill in the checks).
+- [ ] Herbalism / Skinning / Mining show trainers too. [Any missing?]
+
+## E. Could learn it
+- [ ] Open a recipe none of your characters know but one has the profession: under **Who can craft this** there's **Could learn it:** with the character, their skill, and "Learnable now" (green), "N more skill (X)" (gold) or "Train <rank> first (X)" (red).
+- [ ] **Who can craft…?** search: such recipes say "<Name> could learn it: …" instead of "No saved character knows this."
+
 ## Notes / errors
 

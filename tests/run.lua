@@ -11,6 +11,7 @@ local PURE_FILES = {
     "Tradebook/Data/SourceData.lua",
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
+    "Tradebook/Data/RankUps.lua",
     "Tradebook/Core/DB.lua",
     "Tradebook/Core/Characters.lua",
     "Tradebook/Core/Recipes.lua",
@@ -559,6 +560,62 @@ test("vendor and drop names are capped with a count", function()
     local text
     for _, l in ipairs(lines) do if l.text:find("^Drop") then text = l.text end end
     assert(text and text:find("more%)"), "drop line shows the remaining count: " .. tostring(text))
+end)
+
+---------------------------------------------------------------------------
+-- rank-ups
+---------------------------------------------------------------------------
+
+test("rank-up button shows 25 points before the cap", function()
+    local R = ns.RankUps
+    eq(R.Ready(197, { rank = 49, max = 75 }), false)
+    local ready, nextRank = R.Ready(197, { rank = 50, max = 75 })
+    eq(ready, true)
+    eq(nextRank.rank, "Journeyman")
+    eq(nextRank.level, 10)
+    eq(select(2, R.Ready(197, { rank = 130, max = 150 })).level, 20)
+    eq(select(2, R.Ready(197, { rank = 200, max = 225 })).level, 35)
+    eq(R.Ready(197, { rank = 210, max = 300 }), false, "nothing after Artisan")
+    eq(R.Ready(197, nil), false)
+end)
+
+test("rank-up routes: books and quests for the secondary professions", function()
+    local R = ns.RankUps
+    eq(R.Next(185, { max = 150 }).book, 16072, "Expert Cookbook")
+    eq(R.Next(185, { max = 225 }).book, nil, "Artisan Cooking: trainer")
+    eq(R.Next(356, { max = 150 }).bookLevel, 20)
+    eq(R.Next(356, { max = 225 }).quest, "Nat Pagle, Angler Extreme")
+    eq(R.Next(129, { max = 225 }).quest, "Triage")
+    eq(R.Next(197, { max = 150 }).book, nil, "Tailoring: trainer")
+end)
+
+test("rank-up requirements are checked against the character", function()
+    local nextRank = ns.RankUps.Next(197, { max = 150 })
+    local reqs = ns.RankUps.Requirements(nextRank, { rank = 131, max = 150 }, 18)
+    eq(reqs[1].ok, true, "skill 131 >= 125")
+    eq(reqs[2].ok, false, "level 18 < 20")
+    eq(ns.RankUps.Requirements(nextRank, { rank = 131 }, nil)[2].ok, false, "unknown level")
+end)
+
+test("could learn: characters with the profession, closest first", function()
+    local db = fixture(ns)
+    local real = ns.Sources.Required
+    ns.Sources.Required = function(id) return ({ [101] = 70, [102] = 145, [103] = 160 })[id] end
+    -- 101 (needs 70): Bo (75/75) knows 100 and 103 but not 101 -> learnable now.
+    local list = ns.Recipes.CouldLearn(db, 101)
+    eq(#list, 1)
+    eq(list[1].key, "Bo-Ironside")
+    eq(list[1].status, "now")
+    -- 102 (needs 145): Ana 140/150 -> 5 more skill; Bo 75/75 -> train the next rank.
+    list = ns.Recipes.CouldLearn(db, 102)
+    eq(list[1].key, "Ana-Forever")
+    eq(list[1].status, "skill")
+    eq(list[2].status, "rank")
+    -- 103 (needs 160): Ana 140/150 -> needs Expert first.
+    list = ns.Recipes.CouldLearn(db, 103)
+    eq(#list, 1)
+    eq(list[1].status, "rank")
+    ns.Sources.Required = real
 end)
 
 ---------------------------------------------------------------------------
