@@ -22,6 +22,7 @@ Locales\enUS.lua
 Data\Professions.lua
 Data\Camp.lua
 Data\SourceData.lua
+Data\RecipeVendors.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua

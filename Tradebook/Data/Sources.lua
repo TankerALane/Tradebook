@@ -1,8 +1,8 @@
 -- Data/Sources.lua
 -- PURE. Reads the bundled LibProfessionDB data (Data/SourceData.lua): where a recipe is
--- learned, its required skill, and skill-up colors from thresholds. The Forever client
--- exposes no source text (Phase 0), so this is the only source information.
--- Phase 2 can add farming/vendor-price data here without touching the UI.
+-- learned, its required skill, and skill-up colors from thresholds, with recipe vendors
+-- replaced by the Forever-checked data in Data/RecipeVendors.lua. The Forever client exposes
+-- no source text (Phase 0), so this is the only source information.
 
 local _, ns = ...
 local L = ns.L
@@ -12,10 +12,14 @@ ns.Sources = Sources
 
 local MAX_NAMES = 3
 
+local function npcName(id)
+    return (ns.RecipeVendorNames and ns.RecipeVendorNames[id]) or (ns.SourceNames and ns.SourceNames[id])
+end
+
 local function npcNames(ids, total)
     local names = {}
     for _, id in ipairs(ids or {}) do
-        local n = ns.SourceNames and ns.SourceNames[id]
+        local n = npcName(id)
         if n and #names < MAX_NAMES then names[#names + 1] = n end
     end
     local count = total or #(ids or {})
@@ -25,18 +29,58 @@ local function npcNames(ids, total)
     return text
 end
 
--- Source lines for the details pane: { { text, right } }, or nil when unknown.
--- resolve (optional): { quest = fn(id) -> name, item = fn(id) -> name } for runtime lookups.
-function Sources.Get(recipeID, resolve)
+-- Where a recipe comes from: the classic data (Data/SourceData.lua), with the vendors (and,
+-- where no vendor sells it, drops and quests) replaced by the Forever-checked data in
+-- Data/RecipeVendors.lua. Returns { t, tn, a, c, v, u, vn, d, dn, q, x, b, checked } or nil:
+--   v vendors (confirmed when checked), u unconfirmed vendors (one source), x 1 not in Forever
+--   yet / 2 sources disagree, b the remaining classic parts are unconfirmed, checked = the
+--   vendors were checked for Forever.
+function Sources.Raw(recipeID)
     local s = ns.SourceData and ns.SourceData[recipeID]
+    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    if not o then return s end
+    s = s or {}
+    local out = { t = s.t, tn = s.tn, a = s.a, c = s.c, checked = true, x = o.x, v = o.v, u = o.u }
+    local replaced = (o.d or o.q) ~= nil
+    if replaced then
+        out.d, out.q = o.d, o.q
+    else
+        out.d, out.dn, out.q = s.d, s.dn, s.q
+    end
+    -- What's still classic (and unconfirmed): trainers, containers, and drops/quests the
+    -- check didn't replace.
+    out.b = s.b == true and (out.t ~= nil or out.c ~= nil or (not replaced and (out.d or out.q) ~= nil))
+    return out
+end
+
+-- Vendors that sell a recipe: confirmed { npcID }, unconfirmed { npcID } (either may be empty).
+function Sources.Vendors(recipeID)
+    local s = Sources.Raw(recipeID)
+    if not s then return {}, {} end
+    if s.checked then return s.v or {}, s.u or {} end
+    return {}, s.v or {} -- not checked for Forever: classic data, unconfirmed
+end
+
+-- Source lines for the details pane: { { text, right, grey } }, or nil when unknown.
+-- resolve (optional): { quest = fn(id) -> name, item = fn(id) -> name } for runtime lookups.
+-- Second result: the classic parts are unconfirmed. Third: the vendors were checked for Forever.
+function Sources.Get(recipeID, resolve)
+    local s = Sources.Raw(recipeID)
     if not s then return nil end
     resolve = resolve or {}
     local out = {}
+    if s.x == 1 then out[#out + 1] = { text = L.SOURCE_NOT_YET, grey = true } end
+    if s.x == 2 then out[#out + 1] = { text = L.SOURCE_DISPUTED, grey = true } end
     if s.a == 1 then out[#out + 1] = { text = L.SOURCE_AUTO } end
     if s.t then
         out[#out + 1] = { text = L.SOURCE_TRAINER, right = L.SOURCE_LOCATIONS:format(s.tn or #s.t) }
     end
-    if s.v then out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(s.v, s.vn) } end
+    if s.v then
+        out[#out + 1] = { text = L.SOURCE_VENDOR .. ": " .. npcNames(s.v, not s.checked and s.vn or nil) }
+    end
+    if s.u then
+        out[#out + 1] = { text = L.SOURCE_VENDOR_UNCONFIRMED .. ": " .. npcNames(s.u) }
+    end
     if s.d then out[#out + 1] = { text = L.SOURCE_DROP .. ": " .. npcNames(s.d, s.dn) } end
     for _, q in ipairs(s.q or {}) do
         local name = resolve.quest and resolve.quest(q)
@@ -47,7 +91,7 @@ function Sources.Get(recipeID, resolve)
         out[#out + 1] = { text = L.SOURCE_CONTAINER .. ": " .. (name or ("item " .. item)) }
     end
     if #out == 0 then return nil end
-    return out, s.b == true
+    return out, s.b == true, s.checked == true
 end
 
 -- Required skill to learn (LibProfessionDB, Data/SourceData.lua), and whether it was
@@ -61,9 +105,9 @@ end
 -- How a recipe is learned: { trainer = bool, recipe = bool (a recipe item: vendor, drop,
 -- quest or container), auto = bool (learned with the profession) }, or nil when unknown.
 function Sources.Kinds(recipeID)
-    local s = ns.SourceData and ns.SourceData[recipeID]
+    local s = Sources.Raw(recipeID)
     if not s then return nil end
-    return { trainer = s.t ~= nil, recipe = (s.v or s.d or s.q or s.c) ~= nil, auto = s.a == 1 }
+    return { trainer = s.t ~= nil, recipe = (s.v or s.u or s.d or s.q or s.c) ~= nil, auto = s.a == 1 }
 end
 
 -- Can a character at `rank` learn this recipe now? true / false, or nil when the required

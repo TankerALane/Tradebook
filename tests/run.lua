@@ -9,6 +9,7 @@ local PURE_FILES = {
     "Tradebook/Data/Professions.lua",
     "Tradebook/Data/Camp.lua",
     "Tradebook/Data/SourceData.lua",
+    "Tradebook/Data/RecipeVendors.lua",
     "Tradebook/Data/SkillLevels.lua",
     "Tradebook/Data/Sources.lua",
     "Tradebook/Data/RankUps.lua",
@@ -558,12 +559,36 @@ end)
 test("vendor and drop names are capped with a count", function()
     local found
     for id, s in pairs(ns.SourceData) do
-        if s.d and s.dn and s.dn > 3 then found = id break end
+        if s.d and s.dn and s.dn > 3 and not ns.RecipeVendors[id] then found = id break end
     end
     local lines = ns.Sources.Get(found)
     local text
     for _, l in ipairs(lines) do if l.text:find("^Drop") then text = l.text end end
     assert(text and text:find("more%)"), "drop line shows the remaining count: " .. tostring(text))
+end)
+
+test("Forever-checked recipe vendors replace the classic ones", function()
+    -- 6417 Dig Rat Stew: classic says vendors; in Forever it's a quest reward (862).
+    local conf, unconf = ns.Sources.Vendors(6417)
+    eq(#conf + #unconf, 0, "no vendor")
+    eq(ns.Sources.Raw(6417).q[1], 862)
+    eq(ns.Sources.Kinds(6417).recipe, true, "still learned from a recipe item")
+    -- 28327 Steam Tonk Controller: one source (Gelvas Grimegate 14828), unconfirmed.
+    conf, unconf = ns.Sources.Vendors(28327)
+    eq(#conf, 0)
+    eq(unconf[1], 14828)
+    local lines = ns.Sources.Get(28327)
+    local found
+    for _, l in ipairs(lines) do if l.text:find("Gelvas Grimegate") then found = l.text end end
+    assert(found and found:find("unconfirmed"), tostring(found))
+    -- 24846 Spitfire Bracers: not in Forever yet, no vendor.
+    eq(ns.Sources.Raw(24846).x, 1)
+    eq(ns.Sources.Get(24846)[1].text, ns.L.SOURCE_NOT_YET)
+    -- 3957 Ice Deflector: adds the Forever vendor Super-Seller 680 (12246), confirmed.
+    conf = ns.Sources.Vendors(3957)
+    local has = false
+    for _, id in ipairs(conf) do if id == 12246 then has = true end end
+    eq(has, true)
 end)
 
 ---------------------------------------------------------------------------

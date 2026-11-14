@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Recipe vendors checked for WoW Forever.** The vendor list came from classic; every one of the 321 vendor-sold recipes was checked against Questie's Forever data and Forever websites. 74 vendors that don't sell the recipe in Forever (or aren't in Forever) are gone, 66 Forever vendors are added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Super-Seller 680, Vendor-Tron 1000 and more), and vendors only one source names say "(unconfirmed)". Recipes no vendor sells (Dig Rat Stew, the flasks, Runic Plate, several enchants) show their drop or quest instead, and recipes that don't seem to be in Forever yet say so.
 - **Fixed:** with **Not learned** and **Gives skill-ups** both ticked, recipes you haven't learned that would give skill-ups now show too, with a dot after the name in their skill-up colour. Recipes needing more skill than you have don't count.
 - **Enchants and other recipes without a result item** now say what they do on hover: the recipe's icon in the details pane, the Camp list and the leveling plan, the recipe list on the left, and search results (which now show a tooltip for every recipe).
 - **Shopping lists** are split into **Buy from a vendor** and **Buy at the auction house**, each item with its price per unit and total, and a subtotal per section. Send to Auctionator sends only the auction house items.

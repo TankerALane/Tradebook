@@ -1,11 +1,12 @@
 # Bundled data and keeping it current
 
-Tradebook ships two generated data files. Never edit them by hand; re-run the scripts.
+Tradebook ships generated data files. Never edit them by hand; re-run the scripts.
 
 | File | What | Source | How it's updated |
 |---|---|---|---|
 | `Tradebook/Data/SkillLevels.lua` | Skill-up thresholds (where each recipe turns yellow, green, grey) | WoW Forever's own `SkillLineAbility` table, via wago.tools | **Automatically checked every week** (GitHub Actions "Game data check"); a pull request opens when a new build changes anything |
 | `Tradebook/Data/SourceData.lua` | Where recipes are learned (trainer, vendor, drop, quest, container), NPC names, skill needed to learn | LibProfessionDB (MIT, by Pimptasty) | By hand when LibProfessionDB releases a new version |
+| `Tradebook/Data/RecipeVendors.lua` | Recipe vendors checked for WoW Forever (replace the classic vendor lists above) | `docs/research/recipe_vendors.json` (QuestieDB Forever + Forever web sources) | `python -I scripts/build_recipe_vendors.py` after editing the research file |
 
 ## Skill-up thresholds (every Forever build)
 
@@ -21,6 +22,46 @@ Tradebook ships two generated data files. Never edit them by hand; re-run the sc
 3. Run the tests, check `git diff`, commit.
 
 LibProfessionDB's Forever sources are borrowed from classic and flagged unconfirmed; Tradebook says so in the recipe details. Its skill-up thresholds are not used (they were wrong for ~400 recipes).
+
+## Recipe vendors (checked 2026-11-13, Forever 1.60.1)
+
+LibProfessionDB lists a vendor for 321 recipes, all copied from classic. Each was checked
+against two independent Forever sources:
+1. **QuestieDB for Forever** (the installed addon's baked data, decoded by
+   `scripts/research/qdb_parse.py`): who sells the recipe item. The recipe spell is linked to
+   its item through Forever's own game tables on wago.tools (`ItemEffect` with
+   `TriggerType = 6`: its `SpellID` is the taught recipe; `scripts/research/check.py`).
+2. **Forever web sources**: wow-professions.com/forever NPC pages (pages marked "not checked
+   in WoW Forever yet" not counted), forever.warcraftdb.com, Wowhead's Forever item pages
+   (zones only) and guides, MetaForge's Forever database, method.gg, wow.gg. Two of these
+   agreeing counts as "confirmed" on the web side.
+
+Rules (`scripts/research/merge_vendors.py`, then `make_research.py` writes the research file):
+- **Confirmed:** QuestieDB and the web agree, or two web sources agree.
+- **Unconfirmed** ("Vendor (unconfirmed)" in the addon): one source only.
+- **Removed:** only the classic list has it, the NPC isn't in Forever (later-expansion NPCs),
+  or the web sources show the vendor doesn't sell it (and QuestieDB doesn't list it).
+- Recipes no vendor sells show QuestieDB's drops and quests instead.
+
+Result: 283 recipes with a vendor (most confirmed; 51 vendor entries unconfirmed), 22 with no
+vendor in Forever (drops or quests: Dig Rat Stew, Festival Dress/Suit, the firework launchers,
+Runic Plate, the four flasks, several enchants), 74 classic vendors removed, 66 Forever vendors
+added (Nyalah Brightfire, Gritta Chumwater, Nasalanna Windsinger, Stitch Pinwizzle, Kor'gar,
+Fizzix Boomshot, Super-Seller 680, Vendor-Tron 1000, Balai Lok'Wein and others).
+
+Judgement calls:
+- Aendel Windspear's Cenarion Circle patterns and Vargus's Obsidian / Ironvine plans: QuestieDB
+  still lists them, but no recipe item for them exists in Forever's web databases and Vargus's
+  checked page sells new Forever plans instead. Shown as "doesn't seem to be in Forever yet".
+- Alchemist's Stone: one source says it's bought in Mount Hyjal (vendor unnamed), another that
+  it can't be obtained. Shown as "sources disagree".
+- Expert Cookbook, "The Bass and You" and "Under Wraps": QuestieDB plus the rank research above.
+- Worth checking in game: Lokhtos Darkbargainer's Blackrock Depths patterns (QuestieDB only,
+  zone matches on Wowhead), Gelvas Grimegate for Steam Tonk Controller and Andorov's Obsidian
+  plans (web only).
+
+To re-check after a patch: run `qdb_parse.py` on the new QuestieDB, `check.py`, redo the web
+pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors.py`.
 
 ## Profession trainers (seen in game, Forever 1.60.1, Undercity, 2026-11-13)
 

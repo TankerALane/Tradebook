@@ -579,6 +579,7 @@ function Pane:Refresh()
             self:Add({ indent = 1, text = L.LEARN_FROM, color = W.GOLD })
             for _, e in ipairs(near.list) do
                 local kind = e.kind == "trainer" and L.KIND_TRAINER or L.KIND_VENDOR
+                if e.unconfirmed then kind = L.KIND_VENDOR_UNCONFIRMED end
                 self:Add({ indent = 2, text = e.name .. "  " .. W.ColorText(W.GREY, "(" .. kind .. ")"),
                     right = placeText(e),
                     onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
@@ -587,13 +588,18 @@ function Pane:Refresh()
                         or { e.name, L.WAYPOINT_TARGET_CLICK } })
             end
         end
-        local sources, borrowed = ns.Sources.Get(id, {
+        local sources, borrowed, checked = ns.Sources.Get(id, {
             quest = function(q) return Compat.Call("C_QuestLog.GetTitleForQuestID", q) end,
             item = function(i) return (Compat.ItemInfo(i)) end,
         })
         if sources then
-            for _, s in ipairs(sources) do self:Add({ indent = 1, text = s.text, right = s.right }) end
-            if borrowed then self:Add({ indent = 1, text = L.SOURCE_UNCONFIRMED, color = W.GREY }) end
+            for _, s in ipairs(sources) do
+                self:Add({ indent = 1, text = s.text, right = s.right, color = s.grey and W.GREY or nil })
+            end
+            if borrowed then
+                self:Add({ indent = 1, text = checked and L.SOURCE_PARTLY_CHECKED or L.SOURCE_UNCONFIRMED,
+                    color = W.GREY })
+            end
         else
             self:Add({ indent = 1, text = L.SOURCE_UNKNOWN, color = W.GREY })
         end
