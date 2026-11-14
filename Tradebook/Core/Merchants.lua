@@ -8,8 +8,11 @@
 --     ever = { [recipeID] = true } (seen selling it on any visit),
 --     limited = { [recipeID] = true } (seen with limited stock on any visit),
 --     prices = { [recipeID] = copper } (gold price on the last visit it was listed, with your
---       reputation discount; not for recipes bought with Merchant's Favor or other tokens) }
--- Only vendors that sell a recipe item, or that the bundled data says sell one, are saved.
+--       reputation discount; not for recipes bought with Merchant's Favor or other tokens),
+--     items = { [itemID] = { n = name, p = gold price, s = stock (-1 unlimited),
+--       c = "currency:3402:60;item:1234:2" token / currency cost } } (everything it sells, last visit),
+--     loc = { m = uiMapID, x, y (0-100), z = zone name, c = continent, wx, wy (world yards) } }
+-- Every vendor you open is saved, so the search can find any item a scanned vendor sells.
 -- A limited recipe that's sold out may be missing from the window until it restocks, so a
 -- missing recipe never removes a vendor: it's shown as "not in stock when you visited".
 
@@ -24,25 +27,6 @@ local function npcID()
     if not guid or Compat.IsSecret(guid) then return nil end
     local id = guid:match("^Creature%-%d+%-%d+%-%d+%-%d+%-(%d+)")
     return tonumber(id)
-end
-
--- NPCs the bundled data names as a vendor of some recipe: { [npcID] = true } (built once).
-local dataVendors
-local function isDataVendor(id)
-    if not dataVendors then
-        dataVendors = {}
-        for _, o in pairs(ns.RecipeVendors or {}) do
-            for _, list in ipairs({ o.v or {}, o.u or {} }) do
-                for _, v in ipairs(list) do dataVendors[v] = true end
-            end
-        end
-        for recipeID, s in pairs(ns.SourceData or {}) do
-            if s.v and not (ns.RecipeVendors and ns.RecipeVendors[recipeID]) then
-                for _, v in ipairs(s.v) do dataVendors[v] = true end
-            end
-        end
-    end
-    return dataVendors[id] == true
 end
 
 -- PURE. Merge one visit into a saved vendor entry (or a new one). seen = { [recipeID] = stock },
@@ -63,17 +47,53 @@ function Merchants.Merge(entry, name, seen, now, prices)
     return entry
 end
 
--- One item's stock (numAvailable, -1 unlimited) and gold price (nil when it costs tokens or
--- currency such as Merchant's Favor), from the modern or the classic API.
+-- One item's stock (numAvailable, -1 unlimited), gold price (nil when it costs only tokens or
+-- currency such as Merchant's Favor) and name, from the modern or the classic API.
 local function stockOf(i)
     local info = Compat.Call("C_MerchantFrame.GetItemInfo", i)
     if type(info) == "table" then
-        local gold = not info.hasExtendedCost and info.price and info.price > 0 and info.price or nil
-        return info.numAvailable, gold
+        local gold = info.price and info.price > 0 and info.price or nil
+        return info.numAvailable, (not info.hasExtendedCost) and gold or nil, info.name, gold
     end
-    local _, _, price, _, numAvailable, _, _, extendedCost = Compat.Call("GetMerchantItemInfo", i)
-    return numAvailable, (not extendedCost and price and price > 0) and price or nil
+    local name, _, price, _, numAvailable, _, _, extendedCost = Compat.Call("GetMerchantItemInfo", i)
+    local gold = price and price > 0 and price or nil
+    return numAvailable, (not extendedCost) and gold or nil, name, gold
 end
+
+-- Token / currency cost of an item ("currency:3402:60;item:1234:2"), or nil.
+local function costOf(i)
+    local n = Compat.Call("GetMerchantItemCostInfo", i) or 0
+    local parts = {}
+    for j = 1, n do
+        local _, value, link, currencyName = Compat.Call("GetMerchantItemCostItem", i, j)
+        local kind, cid = (link or ""):match("(%a+):(%d+)")
+        if kind and cid and value then
+            parts[#parts + 1] = kind .. ":" .. cid .. ":" .. value
+        elseif currencyName and value then
+            parts[#parts + 1] = "name:" .. currencyName .. ":" .. value
+        end
+    end
+    return #parts > 0 and table.concat(parts, ";") or nil
+end
+
+-- Where you're standing (at the vendor): { m, x, y, z, c, wx, wy }, or nil.
+local function here()
+    local map = Compat.Call("C_Map.GetBestMapForUnit", "player")
+    if not map or Compat.IsSecret(map) then return nil end
+    local pos = Compat.Call("C_Map.GetPlayerMapPosition", map, "player")
+    if not pos then return nil end
+    local px, py = pos:GetXY()
+    local loc = { m = map, x = math.floor(px * 1000 + 0.5) / 10, y = math.floor(py * 1000 + 0.5) / 10 }
+    local info = Compat.Call("C_Map.GetMapInfo", map)
+    loc.z = info and info.name
+    local continent, world = Compat.Call("C_Map.GetWorldPosFromMapPos", map, pos)
+    if continent and world then
+        loc.c = continent
+        loc.wx, loc.wy = world:GetXY()
+    end
+    return loc
+end
+Merchants.Here = here
 
 local function itemIDOf(i)
     local id = Compat.Call("GetMerchantItemID", i)
@@ -90,20 +110,25 @@ local function read()
     if not id then return end
     local count = Compat.Call("GetMerchantNumItems") or 0
     if count == 0 then return end -- not loaded yet; MERCHANT_UPDATE reads again
-    local seen, prices, any = {}, {}, false
+    local seen, prices, items = {}, {}, {}
     for i = 1, count do
         local itemID = itemIDOf(i)
-        local recipeID = itemID and ns.RecipeItems and ns.RecipeItems[itemID]
-        if recipeID then
-            local stock, price = stockOf(i)
-            seen[recipeID] = tonumber(stock) or -1
-            prices[recipeID] = price
-            any = true
+        if itemID then
+            local stock, price, name, anyGold = stockOf(i)
+            local cost = costOf(i)
+            items[itemID] = { n = name, p = anyGold, s = tonumber(stock) or -1, c = cost }
+            local recipeID = ns.RecipeItems and ns.RecipeItems[itemID]
+            if recipeID then
+                seen[recipeID] = tonumber(stock) or -1
+                prices[recipeID] = price
+            end
         end
     end
     ns.db.vendors = ns.db.vendors or {}
-    if not any and not ns.db.vendors[id] and not isDataVendor(id) then return end
-    ns.db.vendors[id] = Merchants.Merge(ns.db.vendors[id], Compat.Call("UnitName", "npc"), seen, GetServerTime(), prices)
+    local entry = Merchants.Merge(ns.db.vendors[id], Compat.Call("UnitName", "npc"), seen, GetServerTime(), prices)
+    entry.items = items
+    entry.loc = here() or entry.loc
+    ns.db.vendors[id] = entry
     index = nil
     ns.Debug("vendor", id, ns.db.vendors[id].name, "recipes", ns.util.Count(seen))
     if ns.UI and ns.UI.Refresh then ns.UI.Refresh() end
@@ -150,6 +175,73 @@ function Merchants.Price(recipeID)
         if p and (not best or p < best) then best, who = p, e.name end
     end
     return best, who
+end
+
+-- PURE. Distance in yards between a saved vendor location and a position { c, wx, wy }, or nil
+-- (different continent or unknown).
+function Merchants.Distance(loc, pos)
+    if not (loc and pos and loc.c and pos.c and loc.c == pos.c and loc.wx and pos.wx) then return nil end
+    local dx, dy = loc.wx - pos.wx, loc.wy - pos.wy
+    return math.sqrt(dx * dx + dy * dy)
+end
+
+-- PURE. Search vendor items by name: { { itemID, name, npcID, vendor, price, cost, stock, loc,
+-- distance } }, one row per item at its nearest vendor (sorted: nearest first, then name), with
+-- the other vendors as `others`. vendors = TradebookDB.vendors; pos = your position or nil.
+function Merchants.Search(vendors, text, pos, limit)
+    local needle = (text or ""):lower()
+    if needle == "" then return {} end
+    local byItem = {}
+    for npc, e in pairs(vendors or {}) do
+        for itemID, it in pairs(e.items or {}) do
+            local name = it.n
+            if name and name:lower():find(needle, 1, true) then
+                local row = { itemID = itemID, name = name, npcID = npc, vendor = e.name, price = it.p,
+                    cost = it.c, stock = it.s, loc = e.loc, distance = Merchants.Distance(e.loc, pos), seenAt = e.seenAt }
+                local cur = byItem[itemID]
+                if not cur then
+                    row.others = 0
+                    byItem[itemID] = row
+                else
+                    local better = row.distance and (not cur.distance or row.distance < cur.distance)
+                    if better then
+                        row.others = cur.others + 1
+                        byItem[itemID] = row
+                    else
+                        cur.others = cur.others + 1
+                    end
+                end
+            end
+        end
+    end
+    local out = {}
+    for _, row in pairs(byItem) do out[#out + 1] = row end
+    table.sort(out, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return a.name < b.name
+    end)
+    if limit then for i = #out, limit + 1, -1 do out[i] = nil end end
+    return out
+end
+
+-- "2s 50c" / "60 Merchant's Favor" / both, for a search row { price, cost }.
+function Merchants.PriceText(row)
+    local parts = {}
+    if row.price then parts[#parts + 1] = ns.Prices.Money(row.price) end
+    for kind, id, value in (row.cost or ""):gmatch("(%a+):([^:;]+):(%d+)") do
+        local name
+        if kind == "currency" then
+            local info = Compat.Call("C_CurrencyInfo.GetCurrencyInfo", tonumber(id))
+            name = info and info.name
+        elseif kind == "item" then
+            name = Compat.ItemInfo(tonumber(id))
+        else
+            name = id
+        end
+        parts[#parts + 1] = value .. " " .. (name or (kind .. " " .. id))
+    end
+    return table.concat(parts, " + ")
 end
 
 function Merchants.Name(npc)

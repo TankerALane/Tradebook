@@ -32,5 +32,9 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] Filter menu: **From a vendor** and **From a mob** sit indented under **From a recipe**. Ticking one also ticks From a recipe and Not learned; unticking From a recipe clears both.
 - [ ] From a vendor shows only recipes sold by a vendor; From a mob only dropped ones; both ticked shows either (a recipe sold and dropped appears once).
 
+## E. Vendor database
+- [ ] Open a few vendors (any kind: food, reagents, the supply camp). Then type an item they sell in the search box (e.g. "thread", "water"): **Sold by vendors you've visited** lists it with the nearest vendor, price (or Merchant's Favor cost) and distance.
+- [ ] Hovering the row shows the item tooltip and the vendor; clicking sets a waypoint to the vendor.
+
 ## Notes / errors
 

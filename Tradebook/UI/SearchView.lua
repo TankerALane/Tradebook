@@ -1,6 +1,7 @@
 -- UI/SearchView.lua
 -- "Who can craft this?" results for the global search box: every recipe on the
--- account matching the text, with the characters who know it.
+-- account matching the text, with the characters who know it; then "Sold by vendors": items
+-- vendors you've opened sell (Core/Merchants.lua), at the nearest vendor, with the price.
 
 local _, ns = ...
 local L, W = ns.L, ns.W
@@ -25,14 +26,32 @@ local function createRow(row)
     row.who:SetPoint("RIGHT", -6, 0)
     row.who:SetWordWrap(false)
     row:SetScript("OnClick", function(self)
-        ns.UI.OpenRecipe(self.data.id, self.data.crafters[1], true)
+        local d = self.data
+        if d.header then return end
+        if d.vendorItem then
+            -- Waypoint to the vendor (where you stood when you opened it).
+            if d.loc and d.loc.m then ns.Waypoints.SetOnMap(d.loc.m, d.loc.x, d.loc.y, d.vendor) end
+            return
+        end
+        ns.UI.OpenRecipe(d.id, d.crafters[1], true)
     end)
     -- What it makes (item tooltip), or what it does for enchants and the like (spell tooltip).
     row:SetScript("OnEnter", function(self)
-        local r = self.data and self.data.recipe
-        if not r then return end
+        local d = self.data
+        if not d or d.header then return end
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        if r.o then GameTooltip:SetItemByID(r.o) else GameTooltip:SetSpellByID(self.data.id) end
+        if d.vendorItem then
+            GameTooltip:SetItemByID(d.itemID)
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(L.VENDOR_ITEM_TIP:format(d.vendor or "?", d.loc and d.loc.z or "?"), 1, 1, 1)
+            if d.others > 0 then GameTooltip:AddLine(L.VENDOR_ITEM_OTHERS:format(d.others), 0.7, 0.7, 0.7) end
+            if d.loc and d.loc.m then GameTooltip:AddLine(L.WAYPOINT_CLICK, 0.7, 0.7, 0.7) end
+            GameTooltip:Show()
+            return
+        end
+        local r = d.recipe
+        if not r then return end
+        if r.o then GameTooltip:SetItemByID(r.o) else GameTooltip:SetSpellByID(d.id) end
         GameTooltip:Show()
     end)
     row:SetScript("OnLeave", GameTooltip_Hide)
@@ -40,6 +59,25 @@ end
 
 local function initRow(row, data)
     row.data = data
+    row.icon:Show()
+    if data.header then
+        row.icon:Hide()
+        row.name:SetText(W.ColorText(W.GOLD, data.header))
+        row.prof:SetText("")
+        row.who:SetText("")
+        return
+    end
+    if data.vendorItem then
+        local icon = ns.Compat.Call("C_Item.GetItemIconByID", data.itemID)
+        row.icon:SetTexture(icon or 134400)
+        row.name:SetText(data.name)
+        row.name:SetTextColor(1, 1, 1)
+        row.prof:SetText(data.vendor or "")
+        local price = ns.Merchants.PriceText(data)
+        local where = data.distance and ns.Locations.DistanceText(data.distance) or (data.loc and data.loc.z) or ""
+        row.who:SetText(price .. "  " .. W.ColorText(W.GREY, where))
+        return
+    end
     row.icon:SetTexture(data.recipe.i or 134400)
     row.name:SetText(data.recipe.n)
     local p = ns.Professions.Get(data.recipe.s)
@@ -91,6 +129,17 @@ end
 function View:Refresh()
     local results = ns.Recipes.Search(ns.db, self.text, { limit = 300, onlyKnown = self.knownOnly })
     self.title:SetText(L.SEARCH_ALL .. "  " .. W.ColorText(W.GOLD, self.text or ""))
-    self.list:SetItems(results)
-    self.empty:SetText(#results == 0 and L.NO_RECIPES or "")
+    -- Items sold by vendors you've opened, nearest vendor first.
+    local sold = ns.Merchants.Search(ns.db.vendors, self.text, ns.Merchants.Here(), 200)
+    local rows = {}
+    for _, r in ipairs(results) do rows[#rows + 1] = r end
+    if #sold > 0 then
+        rows[#rows + 1] = { header = L.SOLD_BY_VENDORS:format(#sold) }
+        for _, r in ipairs(sold) do
+            r.vendorItem = true
+            rows[#rows + 1] = r
+        end
+    end
+    self.list:SetItems(rows)
+    self.empty:SetText(#rows == 0 and L.NO_RECIPES or "")
 end

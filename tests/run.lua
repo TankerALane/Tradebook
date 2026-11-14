@@ -683,6 +683,27 @@ test("vendor windows: seen vendors confirm, missing ones are noted", function()
     eq(notes[10].missing, false, "never visited")
 end)
 
+test("vendor items: search finds the nearest vendor that sells it", function()
+    local M = ns.Merchants
+    local vendors = {
+        [1] = { name = "Far Vendor", items = { [159] = { n = "Refreshing Spring Water", p = 25, s = -1 } },
+            loc = { m = 1, x = 10, y = 10, c = 1, wx = 1000, wy = 0 } },
+        [2] = { name = "Near Vendor", items = { [159] = { n = "Refreshing Spring Water", p = 25, s = -1 },
+            [2320] = { n = "Coarse Thread", p = 10, s = -1 } }, loc = { m = 1, x = 50, y = 50, c = 1, wx = 10, wy = 0 } },
+        [3] = { name = "Other Continent", items = { [159] = { n = "Refreshing Spring Water", p = 25, s = -1 } },
+            loc = { m = 2, x = 1, y = 1, c = 0, wx = 0, wy = 0 } },
+    }
+    local pos = { c = 1, wx = 0, wy = 0 }
+    local rows = M.Search(vendors, "spring", pos)
+    eq(#rows, 1, "one row per item")
+    eq(rows[1].vendor, "Near Vendor")
+    eq(rows[1].others, 2)
+    eq(math.floor(rows[1].distance), 10)
+    eq(M.Distance(vendors[3].loc, pos), nil, "different continent")
+    eq(#M.Search(vendors, "thread", nil), 1, "works without a position")
+    eq(#M.Search(vendors, "", pos), 0)
+end)
+
 test("recipe items map to the recipe they teach", function()
     eq(ns.RecipeItems[2598], 2389, "Pattern: Red Linen Robe")
     eq(ns.RecipeItems[6346], 7776, "Formula: Enchant Chest - Lesser Intellect")

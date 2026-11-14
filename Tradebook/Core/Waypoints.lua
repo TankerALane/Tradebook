@@ -14,6 +14,11 @@ function Waypoints.Set(areaID, x, y, title)
         ns.Print(L.WAYPOINT_NONE)
         return false
     end
+    return Waypoints.SetOnMap(map, x, y, title)
+end
+
+-- Same, for a UI map ID (positions saved from the game's map API).
+function Waypoints.SetOnMap(map, x, y, title)
     local tomtom = _G.TomTom
     if type(tomtom) == "table" and type(tomtom.AddWaypoint) == "function" then
         local ok = pcall(tomtom.AddWaypoint, tomtom, map, x / 100, y / 100, { title = title, from = "Tradebook" })

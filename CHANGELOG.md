@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Vendor database.** Every vendor you open is saved with everything it sells (gold price, Merchant's Favor or other costs, stock) and where it stands. The search box also lists **items sold by vendors you've visited**, at the nearest vendor with its price; click for a waypoint.
 - **Filter: From a vendor / From a mob** under "Not learned > From a recipe". A recipe that's both sold and dropped shows under either.
 - **Where to get recipes: deep dive.** Every recipe was checked against Forever sources. Recipe sources now list **who drops it** (top 5, with zone, level and drop chance from recorded loots, e.g. "11% (1 of 9)"; click for a waypoint), **world drops** with the mob level range, trainer and quest recipes, and **"Not available in WoW Forever"** for Season of Discovery leftovers. 302 recipes that said "Unknown source" now have one.
 - **Buy the recipe: vendor vs auction house.** Recipes a vendor sells for gold show the vendor price (what you saw in the vendor's window, with your reputation discount; otherwise Auctionator's or the game's base price) next to the auction house price, and mark the cheaper one.
