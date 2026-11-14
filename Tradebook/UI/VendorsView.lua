@@ -60,6 +60,16 @@ local function setWaypoint(row)
     if w.map then ns.Waypoints.SetOnMap(w.map, w.x, w.y, row.name) else ns.Waypoints.Set(w.areaID, w.x, w.y, row.name) end
 end
 
+-- Tooltip lines for a vendor row (also used by its target button, which covers the row).
+local function vendorTooltip(r)
+    local lines = { r.name or ("NPC " .. r.npcID), SOURCE_TEXT(r.source) }
+    if r.seenAt then lines[#lines + 1] = L.VENDOR_SEEN_AGO:format(W.Ago(r.seenAt)) end
+    if r.stock and r.stock >= 0 then lines[#lines + 1] = L.VENDOR_LIMITED_TIP:format(r.stock) end
+    if r.price and not r.priceSeen then lines[#lines + 1] = L.VENDOR_BASE_PRICE_TIP end
+    if r.waypoint then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
+    return lines
+end
+
 local function createRow(row)
     row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
     row.toggle = row:CreateTexture(nil, "ARTWORK")
@@ -92,13 +102,9 @@ local function createRow(row)
         if d.kind == "item" then
             GameTooltip:SetItemByID(d.itemID)
         elseif d.kind == "vendor" then
-            local r = d.row
-            GameTooltip:SetText(r.name or ("NPC " .. r.npcID), 1, 1, 1)
-            GameTooltip:AddLine(SOURCE_TEXT(r.source), 0.7, 0.7, 0.7)
-            if r.seenAt then GameTooltip:AddLine(L.VENDOR_SEEN_AGO:format(W.Ago(r.seenAt)), 0.7, 0.7, 0.7) end
-            if r.stock and r.stock >= 0 then GameTooltip:AddLine(L.VENDOR_LIMITED_TIP:format(r.stock), 1, 0.82, 0) end
-            if r.price and not r.priceSeen then GameTooltip:AddLine(L.VENDOR_BASE_PRICE_TIP, 0.7, 0.7, 0.7, true) end
-            if r.waypoint then GameTooltip:AddLine(L.WAYPOINT_CLICK, 0.7, 0.7, 0.7) end
+            for i, line in ipairs(vendorTooltip(d.row)) do
+                if i == 1 then GameTooltip:SetText(line, 1, 1, 1) else GameTooltip:AddLine(line, 0.7, 0.7, 0.7, true) end
+            end
         else
             GameTooltip:SetText(L.VENDOR_SEE_ALL_TIP, 1, 1, 1)
         end
@@ -109,6 +115,8 @@ end
 
 local function initRow(row, data)
     row.data = data
+    -- Rows are reused while scrolling: drop this row's old target button first.
+    ns.TargetButtons.Release(row)
     row.name:ClearAllPoints()
     row.mid:ClearAllPoints()
     if data.kind == "item" then
@@ -144,6 +152,10 @@ local function initRow(row, data)
         return
     end
     local r = data.row
+    -- Click: waypoint, and target + purple diamond when the vendor is nearby (out of combat).
+    if r.name and r.waypoint then
+        ns.TargetButtons.Attach(row, row, r.name, function() setWaypoint(r) end, vendorTooltip(r))
+    end
     row.name:SetText(r.name or ("NPC " .. r.npcID))
     row.name:SetTextColor(1, 1, 1)
     row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)

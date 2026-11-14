@@ -620,8 +620,9 @@ function Pane:Refresh()
                 end
                 self:Add({ indent = 2, text = name .. "  " .. W.ColorText(W.GOLD, chance), right = zone,
                     onClick = e and function() ns.Waypoints.Set(e.areaID, e.x, e.y, d.name or e.name) end or nil,
+                    target = e and (d.name or e.name) or nil,
                     tooltip = e and { d.name or e.name, d.loots > 0 and L.DROP_SAMPLE_TIP:format(d.drops, d.loots) or nil,
-                        L.WAYPOINT_CLICK } or nil })
+                        L.WAYPOINT_TARGET_CLICK } or nil })
             end
         end
         local sources, borrowed, checked = ns.Sources.Get(id, {

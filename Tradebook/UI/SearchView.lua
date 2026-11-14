@@ -59,6 +59,7 @@ end
 
 local function initRow(row, data)
     row.data = data
+    ns.TargetButtons.Release(row) -- rows are reused while scrolling
     row.icon:Show()
     if data.header then
         row.icon:Hide()
@@ -76,6 +77,11 @@ local function initRow(row, data)
         local price = ns.Merchants.PriceText(data)
         local where = data.distance and ns.Locations.DistanceText(data.distance) or (data.loc and data.loc.z) or ""
         row.who:SetText(price .. "  " .. W.ColorText(W.GREY, where))
+        if data.vendor and data.loc and data.loc.m then
+            ns.TargetButtons.Attach(row, row, data.vendor, function()
+                ns.Waypoints.SetOnMap(data.loc.m, data.loc.x, data.loc.y, data.vendor)
+            end, { data.name, L.VENDOR_ITEM_TIP:format(data.vendor, data.loc.z or "?"), L.WAYPOINT_TARGET_CLICK })
+        end
         return
     end
     row.icon:SetTexture(data.recipe.i or 134400)

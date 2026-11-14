@@ -41,6 +41,7 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] Type "thread": items list with the nearest vendor, price and distance; click one to expand the 5 nearest vendors; **See all** shows the rest; clicking a vendor sets a waypoint.
 - [ ] The status line says how many vendors you've scanned, the community count, and Questie's item count (after a moment while it loads).
 - [ ] Filter: **Zone** lists zones from the results; choosing one with an empty search lists everything sold there. **Paid with: Tokens** shows the supply camp recipes with their Merchant's Favor cost. **Data from** narrows to your scans / community / Questie.
+- [ ] Standing near a vendor, clicking its row (Vendors tab, search results, or a mob under Dropped by) targets it and puts a purple diamond on it, as well as setting the waypoint.
 - [ ] Questie vendors show "(base)" prices; vendors you've opened show real prices.
 - [ ] **Share your scans** (or /tb share): a window with the share text selected and the GitHub form address. [Optional: paste it into the form to try it.]
 
