@@ -589,7 +589,9 @@ function Pane:Refresh()
         if near then
             self:Add({ indent = 1, text = L.LEARN_FROM, color = W.GOLD })
             for _, e in ipairs(near.list) do
-                local kind = e.kind == "trainer" and (e.seen and L.KIND_TRAINER_SEEN or L.KIND_TRAINER) or L.KIND_VENDOR
+                -- Only what isn't confirmed is marked: a trainer nobody has seen teaching it
+                -- (the classic list only) is "unconfirmed"; confirmed ones carry no label.
+                local kind = e.kind == "trainer" and (e.seen and L.KIND_TRAINER or L.KIND_TRAINER_UNCONFIRMED) or L.KIND_VENDOR
                 if e.missing then
                     kind = L.KIND_VENDOR_NOT_IN_STOCK
                 elseif e.unconfirmed then
@@ -702,7 +704,7 @@ function Pane:RecipeVendorPrice(recipeID, purchase)
     local conf, unconf = ns.Sources.Vendors(recipeID)
     if #conf + #unconf == 0 then return nil end
     local seen = ns.Merchants and ns.Merchants.Price(recipeID)
-    if seen then return function() return seen end, L.PRICE_SEEN end
+    if seen then return function() return seen end, nil end -- the real price: no note
     return function(itemID)
         local auctionatorVendor = ns.Prices.Available() and ns.Prices.VendorPrice and ns.Prices.VendorPrice(itemID)
         return auctionatorVendor or (ns.RecipeItemPrice and ns.RecipeItemPrice[itemID])

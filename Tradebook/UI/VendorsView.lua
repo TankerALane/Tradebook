@@ -161,7 +161,9 @@ local function initRow(row, data)
     row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
     row.mid:SetPoint("RIGHT", row.right, "LEFT", -8, 0)
     row.mid:SetText(placeText(r))
-    row.right:SetText(priceText(r) .. "  " .. W.ColorText(W.GREY, SOURCE_TEXT(r.source)))
+    -- Only unconfirmed vendors are marked (Questie lists them, nobody has scanned them); the
+    -- source is in the tooltip.
+    row.right:SetText(priceText(r) .. (r.source == "questie" and ("  " .. W.ColorText(W.GREY, L.VENDOR_UNCONFIRMED)) or ""))
 end
 
 ---------------------------------------------------------------------------

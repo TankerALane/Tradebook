@@ -25,7 +25,7 @@ Pick recipes you haven't learned and look at **Source** in the details pane.
 - [ ] A Season of Discovery leftover (e.g. Schematic: Soul Vessel) says "Not available in WoW Forever."
 - [ ] A recipe item that isn't soulbound shows **Auction house** with the recipe's icon and Auctionator's price (or "no recent price"); a soulbound one (e.g. a Merchant's Favor formula) doesn't.
 - [ ] Recipes you already know also show their Source section.
-- [ ] A recipe a vendor sells for gold (e.g. Recipe: Smoked Sagefish) shows **Vendor** with a price ("(before reputation discounts)" until you've opened that vendor, then "(seen at a vendor)") next to **Auction house**, and "cheaper" on the lower one. Merchant's Favor recipes show no gold vendor price.
+- [ ] A recipe a vendor sells for gold (e.g. Recipe: Smoked Sagefish) shows **Vendor** with a price ("(before reputation discounts)" until you've opened that vendor, then no note) next to **Auction house**, and "cheaper" on the lower one. Merchant's Favor recipes show no gold vendor price.
 - [ ] Kithas: open his window and check for Enchant Chest - **Lesser Mana** / Lesser Intellect (Tradebook records it either way).
 
 ## D. Filters
