@@ -408,8 +408,8 @@ function View:Build(parent)
     self.charBtn:SetScript("OnClick", charMenu)
 
     -- Find Herbs / Find Minerals: drag to an action bar or click to track (UI/TrackingButton.lua).
+    -- (positioned in View:Layout, its own row above the search box)
     self.tracking = ns.TrackingButton.Create(left)
-    self.tracking:SetPoint("LEFT", self.charBtn, "RIGHT", 8, 0)
 
     -- (The rank is shown as a skill bar in the window header: ns.UI.SetRankBar.)
 
@@ -467,6 +467,7 @@ end
 --   row 1 (y 0):  character picker | Friends button (right, when shown)
 --   row 2:        note text (full width)
 --   row 3:        "Open <profession>" button (when shown)
+--   row 4:        Find Herbs / Find Minerals icon (when the character knows it)
 --   then the search + Filter row and the list.
 function View:Layout(showOpen)
     self.friendsBtn:ClearAllPoints()
@@ -480,6 +481,9 @@ function View:Layout(showOpen)
     self.openBtn:ClearAllPoints()
     self.openBtn:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 8, -(8 + y))
     if showOpen then y = y + 26 end
+    self.tracking:ClearAllPoints()
+    self.tracking:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 12, -(8 + y + 2))
+    if self.tracking.spellID then y = y + 38 end
     self.search:ClearAllPoints()
     self.search:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 14, -(8 + y + 4))
     self.filterBtn:ClearAllPoints()

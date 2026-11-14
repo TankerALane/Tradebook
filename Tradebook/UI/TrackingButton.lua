@@ -88,9 +88,12 @@ end
 -- The icon button (not secure). Position it, then call :SetSkill(skillLineID) on each refresh.
 function TrackingButton.Create(parent)
     local b = CreateFrame("Button", nil, parent)
-    b:SetSize(24, 24)
+    b:SetSize(32, 32)
     b.tex = b:CreateTexture(nil, "ARTWORK")
     b.tex:SetAllPoints()
+    -- The spell's name to the right of the icon.
+    b.label = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    b.label:SetPoint("LEFT", b, "RIGHT", 8, 0)
     b:RegisterForDrag("LeftButton")
     b:SetScript("OnDragStart", function(self) pickup(self.spellID) end)
     b:SetScript("OnEnter", function(self) showTooltip(self, self.spellID) end)
@@ -106,6 +109,7 @@ function TrackingButton.Create(parent)
             return
         end
         self.tex:SetTexture(Compat.Call("C_Spell.GetSpellTexture", spellID) or "Interface\\Icons\\INV_Misc_QuestionMark")
+        self.label:SetText(Compat.Call("C_Spell.GetSpellName", spellID) or "")
         if self:IsShown() then attach(self) else self:Show() end
     end
     TrackingButton.icon = b
