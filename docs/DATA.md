@@ -140,6 +140,9 @@ Three sources, best first (Core/VendorDB.lua):
    before reputation discounts) and the newest stock and cost; items are never dropped because a
    later report lacks them (limited stock). Close the merged issues after a release.
    Seeded 2026-11-14 from the maintainer's own scans (`scripts/research/seed_from_savedvars.lua`).
+   To import the maintainer's own scans directly (no form): `/reload` in game, then
+   `luajit scripts/research/seed_from_savedvars.lua <WTF/.../SavedVariables/Tradebook.lua> > scans.txt`
+   and `python -I scripts/merge_vendor_shares.py --file scans.txt`.
 3. **QuestieDB** at runtime (nothing copied; QuestieDB is GPL-3, Tradebook MIT), with the game's
    base buy price (`Tradebook/Data/ItemPrices.lua`, from ItemSparse, weekly with the game data).
 
