@@ -87,6 +87,14 @@ local function createRow(row)
     row:SetScript("OnLeave", GameTooltip_Hide)
 end
 
+-- Rank groups for browsing (by the skill a recipe needs).
+local BROWSE_GROUPS = {
+    { rank = "Apprentice", from = 1, upTo = 75 },
+    { rank = "Journeyman", from = 75, upTo = 150 },
+    { rank = "Expert", from = 150, upTo = 225 },
+    { rank = "Artisan", from = 225, upTo = 301 },
+}
+
 local RECIPE_INDENT = 20 -- where a section header's name starts
 
 local function initRow(row, data)
@@ -166,9 +174,29 @@ function View:BuildItems()
         table.insert(groups[key], item)
     end
 
+    -- Browsing a profession nobody has: the game gives no category names while it's closed,
+    -- so recipes are grouped by the rank they need instead (in rank order).
+    local rankOrder = {}
+    local function rankGroup(id)
+        local need = ns.Sources.Required(id)
+        if not need then
+            local lv = ns.RecipeLevels and ns.RecipeLevels[id]
+            need = lv and lv[2] and math.max(1, lv[2] - 10) -- learned a little below yellow
+        end
+        if not need then return nil end
+        for i, g in ipairs(BROWSE_GROUPS) do
+            if need < g.upTo then
+                local name = L.BROWSE_GROUP:format(L.RANK_NAMES[g.rank] or g.rank, g.from, g.upTo - 1)
+                rankOrder[name] = i
+                return name
+            end
+        end
+        return nil
+    end
+
     for _, id in ipairs(Recipes.ForProfession(db, self.skill)) do
         local r = db.recipes[id]
-        if not self.query or ns.util.Matches(r.n, self.query) then
+        if r.n and r.n ~= "" and (not self.query or ns.util.Matches(r.n, self.query)) then
             local learned = learnedMap[id] ~= nil
             local item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = db.pinned[id] ~= nil }
             if live and learned then
@@ -211,11 +239,17 @@ function View:BuildItems()
                 nearestList[#nearestList + 1] = item
             elseif keep then
                 local cat = db.categories[r.c]
-                add(cat and cat.n or OTHER or "Other", item)
+                local group = cat and cat.n or (self.browsing and rankGroup(id)) or OTHER or "Other"
+                add(group, item)
             end
         end
     end
-    table.sort(order)
+    table.sort(order, function(a, b)
+        local ra, rb = rankOrder[a], rankOrder[b]
+        if ra and rb then return ra < rb end
+        if (ra ~= nil) ~= (rb ~= nil) then return ra ~= nil end
+        return a < b
+    end)
     table.sort(nearestList, function(a, b)
         if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
         if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end

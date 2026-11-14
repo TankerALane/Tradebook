@@ -255,7 +255,7 @@ function RankUp.Refresh()
         cost, costNote = ns.Prices.Cheapest(p) or nextRank.bookPrice, nil
     end
     if cost then
-        local money = isMe and Compat.Call("GetMoney")
+        local money = isMe and not ns.fake and Compat.Call("GetMoney")
         local text = nextRank.book and L.RANKUP_COST_BOOK or L.RANKUP_COST
         if costNote then text = text .. "  " .. W.ColorText(W.GREY, costNote) end
         local right = ns.Prices.Money(cost)

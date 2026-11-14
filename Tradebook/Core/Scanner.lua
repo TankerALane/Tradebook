@@ -172,7 +172,7 @@ end
 -- DB). Recipe info and schematics can be read by ID with the profession closed (Phase 0).
 function Scanner.CacheRecipeInto(db, id, skillLineID)
     local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
-    if not (info and info.name) then return false end
+    if not (info and info.name and info.name ~= "") then return false end
     local def = ns.Professions.Get(skillLineID)
     cacheRecipe(id, info, skillLineID, def and def.name, db)
     return true

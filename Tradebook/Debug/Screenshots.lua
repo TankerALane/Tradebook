@@ -111,7 +111,8 @@ Shots.PLAN = {
         local view = ns.UI.views.profession
         local items = view:BuildItems()
         for _, item in ipairs(items) do
-            if not item.header and ns.db.recipes[item.id] and ns.db.recipes[item.id].r then
+            local r = not item.header and ns.db.recipes[item.id]
+            if r and r.o and #ns.Recipes.Reagents(r) > 0 then
                 view:SelectRecipe(item.id)
                 break
             end

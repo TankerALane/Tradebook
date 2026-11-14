@@ -213,7 +213,8 @@ L.SHOW_HIDDEN = "Show hidden characters"
 L.NEXT_RANKUP = "Next rank-up"
 L.CLOSEST_RANKUP = "%s  %d/%d  -  %d to %s"
 L.READY_TO_TRAIN = "%s  %d/%d  -  train %s"
-L.RANK_NAMES = { Journeyman = "Journeyman", Expert = "Expert", Artisan = "Artisan" }
+L.RANK_NAMES = { Apprentice = "Apprentice", Journeyman = "Journeyman", Expert = "Expert", Artisan = "Artisan" }
+L.BROWSE_GROUP = "%s (%d-%d)"
 
 -- Rank-up pop-up
 L.RANKUP_BUTTON = "Train %s"
