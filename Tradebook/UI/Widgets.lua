@@ -55,16 +55,51 @@ function W.Check(parent, text, onClick)
     return c
 end
 
+-- Two-column tooltip lines: every { left, right } line in one tooltip starts its right part
+-- at the same x (just past the widest left part), by padding with spaces measured in the
+-- tooltip font. (AddDoubleLine would push the right parts to the far edge instead.)
+local measure
+local function textWidth(text)
+    if not measure then
+        measure = UIParent:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+        measure:Hide()
+    end
+    measure:SetText(text)
+    return measure:GetStringWidth()
+end
+
+local COLUMN_GAP = 12
+local function columnLines(list)
+    local col = 0
+    for _, line in ipairs(list) do
+        if type(line) == "table" then col = math.max(col, textWidth(line[1])) end
+    end
+    local space = math.max(1, textWidth("a a") - textWidth("aa"))
+    local out = {}
+    for i, line in ipairs(list) do
+        if type(line) == "table" then
+            local pad = math.floor((col + COLUMN_GAP - textWidth(line[1])) / space + 0.5)
+            out[i] = line[1] .. string.rep(" ", math.max(1, pad)) .. "|cffffffff" .. line[2] .. "|r"
+        else
+            out[i] = line
+        end
+    end
+    return out
+end
+
 function W.Tooltip(owner, lines, anchor)
     owner:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, anchor or "ANCHOR_RIGHT")
         local list = type(lines) == "function" and lines(self) or lines
         if type(list) == "string" then list = { list } end
-        -- A line is text, or { left, right } for two columns (right column aligned, no wrap).
+        -- A line is text, or { left, right } for two aligned columns (no wrap).
+        local hasColumns = false
+        for _, line in ipairs(list or {}) do if type(line) == "table" then hasColumns = true end end
+        local aligned = hasColumns and columnLines(list) or nil
         for i, line in ipairs(list or {}) do
             if type(line) == "table" then
                 if i == 1 then GameTooltip:SetText(" ") end
-                GameTooltip:AddDoubleLine(line[1], line[2], nil, nil, nil, 1, 1, 1)
+                GameTooltip:AddLine(aligned[i], nil, nil, nil, false)
             elseif i == 1 then
                 GameTooltip:SetText(line, 1, 1, 1, 1, true)
             else

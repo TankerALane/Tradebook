@@ -327,7 +327,7 @@ function Pane:ReagentTooltip(c, name, item)
     local where = ns.Questie.HasSources(item.itemID) and ns.Questie.WhereToGet(item.itemID)
     if where and #where.vendors > 0 then
         lines[#lines + 1] = " "
-        lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY)
+        lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY .. ":")
         for _, e in ipairs(where.vendors) do lines[#lines + 1] = { INDENT .. e.name, placeText(e) } end
     end
     if ns.Prices.Available() then
