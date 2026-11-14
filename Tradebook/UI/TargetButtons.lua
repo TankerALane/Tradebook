@@ -16,17 +16,28 @@ ns.TargetButtons = TargetButtons
 
 local pool, used = {}, 0
 local DIAMOND = 3 -- raid target icon 3 = purple diamond
+local NL = string.char(10)
+
+-- The NPC Tradebook last marked. The game hides raid marker values from addons ("secret"
+-- values that can't be compared), so we remember what we marked instead of reading it.
+local lastMarked
+
+-- The target's name, or nil when there's no target or the game hides it.
+local function targetName()
+    if not UnitExists("target") then return nil end
+    local n = UnitName("target")
+    if issecretvalue and issecretvalue(n) then return nil end
+    return n
+end
 
 -- The macro, built just before each click (PreClick runs out of combat only, where
 -- attributes can change). Marking is protected, so it's done in the macro with /tm:
 --   /cleartarget first, so an out-of-range NPC leaves no target and /tm marks nothing
 --     (instead of marking whatever was targeted before);
---   /tm toggles, so it's left out when this NPC is already the target with the diamond.
+--   /tm toggles, so it's left out when this NPC is already the target and we marked it.
 local function macroFor(name)
-    local alreadyMarked = UnitExists("target") and UnitName("target") == name
-        and GetRaidTargetIndex("target") == DIAMOND
-    if alreadyMarked then return "/targetexact " .. name end
-    return "/cleartarget\n/targetexact " .. name .. "\n/tm " .. DIAMOND
+    if lastMarked == name and targetName() == name then return "/targetexact " .. name end
+    return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm " .. DIAMOND
 end
 
 local function detachAll()
@@ -40,19 +51,19 @@ end
 
 local function create()
     local b = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
-    b:RegisterForClicks("AnyUp", "AnyDown")
+    -- Mouse clicks run secure actions on mouse up (SecureActionButton_OnClick), so up only.
+    b:RegisterForClicks("AnyUp")
     b:SetAttribute("type", "macro")
     b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
-    -- Rebuilt on both down and up: the macro runs on one of them, depending on the
-    -- ActionButtonUseKeyDown setting; nothing has run yet when it's rebuilt.
     b:SetScript("PreClick", function(self)
         if not InCombatLockdown() and self.targetName then
             self:SetAttribute("macrotext", macroFor(self.targetName))
         end
     end)
-    -- The secure click targets and marks; this post-hook sets the waypoint (on mouse up).
-    b:HookScript("OnClick", function(self, _, down)
-        if not down and self.onClick then self.onClick() end
+    -- After the secure macro: set the waypoint, and if it reached the NPC, /tm marked it.
+    b:HookScript("OnClick", function(self)
+        if self.onClick then self.onClick() end
+        if self.targetName and targetName() == self.targetName then lastMarked = self.targetName end
     end)
     W.Tooltip(b, function(self) return self.tooltip end)
     b:Hide()

@@ -36,7 +36,7 @@ read_globals = {
     "Constants", "CreateColor", "CreateDataProvider", "CreateFrame", "CreateScrollBoxListLinearView", "Enum",
     "EventRegistry", "GameTooltip", "GameTooltip_Hide", "GetProfessionInfo", "GetProfessions", "GetRealmID",
     "GetRealmName", "GetServerTime", "GetTime", "HIGHLIGHT_FONT_COLOR", "HideUIPanel", "ITEM_QUALITY_COLORS",
-    "InCombatLockdown", "UnitExists", "UnitName", "GetRaidTargetIndex", "SetRaidTarget", "IsModifiedClick", "IsShiftKeyDown", "LEVEL", "LibStub", "MenuUtil", "NO",
+    "InCombatLockdown", "UnitExists", "UnitName", "issecretvalue", "SetRaidTarget", "IsModifiedClick", "IsShiftKeyDown", "LEVEL", "LibStub", "MenuUtil", "NO",
     "NUM_BAG_SLOTS", "NUM_TOTAL_EQUIPPED_BAG_SLOTS", "OTHER", "PanelTemplates_SetNumTabs", "PanelTemplates_SetTab",
     "PanelTemplates_TabResize", "PlaySound", "ProfessionsFrame", "ScrollBoxConstants", "ScrollUtil", "Settings",
     "SettingsPanel", "ShowProfessionsFrame", "SOUNDKIT", "StaticPopup_Show", "UIParent", "UnitClass",
