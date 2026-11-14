@@ -779,6 +779,16 @@ test("profit takes the auction house cut off the sale", function()
     eq(ns.Prices.Profit(500, nil, 1), nil, "no auction price")
 end)
 
+test("game vendor prices only for items a vendor sells", function()
+    local real = ns.VendorPrices
+    ns.VendorPrices = { [2320] = 10, [3371] = 4 }
+    local sold = function(id) return id == 2320 end
+    eq(ns.Prices.GameVendorPrice(2320, sold), 10, "Coarse Thread")
+    eq(ns.Prices.GameVendorPrice(3371, sold), nil, "has a buy price but no vendor sells it")
+    eq(ns.Prices.GameVendorPrice(999, sold), nil)
+    ns.VendorPrices = real
+end)
+
 test("money text", function()
     eq(ns.Prices.MoneyText(12345), "1g 23s 45c")
     eq(ns.Prices.MoneyText(10000), "1g")

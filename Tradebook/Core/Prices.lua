@@ -38,16 +38,25 @@ local function call(name, ...)
     return nil
 end
 
+-- PURE. The vendor price from Forever's item data (Data/VendorPrices.lua), when a vendor sells
+-- the item. soldByVendor(itemID) -> bool decides (every item has a buy price in the data).
+function Prices.GameVendorPrice(itemID, soldByVendor)
+    local p = ns.VendorPrices and ns.VendorPrices[itemID]
+    if p and soldByVendor(itemID) then return p end
+    return nil
+end
+
 -- { auction = copper or nil, vendor = copper or nil, age = days or nil } for one item.
+-- vendor: what Auctionator saw at a merchant, else the game's own vendor price for items a
+-- vendor sells (QuestieDB), so thread, dyes, vials and spices have a price without a visit.
 function Prices.Get(itemID)
-    if not itemID or not api() then return {} end
-    local auction = call("GetAuctionPriceByItemID", itemID)
-    local vendor = call("GetVendorPriceByItemID", itemID)
-    return {
-        auction = type(auction) == "number" and auction > 0 and auction or nil,
-        vendor = type(vendor) == "number" and vendor > 0 and vendor or nil,
-        age = auction and call("GetAuctionAgeByItemID", itemID) or nil,
-    }
+    if not itemID then return {} end
+    local auction = api() and call("GetAuctionPriceByItemID", itemID)
+    local vendor = api() and call("GetVendorPriceByItemID", itemID)
+    auction = type(auction) == "number" and auction > 0 and auction or nil
+    vendor = type(vendor) == "number" and vendor > 0 and vendor or nil
+    if not vendor then vendor = Prices.GameVendorPrice(itemID, ns.Questie.SoldByVendor) end
+    return { auction = auction, vendor = vendor, age = auction and call("GetAuctionAgeByItemID", itemID) or nil }
 end
 
 -- PURE. The cheaper way to buy one: copper, "vendor" | "auction"; nil when neither is known.
@@ -105,7 +114,6 @@ end
 -- tooltip shows what it sells to a vendor for).
 local INDENT = "    "
 function Prices.TooltipLines(itemID)
-    if not api() then return {} end
     local p = Prices.Get(itemID)
     local lines = {}
     if p.auction then

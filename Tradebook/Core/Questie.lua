@@ -106,6 +106,19 @@ end
 
 local cache = {}
 
+-- Does any vendor sell this item? (QuestieDB's vendor list; false without Questie)
+local soldCache = {}
+function Questie.SoldByVendor(itemID)
+    if not itemID or not Questie.Available() then return false end
+    local hit = soldCache[itemID]
+    if hit == nil then
+        local v = get(lib.Item, itemID, "vendors")
+        hit = type(v) == "table" and next(v) ~= nil
+        soldCache[itemID] = hit
+    end
+    return hit
+end
+
 -- Has Questie got anything for this item? (cheap; used to decide whether to offer the section)
 function Questie.HasSources(itemID)
     if not Questie.Available() or not itemID then return false end

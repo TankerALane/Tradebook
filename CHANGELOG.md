@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Vendor prices from the game**: thread, dyes, vials, spices and other vendor goods now have their vendor price (from Forever's item data, for items Questie lists a vendor for) even if you haven't visited that vendor with Auctionator. Costs to craft and the leveling plan use it.
 - **Leveling plan**: the cheapest way to raise a profession to its cap. Open it from the rank window (click the skill bar, then "Leveling plan to N"). It lists steps ("131-137 craft about 9 x Gray Woolen Shirt"), the materials (need / have / buy), the total cost from Auctionator prices, and a shopping list you can send to Auctionator. Uses materials in your bags and bank first, and can include trainer recipes you haven't learned yet.
 
 ## v0.2.1-beta

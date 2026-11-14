@@ -53,4 +53,5 @@ jobs:
           add-paths: |
             Tradebook/Data/SkillLevels.lua
             Tradebook/Data/Zones.lua
+            Tradebook/Data/VendorPrices.lua
           delete-branch: true

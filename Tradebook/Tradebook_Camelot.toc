@@ -24,6 +24,7 @@ Data\Camp.lua
 Data\SourceData.lua
 Data\SkillLevels.lua
 Data\Zones.lua
+Data\VendorPrices.lua
 Data\Sources.lua
 Data\RankUps.lua
 Data\RankTrainers.lua
