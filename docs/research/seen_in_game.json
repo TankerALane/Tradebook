@@ -154,6 +154,13 @@
    "sells": true,
    "date": "2026-11-14",
    "note": "Zerril Softbreeze: Sagefish Delight"
+  },
+  {
+   "recipe": 7443,
+   "npc": 5695,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Vance Undergloom: Formula: Enchant Chest - Minor Intellect (not in any source before)"
   }
  ]
 }

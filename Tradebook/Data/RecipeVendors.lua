@@ -81,7 +81,7 @@ ns.RecipeVendors = {
 [7257]={v={2380,4083}}, -- Fire Protection Potion
 [7258]={v={2812,2848}}, -- Frost Protection Potion
 [7259]={v={2848,5594,8157,8158}}, -- Nature Protection Potion
-[7443]={v={1318,3012,3346,4228,4617,5158,5757,5758,15419,257004,257020}}, -- Enchant Chest - Minor Intellect
+[7443]={v={1318,3012,3346,4228,4617,5158,5695,5757,5758,15419,257004,257020}}, -- Enchant Chest - Minor Intellect
 [7630]={v={66,3364,3485,3522,4189}}, -- Blue Linen Vest
 [7633]={v={1250,3485,3499,3556,4168}}, -- Blue Linen Robe
 [7639]={v={843,1347,2394,3364,5944}}, -- Blue Overalls
