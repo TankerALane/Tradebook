@@ -16,6 +16,8 @@ local current = { tab = nil, view = nil }
 local hideKeepsDefault = false
 
 local CAMP = "camp"
+local LEGACY, CHARACTERS = "legacy", "characters" -- tabs at the far right
+local RIGHT_TABS = { [LEGACY] = true, [CHARACTERS] = true }
 local MIN_W, MIN_H = 940, 500
 
 ---------------------------------------------------------------------------
@@ -62,6 +64,8 @@ local function tabIDs()
     local ids = {}
     for _, p in ipairs(ns.Professions.list) do ids[#ids + 1] = p.id end
     ids[#ids + 1] = CAMP
+    ids[#ids + 1] = LEGACY
+    ids[#ids + 1] = CHARACTERS
     return ids
 end
 
@@ -69,6 +73,10 @@ local function tabTooltip(tab)
     GameTooltip:SetOwner(tab, "ANCHOR_TOP")
     if tab.key == CAMP then
         GameTooltip:SetText(L.CAMP_TITLE, 1, 1, 1)
+    elseif tab.key == LEGACY then
+        GameTooltip:SetText(L.TAB_LEGACY, 1, 1, 1)
+    elseif tab.key == CHARACTERS then
+        GameTooltip:SetText(L.TAB_CHARACTERS, 1, 1, 1)
     else
         local p = ns.Professions.Get(tab.key)
         GameTooltip:SetText(L[p.name] or p.name, 1, 1, 1)
@@ -100,6 +108,10 @@ local function buildTabs()
         tab.key = key
         if key == CAMP then
             tab:SetText(L.TAB_CAMP)
+        elseif key == LEGACY then
+            tab:SetText(L.TAB_LEGACY)
+        elseif key == CHARACTERS then
+            tab:SetText(L.TAB_CHARACTERS)
         else
             local p = ns.Professions.Get(key)
             tab:SetText(L[p.name] or p.name)
@@ -121,15 +133,21 @@ end
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
 -- Gathering tabs can be hidden in settings (their data is still saved).
 local TAB_GAP = 3 -- space between tabs (no overlap)
+local GROUP_GAP = 10 -- at least this much between the profession tabs and Legacy/Characters
 local MAX_TAB_WIDTH = 110
 function UI.LayoutTabs()
     if not frame then return end
-    local visible = {}
+    local visible, right = {}, {}
     for _, tab in ipairs(tabs) do
-        local p = tab.key ~= CAMP and ns.Professions.Get(tab.key)
-        local show = not (p and p.gathering and not ns.db.settings.showGathering)
-        tab:SetShown(show)
-        if show then visible[#visible + 1] = tab end
+        if RIGHT_TABS[tab.key] then
+            tab:Show()
+            right[#right + 1] = tab
+        else
+            local p = tab.key ~= CAMP and ns.Professions.Get(tab.key)
+            local show = not (p and p.gathering and not ns.db.settings.showGathering)
+            tab:SetShown(show)
+            if show then visible[#visible + 1] = tab end
+        end
     end
     -- PanelTabButtonTemplate re-sizes itself on show from the parent's tabPadding /
     -- minTabWidth / maxTabWidth, so the limits live on the frame, not just in this call.
@@ -139,7 +157,13 @@ function UI.LayoutTabs()
     local caps = first and first.Left and first.Right and (first.Left:GetWidth() + first.Right:GetWidth()) or 40
     local minWidth = math.ceil(caps) + 6
     frame.tabPadding, frame.minTabWidth, frame.maxTabWidth = 0, minWidth, MAX_TAB_WIDTH
-    local available = frame:GetWidth() - 16
+    -- Legacy and Characters keep their natural width at the far right.
+    local rightWidth = 0
+    for i, tab in ipairs(right) do
+        PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
+        rightWidth = rightWidth + tab:GetWidth() + (i > 1 and TAB_GAP or 0)
+    end
+    local available = frame:GetWidth() - 16 - rightWidth - GROUP_GAP
     local natural = 0
     for _, tab in ipairs(visible) do
         PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
@@ -161,6 +185,18 @@ function UI.LayoutTabs()
         end
         prev = tab
     end
+    -- Right group, laid out from the right edge inwards.
+    local nextTab
+    for i = #right, 1, -1 do
+        local tab = right[i]
+        tab:ClearAllPoints()
+        if nextTab then
+            tab:SetPoint("RIGHT", nextTab, "LEFT", -TAB_GAP, 0)
+        else
+            tab:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -8, 2)
+        end
+        nextTab = tab
+    end
 end
 
 function UI.UpdateTabs()
@@ -172,7 +208,10 @@ function UI.UpdateTabs()
     local counts = ns.Characters.ProfessionCounts(ns.db, ns.charKey)
     for _, tab in ipairs(tabs) do
         local text = tab.Text or tab:GetFontString()
-        if tab.key == CAMP then
+        if RIGHT_TABS[tab.key] then
+            tab.badge:SetText("")
+            if text then text:SetTextColor(HIGHLIGHT_FONT_COLOR:GetRGB()) end
+        elseif tab.key == CAMP then
             tab.badge:SetText("")
             if text then text:SetTextColor(W.GOLD:GetRGB()) end
         else
@@ -208,6 +247,10 @@ function UI.SelectTab(key, fromClick)
     ns.db.settings.lastTab = key
     if key == CAMP then
         showView("camp")
+    elseif key == LEGACY then
+        showView("legacy")
+    elseif key == CHARACTERS then
+        showView("characters")
     else
         local mine = ns.char and ns.char.professions[key]
         if fromClick and mine then ns.Crafting.OpenProfession(key) end
@@ -270,13 +313,10 @@ local function buildHeader()
     defaultBtn:SetScript("OnClick", function() ns.Takeover.UseDefault() end)
     W.Tooltip(defaultBtn, L.DEFAULT_UI_TIP, "ANCHOR_BOTTOM")
 
-    local charsBtn = W.Button(frame, L.TAB_CHARACTERS, 100, 22)
-    charsBtn:SetPoint("TOPRIGHT", -10, -30)
-    charsBtn:SetScript("OnClick", function() UI.ShowCharacters() end)
-
-    local legacyBtn = W.Button(frame, L.TAB_LEGACY, 80, 22)
-    legacyBtn:SetPoint("RIGHT", charsBtn, "LEFT", -4, 0)
-    legacyBtn:SetScript("OnClick", function() showView("legacy") end)
+    -- Right end of the header row (Legacy and Characters are bottom tabs now).
+    local headerRight = CreateFrame("Frame", nil, frame)
+    headerRight:SetSize(1, 22)
+    headerRight:SetPoint("TOPRIGHT", -10, -30)
 
     local search = W.SearchBox(frame, 260, function(text)
         if ns.util.Query(text) then showView("search", text) elseif current.view == "search" then
@@ -293,7 +333,7 @@ local function buildHeader()
     -- The buttons show when they apply; the bar takes the space that's left (UI.SetRankBar).
     local bar = CreateFrame("Frame", nil, frame)
     bar:SetHeight(29)
-    bar.leftEdge, bar.rightEdge = search, legacyBtn
+    bar.leftEdge, bar.rightEdge = search, headerRight
     bar.bg = bar:CreateTexture(nil, "BACKGROUND")
     bar.bg:SetAtlas("Professions-skillbar-bg", true)
     bar.bg:SetPoint("TOPLEFT")
@@ -333,7 +373,7 @@ local function buildHeader()
     -- "Train <rank>" to the right of the bar (UI/RankUp.lua), when the viewed character can
     -- train the next rank; "Leveling plan" to its left (UI/Planner.lua), below the cap.
     bar.rankUp = W.Button(frame, "", 110, 22)
-    bar.rankUp:SetPoint("RIGHT", legacyBtn, "LEFT", -14, 0)
+    bar.rankUp:SetPoint("RIGHT", headerRight, "LEFT", 0, 0)
     bar.rankUp:SetScript("OnClick", function(self) if self.action then self.action() end end)
     bar.rankUp:Hide()
     bar.plan = W.Button(frame, L.PLAN_BUTTON, 110, 22)
@@ -502,7 +542,7 @@ end
 function UI.ShowCharacters()
     UI.Create()
     if not frame:IsShown() then frame:Show() end
-    showView("characters")
+    UI.SelectTab(CHARACTERS)
 end
 
 function UI.GlobalSearch(text)
