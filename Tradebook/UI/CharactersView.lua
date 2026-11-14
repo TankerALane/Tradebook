@@ -98,9 +98,14 @@ local function initRow(row, c)
             missingLines[#missingLines + 1] = (missing and #missing > 0) and L.MISSING_FOR:format(#missing) or " "
         end
     end
-    row.profs:SetText(table.concat(names, "\n"))
-    row.ranks:SetText(table.concat(ranks, "\n"))
-    row.missing:SetText(table.concat(missingLines, "\n"))
+    -- Explicit height: without it the client keeps these at one line and cuts the rest ("...").
+    local _, size = row.profs:GetFont()
+    local height = math.max(1, #names) * ((size or 12) + 3)
+    for _, col in ipairs({ { row.profs, names }, { row.ranks, ranks }, { row.missing, missingLines } }) do
+        col[1]:SetSpacing(3)
+        col[1]:SetHeight(height)
+        col[1]:SetText(table.concat(col[2], "\n"))
+    end
     row.missing:SetTextColor(W.GREY:GetRGB())
     row.hide:SetText(c.hidden and L.UNHIDE or L.HIDE)
     row.hide:SetEnabled(not isMe)

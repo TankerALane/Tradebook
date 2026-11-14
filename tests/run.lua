@@ -258,6 +258,11 @@ test("camp recipes grouped by profession", function()
     eq(#camp[197], 1)
     eq(camp[197][1], 103)
     eq(#camp[185], 1)
+    -- Same-name campsite recipes (one per faction): one row, the known one.
+    db.recipes[901] = { n = db.recipes[103].n, camp = true, s = 197 }
+    camp = ns.Recipes.Camp(db)
+    eq(#camp[197], 1, "same-name camp recipes shown once")
+    eq(camp[197][1], 103, "known version kept")
     eq(ns.Camp.IsCampCategory(2591), true)
     eq(ns.Camp.IsCampCategory(9999, "Camping"), true)
     eq(ns.Camp.IsCampCategory(9999, "Bags", 2714), true, "parent id")

@@ -156,16 +156,40 @@ function Recipes.Missing(db, character, skillLineID, showExtras)
 end
 
 -- Every camp recipe in the cache, grouped by profession: { [skillLineID] = {recipeIDs} }.
-function Recipes.Camp(db)
-    local out = {}
+-- charKey (optional): the current character, whose version wins when two recipes share a name.
+function Recipes.Camp(db, charKey)
+    -- Some campsite recipes exist once per faction with the same name (e.g. Faction Banner);
+    -- show one per name: the current character's version, else one a character knows,
+    -- else the lowest ID.
+    local function score(id, skill)
+        local mine = charKey and db.characters[charKey]
+        local p = mine and mine.professions and mine.professions[skill]
+        if p and p.recipes and p.recipes[id] then return 2 end
+        for _, c in pairs(db.characters or {}) do
+            local cp = c.professions and c.professions[skill]
+            if cp and cp.recipes and cp.recipes[id] then return 1 end
+        end
+        return 0
+    end
+    local best = {} -- [skill][name] = id
     for id, r in pairs(db.recipes) do
         if r.camp and r.s then
-            out[r.s] = out[r.s] or {}
-            table.insert(out[r.s], id)
+            best[r.s] = best[r.s] or {}
+            local name = r.n or ("#" .. id)
+            local cur = best[r.s][name]
+            if not cur then
+                best[r.s][name] = id
+            else
+                local a, b = score(id, r.s), score(cur, r.s)
+                if a > b or (a == b and id < cur) then best[r.s][name] = id end
+            end
         end
     end
-    for _, ids in pairs(out) do
-        table.sort(ids, function(a, b) return (db.recipes[a].n or "") < (db.recipes[b].n or "") end)
+    local out = {}
+    for skill, byName in pairs(best) do
+        out[skill] = {}
+        for _, id in pairs(byName) do table.insert(out[skill], id) end
+        table.sort(out[skill], function(a, b) return (db.recipes[a].n or "") < (db.recipes[b].n or "") end)
     end
     return out
 end

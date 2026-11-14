@@ -15,7 +15,6 @@ L.FAKE_BANNER = "(made-up data)"
 L.SHOTS_START = "Taking %d screenshots. Don't move the mouse over the window until it's done."
 L.SHOTS_DONE = "Done: %d screenshots in your Screenshots folder. Run scripts/crop_shots.py to crop them."
 L.SHOTS_COMBAT = "Can't take screenshots in combat."
-L.SHOTS_MOUSE = "Move the mouse off the Tradebook window: it shows up in the pictures."
 L.HELP_HEADER = "Commands:"
 L.HELP_LINES = {
     "/tb - open or close Tradebook",

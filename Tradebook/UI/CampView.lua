@@ -126,7 +126,7 @@ end
 function View:Refresh()
     local byCharacter = ns.db.settings.campView == "character"
     self.toggle:SetText(byCharacter and L.CAMP_BY_PROFESSION or L.CAMP_BY_CHARACTER)
-    local camp = Recipes.Camp(ns.db)
+    local camp = Recipes.Camp(ns.db, ns.charKey)
     local items = {}
     if byCharacter then
         for _, c in ipairs(ns.Characters.List(ns.db, ns.charKey, false)) do
