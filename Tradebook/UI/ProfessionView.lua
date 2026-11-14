@@ -125,14 +125,11 @@ local function initRow(row, data)
     end
     row.fav:SetShown(ns.db.favorites[data.id] == true)
     row.pin:SetShown(data.pinned == true)
-    -- Side display like the default window: craftable count, then skill-ups in the difficulty color.
+    -- Right side: distance (Nearest first), then how many you can craft at the far right. The
+    -- skill-up colour is the name's colour (and skill-ups above 1 are in the tooltip).
     local parts = {}
     if data.distanceText then parts[#parts + 1] = W.ColorText(W.GREY, data.distanceText) end
     if data.possible and data.possible > 0 then parts[#parts + 1] = "[" .. data.possible .. "]" end
-    if data.learned and data.diff and data.diff < 3 then
-        local color = W.DIFFICULTY[data.diff]
-        parts[#parts + 1] = color:WrapTextInColorCode("+" .. (data.skillUps or 1))
-    end
     row.right:SetText(table.concat(parts, " "))
     row.right:SetTextColor(0.8, 0.8, 0.8)
 end
