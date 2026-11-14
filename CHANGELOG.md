@@ -1,21 +1,40 @@
 # Changelog
 
-## Unreleased
+## v0.2.0-beta
 
-- **Specializations**: Engineering (Gnomish/Goblin) and Leatherworking (Dragonscale/Elemental/Tribal). The profession window (click the skill bar) shows the one a character has, or each option with its quest, quest giver and requirements.
-- Clicking the skill bar opens the rank window at any time (next rank, how to train it, specializations).
-- **Researched rank trainers**: the rank-up window lists the trainers that actually teach each rank in Forever (cross-checked across several Forever guides and trainer windows in game), the Artisan Cooking quest (Clamlette Surprise) and Journeyman Fishing's level 10.
-- **Trainers remember what they teach**: opening a profession trainer's window saves which ranks they teach and what it costs. The rank-up window then marks those trainers "(teaches it)", drops ones that don't, and shows the real cost.
-- **Browse professions you don't have**: a grey tab's guide page has **Show all recipes**, listing every recipe of that profession (from Forever's game data) with search and full details: materials, what they cost, and where to learn each recipe. **Back to the guide** returns.
-- **Train the next rank**: once a character can train the next rank (skill 50, 125, 200), a **Train <rank>** button appears in the skill bar. It opens a window with the requirements (skill and level: Journeyman 10, Expert 20, Artisan 35) and how to get it: the nearest trainers, the Expert Cooking/Fishing/First Aid books (auction price and where they're sold), or the Artisan Fishing/First Aid quests (giver, level, reputation and prerequisite quests). Waypoints, target and mark included. Locations need Questie; prices need Auctionator.
-- **Could learn it**: when none of your characters know a recipe, its details (and the Who can craft search) show which of your characters with that profession could learn it: now, with N more skill, or after training the next rank.
-- **Auctionator prices** (optional): auction and vendor prices in material tooltips, a Cost section in recipe details (cost to craft, sells for, profit), the cost of a shopping list, and **Send to Auctionator** to create an Auctionator shopping list.
-- **Questie** (optional): where to get each material (nearest vendors, mobs and nodes) and the nearest trainers and vendors for unlearned recipes, with distance and waypoints. Clicking an NPC that's nearby also targets it and marks it with a purple diamond.
+Second beta for WoW Forever (1.60.1). Please report problems on GitHub.
+
+**Train the next rank**
+- A **Train Journeyman / Expert / Artisan** button appears in the skill bar once a character can train the next rank (skill 50, 125, 200). Clicking the skill bar opens the same window at any time.
+- The window shows the requirements (skill, and level 10 / 20 / 35 for crafting professions), the cost (5s / 50s / 5g, or what the trainer actually charged you) and how to get it:
+  - the nearest **trainers that teach that rank** in Forever, from a list cross-checked across several Forever guides and trainer windows in game (NPC titles like "Expert Enchanter" don't say what a trainer teaches);
+  - the **Expert Cooking, Fishing and First Aid books**, with their auction price and where they're sold;
+  - the **Artisan Cooking, Fishing and First Aid quests** (Clamlette Surprise, Nat Pagle, Triage) with the quest giver and requirements.
+- **Specializations**: Gnomish/Goblin Engineering and Dragonscale/Elemental/Tribal Leatherworking, with their quests and requirements, or the one a character already has.
+- Opening a profession trainer's window teaches Tradebook which ranks that trainer offers and what it costs.
+
+**Recipes**
+- **Browse professions you don't have**: a grey tab's guide page has **Show all recipes**, listing every recipe of that profession with materials, costs and where to learn it.
+- **Could learn it**: for recipes none of your characters know, which of them could learn it: now, with N more skill, or after training the next rank (also in the Who can craft search).
 - **Not learned** filter options: Learnable now, From a trainer, From a recipe, and Nearest first.
+- The recipe list shows the craftable count at the far right; the skill-up colour is the name's colour.
+- The skill-up section in recipe details lines up your skill with the ranges ("115 - 125").
+
+**Auctionator** (optional)
+- Auction and vendor prices in material tooltips ("Purchase from:").
+- A **Cost** section in recipe details: cost to craft, what the result sells for after the auction house cut, and the profit.
+- Shopping lists show their cost and can be sent to Auctionator (**Send to Auctionator**).
+
+**Questie** (optional)
+- Where to get each material: the nearest vendors (your faction), mobs and gathering nodes, with distance and waypoints.
+- The nearest trainers and vendors for recipes you haven't learned.
+- Clicking a nearby NPC line also targets it and marks it with a purple diamond.
+
+**Other**
 - "Made by" is listed first under a material.
 - Camp shows recipes that exist once per faction (Faction Banner) only once.
-- Characters: every profession is shown (no more cut-off columns).
-- `/tb shots` takes screenshots with fake data for the addon page.
+- Characters view: every profession is shown (no more cut-off columns).
+- `/tb shots` takes screenshots with made-up characters for the addon page.
 
 ## v0.1.0-beta
 

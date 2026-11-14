@@ -2,7 +2,7 @@
 
 A profession companion for **World of Warcraft: Forever**.
 
-> **Status: beta.** First public beta for WoW Forever 1.60.1. Please report problems on GitHub.
+> **Status: beta.** Public beta for WoW Forever 1.60.1. Please report problems on GitHub.
 
 ## Features
 
@@ -12,6 +12,8 @@ A profession companion for **World of Warcraft: Forever**.
 - Every character's professions, skill levels and known recipes saved account-wide, with a fast **"Who can craft this?"** search.
 - Reagent counts from bags and bank, missing-reagent highlights, an expandable reagent tree and shopping lists.
 - Recipe sources for recipes you haven't learned yet, and skill-up ranges from Forever's own game data.
+- **Train the next rank**: when a character can train Journeyman, Expert or Artisan, the requirements, cost, and the trainers, books or quests that teach it in Forever. Specializations (Gnomish/Goblin Engineering, Dragonscale/Elemental/Tribal Leatherworking) too.
+- **Browse any profession**, even one none of your characters have, and see which of your characters **could learn** a recipe.
 - A Camp tab for campsite recipes across all your characters.
 - A read-only view of your Legacy profession perks.
 - Friends' profession ranks if you use Fellowship Ledger, and where to buy or farm materials if you use Questie.
