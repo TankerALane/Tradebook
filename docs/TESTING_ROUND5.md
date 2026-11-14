@@ -36,6 +36,7 @@ Find a character whose skill is at 50+ with a cap of 75, 125+ with 150, or 200+ 
 - [ ] The profession's skill bar shows a **Train Journeyman / Expert / Artisan** button at its right end. It's not there below the threshold, or after training (cap went up).
 - [ ] Click it: a **Train <rank> <profession>** window opens (drag to move, Escape closes). It says what it raises the cap to.
 - [ ] **Requirements**: skill and level, with "You: N" in green or red.
+- [ ] **Training cost** (trainer ranks: 5s / 1g / 5g, marked "classic price, unconfirmed") or **Book cost** (Expert Cooking/Fishing/First Aid), with your gold in green or red on the character you're on. [What did the trainer actually charge?]
 - [ ] A crafting profession (e.g. Tailoring) lists the **nearest trainers** for that rank with distance; clicking one sets a waypoint (and targets and marks it nearby). [Are they really trainers who teach that rank?]
 - [ ] **Expert Cooking / Fishing / First Aid**: shows the **book** (icon, requirements, which characters have one), its auction/vendor price, and the nearest vendors that sell it.
 - [ ] **Artisan Fishing / First Aid**: shows the **quest** (name, level, reputation if any, prerequisite quests with Done/Not done) and the quest giver's location.

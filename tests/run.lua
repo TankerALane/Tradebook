@@ -587,6 +587,10 @@ test("rank-up routes: books and quests for the secondary professions", function(
     eq(R.Next(356, { max = 225 }).quest, "Nat Pagle, Angler Extreme")
     eq(R.Next(129, { max = 225 }).quest, "Triage")
     eq(R.Next(197, { max = 150 }).book, nil, "Tailoring: trainer")
+    eq(R.Next(197, { max = 75 }).cost, 500, "Journeyman fee")
+    eq(R.Next(197, { max = 225 }).cost, 50000, "Artisan fee")
+    eq(R.Next(185, { max = 150 }).cost, nil, "book: no training fee")
+    eq(R.Next(185, { max = 150 }).bookPrice, 10000)
 end)
 
 test("rank-up requirements are checked against the character", function()

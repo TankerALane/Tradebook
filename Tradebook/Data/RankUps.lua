@@ -16,11 +16,14 @@ local RankUps = {}
 ns.RankUps = RankUps
 
 -- cap -> the rank trained next, the skill it can be trained at, and the character level.
+-- cost: what the trainer charges, in copper. Trainer prices live on the server, so these are
+-- the classic prices (5s, 1g, 5g) until confirmed in game (costConfirmed).
 RankUps.byCap = {
-    [75] = { rank = "Journeyman", skill = 50, level = 10, cap = 150 },
-    [150] = { rank = "Expert", skill = 125, level = 20, cap = 225 },
-    [225] = { rank = "Artisan", skill = 200, level = 35, cap = 300 },
+    [75] = { rank = "Journeyman", skill = 50, level = 10, cap = 150, cost = 500 },
+    [150] = { rank = "Expert", skill = 125, level = 20, cap = 225, cost = 10000 },
+    [225] = { rank = "Artisan", skill = 200, level = 35, cap = 300, cost = 50000 },
 }
+RankUps.costConfirmed = false
 
 -- Trainers that teach a rank also teach recipes needing at least this much skill
 -- (used to pick them from the recipe source data: an Apprentice-only trainer teaches
@@ -31,14 +34,14 @@ RankUps.trainerMinRecipe = { Journeyman = 80, Expert = 155, Artisan = 230 }
 -- Quests: looked up in QuestieDB by name (IDs differ between factions).
 RankUps.special = {
     [185] = { -- Cooking
-        Expert = { book = 16072, bookSkill = 125 },
+        Expert = { book = 16072, bookSkill = 125, bookPrice = 10000 },
     },
     [356] = { -- Fishing
-        Expert = { book = 16083, bookSkill = 125, bookLevel = 20 },
+        Expert = { book = 16083, bookSkill = 125, bookLevel = 20, bookPrice = 10000 },
         Artisan = { quest = "Nat Pagle, Angler Extreme" },
     },
     [129] = { -- First Aid
-        Expert = { book = 16084, bookSkill = 125 },
+        Expert = { book = 16084, bookSkill = 125, bookPrice = 10000 },
         Artisan = { quest = "Triage" },
     },
 }
@@ -48,9 +51,11 @@ RankUps.special = {
 function RankUps.Next(skillLine, prof)
     local step = prof and RankUps.byCap[prof.max]
     if not step then return nil end
-    local out = { rank = step.rank, skill = step.skill, level = step.level, cap = step.cap }
+    local out = { rank = step.rank, skill = step.skill, level = step.level, cap = step.cap, cost = step.cost }
     local special = RankUps.special[skillLine] and RankUps.special[skillLine][step.rank]
     for k, v in pairs(special or {}) do out[k] = v end
+    -- A book or quest replaces the trainer, so there is no training fee.
+    if out.book or out.quest then out.cost = nil end
     return out
 end
 

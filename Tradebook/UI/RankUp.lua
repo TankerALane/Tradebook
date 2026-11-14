@@ -97,8 +97,12 @@ local function addBook(pane, nextRank, c, profName)
             local age = p.age and p.age > 0 and ("  " .. W.ColorText(W.GREY, L.PRICE_AGE:format(p.age))) or ""
             pane:Add({ indent = 3, text = L.PRICE_AUCTION, right = ns.Prices.Money(p.auction) .. age })
         end
-        if p.vendor then pane:Add({ indent = 3, text = L.PRICE_VENDOR, right = ns.Prices.Money(p.vendor) }) end
-        if not p.auction and not p.vendor then pane:Add({ indent = 3, text = L.PRICE_NONE, color = W.GREY }) end
+        local vendor = p.vendor or nextRank.bookPrice
+        if vendor then pane:Add({ indent = 3, text = L.PRICE_VENDOR, right = ns.Prices.Money(vendor) }) end
+        if not p.auction and not vendor then pane:Add({ indent = 3, text = L.PRICE_NONE, color = W.GREY }) end
+    elseif nextRank.bookPrice then
+        pane:Add({ indent = 2, text = L.PRICE_PURCHASE_FROM, color = W.GOLD })
+        pane:Add({ indent = 3, text = L.PRICE_VENDOR, right = ns.Prices.Money(nextRank.bookPrice) })
     end
     -- Where it's sold (Questie).
     local where = ns.Questie.HasSources(book) and ns.Questie.WhereToGet(book)
@@ -185,6 +189,20 @@ function RankUp.Refresh()
     for _, r in ipairs(ns.RankUps.Requirements(nextRank, prof, c.level)) do
         local text = r.key == "skill" and L.REQUIRES_SKILL:format(profName, r.need) or L.RANKUP_LEVEL:format(r.need)
         local right = r.have and check(r.ok):WrapTextInColorCode(L.RANKUP_YOU:format(r.have)) or nil
+        pane:Add({ indent = 1, text = text, right = right })
+    end
+    -- Cost: the trainer's fee, or the book's price. Gold is checked for the character you're on.
+    local cost, costNote = nextRank.cost, not ns.RankUps.costConfirmed and L.RANKUP_COST_CLASSIC or nil
+    if nextRank.book then
+        local p = ns.Prices.Available() and ns.Prices.Get(nextRank.book) or {}
+        cost, costNote = ns.Prices.Cheapest(p) or nextRank.bookPrice, nil
+    end
+    if cost then
+        local money = isMe and Compat.Call("GetMoney")
+        local text = nextRank.book and L.RANKUP_COST_BOOK or L.RANKUP_COST
+        if costNote then text = text .. "  " .. W.ColorText(W.GREY, costNote) end
+        local right = ns.Prices.Money(cost)
+        if money then right = right .. "  " .. check(money >= cost):WrapTextInColorCode(L.RANKUP_YOU:format(ns.Prices.Money(money))) end
         pane:Add({ indent = 1, text = text, right = right })
     end
     if not ready then pane:Add({ indent = 1, text = L.RANKUP_NOT_YET, color = W.GREY }) end
