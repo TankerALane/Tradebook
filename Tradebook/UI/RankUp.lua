@@ -308,8 +308,10 @@ function RankUp.ButtonFor(charKey, skill)
     local prof = c and c.professions[skill]
     if not prof then return nil end
     local ready, nextRank = ns.RankUps.Ready(skill, prof)
+    local belowCap = prof.rank and prof.max and prof.rank < prof.max
     return {
         text = ready and L.RANKUP_BUTTON:format(L.RANK_NAMES[nextRank.rank]) or nil,
         onClick = function() RankUp.Show(charKey, skill) end,
+        plan = belowCap and function() ns.PlannerUI.Show(charKey, skill) end or nil,
     }
 end

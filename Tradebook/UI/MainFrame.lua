@@ -287,12 +287,13 @@ local function buildHeader()
     if search.Instructions then search.Instructions:SetText(L.SEARCH_ALL) end
     frame.globalSearch = search
 
-    -- Skill bar between the search box and the Legacy button, styled like the default
-    -- Professions window (its frame and background art, blue fill).
+    -- Between the search box and the Legacy button:
+    --   [Leveling plan]  [====== skill bar ======]  [Train <rank>]
+    -- styled like the default Professions window (its frame and background art, blue fill).
+    -- The buttons show when they apply; the bar takes the space that's left (UI.SetRankBar).
     local bar = CreateFrame("Frame", nil, frame)
     bar:SetHeight(29)
-    bar:SetPoint("LEFT", search, "RIGHT", 18, -3)
-    bar:SetPoint("RIGHT", legacyBtn, "LEFT", -18, -3)
+    bar.leftEdge, bar.rightEdge = search, legacyBtn
     bar.bg = bar:CreateTexture(nil, "BACKGROUND")
     bar.bg:SetAtlas("Professions-skillbar-bg", true)
     bar.bg:SetPoint("TOPLEFT")
@@ -329,31 +330,48 @@ local function buildHeader()
         if button == "LeftButton" and self.open then self.open() end
     end)
     bar:SetScript("OnLeave", GameTooltip_Hide)
-    -- "Train <rank>" button at the right end of the bar (UI/RankUp.lua), when the viewed
-    -- character can train the next rank.
-    bar.rankUp = W.Button(overlay, "", 110, 18)
-    bar.rankUp:SetPoint("RIGHT", bar.fill, "RIGHT", -2, 0)
-    bar.rankUp:SetFrameLevel(overlay:GetFrameLevel() + 2)
+    -- "Train <rank>" to the right of the bar (UI/RankUp.lua), when the viewed character can
+    -- train the next rank; "Leveling plan" to its left (UI/Planner.lua), below the cap.
+    bar.rankUp = W.Button(frame, "", 110, 22)
+    bar.rankUp:SetPoint("RIGHT", legacyBtn, "LEFT", -14, 0)
     bar.rankUp:SetScript("OnClick", function(self) if self.action then self.action() end end)
     bar.rankUp:Hide()
+    bar.plan = W.Button(frame, L.PLAN_BUTTON, 110, 22)
+    bar.plan:SetPoint("LEFT", search, "RIGHT", 14, 0)
+    bar.plan:SetScript("OnClick", function(self) if self.action then self.action() end end)
+    W.Tooltip(bar.plan, { L.PLAN_BUTTON, L.PLAN_OPEN_TIP }, "ANCHOR_BOTTOM")
+    bar.plan:Hide()
     bar:Hide()
     frame.rankBar = bar
 end
 
 -- Show the skill bar for a character's profession, or hide it (rank == nil).
 -- label: shown in front of the numbers (the profession name).
--- rankUp: { text, onClick } shows the "Train <rank>" button.
+-- rankUp: { text, onClick, plan } : text shows the "Train <rank>" button, plan the
+-- "Leveling plan" button, onClick opens the rank window from a click on the bar.
 function UI.SetRankBar(rank, max, tip, label, rankUp)
     local bar = frame and frame.rankBar
     if not bar then return end
-    bar.rankUp:SetShown(rankUp ~= nil and rankUp.text ~= nil)
+    local shown = rank and max and max > 0
+    local showTrain = shown and rankUp ~= nil and rankUp.text ~= nil
+    local showPlan = shown and rankUp ~= nil and rankUp.plan ~= nil
+    bar.rankUp:SetShown(showTrain)
+    bar.plan:SetShown(showPlan)
     bar.open = rankUp and rankUp.onClick
-    if rankUp and rankUp.text then
+    if showTrain then
         bar.rankUp:SetText(rankUp.text)
         bar.rankUp:SetWidth(math.max(90, bar.rankUp:GetFontString():GetStringWidth() + 24))
         bar.rankUp.action = rankUp.onClick
     end
-    if not rank or not max or max <= 0 then
+    if showPlan then
+        bar.plan:SetWidth(math.max(90, bar.plan:GetFontString():GetStringWidth() + 24))
+        bar.plan.action = rankUp.plan
+    end
+    -- The bar fills the space between whichever buttons show.
+    bar:ClearAllPoints()
+    bar:SetPoint("LEFT", showPlan and bar.plan or bar.leftEdge, "RIGHT", showPlan and 10 or 18, -3)
+    bar:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -10 or -18, -3)
+    if not shown then
         bar:Hide()
         return
     end

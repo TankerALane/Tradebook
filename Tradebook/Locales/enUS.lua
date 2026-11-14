@@ -221,6 +221,7 @@ L.RANKUP_BUTTON = "Train %s"
 
 -- Leveling planner
 L.PLAN_OPEN = "Leveling plan to %d"
+L.PLAN_BUTTON = "Leveling plan"
 L.PLAN_OPEN_TIP = "The cheapest way to raise this skill to the cap, with the materials and a shopping list."
 L.PLAN_TITLE = "Leveling plan: %s"
 L.PLAN_FOR = "%s: %s %d to %d"
