@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: Tradebook Net Test |cff999999(sharing test, remove after)|r
+## Notes: Tests whether Tradebook copies can share NPC data in game. Type /tbn for commands.
+## Author: Decoupled Lane Studio
+## Version: 0.0.1-spike
+## SavedVariables: TradebookNetDB
+
+Net.lua
