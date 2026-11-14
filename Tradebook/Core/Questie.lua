@@ -142,6 +142,78 @@ function Questie.ZoneName(areaID)
     return name or ("Zone " .. tostring(areaID))
 end
 
+---------------------------------------------------------------------------
+-- Where to learn a recipe (bundled LibProfessionDB trainer/vendor NPC ids + Questie spawns)
+---------------------------------------------------------------------------
+
+-- Player position, re-read at most every 2 s, plus a coarse "bucket" (40 yd grid) so the
+-- distance caches below know when you have actually moved.
+local hereCache = { at = -100 }
+local function here()
+    local now = GetTime()
+    if now - hereCache.at > 2 then
+        hereCache.at = now
+        local p = playerPosition()
+        hereCache.pos = p
+        hereCache.bucket = p and string.format("%s:%d:%d", tostring(p.continent), math.floor(p.x / 40), math.floor(p.y / 40))
+            or "none"
+    end
+    return hereCache.pos, hereCache.bucket
+end
+
+-- Nearest spawn of one NPC (friendly to you), cached per position bucket. Many recipes share
+-- the same trainers, so this keeps a long "nearest first" list cheap.
+local npcCache = {}
+local function nearestNpc(id, faction)
+    local pos, bucket = here()
+    local hit = npcCache[id]
+    if hit and hit.bucket == bucket then return hit.entry end
+    local e = npcEntry(id, faction)
+    local entry = e and Locations.Nearest({ e }, pos, toWorld, 1)[1] or false
+    npcCache[id] = { bucket = bucket, entry = entry }
+    return entry
+end
+
+local function nearestOf(ids, faction, kind)
+    local out = {}
+    for i, id in ipairs(type(ids) == "table" and ids or {}) do
+        if i > MAX_CANDIDATES then break end
+        local e = nearestNpc(id, faction)
+        if e then
+            local copy = { kind = kind }
+            for k, v in pairs(e) do copy[k] = v end
+            out[#out + 1] = copy
+        end
+    end
+    table.sort(out, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return tostring(a.name) < tostring(b.name)
+    end)
+    return out
+end
+
+-- Nearest trainers and vendors that teach a recipe: { list = {...up to 3, mixed, nearest
+-- first}, best = nearest entry or nil }, or nil when unknown. Entries carry kind =
+-- "trainer" or "vendor".
+function Questie.RecipeSources(recipeID)
+    if not Questie.Available() then return nil end
+    local s = ns.SourceData and ns.SourceData[recipeID]
+    if not s or not (s.t or s.v) then return nil end
+    local faction = Compat.Call("UnitFactionGroup", "player")
+    local all = nearestOf(s.t, faction, "trainer")
+    for _, e in ipairs(nearestOf(s.v, faction, "vendor")) do all[#all + 1] = e end
+    table.sort(all, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return tostring(a.name) < tostring(b.name)
+    end)
+    if #all == 0 then return nil end
+    local list = {}
+    for i = 1, math.min(LIMIT, #all) do list[i] = all[i] end
+    return { list = list, best = all[1] }
+end
+
 -- Clear distances when the player moves to another zone.
 function Questie.Start()
     ns.On("ZONE_CHANGED_NEW_AREA", function() cache = {} end)

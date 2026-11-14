@@ -35,7 +35,7 @@ DB.DEFAULTS = {
         window = { width = 900, height = 560 },
         campView = "profession",
         lastTab = nil,
-        filters = { learned = true, unlearned = false, haveMats = false, skillup = false,
+        filters = { learned = true, unlearned = false, unlearnedNearest = false, haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
         collapsed = {},
     },

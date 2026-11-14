@@ -14,6 +14,7 @@ local LEFT_WIDTH = 330
 -- then the categories A-Z.
 local STARRED_KEY = "\000starred"
 local PINNED_KEY = "\001pinned"
+local NEAREST_KEY = "\002nearest" -- not learned, nearest place to learn first
 local PIN_ATLAS = "Waypoint-MapPin-Tracked"
 
 ---------------------------------------------------------------------------
@@ -122,6 +123,7 @@ local function initRow(row, data)
     row.pin:SetShown(data.pinned == true)
     -- Side display like the default window: craftable count, then skill-ups in the difficulty color.
     local parts = {}
+    if data.distanceText then parts[#parts + 1] = W.ColorText(W.GREY, data.distanceText) end
     if data.possible and data.possible > 0 then parts[#parts + 1] = "[" .. data.possible .. "]" end
     if data.learned and data.diff and data.diff < 3 then
         local color = W.DIFFICULTY[data.diff]
@@ -150,7 +152,10 @@ function View:BuildItems()
     local f = db.settings.filters
     local groups, order = {}, {}
 
-    local starred, pinnedList = {}, {}
+    local starred, pinnedList, nearestList = {}, {}, {}
+    -- "Nearest first": unlearned recipes with a known trainer/vendor go into their own
+    -- section, sorted by distance (needs Questie for NPC locations).
+    local byDistance = f.unlearned and f.unlearnedNearest and ns.Questie.Available()
 
     local function add(key, item)
         if not groups[key] then
@@ -186,13 +191,23 @@ function View:BuildItems()
                 keep = false
             end
             if f.haveMats and not (item.possible and item.possible > 0) then keep = false end
-            if keep then
+            local near = keep and byDistance and not learned and ns.Questie.RecipeSources(id)
+            if near and near.best then
+                item.distance = near.best.distance
+                item.distanceText = ns.Locations.DistanceText(near.best.distance)
+                nearestList[#nearestList + 1] = item
+            elseif keep then
                 local cat = db.categories[r.c]
                 add(cat and cat.n or OTHER or "Other", item)
             end
         end
     end
     table.sort(order)
+    table.sort(nearestList, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return a.name < b.name
+    end)
 
     local items = {}
     local function section(key, name, list)
@@ -204,6 +219,7 @@ function View:BuildItems()
     end
     section(STARRED_KEY, L.STARRED, starred)
     section(PINNED_KEY, L.PINNED, pinnedList)
+    section(NEAREST_KEY, L.NEAREST_TO_LEARN, nearestList)
     for _, key in ipairs(order) do section(key, key, groups[key]) end
     return items
 end
@@ -213,7 +229,8 @@ end
 ---------------------------------------------------------------------------
 
 -- Filters, with the defaults the red X on the Filter button restores.
-local DEFAULT_FILTERS = { learned = true, unlearned = false, haveMats = false, skillup = false }
+local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, haveMats = false,
+    skillup = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -244,6 +261,20 @@ local function buildFilterMenu(_, root)
     end
     add(L.FILTER_LEARNED, "learned")
     add(L.FILTER_UNLEARNED, "unlearned")
+    -- Nearest first (under "Not learned"); needs Questie for NPC locations.
+    if ns.Questie.Available() then
+        local nearItem = root:CreateCheckbox(L.FILTER_NEAREST, function() return f.unlearnedNearest end, function()
+            f.unlearnedNearest = not f.unlearnedNearest
+            if f.unlearnedNearest then f.unlearned = true end
+            View:RefreshList()
+        end)
+        nearItem:AddInitializer(function(button)
+            if button.leftTexture1 then
+                button.leftTexture1:ClearAllPoints()
+                button.leftTexture1:SetPoint("LEFT", SUB_INDENT, 0)
+            end
+        end)
+    end
     add(L.FILTER_CRAFTABLE, "haveMats")
     add(L.FILTER_SKILLUP, "skillup")
     -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.

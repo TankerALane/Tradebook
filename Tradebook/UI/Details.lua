@@ -423,6 +423,18 @@ function Pane:Refresh()
         if required then
             self:Add({ indent = 1, text = L.REQUIRES_SKILL:format(prof and (L[prof.name] or prof.name) or "", required) })
         end
+        -- Nearest trainers/vendors that teach it (Questie locations); click for a waypoint.
+        local near = ns.Questie.RecipeSources(id)
+        if near then
+            self:Add({ indent = 1, text = L.LEARN_FROM, color = W.GOLD })
+            for _, e in ipairs(near.list) do
+                local kind = e.kind == "trainer" and L.KIND_TRAINER or L.KIND_VENDOR
+                self:Add({ indent = 2, text = e.name .. "  " .. W.ColorText(W.GREY, "(" .. kind .. ")"),
+                    right = placeText(e),
+                    onClick = function() ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end,
+                    tooltip = e.sub and { e.name, e.sub, L.WAYPOINT_CLICK } or { e.name, L.WAYPOINT_CLICK } })
+            end
+        end
         local sources, borrowed = ns.Sources.Get(id, {
             quest = function(q) return Compat.Call("C_QuestLog.GetTitleForQuestID", q) end,
             item = function(i) return (Compat.ItemInfo(i)) end,
