@@ -33,6 +33,7 @@ function Pane:Line()
         line.text:SetWordWrap(false)
         line.right = W.Text(line, "GameFontHighlightSmall", "RIGHT")
         line.right:SetPoint("RIGHT", -4, 0)
+        line.right:SetWordWrap(false)
         line:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
         self.lines[self.used] = line
     end
@@ -89,6 +90,11 @@ function Pane:Add(o)
     line.text:SetText(o.text or "")
     if o.color then line.text:SetTextColor(o.color:GetRGB()) end
     line.right:SetText(o.right or "")
+    -- The right column (place and distance) always fits on one line; the name gets "..."
+    -- instead when space runs out.
+    local fs = line.right
+    local w = fs.GetUnboundedStringWidth and fs:GetUnboundedStringWidth() or fs:GetStringWidth()
+    fs:SetWidth(math.ceil(w) + 2)
     if o.onClick then
         line:GetHighlightTexture():SetAlpha(1)
         line:SetScript("OnClick", o.onClick)
