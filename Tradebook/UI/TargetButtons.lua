@@ -51,17 +51,23 @@ end
 
 local function create()
     local b = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
-    -- Mouse clicks run secure actions on mouse up (SecureActionButton_OnClick), so up only.
-    b:RegisterForClicks("AnyUp")
+    -- The macro runs on mouse down or up depending on the "cast on key down" setting, so
+    -- listen for both.
+    b:RegisterForClicks("AnyUp", "AnyDown")
     b:SetAttribute("type", "macro")
     b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
-    b:SetScript("PreClick", function(self)
-        if not InCombatLockdown() and self.targetName then
-            self:SetAttribute("macrotext", macroFor(self.targetName))
-        end
+    -- Build the macro once per press (on down, before anything has run) and keep it for the
+    -- up, so whichever of the two runs it gets the same macro.
+    b:SetScript("PreClick", function(self, _, down)
+        if InCombatLockdown() or not self.targetName then return end
+        if down or not self.pressMacro then self.pressMacro = macroFor(self.targetName) end
+        self:SetAttribute("macrotext", self.pressMacro)
     end)
-    -- After the secure macro: set the waypoint, and if it reached the NPC, /tm marked it.
-    b:HookScript("OnClick", function(self)
+    -- On up (the macro has run by then): set the waypoint, and remember the mark if the
+    -- macro reached the NPC.
+    b:HookScript("OnClick", function(self, _, down)
+        if down then return end
+        self.pressMacro = nil
         if self.onClick then self.onClick() end
         if self.targetName and targetName() == self.targetName then lastMarked = self.targetName end
     end)
