@@ -18,26 +18,16 @@ local pool = {} -- every button; b.owner is the list using it (nil = free)
 local DIAMOND = 3 -- raid target icon 3 = purple diamond
 local NL = string.char(10)
 
--- The NPC Tradebook last marked. The game hides raid marker values from addons ("secret"
--- values that can't be compared), so we remember what we marked instead of reading it.
-local lastMarked
-
--- The target's name, or nil when there's no target or the game hides it.
-local function targetName()
-    if not UnitExists("target") then return nil end
-    local n = UnitName("target")
-    if issecretvalue and issecretvalue(n) then return nil end
-    return n
-end
-
 -- The macro, built just before each click (PreClick runs out of combat only, where
 -- attributes can change). Marking is protected, so it's done in the macro with /tm:
 --   /cleartarget first, so an out-of-range NPC leaves no target and /tm marks nothing
 --     (instead of marking whatever was targeted before);
---   /tm toggles, so it's left out when this NPC is already the target and we marked it.
+--   /tm toggles a marker that's already on, so "/tm 0" clears any marker first and
+--     "/tm 3" then always puts the diamond on. (Remembering what we marked instead failed:
+--     a click from too far away could be remembered as marked, and later clicks skipped
+--     the mark.)
 local function macroFor(name)
-    if lastMarked == name and targetName() == name then return "/targetexact " .. name end
-    return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm " .. DIAMOND
+    return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm 0" .. NL .. "/tm " .. DIAMOND
 end
 
 local function detach(b)
@@ -65,13 +55,11 @@ local function create()
         if down or not self.pressMacro then self.pressMacro = macroFor(self.targetName) end
         self:SetAttribute("macrotext", self.pressMacro)
     end)
-    -- On up (the macro has run by then): set the waypoint, and remember the mark if the
-    -- macro reached the NPC.
+    -- On up (the macro has run by then): set the waypoint.
     b:HookScript("OnClick", function(self, _, down)
         if down then return end
         self.pressMacro = nil
         if self.onClick then self.onClick() end
-        if self.targetName and targetName() == self.targetName then lastMarked = self.targetName end
     end)
     W.Tooltip(b, function(self) return self.tooltip end)
     b:Hide()
