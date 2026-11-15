@@ -1133,6 +1133,16 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     eq(items[2320].vendors[248201].source, "players")
 end)
 
+test("net: own messages are known by the session tag; migration 4 forgets heard data", function()
+    local N = ns.Net
+    eq(N.IsOwn("ab121f~1~2~TBV1", "ab12"), true)
+    eq(N.IsOwn("cd341f~1~2~TBV1", "ab12"), false)
+    eq(N.IsOwn("ab12", ""), false)
+    local db = ns.DB.Migrate({ version = 3, heard = { vendors = { [1] = { reports = {} } } }, netSent = { x = 1 } })
+    eq(next(db.heard), nil, "echoed reports forgotten")
+    eq(db.netSent.x, 1, "what you sent is kept")
+end)
+
 test("dev: unscanned vendors leave out everyone's scans", function()
     SlashCmdList = {}
     assert(loadfile("dev/TradebookDev/Dev.lua"))()

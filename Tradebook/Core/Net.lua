@@ -17,6 +17,9 @@
 --
 -- Wire format: one share text, its line breaks turned into "^", cut into messages of
 --   <msgID>~<part>~<parts>~<payload>
+-- msgID starts with a random 4-hex tag per session, so a copy knows its own messages when the
+-- channel echoes them back. (Comparing the sender's name didn't work: Forever writes sender
+-- names differently from UnitName, and the first build heard its own player as "another".)
 -- and put back together by the receiver (per sender and msgID).
 
 local _, ns = ...
@@ -58,6 +61,11 @@ function Net.Chunk(text, msgID)
     if #parts == 0 or #parts > Net.MAX_PARTS then return nil end
     for i, p in ipairs(parts) do parts[i] = ("%s~%d~%d~%s"):format(msgID, i, #parts, p) end
     return parts
+end
+
+-- PURE. Was this message sent by the copy whose session tag is `session`?
+function Net.IsOwn(msg, session)
+    return tostring(msg):sub(1, #session) == session and #session > 0
 end
 
 -- PURE. A new reassembler (one per session).
@@ -245,7 +253,9 @@ local queue = {}       -- messages waiting to go out
 local backlog = {}     -- { kind, npc } of your scans to re-announce, slowly
 local lastBacklog = 0
 local channelID
-local msgCounter = math.random(1, 50000)
+local msgCounter = 0
+local session = ("%04x"):format(math.random(0, 0xffff)) -- this copy's tag on its messages
+local selfSender -- how the channel names you (learned from your first echo)
 local version = 0      -- bumped when heard data changes (caches)
 local senders = {}     -- [who] = { minute, n }: flood protection
 local cached = {}
@@ -253,10 +263,6 @@ local stats = { sent = 0, heard = 0, players = {} }
 
 local function enabled()
     return ns.db and ns.db.settings and ns.db.settings.netShare ~= false and not ns.fake
-end
-
-local function myName()
-    return Compat.Call("UnitName", "player")
 end
 
 local function hideChannel()
@@ -319,7 +325,7 @@ local function announce(kind, npc, force)
     local now = GetServerTime()
     if not force and last and last.seen == seenAt and now - last.at < Net.RESEND_AFTER then return end
     msgCounter = msgCounter + 1
-    local parts = Net.Chunk(text, ("%x"):format(msgCounter))
+    local parts = Net.Chunk(text, session .. ("%x"):format(msgCounter))
     if not parts or #queue + #parts > 400 then return end
     for _, p in ipairs(parts) do queue[#queue + 1] = p end
     ns.db.netSent[key] = { seen = seenAt, at = now }
@@ -399,9 +405,13 @@ end
 local function onAddonMessage(_, prefix, text, chatType, sender)
     if prefix ~= Net.PREFIX or chatType ~= "CHANNEL" or not enabled() then return end
     sender = tostring(sender or "")
-    -- Your own messages come back on the channel. (Compare the name part: Forever's realm part
-    -- doesn't match what Ambiguate expects.)
-    if sender:match("^[^-]+") == myName() then return end
+    -- Your own messages come back on the channel: known by this session's tag (and, once one
+    -- has come back, by how the channel names you).
+    if Net.IsOwn(text, session) then
+        selfSender = sender
+        return
+    end
+    if sender == selfSender then return end
     local who = Net.Hash(sender)
     local minute = math.floor(GetTime() / 60)
     local s = senders[who]

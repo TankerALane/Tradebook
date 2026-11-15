@@ -18,7 +18,7 @@ local _, ns = ...
 local DB = {}
 ns.DB = DB
 
-DB.VERSION = 3
+DB.VERSION = 4
 
 -- The window's scale 1.0 is drawn at this size (1.25x the native frame), per user preference.
 DB.BASE_SCALE = 1.25
@@ -76,6 +76,12 @@ DB.MIGRATIONS = {
         -- Skill-up thresholds now come from the game's own table; forget mismatches
         -- recorded against the old LibProfessionDB thresholds.
         db.badThresholds = {}
+        return db
+    end,
+    [4] = function(db)
+        -- The first in-game sharing build (never released) took its own echoed messages for
+        -- another player's: what it "heard" is your own scans again. Forget it.
+        db.heard = {}
         return db
     end,
 }
