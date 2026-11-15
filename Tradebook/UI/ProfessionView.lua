@@ -61,6 +61,9 @@ local function createRow(row)
         end
     end)
     W.Tooltip(row.pin, ns.L.UNPIN_TIP)
+    -- Profit (Filter > Show profit), between the name and the pin/star markers.
+    row.profit = W.Text(row, "GameFontHighlightSmall", "RIGHT")
+    row.profit:SetPoint("RIGHT", row.pin, "LEFT", -4, 0)
     row.selected = row:CreateTexture(nil, "BACKGROUND")
     row.selected:SetAllPoints()
     row.selected:SetColorTexture(W.GOLD.r, W.GOLD.g, W.GOLD.b, 0.18)
@@ -81,13 +84,25 @@ local function createRow(row)
         -- Recipes without a result item (enchants and the like): what the spell does.
         local desc = r and not r.o and ns.Compat.Call("C_Spell.GetSpellDescription", data.id)
         if desc == "" then desc = nil end
-        if not data.diff and not desc then return end
+        local mode = ns.db.settings.listProfit
+        local profit, cost, value
+        if mode == "vendor" or mode == "auction" then profit, cost, value = ns.Prices.RecipeProfit(r, mode) end
+        if not data.diff and not desc and not profit then return end
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(data.name, 1, 1, 1)
         if desc then GameTooltip:AddLine(desc, nil, nil, nil, true) end
         local key = data.diff and ({ [0] = "DIFF_OPTIMAL", [1] = "DIFF_MEDIUM", [2] = "DIFF_EASY", [3] = "DIFF_TRIVIAL" })[data.diff]
         if key then GameTooltip:AddLine(L[key], W.DIFFICULTY[data.diff]:GetRGB()) end
         if data.skillUps and data.skillUps > 1 then GameTooltip:AddLine(L.SKILLUP_TIP:format(data.skillUps)) end
+        if profit then
+            local Money = ns.Prices.Money
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddDoubleLine(L.PROFIT_TIP_COST, Money(cost), 1, 1, 1, 1, 1, 1)
+            GameTooltip:AddDoubleLine(mode == "auction" and L.PROFIT_TIP_AUCTION or L.PROFIT_TIP_VENDOR,
+                Money(value), 1, 1, 1, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L.COST_PROFIT, (profit >= 0 and W.GREEN or W.RED):WrapTextInColorCode(Money(profit)),
+                1, 1, 1)
+        end
         GameTooltip:Show()
     end)
     row:SetScript("OnLeave", GameTooltip_Hide)
@@ -110,6 +125,7 @@ local function initRow(row, data)
         row.icon:Hide()
         row.fav:Hide()
         row.pin:Hide()
+        row.profit:SetText("")
         row.toggle:Show()
         row.toggle:SetAtlas(ns.db.settings.collapsed[data.key] and "Campaign_HeaderIcon_Closed" or "Campaign_HeaderIcon_Open")
         row.name:SetPoint("LEFT", 20, 0)
@@ -127,8 +143,22 @@ local function initRow(row, data)
     row.icon:SetTexture(data.icon or 134400)
     row.icon:SetDesaturated(not data.learned)
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
-    row.name:SetPoint("RIGHT", row.pin, "LEFT", -2, 0)
     row.name:SetFontObject("GameFontHighlightSmall")
+    -- Profit of one craft in the chosen mode (blank when a price is unknown).
+    local mode = ns.db.settings.listProfit
+    local on = mode == "vendor" or mode == "auction"
+    -- With the column on, the count/distance on the right gets a fixed width so the profits
+    -- line up (0 = as wide as its text).
+    row.right:SetWidth(on and 56 or 0)
+    local profit = on and ns.Prices.RecipeProfit(ns.db.recipes[data.id], mode)
+    if profit then
+        local text = ns.Prices.Money(ns.Prices.RoundForList(profit))
+        row.profit:SetText((profit >= 0 and W.GREEN or W.RED):WrapTextInColorCode(text))
+        row.name:SetPoint("RIGHT", row.profit, "LEFT", -6, 0)
+    else
+        row.profit:SetText("")
+        row.name:SetPoint("RIGHT", row.pin, "LEFT", -2, 0)
+    end
     -- Not learned yet but would give skill-ups: a dot in that skill-up colour after the name.
     local dot = ""
     if not data.learned and data.diff and data.diff < 3 and W.DIFFICULTY[data.diff] then
@@ -378,6 +408,19 @@ local function buildFilterMenu(_, root)
         end)
         indent(item) -- under "Gives skill-ups"
     end
+    -- Profit column in the list (not a filter, but this is where the list's options live).
+    root:CreateDivider()
+    root:CreateTitle(L.PROFIT_SHOW)
+    local s = ns.db.settings
+    local function mode(text, value)
+        root:CreateRadio(text, function() return (s.listProfit or "off") == value end, function()
+            s.listProfit = value
+            View:RefreshList()
+        end)
+    end
+    mode(L.PROFIT_OFF, "off")
+    mode(L.PROFIT_VENDOR, "vendor")
+    if ns.Prices.Available() then mode(L.PROFIT_AUCTION, "auction") end -- auction prices: Auctionator
 end
 
 local function charMenu(owner)

@@ -39,6 +39,7 @@ DB.DEFAULTS = {
             unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false,
             haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
+        listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction"
         collapsed = {},
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
         netShare = true, -- share NPC data with other Tradebook users in game (Core/Net.lua)

@@ -94,6 +94,53 @@ function Prices.Profit(cost, auctionUnit, count)
     return value, value - cost
 end
 
+-- PURE. Profit of one craft for the recipe list: buy every material at its cheapest known
+-- price, then sell what it makes (`made` items, on average) to a vendor (mode "vendor": the
+-- item's vendor sell price) or at auction (mode "auction": the auction price less the cut).
+-- saleUnit: that price for one made item. Returns profit, cost, value; nil when the sale
+-- price or any material price is unknown (a profit from part of the materials would mislead).
+function Prices.ListProfit(materials, made, mode, saleUnit, lookup)
+    if not saleUnit or saleUnit <= 0 or #materials == 0 then return nil end
+    local cost, unpriced = Prices.CraftCost(materials, lookup)
+    if unpriced > 0 then return nil end
+    local value
+    if mode == "auction" then
+        value = math.floor(saleUnit * made * (1 - Prices.AH_CUT) + 0.5)
+    elseif mode == "vendor" then
+        value = math.floor(saleUnit * made + 0.5)
+    else
+        return nil
+    end
+    return value - cost, cost, value
+end
+
+-- PURE. Money rounded for a narrow column: whole silver from 1 gold up (so at most two coins).
+function Prices.RoundForList(copper)
+    if math.abs(copper) >= 10000 then
+        local sign = copper < 0 and -1 or 1
+        return sign * math.floor(math.abs(copper) / 100 + 0.5) * 100
+    end
+    return copper
+end
+
+-- What a vendor pays for one of an item (the game's sell price), or nil (not loaded / none).
+function Prices.SellPrice(itemID)
+    if not itemID then return nil end
+    local sell = select(11, ns.Compat.Call("C_Item.GetItemInfo", itemID))
+    return type(sell) == "number" and sell > 0 and sell or nil
+end
+
+-- The recipe list's profit for a recipe in the chosen mode ("vendor" / "auction"), or nil.
+function Prices.RecipeProfit(r, mode)
+    if not r or not r.o then return nil end -- enchants and the like make no item to sell
+    if mode == "auction" and not Prices.Available() then return nil end
+    local materials = {}
+    for _, m in ipairs(ns.Recipes.Reagents(r)) do materials[#materials + 1] = { itemID = m.itemID, need = m.count } end
+    local made = ((r.q1 or 1) + (r.q2 or r.q1 or 1)) / 2
+    local saleUnit = mode == "auction" and Prices.Get(r.o).auction or Prices.SellPrice(r.o)
+    return Prices.ListProfit(materials, made, mode, saleUnit, Prices.Get)
+end
+
 -- PURE. Split a shopping list { { itemID, missing, ... } } by where to buy each item, at its
 -- cheapest known price: vendor or auction house (no price: auction house, unpriced).
 -- lookup(itemID) -> { auction, vendor }. Returns

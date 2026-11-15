@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Profit in the recipe list
+- **Show profit** (in the recipe list's Filter menu): each recipe shows what one craft earns after buying all its materials, between its name and the count. Choose **Selling to a vendor** or **Selling at the auction house** (needs Auctionator), or **Off**. Hover a recipe for the cost, the sale and the profit. Recipes with a material or sale price that isn't known yet show nothing.
+
 ### Fixes
 - The blue skill bar no longer sticks out past its frame on the left and right.
 

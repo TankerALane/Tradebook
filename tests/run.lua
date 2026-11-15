@@ -1041,6 +1041,23 @@ test("profit takes the auction house cut off the sale", function()
     eq(ns.Prices.Profit(500, nil, 1), nil, "no auction price")
 end)
 
+test("list profit: buy every material, sell to a vendor or at auction", function()
+    local prices = { [1] = { auction = 100 }, [2] = { vendor = 25, auction = 40 }, [3] = {} }
+    local lookup = function(id) return prices[id] end
+    local mats = { { itemID = 1, need = 3 }, { itemID = 2, need = 4 } } -- 300 + 100 = 400
+    local profit, cost, value = ns.Prices.ListProfit(mats, 2, "vendor", 150, lookup)
+    eq(cost, 400); eq(value, 300); eq(profit, -100)
+    local p2, _, v2 = ns.Prices.ListProfit(mats, 1, "auction", 1000, lookup)
+    eq(v2, 950, "auction house cut"); eq(p2, 550)
+    eq(ns.Prices.ListProfit(mats, 1, "auction", nil, lookup), nil, "no sale price")
+    eq(ns.Prices.ListProfit({ { itemID = 3, need = 1 } }, 1, "vendor", 100, lookup), nil, "a material without a price")
+    eq(ns.Prices.ListProfit({}, 1, "vendor", 100, lookup), nil, "no materials")
+    eq(ns.Prices.ListProfit(mats, 1, "off", 100, lookup), nil, "off")
+    eq(ns.Prices.RoundForList(12345), 12300)
+    eq(ns.Prices.RoundForList(-25678), -25700)
+    eq(ns.Prices.RoundForList(9999), 9999)
+end)
+
 test("game vendor prices only for items a vendor sells", function()
     local real = ns.VendorPrices
     ns.VendorPrices = { [2320] = 10, [3371] = 4 }
