@@ -30,6 +30,14 @@ SlashCmdList.TRADEBOOK = function(msg)
     elseif cmd == "share" then
         ns.Share.Show()
     elseif cmd == "net" then
+        if rest:lower() == "test" then
+            if ns.Net.Test(20) then
+                ns.Print("20 test messages queued (other players' Tradebook ignores them). "
+                    .. "Zone into a dungeon now; /tb net shows them waiting.")
+            else
+                ns.Print("Sharing is off (settings).")
+            end
+        end
         for _, line in ipairs(ns.Net.Status()) do ns.Print(line) end
     elseif cmd == "vendors" then
         ns.UI.Show()

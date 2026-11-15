@@ -1148,6 +1148,14 @@ test("net: own messages are known by the session tag; migration 4 forgets heard 
     eq(db.netSent.x, 1, "what you sent is kept")
 end)
 
+test("net: test messages are known as your own and ignored by everyone else", function()
+    local N = ns.Net
+    local msg = N.TestMessage("ab12", 7)
+    eq(N.IsOwn(msg, "ab12"), true)
+    eq(N.Feed(N.NewAssembler(), "x", msg, 0), nil)
+    assert(#msg <= 255)
+end)
+
 test("dev: unscanned vendors leave out everyone's scans", function()
     SlashCmdList = {}
     assert(loadfile("dev/TradebookDev/Dev.lua"))()

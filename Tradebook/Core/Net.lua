@@ -68,6 +68,12 @@ function Net.IsOwn(msg, session)
     return tostring(msg):sub(1, #session) == session and #session > 0
 end
 
+-- PURE. A test message (/tb net test): starts with the session tag (so its echo is known as
+-- your own) and doesn't fit the wire format, so every copy of Tradebook ignores it.
+function Net.TestMessage(session, k)
+    return ("%st%d~test"):format(session, k)
+end
+
 -- PURE. A new reassembler (one per session).
 function Net.NewAssembler()
     return { pending = {}, n = 0 }
@@ -343,9 +349,25 @@ local function inInstance()
     return inside == true
 end
 
+-- Why sending is paused right now, or nil.
+local function pauseReason()
+    if InCombatLockdown() then return "in combat" end
+    if inInstance() then return "in a dungeon" end
+end
+
+local lastPause = false -- the reason last logged (false = sending)
 local function pump()
     if not enabled() or not channelID then return end
-    if InCombatLockdown() or inInstance() then return end
+    local reason = pauseReason()
+    if (reason or false) ~= lastPause then
+        lastPause = reason or false
+        if reason then
+            ns.Debug("net: paused,", reason .. ",", #queue, "messages waiting")
+        else
+            ns.Debug("net: sending again,", #queue, "messages waiting")
+        end
+    end
+    if reason then return end
     if #queue == 0 then
         local now = GetTime()
         if #backlog > 0 and now - lastBacklog >= Net.BACKLOG_GAP then
@@ -361,6 +383,16 @@ local function pump()
     if throttled then return end -- try the same message again next tick
     table.remove(queue, 1)
     stats.sent = stats.sent + 1
+    ns.Debug("net: sent a message,", #queue, "waiting")
+end
+
+-- /tb net test: queue `n` test messages, enough backlog to watch sending pause in a dungeon.
+function Net.Test(n)
+    if not enabled() then return false end
+    n = n or 20
+    for k = 1, n do queue[#queue + 1] = Net.TestMessage(session, k) end
+    ns.Debug("net: test,", n, "messages queued,", #queue, "waiting")
+    return true
 end
 
 -- Your recent scans, newest first, to re-announce after login.
@@ -439,7 +471,8 @@ end
 function Net.Status()
     local heard = ns.db and ns.db.heard or {}
     return {
-        ("Sharing: %s, channel: %s"):format(enabled() and "on" or "off", channelID and tostring(channelID) or "not joined"),
+        ("Sharing: %s, channel: %s%s"):format(enabled() and "on" or "off", channelID and tostring(channelID) or "not joined",
+            enabled() and pauseReason() and (" (paused: " .. pauseReason() .. ")") or ""),
         ("This session: %d messages sent, %d NPC reports heard from %d players"):format(stats.sent, stats.heard,
             count(stats.players)),
         ("Waiting to send: %d messages, %d NPCs to re-announce"):format(#queue, #backlog),

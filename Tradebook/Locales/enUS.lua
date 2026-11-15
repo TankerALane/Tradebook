@@ -23,7 +23,7 @@ L.HELP_LINES = {
     "/tb search <text> - who can craft it?",
     "/tb vendors - find any item a vendor sells",
     "/tb share - share your vendor and trainer scans with everyone",
-    "/tb net - in-game sharing: what was sent and heard",
+    "/tb net - in-game sharing: what was sent and heard (/tb net test: queue 20 test messages)",
     "/tb default - use the default Professions window this time",
     "/tb options - open settings",
     "/tb debug - toggle diagnostics",
