@@ -1,48 +1,63 @@
-# Tradebook — CurseForge description (draft)
+# Tradebook — CurseForge description
 
-Keep this up to date as features ship; paste it into the CurseForge project description when ready.
+Keep this up to date as features ship; paste it into the CurseForge project page.
 Every optional addon below must also be listed as an optional dependency on CurseForge.
+
+**Summary** (the one line under the project name):
+
+> Professions for WoW Forever: a better Professions window, every character's recipes, where to get every recipe, leveling plans, and a shared vendor database.
 
 ---
 
 ## Tradebook
 
-A profession companion for **World of Warcraft: Forever**: a better Professions window, every character's professions and recipes in one place, and a fast "Who can craft this?" search.
+The profession companion for **World of Warcraft: Forever**. A better Professions window, all your characters' professions in one place, and **where to get every recipe in Forever**, checked in game.
 
-### Features
-- **Replaces the default Professions window** (one click to switch back with **Default UI**, and a **Tradebook** button on the default window to come back).
-- **A tab for every profession** plus a **Camp** tab, with a skill bar like the default window.
-- **Recipe list** with search, filters (learned; not learned — learnable now, from a trainer, from a recipe (from a vendor, from a mob), nearest first; have materials; gives skill-ups by colour, with a coloured dot on recipes you haven't learned yet), and **Starred** and **Pinned** sections.
-- **Recipe details**: result tooltip (enchants say what they do), materials with bag and bank counts (and which of your other characters have them), a tree of materials you can craft, skill-up ranges ("orange until 125"), and **where to get every recipe in WoW Forever**: trainers, vendors (with **Merchant's Favor** costs and the supply camp reputation needed), the **mobs that drop it** with drop chances, world drops, quests, and recipes that aren't in Forever. Checked against Forever's own data and websites.
-- **Purchase price**: the vendor price next to the auction house price for a recipe, with the cheaper one marked.
-- **Specializations**: Gnomish/Goblin Engineering and Dragonscale/Elemental/Tribal Leatherworking, with their quests and requirements.
-- **Leveling plan**: the cheapest way to reach your skill cap, step by step, with the materials, the cost (Auctionator) and a shopping list.
-- **Train the next rank**: a button in the skill bar when you can train Journeyman, Expert or Artisan, with the requirements and where to train it (trainers, books or quests).
-- **Browse any profession**, even one none of your characters have: every recipe, its materials and their cost.
-- **Could learn it**: for recipes none of your characters know, which of them could learn it and how far they are.
-- **Craft, quantity and Craft All** for the character you're on.
-- **All your characters**: professions, ranks, known recipes, bags and bank, saved account-wide. **"Who can craft…?"** searches them all.
-- **Characters view**: who is next to rank up in each profession, missing recipes, hide or delete characters, stale-data warning.
-- **Camp tab**: every campsite recipe across your characters, who knows it and who can make it now.
-- **Legacy**: your Legacy profession perks and unspent points.
-- **Shopping lists** for a recipe or all pinned recipes, split into what to buy from a vendor and what to buy at the auction house.
-- **Vendors tab**: search any item a vendor sells and see the nearest vendors, their prices (gold, Merchant's Favor and other currencies), zone and distance, with a waypoint. Filters for zone, faction, continent, item type and currency.
-- **Vendor windows are scanned automatically**, so prices and stock stay real.
-- Minimap button and Data Broker launcher.
+### Where to get every recipe
+- **Every source, checked for Forever**: trainers, vendors, the **mobs that drop it** (with drop chances), world drops and quests. Wrong classic sources are gone, Forever's new vendors are in, and recipes that aren't in Forever say so.
+- **Merchant's Favor recipes**: their cost and the supply camp reputation you need.
+- **Vendor price vs auction house price**, with the cheaper one marked.
+- **Real skill levels and training costs**, read from Forever's own trainers.
+- Click any vendor, trainer or mob for a waypoint. If it's nearby, it's also targeted and marked.
+
+### Vendors tab: a community vendor database
+- Search anything a vendor sells and see the **nearest vendors**, their price (gold, Merchant's Favor or other currency), zone and distance.
+- Ships with **471 vendors and 132 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
+- **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
+
+### A better Professions window
+- **Replaces the default window** (switch back any time with **Default UI**).
+- **A tab for every profession** plus **Camp**, with a skill bar like the default.
+- **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
+- **Recipe details**: materials with bag and bank counts (and which of your characters have them), a tree of craftable materials, and skill-up ranges ("orange until 125").
+- **Craft, quantity and Craft All.**
+- **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: drag them to your action bars.
+
+### Level up faster
+- **Leveling plan**: the cheapest way to your skill cap, step by step, with the materials you need, what you already have, the cost and a shopping list.
+- **Train the next rank**: a button when you can train Journeyman, Expert or Artisan, with the requirements and the nearest trainers, books or quests.
+- **Specializations**: Gnomish/Goblin Engineering and Dragonscale/Elemental/Tribal Leatherworking, with their quests.
+- **Shopping lists**, split into what to buy from a vendor and what to buy at the auction house.
+
+### All your characters
+- Every character's professions, recipes, bags and bank, saved account-wide.
+- **"Who can craft…?"** search across all of them, and **Could learn it** for recipes nobody knows yet.
+- **Characters view**: who is next to rank up, missing recipes, stale-data warning.
+- **Browse any profession**, even one none of your characters have.
+- **Camp tab** for campsite recipes, and **Legacy** for your Legacy profession perks.
 
 ### Optional addons
-Tradebook works on its own. These addons add extra information when they are installed:
+Tradebook works on its own. These add more when installed:
 
-| Addon | What it adds to Tradebook |
+| Addon | What it adds |
 |---|---|
-| **Questie** | Vendors nobody has scanned yet in the **Vendors tab** (QuestieDB's vendor lists, with the game's base prices). Where to train your next rank (nearest trainers, rank-up books and quests). Where to learn unlearned recipes, nearest first (trainers and vendors, with distance and waypoints). Where to get each material: the nearest **vendors** that sell it (your faction, with zone, coordinates and distance), the **mobs** that drop it, and the **nodes** it's gathered from. Click one to set a waypoint; if the NPC is nearby, it's also targeted and marked with a purple diamond. |
-| **TomTom** | Waypoints from Tradebook use TomTom's arrow. Without TomTom, Tradebook uses the game's own map pin instead. |
-| **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab (Friends button) and on professions none of your characters have. |
-| **Auctionator** | Auction and vendor prices for each material (in its tooltip), the **cost to craft** a recipe, what the result **sells for** and your **profit**, the price of rank-up books, the cost of a shopping list, and **Send to Auctionator** to turn a shopping list into an Auctionator shopping list. |
-
-### Help build the vendor database
-Every vendor and trainer you open is scanned automatically, and **shared in game** with other Tradebook users while you play: what they find shows up in your **Vendors tab** ("other players"), marked "(unconfirmed)" until a second player agrees. This runs quietly on a hidden channel (nothing shows in your chat) and can be turned off in the settings; `/tb net` shows what was sent and heard. Shared data also goes into the next update so everyone gets it. You can also type **/tb share**, copy the text, and paste it into the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml) on GitHub. Only NPC data is shared (vendor and trainer names, places, items, training and prices), nothing about your characters.
+| **Questie** | Vendors nobody has scanned yet in the Vendors tab. The nearest trainers and vendors for recipes you haven't learned. For each material: the nearest vendors that sell it, the mobs that drop it and the nodes it's gathered from. |
+| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit**, shopping list costs, and **Send to Auctionator**. |
+| **TomTom** | Waypoints use TomTom's arrow (otherwise the game's map pin). |
+| **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab. |
 
 ### Notes
-- WoW Forever only. Recipe sources were checked against Forever's own game data, QuestieDB (read at runtime, nothing copied) and Forever websites; anything only one source names is marked "(unconfirmed)". Skill-up ranges and base prices come from Forever's own game data.
-- Free and open source (MIT): https://github.com/TankerALane/Tradebook
+- **WoW Forever only.**
+- Recipe sources are checked against Forever's own game data, QuestieDB (read while you play, nothing copied) and Forever websites. Anything only one source names is marked "(unconfirmed)".
+- Commands: `/tb` opens Tradebook, `/tb help` lists the rest. `/tb share` sends your scans through the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml) if you'd like to help that way too.
+- Free and open source (MIT): https://github.com/TankerALane/Tradebook. Bug reports welcome on GitHub.
