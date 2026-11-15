@@ -1058,6 +1058,17 @@ test("list profit: buy every material, sell to a vendor or at auction", function
     eq(ns.Prices.RoundForList(9999), 9999)
 end)
 
+test("tabs wrap onto more rows only when they don't fit", function()
+    local wrap = ns.util.WrapRows
+    local rows = wrap({ 50, 50, 50 }, 200, 300, 3)
+    eq(#rows, 1, "all fit")
+    rows = wrap({ 50, 50, 50, 50, 50 }, 110, 300, 3) -- first row: 50 + 3 + 50 = 103
+    eq(#rows, 2); eq(#rows[1], 2); eq(rows[2][1], 3); eq(#rows[2], 3)
+    rows = wrap({ 120, 40 }, 100, 100, 3)
+    eq(#rows[1], 1, "a row always takes one tab, even a too-wide one"); eq(rows[2][1], 2)
+    eq(#wrap({}, 100, 100, 3), 0)
+end)
+
 test("game vendor prices only for items a vendor sells", function()
     local real = ns.VendorPrices
     ns.VendorPrices = { [2320] = 10, [3371] = 4 }

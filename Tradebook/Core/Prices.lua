@@ -123,21 +123,34 @@ function Prices.RoundForList(copper)
     return copper
 end
 
--- What a vendor pays for one of an item (the game's sell price), or nil (not loaded / none).
+-- What a vendor pays for one of an item (the game's sell price): copper, 0 when vendors
+-- won't buy it, nil while the game hasn't loaded the item (asked for; the window refreshes
+-- when it arrives).
 function Prices.SellPrice(itemID)
     if not itemID then return nil end
-    local sell = select(11, ns.Compat.Call("C_Item.GetItemInfo", itemID))
-    return type(sell) == "number" and sell > 0 and sell or nil
+    local name, _, _, _, _, _, _, _, _, _, sell = ns.Compat.Call("C_Item.GetItemInfo", itemID)
+    if not name then
+        ns.Compat.Call("C_Item.RequestLoadItemDataByID", itemID)
+        return nil
+    end
+    return type(sell) == "number" and sell or 0
 end
 
--- The recipe list's profit for a recipe in the chosen mode ("vendor" / "auction"), or nil.
+-- The recipe list's profit for a recipe in the chosen mode ("vendor" / "auction"):
+-- profit, cost, value; or nil, "nosale" when vendors won't buy the item; or nil (unknown).
 function Prices.RecipeProfit(r, mode)
     if not r or not r.o then return nil end -- enchants and the like make no item to sell
     if mode == "auction" and not Prices.Available() then return nil end
+    local saleUnit
+    if mode == "auction" then
+        saleUnit = Prices.Get(r.o).auction
+    else
+        saleUnit = Prices.SellPrice(r.o)
+        if saleUnit == 0 then return nil, "nosale" end
+    end
     local materials = {}
     for _, m in ipairs(ns.Recipes.Reagents(r)) do materials[#materials + 1] = { itemID = m.itemID, need = m.count } end
     local made = ((r.q1 or 1) + (r.q2 or r.q1 or 1)) / 2
-    local saleUnit = mode == "auction" and Prices.Get(r.o).auction or Prices.SellPrice(r.o)
     return Prices.ListProfit(materials, made, mode, saleUnit, Prices.Get)
 end
 

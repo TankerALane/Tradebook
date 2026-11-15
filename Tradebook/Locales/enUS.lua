@@ -60,6 +60,8 @@ L.PROFIT_AUCTION = "Selling at the auction house"
 L.PROFIT_TIP_COST = "Buying the materials"
 L.PROFIT_TIP_VENDOR = "Sold to a vendor"
 L.PROFIT_TIP_AUCTION = "Sold at auction (after the cut)"
+L.PROFIT_NO_SALE = "won't sell"
+L.PROFIT_NO_SALE_TIP = "Vendors won't buy this item."
 L.NO_RECIPES = "No recipes match."
 L.NOT_SCANNED = "Open %s once on this character so Tradebook can read its recipes."
 L.QUICK_SCANNED = "Recipes found in the spellbook. Open %s once for categories and unlearned recipes."
@@ -257,6 +259,13 @@ L.DIFF_TRIVIAL = "Grey: no skill-up"
 -- Tabs and views
 L.TAB_CAMP = "Camp"
 L.TAB_CHARACTERS = "Characters"
+L.TAB_CHARACTERS_SHORT = "Chars"
+-- Shorter tab names, used only when the full names don't fit in one row.
+L.TAB_SHORT = {
+    Alchemy = "Alch", Blacksmithing = "Smithing", Enchanting = "Enchant", Engineering = "Engineer",
+    Leatherworking = "Leather", Tailoring = "Tailor", Cooking = "Cook", ["First Aid"] = "Aid",
+    Fishing = "Fish", Herbalism = "Herbs", Mining = "Mine", Skinning = "Skin",
+}
 L.TAB_MISSING = "Missing recipes"
 L.TAB_LEGACY = "Legacy"
 L.TAB_COUNT = "%d characters"

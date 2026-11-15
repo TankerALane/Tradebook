@@ -87,7 +87,8 @@ local function createRow(row)
         local mode = ns.db.settings.listProfit
         local profit, cost, value
         if mode == "vendor" or mode == "auction" then profit, cost, value = ns.Prices.RecipeProfit(r, mode) end
-        if not data.diff and not desc and not profit then return end
+        local noSale = mode == "vendor" and not profit and cost == "nosale" -- (2nd value: the reason)
+        if not data.diff and not desc and not profit and not noSale then return end
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(data.name, 1, 1, 1)
         if desc then GameTooltip:AddLine(desc, nil, nil, nil, true) end
@@ -102,6 +103,9 @@ local function createRow(row)
                 Money(value), 1, 1, 1, 1, 1, 1)
             GameTooltip:AddDoubleLine(L.COST_PROFIT, (profit >= 0 and W.GREEN or W.RED):WrapTextInColorCode(Money(profit)),
                 1, 1, 1)
+        elseif noSale then
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(L.PROFIT_NO_SALE_TIP, 0.8, 0.8, 0.8, true)
         end
         GameTooltip:Show()
     end)
@@ -150,8 +154,12 @@ local function initRow(row, data)
     -- With the column on, the count/distance on the right gets a fixed width so the profits
     -- line up (0 = as wide as its text).
     row.right:SetWidth(on and 56 or 0)
-    local profit = on and ns.Prices.RecipeProfit(ns.db.recipes[data.id], mode)
-    if profit then
+    local profit, why
+    if on then profit, why = ns.Prices.RecipeProfit(ns.db.recipes[data.id], mode) end
+    if why == "nosale" then
+        row.profit:SetText(W.ColorText(W.GREY, L.PROFIT_NO_SALE))
+        row.name:SetPoint("RIGHT", row.profit, "LEFT", -6, 0)
+    elseif profit then
         local text = ns.Prices.Money(ns.Prices.RoundForList(profit))
         row.profit:SetText((profit >= 0 and W.GREEN or W.RED):WrapTextInColorCode(text))
         row.name:SetPoint("RIGHT", row.profit, "LEFT", -6, 0)

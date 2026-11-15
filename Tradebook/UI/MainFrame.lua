@@ -18,7 +18,7 @@ local hideKeepsDefault = false
 local CAMP = "camp"
 local VENDORS, LEGACY, CHARACTERS = "vendors", "legacy", "characters" -- tabs at the far right
 local RIGHT_TABS = { [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
-local MIN_W, MIN_H = 940, 500
+local MIN_W, MIN_H = 760, 500
 
 -- Extra tabs at the far right, added before the window is built (UI.AddTab). Tradebook itself
 -- adds none; the maintainer's dev addon (dev/TradebookDev, never packaged) adds one.
@@ -122,25 +122,23 @@ local function tabTooltip(tab)
     GameTooltip:Show()
 end
 
+-- A tab's name; short: the shorter name used when the full names don't fit in one row.
+local function tabLabel(key, short)
+    if extraTabs[key] then return extraTabs[key].label end
+    if key == CAMP then return L.TAB_CAMP end
+    if key == VENDORS then return L.TAB_VENDORS end
+    if key == LEGACY then return L.TAB_LEGACY end
+    if key == CHARACTERS then return short and L.TAB_CHARACTERS_SHORT or L.TAB_CHARACTERS end
+    local p = ns.Professions.Get(key)
+    return short and L.TAB_SHORT[p.name] or L[p.name] or p.name
+end
+
 local function buildTabs()
     for i, key in ipairs(tabIDs()) do
         local tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
         tab:SetID(i)
         tab.key = key
-        if extraTabs[key] then
-            tab:SetText(extraTabs[key].label)
-        elseif key == CAMP then
-            tab:SetText(L.TAB_CAMP)
-        elseif key == VENDORS then
-            tab:SetText(L.TAB_VENDORS)
-        elseif key == LEGACY then
-            tab:SetText(L.TAB_LEGACY)
-        elseif key == CHARACTERS then
-            tab:SetText(L.TAB_CHARACTERS)
-        else
-            local p = ns.Professions.Get(key)
-            tab:SetText(L[p.name] or p.name)
-        end
+        tab:SetText(tabLabel(key))
         tab.badge = tab:CreateFontString(nil, "OVERLAY", "GameFontNormalTiny")
         tab.badge:SetPoint("TOPRIGHT", -6, -4)
         tab:SetScript("OnClick", function(self)
@@ -196,36 +194,50 @@ function UI.LayoutTabs()
     local caps = first and first.Left and first.Right and (first.Left:GetWidth() + first.Right:GetWidth()) or 40
     local minWidth = math.ceil(caps) + 6
     frame.tabPadding, frame.minTabWidth, frame.maxTabWidth = 0, minWidth, MAX_TAB_WIDTH
-    -- Legacy and Characters keep their natural width at the far right.
-    local rightWidth = 0
-    for i, tab in ipairs(right) do
-        PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
-        rightWidth = rightWidth + tab:GetWidth() + (i > 1 and TAB_GAP or 0)
-    end
-    local available = frame:GetWidth() - 16 - rightWidth - GROUP_GAP
-    -- Narrowest the window can be with every tab at its smallest and the gap kept.
-    UI.SetMinWidth("tabs", 16 + rightWidth + GROUP_GAP + #visible * minWidth + TAB_GAP * math.max(0, #visible - 1))
-    local natural = 0
-    for _, tab in ipairs(visible) do
-        PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
-        natural = natural + tab:GetWidth()
-    end
-    natural = natural + TAB_GAP * (#visible - 1)
-    if natural > available then
-        local each = math.max(minWidth, math.floor((available - TAB_GAP * (#visible - 1)) / #visible))
-        frame.maxTabWidth = each
-        for _, tab in ipairs(visible) do PanelTemplates_TabResize(tab, 0, nil, minWidth, each) end
-    end
-    local prev
-    for _, tab in ipairs(visible) do
-        tab:ClearAllPoints()
-        if prev then
-            tab:SetPoint("LEFT", prev, "RIGHT", TAB_GAP, 0)
-        else
-            tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 8, 2)
+    -- Names and natural widths: full names when they fit in one row, else the short names,
+    -- and if even those don't fit, the profession tabs wrap onto more rows below.
+    local rightWidth, widths, natural
+    local function measure(short)
+        rightWidth, widths, natural = 0, {}, 0
+        for i, tab in ipairs(right) do
+            tab:SetText(tabLabel(tab.key, short))
+            PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
+            rightWidth = rightWidth + tab:GetWidth() + (i > 1 and TAB_GAP or 0)
         end
-        prev = tab
+        for i, tab in ipairs(visible) do
+            tab:SetText(tabLabel(tab.key, short))
+            PanelTemplates_TabResize(tab, 0, nil, minWidth, MAX_TAB_WIDTH)
+            widths[i] = tab:GetWidth()
+            natural = natural + widths[i] + (i > 1 and TAB_GAP or 0)
+        end
     end
+    local full = frame:GetWidth() - 16
+    measure(false)
+    if natural > full - rightWidth - GROUP_GAP then measure(true) end
+    -- Rows of profession tabs; the first shares its row with Vendors/Legacy/Characters.
+    local rows = ns.util.WrapRows(widths, full - rightWidth - GROUP_GAP, full, TAB_GAP)
+    -- Narrowest the window can be: the right group plus two tabs in the first row.
+    UI.SetMinWidth("tabs", 16 + rightWidth + GROUP_GAP + 2 * minWidth + TAB_GAP)
+    local rowHeight = (first and first:GetHeight() or 32) - 4
+    for r, row in ipairs(rows) do
+        local prev
+        for _, i in ipairs(row) do
+            local tab = visible[i]
+            tab:ClearAllPoints()
+            if prev then
+                tab:SetPoint("LEFT", prev, "RIGHT", TAB_GAP, 0)
+            else
+                tab:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 8, 2 - (r - 1) * rowHeight)
+            end
+            prev = tab
+        end
+        -- A single tab wider than its row (very narrow window): shrink it to fit.
+        local avail = r == 1 and full - rightWidth - GROUP_GAP or full
+        if #row == 1 and widths[row[1]] > avail then
+            PanelTemplates_TabResize(visible[row[1]], 0, nil, minWidth, math.max(minWidth, avail))
+        end
+    end
+    UI.tabRows = #rows
     -- Right group, laid out from the right edge inwards.
     local nextTab
     for i = #right, 1, -1 do

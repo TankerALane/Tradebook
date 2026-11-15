@@ -49,3 +49,22 @@ function util.Matches(text, query)
     if type(text) ~= "string" then return false end
     return text:lower():find(query, 1, true) ~= nil
 end
+
+-- PURE. Split items of the given widths into rows, in order: the first row has `first` space,
+-- the others `rest`, with `gap` between items. A row always takes at least one item.
+-- Returns { { index, ... }, ... }.
+function util.WrapRows(widths, first, rest, gap)
+    local rows, row, used = {}, {}, 0
+    for i, w in ipairs(widths) do
+        local avail = #rows == 0 and first or rest
+        local need = (#row > 0 and gap or 0) + w
+        if #row > 0 and used + need > avail then
+            rows[#rows + 1] = row
+            row, used, need = {}, 0, w
+        end
+        row[#row + 1] = i
+        used = used + need
+    end
+    if #row > 0 then rows[#rows + 1] = row end
+    return rows
+end

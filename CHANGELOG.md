@@ -4,6 +4,10 @@
 
 ### Profit in the recipe list
 - **Show profit** (in the recipe list's Filter menu): each recipe shows what one craft earns after buying all its materials, between its name and the count. Choose **Selling to a vendor** or **Selling at the auction house** (needs Auctionator), or **Off**. Hover a recipe for the cost, the sale and the profit. Recipes with a material or sale price that isn't known yet show nothing.
+- Items vendors won't buy say "won't sell" under Selling to a vendor.
+
+### Smaller window
+- The window can be made narrower (760 instead of about 990). When the tabs don't fit, they first switch to short names (Alch, Smithing, Leather...) and then wrap onto a second row; the Open in default window and Shopping list buttons move up a line.
 
 ### Fixes
 - The blue skill bar no longer sticks out past its frame on the left and right.

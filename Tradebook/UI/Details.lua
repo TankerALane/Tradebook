@@ -250,7 +250,28 @@ function Details.Create(parent)
             root:CreateButton(L.SHOPPING_PINNED, function() ns.Shopping.ShowPinned() end)
         end)
     end)
+    f:SetScript("OnSizeChanged", function() self:LayoutButtons() end)
     return self
+end
+
+-- The button row: Open in default window, Shopping list | Craft, quantity, Craft All. When
+-- the pane is too narrow for one row, the left two move up onto their own row (and the
+-- status line and the scrolling body move up with them). The window keeps at least the
+-- width of the wider half.
+function Pane:LayoutButtons()
+    local left = self.defaultBtn:GetWidth() + 4 + self.shopBtn:GetWidth() + 2
+    local right = self.craft:GetWidth() + 30 + self.qty:GetWidth() + 34 + self.craftAll:GetWidth() + 2
+    ns.UI.SetMinWidth("craftRow", math.max(left, right) + 4 + DETAILS_MARGIN)
+    local stacked = self.frame:GetWidth() < left + 16 + right
+    if stacked == self.stacked then return end
+    self.stacked = stacked
+    local lift = stacked and 26 or 0
+    self.defaultBtn:ClearAllPoints()
+    self.defaultBtn:SetPoint("BOTTOMLEFT", 2, 4 + lift)
+    self.status:ClearAllPoints()
+    self.status:SetPoint("BOTTOMLEFT", 2, 36 + lift)
+    self.status:SetPoint("RIGHT", self.frame, "RIGHT", -2, 0)
+    self.scroll:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -14, 64 + lift)
 end
 
 function Pane:Quantity()
@@ -726,11 +747,7 @@ function Pane:RefreshCraft()
     local prof = r and ns.Professions.Get(r.s)
     self.craft:SetText(closed and prof and L.OPEN_PROFESSION:format(L[prof.name] or prof.name) or L.CRAFT)
     self.craft:SetWidth(math.max(80, self.craft:GetFontString():GetStringWidth() + 26))
-    -- The button row (Open in default window, Shopping list | Craft, quantity, Craft All) must
-    -- fit side by side: tell the window how wide it has to stay.
-    local row = self.defaultBtn:GetWidth() + self.shopBtn:GetWidth() + self.craft:GetWidth()
-        + self.qty:GetWidth() + self.craftAll:GetWidth() + 2 + 4 + 16 + 30 + 34 + 2
-    ns.UI.SetMinWidth("craftRow", row + DETAILS_MARGIN)
+    self:LayoutButtons()
     self.craft:SetEnabled(ok or (closed and not InCombatLockdown()))
     self.craftAll:SetEnabled(ok and max > 0)
     self.defaultBtn:SetEnabled(ns.Crafting.CanOpenInDefault(id))
