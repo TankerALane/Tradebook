@@ -130,7 +130,9 @@ f:SetScript("OnEvent", function(_, event, a1, a2, a3, a4)
         db.registered = tostring(C_ChatInfo.RegisterAddonMessagePrefix(PREFIX))
     elseif event == "CHAT_MSG_ADDON" and a1 == PREFIX then
         local text, chatType, sender = a2, a3, a4
-        local from = (Ambiguate(sender or "", "none") == UnitName("player")) and "self" or "other"
+        -- Compare the name part only: Forever's realm part doesn't match what Ambiguate expects
+        -- (round 1 logged our own echoes as "other").
+        local from = ((sender or ""):match("^[^-]+") == UnitName("player")) and "self" or "other"
         local tag = (text:match("^([^~]+)") or "?")
         local rec = { tag = tag, type = chatType, from = from, len = #text, at = GetTime() }
         if run and not run.done then run.received[#run.received + 1] = rec end
