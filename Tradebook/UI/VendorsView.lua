@@ -39,7 +39,8 @@ end
 local function priceText(row)
     local text = ns.Merchants.PriceText({ price = row.price, cost = row.cost })
     if text == "" then return W.ColorText(W.GREY, L.VENDOR_NO_PRICE) end
-    if row.price and not row.priceSeen and not row.cost then
+    -- Questie rows already say "Questie", which means a base price; the tooltip explains it.
+    if row.price and not row.priceSeen and not row.cost and row.source ~= "questie" then
         text = text .. " " .. W.ColorText(W.GREY, L.VENDOR_BASE_PRICE)
     end
     return text
