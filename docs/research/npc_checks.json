@@ -1,21 +1,414 @@
 {
-  "about": "NPCs that Questie's Forever data lists as vendors, checked in game with the Tradebook Dev window (marks: 'not there' = not found at its Questie location, 'not a vendor' = talking to it opens no vendor window). Only findings backed by two sources change the addon (Tradebook/Data/NotInForever.lua). 'not there' on a world-event NPC is seasonal, not evidence.",
-  "checks": [
-    { "npc": 214098, "name": "Gishah", "title": "Supply Officer", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
-    { "npc": 214096, "name": "Dokimi", "title": "Supply Officer", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
-    { "npc": 233428, "name": "Rune Broker", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
-    { "npc": 272045, "name": "Brother Zendraas", "finding": "exists, not found on one visit", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: Zephras Isle, sells 24 items", "Questie: 3 spawn points on Zephras Isle (may move or appear at times)"], "applied": false },
-    { "npc": 9087, "name": "Bashana Runetotem", "finding": "no vendor window (one visit)", "evidence": ["in game 2026-11-15: marked not a vendor; Questie: quest giver"], "applied": false },
-    { "npc": 254151, "name": "Vayn Moongaze", "finding": "no vendor window (one visit)", "evidence": ["in game 2026-11-15: marked not a vendor; Questie: quest giver"], "applied": false },
-    { "npc": 5052, "name": "Edward Remington", "title": "Guild Tabard Designer", "finding": "opens the tabard designer, not a vendor window", "evidence": ["in game 2026-11-15"], "applied": false },
-    { "npc": 4731, "name": "Zachariah Post", "title": "Undead Horse Merchant", "finding": "no vendor window for this character (racial mount vendor: Undead or exalted only)", "evidence": ["in game 2026-11-15: no window opened (automatic mark)"], "applied": false },
-    { "npc": 14844, "name": "Sylannia", "title": "Darkmoon Faire Drink Vendor", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 14846, "name": "Lhara", "title": "Darkmoon Faire Exotic Goods", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 14847, "name": "Professor Thaddeus Paleo", "title": "Darkmoon Faire Cards & Exotic Goods", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 14845, "name": "Stamp Thunderhorn", "title": "Darkmoon Faire Food Vendor", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 14860, "name": "Flik", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie spawns next to the Faire vendors at both Faire sites (Elwynn 41.8,68.1; Mulgore 37.5,44.1)"], "applied": false },
-    { "npc": 13432, "name": "Seersa Copperpinch", "title": "Smokywood Pastures", "finding": "seasonal (Feast of Winter Veil)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 13431, "name": "Whulwert Copperpinch", "title": "Smokywood Pastures", "finding": "seasonal (Feast of Winter Veil)", "evidence": ["Questie title"], "applied": false },
-    { "npc": 15898, "name": "Lunar Festival Vendor", "finding": "seasonal (Lunar Festival)", "evidence": ["Questie name"], "applied": false }
-  ]
+ "about": "NPCs that Questie's Forever data lists as vendors, checked in game with the Tradebook Dev window (marks: 'not there' = not found at its Questie location, 'not a vendor' = talking to it opens no vendor window). Only findings backed by two sources change the addon (Tradebook/Data/NotInForever.lua). 'not there' on a world-event NPC is seasonal, not evidence.",
+ "checks": [
+  {
+   "npc": 214098,
+   "name": "Gishah",
+   "title": "Supply Officer",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-15: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 214096,
+   "name": "Dokimi",
+   "title": "Supply Officer",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-15: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 233428,
+   "name": "Rune Broker",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-15: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 272045,
+   "name": "Brother Zendraas",
+   "finding": "exists, not found on one visit",
+   "evidence": [
+    "in game 2026-11-15: not there",
+    "forever.warcraftdb.com: Zephras Isle, sells 24 items",
+    "Questie: 3 spawn points on Zephras Isle (may move or appear at times)"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 9087,
+   "name": "Bashana Runetotem",
+   "finding": "no vendor window (one visit)",
+   "evidence": [
+    "in game 2026-11-15: marked not a vendor; Questie: quest giver"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 254151,
+   "name": "Vayn Moongaze",
+   "finding": "no vendor window (one visit)",
+   "evidence": [
+    "in game 2026-11-15: marked not a vendor; Questie: quest giver"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 5052,
+   "name": "Edward Remington",
+   "title": "Guild Tabard Designer",
+   "finding": "opens the tabard designer, not a vendor window",
+   "evidence": [
+    "in game 2026-11-15"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 4731,
+   "name": "Zachariah Post",
+   "title": "Undead Horse Merchant",
+   "finding": "no vendor window for this character (racial mount vendor: Undead or exalted only)",
+   "evidence": [
+    "in game 2026-11-15: no window opened (automatic mark)"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14844,
+   "name": "Sylannia",
+   "title": "Darkmoon Faire Drink Vendor",
+   "finding": "seasonal (Darkmoon Faire)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14846,
+   "name": "Lhara",
+   "title": "Darkmoon Faire Exotic Goods",
+   "finding": "seasonal (Darkmoon Faire)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14847,
+   "name": "Professor Thaddeus Paleo",
+   "title": "Darkmoon Faire Cards & Exotic Goods",
+   "finding": "seasonal (Darkmoon Faire)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14845,
+   "name": "Stamp Thunderhorn",
+   "title": "Darkmoon Faire Food Vendor",
+   "finding": "seasonal (Darkmoon Faire)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14860,
+   "name": "Flik",
+   "finding": "seasonal (Darkmoon Faire)",
+   "evidence": [
+    "Questie spawns next to the Faire vendors at both Faire sites (Elwynn 41.8,68.1; Mulgore 37.5,44.1)"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 13432,
+   "name": "Seersa Copperpinch",
+   "title": "Smokywood Pastures",
+   "finding": "seasonal (Feast of Winter Veil)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 13431,
+   "name": "Whulwert Copperpinch",
+   "title": "Smokywood Pastures",
+   "finding": "seasonal (Feast of Winter Veil)",
+   "evidence": [
+    "Questie title"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 15898,
+   "name": "Lunar Festival Vendor",
+   "finding": "seasonal (Lunar Festival)",
+   "evidence": [
+    "Questie name"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 214101,
+   "name": "Marcy Baker",
+   "title": "Supply Officer",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 230565,
+   "name": "Ironforge Guard",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 233335,
+   "name": "Rune Broker",
+   "finding": "not in Forever",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: no NPC page (404)"
+   ],
+   "applied": true
+  },
+  {
+   "npc": 214099,
+   "name": "Tamelyn Aldridge",
+   "title": "Supply Officer",
+   "finding": "no vendor window (one visit)",
+   "evidence": [
+    "in game 2026-11-14: talked to her, no window (marked not a vendor)",
+    "forever.warcraftdb.com: no NPC page (404), but she is there in game"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 258306,
+   "name": "Granny Finespindle",
+   "title": "Leatherworking Recipes",
+   "finding": "exists, walks around",
+   "evidence": [
+    "in game 2026-11-14: marked not there, then scanned a minute later (Ironforge 39.0, 33.6)",
+    "Questie: 8 spawn points in Ironforge"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 3537,
+   "name": "Zixil",
+   "title": "Merchant Supreme",
+   "finding": "exists, not found on one visit",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: Hillsbrad Foothills, sells 4 items (a wandering merchant)"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 15734,
+   "name": "Ironforge Commendation Officer",
+   "finding": "not found (one visit)",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: no NPC page (404); left in until a second check"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 14481,
+   "name": "Emmithue Smails",
+   "title": "Sweet Treats",
+   "finding": "not found (one visit)",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: no NPC page (404); may be seasonal; left in until a second check"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 248809,
+   "name": "Jenna",
+   "title": "Mustard Queen",
+   "finding": "not found (one visit)",
+   "evidence": [
+    "in game 2026-11-14: not there",
+    "forever.warcraftdb.com: page exists, no spawn map and no items"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 1694,
+   "name": "Loslor Rudge",
+   "title": "Engineering Supplies",
+   "finding": "no vendor window (one visit, automatic mark)",
+   "evidence": [
+    "in game 2026-11-14: no window opened",
+    "forever.warcraftdb.com: sells 10 items; recheck"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 10216,
+   "name": "Gubber Blump",
+   "finding": "no vendor window",
+   "evidence": [
+    "in game 2026-11-14: marked not a vendor",
+    "forever.warcraftdb.com: quest giver, sells nothing listed"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 12805,
+   "name": "Officer Areyn",
+   "title": "Accessories Quartermaster",
+   "finding": "no vendor window (one visit)",
+   "evidence": [
+    "in game 2026-11-14: marked not a vendor",
+    "PvP rank quartermaster in classic; forever.warcraftdb.com lists no items"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 1440,
+   "name": "Milton Sheaf",
+   "title": "Librarian",
+   "finding": "no vendor window",
+   "evidence": [
+    "in game 2026-11-14: marked not a vendor",
+    "forever.warcraftdb.com: quest giver, sells nothing listed"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 12863,
+   "name": "Warsong Runner",
+   "finding": "no vendor window",
+   "evidence": [
+    "in game 2026-11-14: marked not a vendor",
+    "forever.warcraftdb.com: quest giver, sells nothing listed"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 230319,
+   "name": "Deliana",
+   "finding": "no vendor window (one visit)",
+   "evidence": [
+    "in game 2026-11-14: marked not a vendor",
+    "forever.warcraftdb.com: page exists, lists no items; Questie: quest giver"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 4217,
+   "name": "Mathrengyl Bearwalker",
+   "title": "Druid Trainer",
+   "finding": "class trainer, not a vendor",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark)",
+    "only druids get his trainer window"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 5520,
+   "name": "Spackle Thornberry",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 6373,
+   "name": "Dane Winslow",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 6374,
+   "name": "Cylina Darkheart",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 6376,
+   "name": "Wren Darkspring",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 6328,
+   "name": "Dannie Fizzwizzle",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 6382,
+   "name": "Jubahl Corpseseeker",
+   "title": "Demon Trainer",
+   "finding": "class-gated: only warlocks get the window",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark), character not a warlock"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 4730,
+   "name": "Lelanai",
+   "title": "Saber Handler",
+   "finding": "racial mount vendor: sells only to that race or exalted",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark)"
+   ],
+   "applied": false
+  },
+  {
+   "npc": 7955,
+   "name": "Milli Featherwhistle",
+   "title": "Mechanostrider Merchant",
+   "finding": "racial mount vendor: sells only to that race or exalted",
+   "evidence": [
+    "in game 2026-11-14: no window (automatic mark)"
+   ],
+   "applied": false
+  }
+ ]
 }

@@ -362,7 +362,7 @@ ns.RecipeVendors = {
 [28222]={x=4}, -- Icy Scale Breastplate
 [28223]={x=4}, -- Icy Scale Gauntlets
 [28224]={x=4}, -- Icy Scale Bracers
-[28327]={u={14828}}, -- Steam Tonk Controller
+[28327]={v={14828}}, -- Steam Tonk Controller
 [28461]={x=1}, -- Ironvine Breastplate
 [28462]={x=1}, -- Ironvine Gloves
 [28463]={x=1}, -- Ironvine Belt

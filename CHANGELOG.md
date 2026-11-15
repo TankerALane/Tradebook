@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- More vendor and trainer data: the community database now has **220 vendors (3,081 items)** and **73 trainers (1,054 services)** scanned in game.
-- Three Season of Discovery vendors that Questie lists but that aren't in WoW Forever (Gishah, Dokimi, the Rune Broker) are no longer offered anywhere.
+- More vendor and trainer data: the community database now has **462 vendors (6,173 items)** and **129 trainers (1,700 services)** scanned in game, now including the Alliance cities (Stormwind, Ironforge, Darnassus) and their starting zones.
+- Six Season of Discovery NPCs that Questie lists but that aren't in WoW Forever (Gishah, Dokimi, Marcy Baker, two Rune Brokers and an Ironforge Guard) are no longer offered anywhere.
 - Right-clicking a vendor or mob line no longer targets it; left-click does.
 
 ## v0.4.0-beta

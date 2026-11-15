@@ -588,14 +588,17 @@ test("Forever-checked recipe vendors replace the classic ones", function()
     eq(#conf + #unconf, 0, "no vendor")
     eq(ns.Sources.Raw(6417).q[1], 862)
     eq(ns.Sources.Kinds(6417).recipe, true, "still learned from a recipe item")
-    -- 28327 Steam Tonk Controller: one source (Gelvas Grimegate 14828), unconfirmed.
-    conf, unconf = ns.Sources.Vendors(28327)
+    -- 20853 Corehound Boots: one source (Lokhtos Darkbargainer 12944), unconfirmed.
+    conf, unconf = ns.Sources.Vendors(20853)
     eq(#conf, 0)
-    eq(unconf[1], 14828)
-    local lines = ns.Sources.Get(28327)
+    eq(unconf[1], 12944)
+    local lines = ns.Sources.Get(20853)
     local found
-    for _, l in ipairs(lines) do if l.text:find("Gelvas Grimegate") then found = l.text end end
+    for _, l in ipairs(lines) do if l.text:find("Lokhtos") then found = l.text end end
     assert(found and found:find("unconfirmed"), tostring(found))
+    -- 28327 Steam Tonk Controller: seen in Gelvas Grimegate's window (14828), so confirmed.
+    conf = ns.Sources.Vendors(28327)
+    eq(conf[1], 14828)
     -- 24846 Spitfire Bracers: not in Forever yet, no vendor.
     eq(ns.Sources.Raw(24846).x, 1)
     eq(ns.Sources.Get(24846)[1].text, ns.L.SOURCE_NOT_YET)

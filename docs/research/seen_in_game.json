@@ -175,6 +175,13 @@
    "sells": false,
    "date": "2026-11-14",
    "note": "Joseph Moore: Barbaric Bracers not in his window (all his stock is unlimited); his wow-professions Forever page doesn't list it either"
+  },
+  {
+   "recipe": 28327,
+   "npc": 14828,
+   "sells": true,
+   "date": "2026-11-14",
+   "note": "Gelvas Grimegate (Darkmoon Faire, Elwynn): in his window for Darkmoon tickets"
   }
  ]
 }
