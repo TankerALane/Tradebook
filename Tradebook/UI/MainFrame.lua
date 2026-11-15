@@ -386,18 +386,9 @@ local function buildHeader()
     bar.bg:SetAtlas("Professions-skillbar-bg", true)
     bar.bg:SetPoint("TOPLEFT")
     bar.fill = CreateFrame("StatusBar", nil, bar)
-    bar.fill:SetPoint("TOPLEFT", 5, -3)
+    bar.fill:SetPoint("TOPLEFT", 5, -3) -- moved in by OnSizeChanged
     bar.fill:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     bar.fill:SetStatusBarColor(0.22, 0.52, 1.0)
-    -- The fill is square; like the default window, a mask trims its ends to the frame's
-    -- bevelled corners (otherwise the blue sticks out past the frame on both sides).
-    if C_Texture.GetAtlasInfo("Professions-skillbar-mask") then
-        bar.mask = bar.fill:CreateMaskTexture()
-        bar.mask:SetAtlas("Professions-skillbar-mask")
-        bar.mask:SetPoint("TOPLEFT", bar.fill, "TOPLEFT", 1, 0)
-        bar.mask:SetPoint("BOTTOMRIGHT", bar.fill, "BOTTOMRIGHT", 1, 0)
-        bar.fill:GetStatusBarTexture():AddMaskTexture(bar.mask)
-    end
     -- Border art and number sit on a frame above the fill (a child frame draws over its
     -- parent's textures, so the border can't live on `bar` itself).
     bar.fill:SetFrameLevel(bar:GetFrameLevel() + 1)
@@ -412,7 +403,13 @@ local function buildHeader()
     bar:SetScript("OnSizeChanged", function(self, w)
         self.bg:SetWidth(w)
         self.border:SetWidth(w - 2)
-        self.fill:SetSize(math.max(1, w - 12), 18)
+        -- The frame art (451 wide at its own size) stretches sideways with the bar, and so
+        -- do its bevelled ends. The square blue fill starts and stops just inside the ends'
+        -- upright lines (8 art pixels in), or its corners stick out past the frame.
+        local edge = 8 * (w - 2) / 451
+        self.fill:ClearAllPoints()
+        self.fill:SetPoint("TOPLEFT", edge, -3)
+        self.fill:SetSize(math.max(1, w - 2 - 2 * edge), 18)
     end)
     bar:EnableMouse(true)
     bar:SetScript("OnEnter", function(self)
