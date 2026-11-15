@@ -28,9 +28,25 @@ end
 local function db()
     TradebookDevDB = TradebookDevDB or {}
     local d = TradebookDevDB
-    if d.friendlyOnly == nil then d.friendlyOnly = true end
     if d.countHeard == nil then d.countHeard = true end
+    d.checked = d.checked or {} -- [npcID] = { name, at, how = "auto" | "manual" }: no vendor window
+    if not d.factions then d.factions = Dev.DefaultFactions(UnitFactionGroup("player")) end
     return d
+end
+
+-- PURE. Factions shown by default: yours, Both and unknown.
+function Dev.DefaultFactions(mine)
+    return { Horde = mine ~= "Alliance", Alliance = mine == "Alliance", Both = true, Neither = false, Unknown = true }
+end
+
+-- PURE. Does row r pass filter settings f? (factions: [faction or "Unknown"] = shown;
+-- within: yards or nil; recipeOnly; showChecked: also NPCs checked to have no vendor window.)
+function Dev.Passes(r, f)
+    if f.factions and f.factions[r.faction or "Unknown"] == false then return false end
+    if f.recipeOnly and not r.recipe then return false end
+    if f.within and not (r.distance and r.distance <= f.within) then return false end
+    if r.checked and not f.showChecked then return false end
+    return true
 end
 
 local function say(msg) print("|cffd9a54aTradebook Dev|r: " .. msg) end
@@ -95,16 +111,25 @@ function Dev.Sort(rows, by, myFaction)
     return rows
 end
 
+-- The unscanned vendor set (Questie's vendor lists load in batches), then done(set).
+local lastSet
+local function candidates(done)
+    ns.Questie.VendorItems(function(index)
+        local d = db()
+        local scanned = { ns.db.vendors, ns.CommunityVendors }
+        if d.countHeard and ns.Net then scanned[#scanned + 1] = ns.Net.HeardVendors() end
+        lastSet = Dev.Unscanned(index, ns.RecipeVendors, scanned)
+        done(lastSet)
+    end)
+end
+
 -- Locate every candidate (a batch per frame), then call done(rows) (unsorted).
 local building
 local function build(done)
     if building then return end
     building = true
-    ns.Questie.VendorItems(function(index)
-        local d = db()
-        local scanned = { ns.db.vendors, ns.CommunityVendors }
-        if d.countHeard and ns.Net then scanned[#scanned + 1] = ns.Net.HeardVendors() end
-        local set = Dev.Unscanned(index, ns.RecipeVendors, scanned)
+    candidates(function(set)
+        local checked = db().checked
         local ids = {}
         for npc in pairs(set) do ids[#ids + 1] = npc end
         local rows, i = {}, 1
@@ -117,7 +142,7 @@ local function build(done)
                     name = place and place.name or (ns.RecipeVendorNames and ns.RecipeVendorNames[npc]),
                     sub = place and place.sub, zone = place and place.zone, distance = place and place.distance,
                     friendly = place and place.friendly, place = place,
-                    faction = ns.Questie.NpcFaction and ns.Questie.NpcFaction(npc) }
+                    faction = ns.Questie.NpcFaction and ns.Questie.NpcFaction(npc), checked = checked[npc] ~= nil }
             end
             i = i + BATCH
             if i <= #ids then
@@ -149,8 +174,80 @@ local function tooltipFor(r)
     if r.recipe then lines[#lines + 1] = W.ColorText(W.GOLD, "Sells recipes (bundled data)") end
     lines[#lines + 1] = "Faction: " .. factionText(r.faction)
     if r.friendly == false then lines[#lines + 1] = W.ColorText(W.RED, "Not friendly to you") end
+    if r.checked then
+        local c = db().checked[r.npcID]
+        lines[#lines + 1] = W.ColorText(W.GREY, ("Checked: no vendor window (%s)"):format(c and c.how == "manual"
+            and "marked by you" or "you talked to it"))
+    end
     if r.place then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
+    lines[#lines + 1] = r.checked and "Right-click: unmark (it does have a window)"
+        or "Right-click: mark as checked (no vendor window)"
     return lines
+end
+
+---------------------------------------------------------------------------
+-- NPCs with no vendor window (Questie lists them as vendors, but talking to them opens
+-- nothing to buy or train): marked "checked" automatically when you talk to one and no
+-- vendor or trainer window opens, or by hand with a right-click. Checked NPCs are hidden
+-- unless "Show checked NPCs" is ticked.
+---------------------------------------------------------------------------
+
+function Dev.SetChecked(npc, name, on, how)
+    local list = db().checked
+    if on then list[npc] = { name = name, at = time(), how = how } else list[npc] = nil end
+    for _, r in ipairs(View.rows or {}) do
+        if r.npcID == npc then r.checked = on or nil end
+    end
+    View:RefreshList()
+end
+
+local function toggleChecked(r)
+    local on = not r.checked
+    Dev.SetChecked(r.npcID, r.name, on, "manual")
+    say((on and "%s marked as checked (no vendor window)." or "%s unmarked."):format(r.name or ("NPC " .. r.npcID)))
+end
+
+local function npcOf(unit)
+    local guid = UnitGUID(unit)
+    if not guid or (issecretvalue and issecretvalue(guid)) then return nil end
+    local kind, id = guid:match("^(%a+)%-%d+%-%d+%-%d+%-%d+%-(%d+)")
+    if kind == "Creature" or kind == "Vehicle" then return tonumber(id) end
+end
+
+-- Talking to an NPC: GOSSIP_SHOW. Choosing "Let me browse your goods" closes the gossip and
+-- opens the vendor right after, so the check waits a moment after GOSSIP_CLOSED.
+local talk
+local function onTalkEvent(_, event)
+    if not ns then return end
+    if event == "GOSSIP_SHOW" then
+        local id = npcOf("npc")
+        if id and not (talk and talk.npc == id) then talk = { npc = id, name = UnitName("npc") } end
+    elseif event == "MERCHANT_SHOW" or event == "TRAINER_SHOW" then
+        local id = npcOf("npc")
+        if talk and talk.npc == id then talk.opened = true end
+        -- It does have a window after all: forget an automatic check.
+        local c = id and db().checked[id]
+        if c and c.how == "auto" then Dev.SetChecked(id, c.name, false) end
+    elseif event == "GOSSIP_CLOSED" then
+        local t = talk
+        C_Timer.After(1.5, function()
+            if talk ~= t then return end
+            talk = nil
+            if not t or t.opened or db().checked[t.npc] then return end
+            candidates(function(set)
+                if not set[t.npc] then return end -- not an unscanned vendor
+                Dev.SetChecked(t.npc, t.name, true, "auto")
+                say(("%s has no vendor window: marked as checked. Right-click it in /tbdev to undo."):format(
+                    t.name or ("NPC " .. t.npc)))
+            end)
+        end)
+    end
+end
+
+local function startWatcher()
+    local watcher = CreateFrame("Frame")
+    for _, e in ipairs({ "GOSSIP_SHOW", "GOSSIP_CLOSED", "MERCHANT_SHOW", "TRAINER_SHOW" }) do watcher:RegisterEvent(e) end
+    watcher:SetScript("OnEvent", onTalkEvent)
 end
 
 local function createRow(row)
@@ -171,7 +268,10 @@ local function createRow(row)
     row:SetScript("OnSizeChanged", function(self, w)
         self.name:SetWidth(math.max(60, math.min(240, (w or 0) * 0.38)))
     end)
-    row:SetScript("OnClick", function(self) waypoint(self.data) end)
+    row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    row:SetScript("OnClick", function(self, mouse)
+        if mouse == "RightButton" then toggleChecked(self.data) else waypoint(self.data) end
+    end)
     row:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         for i, line in ipairs(tooltipFor(self.data)) do
@@ -187,11 +287,13 @@ local function initRow(row, r)
     row.data = r
     ns.TargetButtons.Release(row)
     if r.name and r.place then
-        ns.TargetButtons.Attach(row, row, r.name, function() waypoint(r) end, tooltipFor(r))
+        ns.TargetButtons.Attach(row, row, r.name, function() waypoint(r) end, tooltipFor(r),
+            function() toggleChecked(r) end)
     end
     local name = r.name or ("NPC " .. r.npcID)
-    row.name:SetText(r.recipe and W.ColorText(W.GOLD, name) or name)
+    row.name:SetText(r.checked and W.ColorText(W.GREY, name) or (r.recipe and W.ColorText(W.GOLD, name) or name))
     local parts = {}
+    if r.checked then parts[#parts + 1] = W.ColorText(W.GREY, "checked: no window") end
     if r.sub then parts[#parts + 1] = W.ColorText(W.GREY, "<" .. r.sub .. ">") end
     if r.zone then parts[#parts + 1] = r.zone end
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
@@ -216,26 +318,56 @@ function View:Build(parent)
     local filter = CreateFrame("DropdownButton", nil, f, "WowStyle1FilterDropdownTemplate")
     filter:SetWidth(80)
     filter:SetPoint("RIGHT", refresh, "LEFT", -6, 0)
-    local DEFAULTS = { friendlyOnly = true, recipeOnly = false, countHeard = true }
+    local DEFAULTS = { recipeOnly = false, countHeard = true, showChecked = false }
+    local FACTIONS = { { "Horde" }, { "Both" }, { "Alliance" }, { "Neither" }, { "Unknown" } }
+    local WITHIN = { 250, 500, 1000, 2500, 5000, 10000 }
     filter:SetIsDefaultCallback(function()
         local d = db()
         for k, v in pairs(DEFAULTS) do if (d[k] or false) ~= v then return false end end
+        if d.within then return false end
+        local def = Dev.DefaultFactions(UnitFactionGroup("player"))
+        for k, v in pairs(def) do if (d.factions[k] ~= false) ~= v then return false end end
         return true
     end)
     filter:SetDefaultCallback(function()
         local d = db()
         for k, v in pairs(DEFAULTS) do d[k] = v end
+        d.within = nil
+        d.factions = Dev.DefaultFactions(UnitFactionGroup("player"))
         View:Load()
     end)
     filter:SetupMenu(function(_, root)
+        root:CreateTitle("Faction")
+        for _, fct in ipairs(FACTIONS) do
+            local label = fct[1] == "Unknown" and "Unknown" or factionText(fct[1])
+            root:CreateCheckbox(label, function() return db().factions[fct[1]] ~= false end,
+                function()
+                    local list = db().factions
+                    list[fct[1]] = list[fct[1]] == false
+                    View:RefreshList()
+                end)
+        end
+        root:CreateDivider()
+        root:CreateTitle("Within")
+        root:CreateRadio("Any distance", function() return db().within == nil end, function()
+            db().within = nil
+            View:RefreshList()
+        end)
+        for _, yards in ipairs(WITHIN) do
+            root:CreateRadio(ns.Locations.DistanceText(yards), function() return db().within == yards end, function()
+                db().within = yards
+                View:RefreshList()
+            end)
+        end
+        root:CreateDivider()
         local function add(text, key)
             root:CreateCheckbox(text, function() return db()[key] == true end, function()
                 db()[key] = not db()[key]
                 if key == "countHeard" then View:Load() else View:RefreshList() end
             end)
         end
-        add("Friendly to you only", "friendlyOnly")
         add("Recipe vendors only", "recipeOnly")
+        add("Show checked NPCs (no vendor window)", "showChecked")
         add("Players' shares count as scanned", "countHeard")
     end)
     self.filter = filter
@@ -268,9 +400,7 @@ function View:RefreshList()
     local d = db()
     local shown = {}
     for _, r in ipairs(self.rows or {}) do
-        if not (d.friendlyOnly and r.friendly == false) and not (d.recipeOnly and not r.recipe) then
-            shown[#shown + 1] = r
-        end
+        if Dev.Passes(r, d) then shown[#shown + 1] = r end
     end
     Dev.Sort(shown, d.sort or "distance", UnitFactionGroup("player"))
     self.list:SetItems(shown)
@@ -366,6 +496,7 @@ end
 
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
+    startWatcher()
 end
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"

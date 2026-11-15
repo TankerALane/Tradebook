@@ -1164,6 +1164,19 @@ test("dev: unscanned vendors leave out everyone's scans", function()
     order = {}
     for _, r in ipairs(TradebookDev.Sort(rows, "distance", "Horde")) do order[#order + 1] = r.npcID end
     eq(table.concat(order, ","), "5,6,1,4,2,3")
+    -- filters: faction checkboxes, distance, checked NPCs
+    local D = TradebookDev
+    local f = { factions = D.DefaultFactions("Horde") }
+    eq(D.Passes({ faction = "Horde", distance = 10 }, f), true)
+    eq(D.Passes({ faction = "Alliance", distance = 10 }, f), false, "other faction off by default")
+    eq(D.Passes({ distance = 10 }, f), true, "unknown faction shown")
+    eq(D.Passes({ faction = "Neither" }, f), false)
+    f.within = 500
+    eq(D.Passes({ faction = "Both", distance = 600 }, f), false, "too far")
+    eq(D.Passes({ faction = "Both" }, f), false, "distance unknown")
+    eq(D.Passes({ faction = "Both", distance = 400, checked = true }, f), false, "checked: hidden")
+    f.showChecked = true
+    eq(D.Passes({ faction = "Both", distance = 400, checked = true }, f), true)
     TradebookDev, SlashCmdList, SLASH_TRADEBOOKDEV1 = nil, nil, nil
 end)
 

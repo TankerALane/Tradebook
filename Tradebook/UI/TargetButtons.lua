@@ -60,7 +60,8 @@ local function create()
     -- The macro runs on mouse down or up depending on the "cast on key down" setting, so
     -- listen for both.
     b:RegisterForClicks("AnyUp", "AnyDown")
-    b:SetAttribute("type", "macro")
+    -- Left button only ("type1"): a right-click runs no macro and goes to onRightClick.
+    b:SetAttribute("type1", "macro")
     b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
     -- Build the macro once per press (on down, before anything has run) and keep it for the
     -- up, so whichever of the two runs it gets the same macro.
@@ -70,8 +71,13 @@ local function create()
         self:SetAttribute("macrotext", self.pressMacro)
     end)
     -- On up (the macro has run by then): set the waypoint.
-    b:HookScript("OnClick", function(self, _, down)
+    b:HookScript("OnClick", function(self, mouse, down)
         if down then return end
+        if mouse == "RightButton" then
+            self.pressMacro = nil
+            if self.onRightClick then self.onRightClick() end
+            return
+        end
         -- /tb debug: what the click ran and what's targeted just after (for target/mark reports).
         local ran, wanted = self.pressMacro, self.targetName
         C_Timer.After(0.3, function()
@@ -95,9 +101,10 @@ function TargetButtons.Release(owner)
     end
 end
 
--- Cover `line` with a secure button that targets `name` and then calls onClick.
+-- Cover `line` with a secure button that targets `name` and then calls onClick (left
+-- click). onRightClick (optional) runs on a right-click, which targets nothing.
 -- Returns false (and does nothing) in combat; the line's own click still works then.
-function TargetButtons.Attach(owner, line, name, onClick, tooltip)
+function TargetButtons.Attach(owner, line, name, onClick, tooltip, onRightClick)
     if InCombatLockdown() or not name or name == "" then return false end
     local b
     for _, free in ipairs(pool) do
@@ -113,7 +120,7 @@ function TargetButtons.Attach(owner, line, name, onClick, tooltip)
     b:SetAllPoints(line)
     b:SetFrameLevel(line:GetFrameLevel() + 5)
     b:SetAttribute("macrotext", macroFor(name))
-    b.onClick, b.tooltip, b.targetName = onClick, tooltip, name
+    b.onClick, b.tooltip, b.targetName, b.onRightClick = onClick, tooltip, name, onRightClick
     b:Show()
     return true
 end
