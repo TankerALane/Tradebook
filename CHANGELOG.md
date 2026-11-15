@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.5.1-beta
+
 ### Filters
 - **No Merchant's Favor** under From a recipe: hides recipes you can only buy with Merchant's Favor (supply camps). Recipes a trainer teaches or a mob drops stay.
 
