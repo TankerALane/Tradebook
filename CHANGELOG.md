@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Fixed: clicking an NPC again after a try from too far away now targets it and puts the purple diamond on it.
+- Clicking an NPC replaces Tradebook's previous waypoint (TomTom arrow) and moves the purple diamond to the new NPC. Clicking an NPC again, after a try from too far away or when it's already marked, keeps the diamond on instead of taking it off.
 
 - **Sharing in game**: Tradebook now shares the vendors and trainers you open with other Tradebook users while you play, and shows what they found in the Vendors tab ("other players"). A vendor only one player has shared is marked "(unconfirmed)" until a second player agrees. Only NPC data is shared, never anything about your characters. It runs quietly in the background on a hidden channel (nothing shows in your chat) and can be turned off in the settings. `/tb net` shows what was sent and heard. `/tb share` and the GitHub form still work as before.
 

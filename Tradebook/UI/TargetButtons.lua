@@ -22,12 +22,14 @@ local NL = string.char(10)
 -- attributes can change). Marking is protected, so it's done in the macro with /tm:
 --   /cleartarget first, so an out-of-range NPC leaves no target and /tm marks nothing
 --     (instead of marking whatever was targeted before);
---   /tm toggles a marker that's already on, so "/tm 0" clears any marker first and
---     "/tm 3" then always puts the diamond on. (Remembering what we marked instead failed:
---     a click from too far away could be remembered as marked, and later clicks skipped
---     the mark.)
+--   "/tm !3" puts the diamond on and, unlike "/tm 3", never toggles it off when it's already
+--     there (the "!" option of the game's /tm, Blizzard_ChatFrameBase SlashCommands.lua). A
+--     marker sits on one unit at a time, so this also takes it off the NPC marked before.
+--     (Earlier tries: remembering what we marked could skip the mark for good, and
+--     "/tm 0" + "/tm 3" in one macro could clear it, since the game hasn't updated the mark
+--     between the two lines.)
 local function macroFor(name)
-    return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm 0" .. NL .. "/tm " .. DIAMOND
+    return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm !" .. DIAMOND
 end
 
 local function detach(b)

@@ -17,12 +17,23 @@ function Waypoints.Set(areaID, x, y, title)
     return Waypoints.SetOnMap(map, x, y, title)
 end
 
+-- The TomTom waypoint Tradebook set last: replaced by the next one, so only one shows.
+local lastTomTom
+
+local function removeLast(tomtom)
+    if lastTomTom and type(tomtom.RemoveWaypoint) == "function" then pcall(tomtom.RemoveWaypoint, tomtom, lastTomTom) end
+    lastTomTom = nil
+end
+
 -- Same, for a UI map ID (positions saved from the game's map API).
+-- Replaces Tradebook's previous waypoint (the game's own map pin only has one anyway).
 function Waypoints.SetOnMap(map, x, y, title)
     local tomtom = _G.TomTom
     if type(tomtom) == "table" and type(tomtom.AddWaypoint) == "function" then
-        local ok = pcall(tomtom.AddWaypoint, tomtom, map, x / 100, y / 100, { title = title, from = "Tradebook" })
+        removeLast(tomtom)
+        local ok, uid = pcall(tomtom.AddWaypoint, tomtom, map, x / 100, y / 100, { title = title, from = "Tradebook" })
         if ok then
+            lastTomTom = uid
             ns.Print(L.WAYPOINT_SET:format(title or "", x, y))
             return true
         end
