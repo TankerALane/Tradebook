@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- More vendor and trainer data: the community database now has **462 vendors (6,173 items)** and **129 trainers (1,700 services)** scanned in game, now including the Alliance cities (Stormwind, Ironforge, Darnassus) and their starting zones.
+- More vendor and trainer data: the community database now has **471 vendors (6,239 items)** and **132 trainers (1,703 services)** scanned in game, now including the Alliance cities (Stormwind, Ironforge, Darnassus) and the Alliance starting zones (including Teldrassil).
 - Six Season of Discovery NPCs that Questie lists but that aren't in WoW Forever (Gishah, Dokimi, Marcy Baker, two Rune Brokers and an Ironforge Guard) are no longer offered anywhere.
 - Right-clicking a vendor or mob line no longer targets it; left-click does.
 
