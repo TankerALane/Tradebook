@@ -559,8 +559,10 @@ function View:Refresh()
     if prof and prof.scannedAt and not isMe then
         notices[#notices + 1] = L.LAST_SCANNED:format(W.Ago(prof.scannedAt))
     end
-    self.tracking:SetSpell(not self.browsing and self.charKey == ns.charKey and not ns.fake
-        and ns.TrackingButton.KnownSpell(self.skill) or nil)
+    local shotSpell = ns.Screenshots and ns.Screenshots.trackingShot and ns.TrackingButton.spells[self.skill]
+    self.tracking:SetSpell(shotSpell and shotSpell[#shotSpell] -- /tb shots: shown with the made-up characters
+        or (not self.browsing and self.charKey == ns.charKey and not ns.fake
+        and ns.TrackingButton.KnownSpell(self.skill)) or nil)
     self.notice:SetText(table.concat(notices, "\n"))
     self.openBtn:SetShown(showOpen)
     self:Layout(showOpen)

@@ -15,6 +15,28 @@ Shots.DELAY = 1.5            -- seconds for the window to redraw before each pic
 Shots.WIDTH, Shots.HEIGHT = 1100, 640
 
 local TAILORING, LEATHERWORKING, ENGINEERING, COOKING = 197, 165, 202, 185
+local ENCHANTING, HERBALISM = 333, 182
+local WHITE_LEATHER_JERKIN = 2163 -- dropped by two mobs, with recorded drop chances
+
+-- Show one recipe on a profession tab, even one the shown character doesn't know.
+local function showRecipe(skillLineID, recipeID)
+    ns.UI.SelectTab(skillLineID)
+    if not ns.db.recipes[recipeID] then ns.Scanner.CacheRecipeInto(ns.db, recipeID, skillLineID) end
+    ns.UI.views.profession:SelectRecipe(recipeID)
+end
+
+-- A Merchant's Favor recipe (supply camp) of a profession, cached so it can be shown.
+local function favorRecipe(skillLineID)
+    local ids = {}
+    for id, e in pairs(ns.RecipeVendors or {}) do if e.fv and e.cr then ids[#ids + 1] = id end end
+    table.sort(ids)
+    for _, id in ipairs(ids) do
+        if ns.db.recipes[id] or ns.Scanner.CacheRecipeInto(ns.db, id, skillLineID) then
+            local r = ns.db.recipes[id]
+            if r and r.s == skillLineID and not r.x then return id end -- x: another profession's
+        end
+    end
+end
 
 -- A recipe of the shown character with a reagent that can itself be crafted (so the reagent
 -- tree has something to show). Returns recipeID and that reagent's index.
@@ -118,6 +140,41 @@ Shots.PLAN = {
             end
         end
     end, after = function() ns.UI.SetBrowse(ENGINEERING, false) end },
+    -- Vendors tab: the community vendor database, one item opened to its nearest vendors.
+    { name = "vendors", run = function()
+        ns.UI.SelectTab("vendors")
+        local view = ns.UI.views.vendors
+        view.search:SetText("pattern")
+        view.text = "pattern"
+        local first = ns.VendorDB.Search({ text = "pattern", limit = 1 })[1]
+        if first then view.expanded[first.itemID] = true end
+        view:RefreshList()
+    end, after = function()
+        local view = ns.UI.views.vendors
+        view.search:SetText("")
+        view.text, view.expanded = nil, {}
+        view:RefreshList()
+    end },
+    -- A supply camp recipe: Merchant's Favor cost and the camp reputation needed.
+    { name = "supply-camp", run = function()
+        local id = favorRecipe(ENCHANTING)
+        if id then showRecipe(ENCHANTING, id) end
+    end },
+    -- Who drops a recipe, with zones, levels and drop chances.
+    { name = "drops", run = function() showRecipe(LEATHERWORKING, WHITE_LEATHER_JERKIN) end },
+    -- Leveling plan: the cheapest way to the skill cap, with materials and cost.
+    { name = "leveling-plan", run = function()
+        profession(TAILORING)()
+        ns.PlannerUI.Show(ns.charKey, TAILORING)
+    end, after = function() ns.PlannerUI.Hide() end },
+    -- Find Herbs on the Herbalism tab (drag to an action bar).
+    { name = "gathering", run = function()
+        Shots.trackingShot = true
+        ns.UI.SelectTab(HERBALISM)
+    end, after = function()
+        Shots.trackingShot = nil
+        ns.UI.views.profession:Refresh()
+    end },
 }
 
 -- Where the window is, as fractions of the screen (top-left origin), for cropping.
