@@ -2,8 +2,17 @@
 
 ## Unreleased
 
-- More vendor and trainer data: the community database now has **471 vendors (6,239 items)** and **132 trainers (1,703 services)** scanned in game, now including the Alliance cities (Stormwind, Ironforge, Darnassus) and the Alliance starting zones (including Teldrassil).
+## v0.4.1-beta
+
+### More vendor and trainer data
+- The community database now has **471 vendors (6,239 items)** and **132 trainers (1,703 services)** scanned in game, up from 185 and 65. It now covers the Alliance cities (Stormwind, Ironforge, Darnassus) and the Alliance starting zones, including Teldrassil.
 - Six Season of Discovery NPCs that Questie lists but that aren't in WoW Forever (Gishah, Dokimi, Marcy Baker, two Rune Brokers and an Ironforge Guard) are no longer offered anywhere.
+
+### Sharing in game
+- Tested in dungeons: sharing pauses inside and catches up when you leave. `/tb net` now says when it's paused (in combat or in a dungeon).
+- `/tb net test` queues 20 test messages, to check for yourself that sending pauses in a dungeon. Other players' Tradebook ignores them.
+
+### Fixes
 - Right-clicking a vendor or mob line no longer targets it; left-click does.
 
 ## v0.4.0-beta
