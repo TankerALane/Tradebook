@@ -279,6 +279,7 @@ function View:BuildItems()
             if keep and not learned and not self.browsing then
                 -- Under "Not learned": learnable now, and how it's learned (trainer / recipe item).
                 if f.unlearnedLearnable and not ns.Sources.Learnable(id, p and p.rank) then keep = false end
+                if f.unlearnedNoFavor and ns.Sources.NeedsFavor(id) then keep = false end
                 if f.unlearnedTrainer or f.unlearnedRecipe then
                     local kinds = ns.Sources.Kinds(id)
                     -- "From a recipe" narrows to vendor and/or mob drops when either is ticked
@@ -337,7 +338,7 @@ end
 
 -- Filters, with the defaults the red X on the Filter button restores.
 local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
-    unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false,
+    unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false, unlearnedNoFavor = false,
     haveMats = false, skillup = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
@@ -402,6 +403,8 @@ local function buildFilterMenu(_, root)
     -- Under "From a recipe": where the recipe item comes from.
     sub(L.FILTER_FROM_VENDOR, "unlearnedVendor", "unlearnedRecipe", 2)
     sub(L.FILTER_FROM_DROP, "unlearnedDrop", "unlearnedRecipe", 2)
+    -- Hides Merchant's Favor recipes; doesn't turn "From a recipe" on (trainer recipes stay).
+    sub(L.FILTER_NO_FAVOR, "unlearnedNoFavor", nil, 2)
     if ns.Questie.Available() then sub(L.FILTER_NEAREST, "unlearnedNearest") end -- needs NPC locations
     add(L.FILTER_CRAFTABLE, "haveMats")
     add(L.FILTER_SKILLUP, "skillup")

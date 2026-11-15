@@ -37,6 +37,7 @@ DB.DEFAULTS = {
         lastTab = nil,
         filters = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
             unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false,
+            unlearnedNoFavor = false, -- hide recipes only bought with Merchant's Favor
             haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
         listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction"

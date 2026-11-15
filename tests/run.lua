@@ -1058,6 +1058,18 @@ test("list profit: buy every material, sell to a vendor or at auction", function
     eq(ns.Prices.RoundForList(9999), 9999)
 end)
 
+test("No Merchant's Favor hides recipes only bought with favor", function()
+    eq(ns.Sources.NeedsFavor(1213622), true, "Enchant Gloves - Holy Power: supply camp only")
+    eq(ns.Sources.NeedsFavor(2163), false, "White Leather Jerkin: dropped, no favor")
+    -- Any recipe that costs favor but a trainer teaches or a mob drops stays.
+    for id, o in pairs(ns.RecipeVendors) do
+        if o.fv then
+            local k = ns.Sources.Kinds(id)
+            if k and (k.trainer or k.drop) then eq(ns.Sources.NeedsFavor(id), false, "other source " .. id) end
+        end
+    end
+end)
+
 test("tabs wrap onto more rows only when they don't fit", function()
     local wrap = ns.util.WrapRows
     local rows = wrap({ 50, 50, 50 }, 200, 300, 3)

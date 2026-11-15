@@ -240,6 +240,14 @@ function Sources.Purchase(recipeID, playerFaction)
     return out
 end
 
+-- Only bought with Merchant's Favor (supply camps): no trainer teaches it and no mob drops it.
+function Sources.NeedsFavor(recipeID)
+    local o = ns.RecipeVendors and ns.RecipeVendors[recipeID]
+    if not (o and o.fv) then return false end
+    local kinds = Sources.Kinds(recipeID)
+    return not (kinds and (kinds.trainer or kinds.drop))
+end
+
 -- English name of a faction in the data (ns.RecipeFactionNames), or nil.
 function Sources.FactionName(id)
     return ns.RecipeFactionNames and ns.RecipeFactionNames[id]
