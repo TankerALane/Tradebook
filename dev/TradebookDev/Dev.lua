@@ -3,10 +3,12 @@
 -- maintainer's AddOns folder only. Tradebook hands over its namespace at login
 -- (Core/Init.lua: TradebookDev.Attach(ns)); without this addon nothing of it exists.
 --
--- Unscanned tab: every vendor Questie knows, plus the bundled recipe vendors
+-- Unscanned window: every vendor Questie knows, plus the bundled recipe vendors
 -- (Data/RecipeVendors.lua), that nobody has scanned yet (not in your scans, the community
--- data, or what other players shared in game), nearest first. Click a row for a waypoint, and
--- to target and mark the vendor when it's nearby. /tbdev shows or hides the tab.
+-- data, or what other players shared in game), nearest first, with each vendor's faction.
+-- Click a row for a waypoint, and to target and mark the vendor when it's nearby. It's its
+-- own small window (moved, resized and closed on its own; position saved), so the Tradebook
+-- window can stay closed. /tbdev opens or closes it. Distances refresh every 20 s while open.
 
 TradebookDev = {}
 local Dev = TradebookDev
@@ -26,7 +28,6 @@ end
 local function db()
     TradebookDevDB = TradebookDevDB or {}
     local d = TradebookDevDB
-    if d.showTab == nil then d.showTab = true end
     if d.friendlyOnly == nil then d.friendlyOnly = true end
     if d.countHeard == nil then d.countHeard = true end
     return d
@@ -171,27 +172,36 @@ function View:Build(parent)
     local f = CreateFrame("Frame", nil, parent)
     f:SetAllPoints()
     self.frame = f
-    self.status = W.Text(f, "GameFontNormal")
-    self.status:SetPoint("TOPLEFT", 14, -12)
-    local refresh = W.Button(f, "Refresh", 90, 22)
-    refresh:SetPoint("TOPRIGHT", -14, -8)
+    -- Row 1: status | Refresh.  Row 2: the filter checkboxes, left to right.
+    local refresh = W.Button(f, "Refresh", 80, 22)
+    refresh:SetPoint("TOPRIGHT", -8, -4)
     refresh:SetScript("OnClick", function() View:Load() end)
+    self.status = W.Text(f, "GameFontNormal")
+    self.status:SetPoint("TOPLEFT", 10, -9)
+    self.status:SetPoint("RIGHT", refresh, "LEFT", -8, 0)
+    self.status:SetWordWrap(false)
     local d = db()
-    local function check(label, key, anchor)
+    local prev
+    local function check(label, key)
         local c = W.Check(f, label, function(v)
             db()[key] = v and true or false
             if key == "countHeard" then View:Load() else View:RefreshList() end
         end)
-        c:SetPoint("RIGHT", anchor, "LEFT", -(c.text and c.text:GetStringWidth() or 100) - 16, 0)
+        if prev then
+            c:SetPoint("LEFT", prev, "RIGHT", (prev.text and prev.text:GetStringWidth() or 100) + 14, 0)
+        else
+            c:SetPoint("TOPLEFT", 6, -30)
+        end
         c:SetChecked(d[key])
+        prev = c
         return c
     end
-    local heard = check("Count players' shares as scanned", "countHeard", refresh)
-    local recipe = check("Recipe vendors only", "recipeOnly", heard)
-    check("Friendly only", "friendlyOnly", recipe)
+    check("Friendly only", "friendlyOnly")
+    check("Recipe vendors only", "recipeOnly")
+    check("Players' shares count as scanned", "countHeard")
     self.list = W.List(f, 20, createRow, initRow)
-    self.list:SetPoint("TOPLEFT", 8, -40)
-    self.list:SetPoint("BOTTOMRIGHT", -26, 8)
+    self.list:SetPoint("TOPLEFT", 4, -58)
+    self.list:SetPoint("BOTTOMRIGHT", -22, 4)
 end
 
 function View:RefreshList()
@@ -219,30 +229,83 @@ function View:Load()
     end)
 end
 
-function View:Show()
-    -- Positions depend on where you stand: rebuild on each visit.
-    self:Load()
+---------------------------------------------------------------------------
+-- the window
+---------------------------------------------------------------------------
+
+local win
+
+local function savePosition()
+    local point, _, rel, x, y = win:GetPoint()
+    db().window = { point = point, rel = rel, x = x, y = y, w = win:GetWidth(), h = win:GetHeight() }
 end
 
-function View:Refresh() end
+local function createWindow()
+    win = CreateFrame("Frame", "TradebookDevFrame", UIParent, "BasicFrameTemplateWithInset")
+    local pos = db().window
+    win:SetSize(pos and pos.w or 640, pos and pos.h or 380)
+    if pos and pos.point then
+        win:SetPoint(pos.point, UIParent, pos.rel or pos.point, pos.x, pos.y)
+    else
+        win:SetPoint("CENTER", 300, 0)
+    end
+    win:SetFrameStrata("MEDIUM")
+    win:SetClampedToScreen(true)
+    win:SetMovable(true)
+    win:SetResizable(true)
+    if win.SetResizeBounds then win:SetResizeBounds(420, 220, 1200, 900) end
+    win:EnableMouse(true)
+    win:RegisterForDrag("LeftButton")
+    win:SetScript("OnDragStart", win.StartMoving)
+    win:SetScript("OnDragStop", function()
+        win:StopMovingOrSizing()
+        savePosition()
+    end)
+    if win.TitleText then win.TitleText:SetText("Tradebook Dev: unscanned vendors") end
+    -- Resize grip, bottom right.
+    local grip = CreateFrame("Button", nil, win)
+    grip:SetSize(16, 16)
+    grip:SetPoint("BOTTOMRIGHT", -3, 3)
+    grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+    grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+    grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+    grip:SetScript("OnMouseDown", function() win:StartSizing("BOTTOMRIGHT") end)
+    grip:SetScript("OnMouseUp", function()
+        win:StopMovingOrSizing()
+        savePosition()
+    end)
+    local content = CreateFrame("Frame", nil, win)
+    content:SetPoint("TOPLEFT", 8, -28)
+    content:SetPoint("BOTTOMRIGHT", -6, 22)
+    View:Build(content)
+    -- Distances change as you move: rebuild every 20 s while open.
+    local elapsed = 0
+    win:SetScript("OnUpdate", function(_, dt)
+        elapsed = elapsed + dt
+        if elapsed >= 20 then
+            elapsed = 0
+            if not building then View:Load() end
+        end
+    end)
+    win:SetScript("OnShow", function()
+        elapsed = 0
+        View:Load()
+    end)
+    tinsert(UISpecialFrames, "TradebookDevFrame") -- ESC closes it
+    win:Hide()
+end
 
----------------------------------------------------------------------------
--- attach and toggle
----------------------------------------------------------------------------
+-- Open or close the window (show: true / false, or nil to switch).
+function Dev.Toggle(show)
+    if not ns then say("Tradebook isn't loaded.") return end
+    if not win then createWindow() end
+    if show == nil then show = not win:IsShown() end
+    win:SetShown(show)
+end
 
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
-    ns.UI.RegisterView("devUnscanned", View)
-    ns.UI.AddTab("devUnscanned", "Unscanned", "devUnscanned", function() return db().showTab end,
-        "Dev: vendors nobody has scanned yet, nearest first. /tbdev hides this tab.")
 end
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"
-SlashCmdList.TRADEBOOKDEV = function()
-    if not ns then say("Tradebook isn't loaded.") return end
-    local d = db()
-    d.showTab = not d.showTab
-    ns.UI.LayoutTabs()
-    if not d.showTab and ns.UI.CurrentView() == View then ns.UI.SelectTab(ns.Professions.list[1].id) end
-    say(d.showTab and "Unscanned tab shown." or "Unscanned tab hidden.")
-end
+SlashCmdList.TRADEBOOKDEV = function() Dev.Toggle() end
