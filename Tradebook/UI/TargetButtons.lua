@@ -9,7 +9,7 @@
 -- lockdown starts). In combat, lines just set the waypoint.
 
 local _, ns = ...
-local W = ns.W
+local W, Compat = ns.W, ns.Compat
 
 local TargetButtons = {}
 ns.TargetButtons = TargetButtons
@@ -28,7 +28,19 @@ local NL = string.char(10)
 --     (Earlier tries: remembering what we marked could skip the mark for good, and
 --     "/tm 0" + "/tm 3" in one macro could clear it, since the game hasn't updated the mark
 --     between the two lines.)
+-- When the NPC is already your target, only the mark is made sure of: clearing the target
+-- and targeting the same NPC again in one macro left no target at all (round 8).
+
+-- The target's name, or nil when there's no target or the game hides it.
+local function targetName()
+    if not UnitExists("target") then return nil end
+    local n = UnitName("target")
+    if issecretvalue and issecretvalue(n) then return nil end
+    return n
+end
+
 local function macroFor(name)
+    if targetName() == name then return "/tm !" .. DIAMOND end
     return "/cleartarget" .. NL .. "/targetexact " .. name .. NL .. "/tm !" .. DIAMOND
 end
 
@@ -60,6 +72,12 @@ local function create()
     -- On up (the macro has run by then): set the waypoint.
     b:HookScript("OnClick", function(self, _, down)
         if down then return end
+        -- /tb debug: what the click ran and what's targeted just after (for target/mark reports).
+        local ran, wanted = self.pressMacro, self.targetName
+        C_Timer.After(0.3, function()
+            ns.Debug("target click:", wanted, "| macro:", ((ran or "?"):gsub(NL, " ; ")), "| target now:",
+                tostring(targetName()), "| key down setting:", tostring(Compat.Call("GetCVar", "ActionButtonUseKeyDown")))
+        end)
         self.pressMacro = nil
         if self.onClick then self.onClick() end
     end)
