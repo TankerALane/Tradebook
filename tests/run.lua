@@ -1101,11 +1101,11 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     local best = N.BestAll(heard, "vendors")[248201]
     eq(best.name, "Pawani")
     eq(best.agree, 1, "one player: unconfirmed")
-    eq(N.Accept(heard, text, "bbbb", NOW_T), 1)
+    eq(N.Accept(heard, text, "bbbb", NOW_T + 1), 1)
     eq(N.BestAll(heard, "vendors")[248201].agree, 2, "two players agree")
     -- a third player with a different price doesn't beat the two who agree
     local odd = { name = "Pawani", seenAt = NOW_T, loc = v.loc, items = { [2320] = { p = 99, s = -1 } } }
-    N.Accept(heard, S.Encode({ [248201] = odd }, "b", "v"), "cccc", NOW_T)
+    N.Accept(heard, S.Encode({ [248201] = odd }, "b", "v"), "cccc", NOW_T + 2)
     best = N.BestAll(heard, "vendors")[248201]
     eq(best.items[2320].p, 10)
     eq(best.agree, 2)

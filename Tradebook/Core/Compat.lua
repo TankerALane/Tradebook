@@ -43,7 +43,10 @@ function Compat.IsSecret(v)
     return issecretvalue ~= nil and issecretvalue(v) == true
 end
 
--- Debug printing (only when /tb debug is on).
+-- Debug printing (only when /tb debug is on). The last DEBUG_KEEP lines are also kept in
+-- TradebookDB.debugLog (written on /reload or logout), so bug reports can be read from the
+-- SavedVariables instead of copied out of chat.
+local DEBUG_KEEP = 300
 function ns.Debug(...)
     local db = ns.db
     if not (db and db.settings and db.settings.debug) then return end
@@ -52,7 +55,12 @@ function ns.Debug(...)
         local v = select(i, ...)
         parts[#parts + 1] = Compat.IsSecret(v) and "<secret>" or tostring(v)
     end
-    print("|cffb07a3aTradebook debug|r: " .. table.concat(parts, " "))
+    local line = table.concat(parts, " ")
+    print("|cffb07a3aTradebook debug|r: " .. line)
+    db.debugLog = db.debugLog or {}
+    local log = db.debugLog
+    log[#log + 1] = date("%H:%M:%S ") .. line
+    while #log > DEBUG_KEEP do table.remove(log, 1) end
 end
 
 function ns.Print(msg)

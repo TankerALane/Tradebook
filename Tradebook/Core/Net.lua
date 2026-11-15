@@ -167,7 +167,7 @@ function Net.Record(heard, kind, npc, entry, who, now)
     if not rec.reports[who] and count(rec.reports) >= Net.MAX_REPORTERS then
         local oldest, at
         for k, r in pairs(rec.reports) do
-            if not at or r.at < at then oldest, at = k, r.at end
+            if not at or r.at < at or (r.at == at and k < oldest) then oldest, at = k, r.at end
         end
         rec.reports[oldest] = nil
     end
