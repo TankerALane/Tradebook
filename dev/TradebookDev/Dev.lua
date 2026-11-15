@@ -62,7 +62,40 @@ function Dev.Unscanned(questieIndex, recipeVendors, scanned)
     return out
 end
 
--- Locate every candidate (a batch per frame), then call done(rows) sorted nearest first.
+Dev.SORTS = { { key = "distance", text = "Distance" }, { key = "faction", text = "Faction" },
+    { key = "name", text = "Name" }, { key = "zone", text = "Zone" } }
+
+-- PURE. Sort rows in place. by: "distance" (nearest first, unknown last), "faction" (yours,
+-- then Both, then the other faction, then hostile to both, then unknown; nearest first within
+-- each), "name" or "zone" (then nearest first). myFaction: "Horde" / "Alliance".
+function Dev.Sort(rows, by, myFaction)
+    local function factionRank(f)
+        if f == myFaction then return 1 end
+        if f == "Both" then return 2 end
+        if f == "Alliance" or f == "Horde" then return 3 end
+        if f == "Neither" then return 4 end
+        return 5
+    end
+    local function nearer(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return a.npcID < b.npcID
+    end
+    local function text(v) return (v or "~"):lower() end -- unknown sorts last
+    table.sort(rows, function(a, b)
+        if by == "faction" then
+            local ra, rb = factionRank(a.faction), factionRank(b.faction)
+            if ra ~= rb then return ra < rb end
+        elseif by == "name" or by == "zone" then
+            local ta, tb = text(a[by]), text(b[by])
+            if ta ~= tb then return ta < tb end
+        end
+        return nearer(a, b)
+    end)
+    return rows
+end
+
+-- Locate every candidate (a batch per frame), then call done(rows) (unsorted).
 local building
 local function build(done)
     if building then return end
@@ -91,11 +124,6 @@ local function build(done)
                 C_Timer.After(0, step)
                 return
             end
-            table.sort(rows, function(a, b)
-                if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
-                if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
-                return a.npcID < b.npcID
-            end)
             building = false
             done(rows)
         end
@@ -128,9 +156,10 @@ end
 local function createRow(row)
     local W = ns.W
     row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
+    -- name | place (shrinks, cut with "...") | faction  distance (always whole).
+    -- The name takes up to 38% of the row, so a narrow window cuts the place first.
     row.name = W.Text(row, "GameFontHighlight")
     row.name:SetPoint("LEFT", 6, 0)
-    row.name:SetWidth(240)
     row.name:SetWordWrap(false)
     row.mid = W.Text(row, "GameFontHighlightSmall")
     row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
@@ -139,6 +168,9 @@ local function createRow(row)
     row.right:SetPoint("RIGHT", -6, 0)
     row.right:SetWordWrap(false)
     row.mid:SetPoint("RIGHT", row.right, "LEFT", -8, 0)
+    row:SetScript("OnSizeChanged", function(self, w)
+        self.name:SetWidth(math.max(60, math.min(240, (w or 0) * 0.38)))
+    end)
     row:SetScript("OnClick", function(self) waypoint(self.data) end)
     row:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -165,6 +197,9 @@ local function initRow(row, r)
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
     row.mid:SetText(table.concat(parts, "  "))
     row.right:SetText(factionText(r.faction) .. "   " .. (ns.Locations.DistanceText(r.distance) or W.ColorText(W.GREY, "far")))
+    local fs = row.right
+    row.right:SetWidth(math.ceil(fs.GetUnboundedStringWidth and fs:GetUnboundedStringWidth() or fs:GetStringWidth()) + 2)
+    row.name:SetWidth(math.max(60, math.min(240, row:GetWidth() * 0.38)))
 end
 
 function View:Build(parent)
@@ -172,35 +207,59 @@ function View:Build(parent)
     local f = CreateFrame("Frame", nil, parent)
     f:SetAllPoints()
     self.frame = f
-    -- Row 1: status | Refresh.  Row 2: the filter checkboxes, left to right.
-    local refresh = W.Button(f, "Refresh", 80, 22)
+    -- One header row: status (cut with "..." when narrow) | Sort | Filter | Refresh.
+    local refresh = W.Button(f, "Refresh", 70, 22)
     refresh:SetPoint("TOPRIGHT", -8, -4)
     refresh:SetScript("OnClick", function() View:Load() end)
-    self.status = W.Text(f, "GameFontNormal")
-    self.status:SetPoint("TOPLEFT", 10, -9)
-    self.status:SetPoint("RIGHT", refresh, "LEFT", -8, 0)
-    self.status:SetWordWrap(false)
-    local d = db()
-    local prev
-    local function check(label, key)
-        local c = W.Check(f, label, function(v)
-            db()[key] = v and true or false
-            if key == "countHeard" then View:Load() else View:RefreshList() end
-        end)
-        if prev then
-            c:SetPoint("LEFT", prev, "RIGHT", (prev.text and prev.text:GetStringWidth() or 100) + 14, 0)
-        else
-            c:SetPoint("TOPLEFT", 6, -30)
+
+    -- Filter dropdown (with a red X to reset when changed).
+    local filter = CreateFrame("DropdownButton", nil, f, "WowStyle1FilterDropdownTemplate")
+    filter:SetWidth(80)
+    filter:SetPoint("RIGHT", refresh, "LEFT", -6, 0)
+    local DEFAULTS = { friendlyOnly = true, recipeOnly = false, countHeard = true }
+    filter:SetIsDefaultCallback(function()
+        local d = db()
+        for k, v in pairs(DEFAULTS) do if (d[k] or false) ~= v then return false end end
+        return true
+    end)
+    filter:SetDefaultCallback(function()
+        local d = db()
+        for k, v in pairs(DEFAULTS) do d[k] = v end
+        View:Load()
+    end)
+    filter:SetupMenu(function(_, root)
+        local function add(text, key)
+            root:CreateCheckbox(text, function() return db()[key] == true end, function()
+                db()[key] = not db()[key]
+                if key == "countHeard" then View:Load() else View:RefreshList() end
+            end)
         end
-        c:SetChecked(d[key])
-        prev = c
-        return c
-    end
-    check("Friendly only", "friendlyOnly")
-    check("Recipe vendors only", "recipeOnly")
-    check("Players' shares count as scanned", "countHeard")
+        add("Friendly to you only", "friendlyOnly")
+        add("Recipe vendors only", "recipeOnly")
+        add("Players' shares count as scanned", "countHeard")
+    end)
+    self.filter = filter
+
+    -- Sort dropdown: shows the current choice.
+    local ok, sort = pcall(CreateFrame, "DropdownButton", nil, f, "WowStyle1DropdownTemplate")
+    if not ok then sort = CreateFrame("DropdownButton", nil, f, "WowStyle1FilterDropdownTemplate") end
+    sort:SetWidth(110)
+    sort:SetPoint("RIGHT", filter, "LEFT", -6, 0)
+    sort:SetupMenu(function(_, root)
+        for _, s in ipairs(Dev.SORTS) do
+            root:CreateRadio("Sort by " .. s.text:lower(), function() return (db().sort or "distance") == s.key end, function()
+                db().sort = s.key
+                View:RefreshList()
+            end)
+        end
+    end)
+
+    self.status = W.Text(f, "GameFontNormal")
+    self.status:SetPoint("LEFT", f, "TOPLEFT", 10, -15)
+    self.status:SetPoint("RIGHT", sort, "LEFT", -8, 0)
+    self.status:SetWordWrap(false)
     self.list = W.List(f, 20, createRow, initRow)
-    self.list:SetPoint("TOPLEFT", 4, -58)
+    self.list:SetPoint("TOPLEFT", 4, -32)
     self.list:SetPoint("BOTTOMRIGHT", -22, 4)
 end
 
@@ -213,11 +272,13 @@ function View:RefreshList()
             shown[#shown + 1] = r
         end
     end
+    Dev.Sort(shown, d.sort or "distance", UnitFactionGroup("player"))
     self.list:SetItems(shown)
+    if self.filter.ValidateResetState then self.filter:ValidateResetState() end
     if not ns.Questie.Available() then
-        self.status:SetText("Needs Questie for vendor positions. Recipe vendors without Questie: no distance.")
+        self.status:SetText("Needs Questie for vendor positions.")
     else
-        self.status:SetText(("Unscanned vendors: %d shown of %d (nearest first)"):format(#shown, #(self.rows or {})))
+        self.status:SetText(("%d unscanned (of %d)"):format(#shown, #(self.rows or {})))
     end
 end
 
@@ -253,7 +314,7 @@ local function createWindow()
     win:SetClampedToScreen(true)
     win:SetMovable(true)
     win:SetResizable(true)
-    if win.SetResizeBounds then win:SetResizeBounds(420, 220, 1200, 900) end
+    if win.SetResizeBounds then win:SetResizeBounds(460, 200, 1400, 1000) end
     win:EnableMouse(true)
     win:RegisterForDrag("LeftButton")
     win:SetScript("OnDragStart", win.StartMoving)

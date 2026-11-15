@@ -1154,6 +1154,16 @@ test("dev: unscanned vendors leave out everyone's scans", function()
     eq(set[11], nil, "scanned")
     eq(set[12].recipe, true, "recipe vendor Questie doesn't list")
     eq(set[12].items, 0)
+    -- sorting: faction (yours, Both, the other, hostile, unknown), then nearest first
+    local rows = { { npcID = 1, faction = "Alliance", distance = 5 }, { npcID = 2, faction = "Both", distance = 50 },
+        { npcID = 3, faction = "Horde", distance = 90 }, { npcID = 4, faction = "Horde", distance = 10 },
+        { npcID = 5, distance = 1 }, { npcID = 6, faction = "Neither", distance = 2 } }
+    local order = {}
+    for _, r in ipairs(TradebookDev.Sort(rows, "faction", "Horde")) do order[#order + 1] = r.npcID end
+    eq(table.concat(order, ","), "4,3,2,1,6,5")
+    order = {}
+    for _, r in ipairs(TradebookDev.Sort(rows, "distance", "Horde")) do order[#order + 1] = r.npcID end
+    eq(table.concat(order, ","), "5,6,1,4,2,3")
     TradebookDev, SlashCmdList, SLASH_TRADEBOOKDEV1 = nil, nil, nil
 end)
 
