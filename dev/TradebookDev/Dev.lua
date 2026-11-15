@@ -48,12 +48,66 @@ end
 
 -- PURE. Does row r pass filter settings f? (factions: [faction or "Unknown"] = shown;
 -- within: yards or nil; recipeOnly; showChecked: also NPCs checked to have no vendor window.)
-function Dev.Passes(r, f)
+-- active: { [event name] = true } from the game's calendar, or nil when the calendar can't
+-- be read. Event NPCs (r.event) whose event isn't on are hidden unless f.showOffEvents; a
+-- "not there" mark on an event NPC doesn't count while its event is on (it's back then).
+function Dev.Passes(r, f, active)
     if f.factions and f.factions[r.faction or "Unknown"] == false then return false end
     if f.recipeOnly and not r.recipe then return false end
     if f.within and not (r.distance and r.distance <= f.within) then return false end
-    if r.checked and not f.showChecked then return false end
+    if r.event and active and not active[r.event] and not f.showOffEvents then return false end
+    if Dev.IsMarked(r, active) and not f.showChecked then return false end
     return true
+end
+
+-- PURE. Does a row count as marked? (A "not there" on an event NPC doesn't while its event is on.)
+function Dev.IsMarked(r, active)
+    local m = r.marks
+    if not m then return false end
+    if m.novendor then return true end
+    if m.missing then return not (r.event and active and active[r.event]) end
+    return false
+end
+
+-- World events, and words in an NPC's name or title that place it in one.
+Dev.EVENTS = {
+    { name = "Darkmoon Faire", words = { "Darkmoon" } },
+    { name = "Lunar Festival", words = { "Lunar Festival" } },
+    { name = "Love is in the Air", words = { "Love is in the Air" } },
+    { name = "Noblegarden", words = { "Noblegarden" } },
+    { name = "Children's Week", words = { "Children's Week" } },
+    { name = "Midsummer Fire Festival", words = { "Midsummer" } },
+    { name = "Brewfest", words = { "Brewfest" } },
+    { name = "Hallow's End", words = { "Hallow's End" } },
+    { name = "Harvest Festival", words = { "Harvest Festival" } },
+    { name = "Pilgrim's Bounty", words = { "Pilgrim's Bounty" } },
+    { name = "Day of the Dead", words = { "Day of the Dead" } },
+    { name = "Feast of Winter Veil", words = { "Winter Veil", "Smokywood" } },
+}
+
+-- PURE. The world event an NPC belongs to, from its name and title, or nil.
+function Dev.EventOf(name, sub)
+    local text = ((name or "") .. " | " .. (sub or "")):lower()
+    for _, e in ipairs(Dev.EVENTS) do
+        for _, w in ipairs(e.words) do
+            if text:find(w:lower(), 1, true) then return e.name end
+        end
+    end
+end
+
+-- PURE. Which events the calendar titles of today name: { [event name] = true }.
+function Dev.EventsInTitles(titles)
+    local out = {}
+    for _, title in ipairs(titles) do
+        local t = tostring(title):lower()
+        for _, e in ipairs(Dev.EVENTS) do
+            if t:find(e.name:lower(), 1, true) then out[e.name] = true end
+            for _, w in ipairs(e.words) do
+                if t:find(w:lower(), 1, true) then out[e.name] = true end
+            end
+        end
+    end
+    return out
 end
 
 local function say(msg) print("|cffd9a54aTradebook Dev|r: " .. msg) end
@@ -118,6 +172,57 @@ function Dev.Sort(rows, by, myFaction)
     return rows
 end
 
+---------------------------------------------------------------------------
+-- world events: which NPCs belong to one (name / title, or giving that event's quests, via
+-- Questie's QuestieEvent), and which events are on today (the game's calendar).
+---------------------------------------------------------------------------
+
+local questieEvent
+local function eventModule()
+    if questieEvent == nil then
+        questieEvent = false
+        local loader = _G.QuestieLoader
+        if type(loader) == "table" and type(loader.ImportModule) == "function" then
+            local ok, mod = pcall(loader.ImportModule, loader, "QuestieEvent")
+            if ok and type(mod) == "table" and type(mod.GetEventNameFor) == "function" then questieEvent = mod end
+        end
+    end
+    return questieEvent or nil
+end
+
+function Dev.NpcEvent(npc, name, sub)
+    local e = Dev.EventOf(name, sub)
+    if e then return e end
+    local mod = eventModule()
+    if not (mod and ns.Questie.NpcQuests) then return nil end
+    local starts, ends = ns.Questie.NpcQuests(npc)
+    for _, list in ipairs({ starts, ends }) do
+        for _, q in ipairs(list) do
+            local ok, ev = pcall(mod.GetEventNameFor, q)
+            if ok and type(ev) == "string" and ev ~= "" then return ev end
+        end
+    end
+end
+
+local activeEvents -- { [event] = true }, or nil when the calendar couldn't be read
+local function readCalendar()
+    local C = _G.C_Calendar
+    if type(C) ~= "table" or type(C.GetNumDayEvents) ~= "function" then return end
+    local ok, now = pcall(C.GetCurrentCalendarTime or C.GetDate)
+    if not (ok and type(now) == "table" and now.monthDay) then return end
+    pcall(C.SetAbsMonth, now.month, now.year)
+    local titles = {}
+    local okN, n = pcall(C.GetNumDayEvents, 0, now.monthDay)
+    for i = 1, okN and n or 0 do
+        local okE, e = pcall(C.GetDayEvent, 0, now.monthDay, i)
+        if okE and type(e) == "table" and e.title then titles[#titles + 1] = e.title end
+    end
+    activeEvents = Dev.EventsInTitles(titles)
+    if View.frame then View:RefreshList() end
+end
+
+function Dev.ActiveEvents() return activeEvents end
+
 -- The unscanned vendor set (Questie's vendor lists load in batches), then done(set).
 local lastSet
 local function candidates(done)
@@ -149,7 +254,8 @@ local function build(done)
                     name = place and place.name or (ns.RecipeVendorNames and ns.RecipeVendorNames[npc]),
                     sub = place and place.sub, zone = place and place.zone, distance = place and place.distance,
                     friendly = place and place.friendly, place = place,
-                    faction = ns.Questie.NpcFaction and ns.Questie.NpcFaction(npc), checked = checked[npc] ~= nil }
+                    faction = ns.Questie.NpcFaction and ns.Questie.NpcFaction(npc), marks = checked[npc],
+                    event = Dev.NpcEvent(npc, place and place.name or nil, place and place.sub) }
             end
             i = i + BATCH
             if i <= #ids then
@@ -185,8 +291,16 @@ local function tooltipFor(r)
     if r.items > 0 then lines[#lines + 1] = ("Questie lists %d items"):format(r.items) end
     if r.recipe then lines[#lines + 1] = W.ColorText(W.GOLD, "Sells recipes (bundled data)") end
     lines[#lines + 1] = "Faction: " .. factionText(r.faction)
+    if r.event then
+        local state = activeEvents == nil and "the calendar couldn't be read"
+            or (activeEvents[r.event] and "on now" or "not on now")
+        lines[#lines + 1] = "|cffc080ffWorld event: " .. r.event .. "|r (" .. state .. ")"
+        if r.marks and r.marks.missing and activeEvents and activeEvents[r.event] then
+            lines[#lines + 1] = W.ColorText(W.GREY, "Marked not there outside the event: shown again while it's on.")
+        end
+    end
     if r.friendly == false then lines[#lines + 1] = W.ColorText(W.RED, "Not friendly to you") end
-    local c = r.checked and db().checked[r.npcID] or {}
+    local c = r.marks or {}
     if c.missing then lines[#lines + 1] = W.ColorText(W.GREY, "Marked: not there (couldn't find it here)") end
     if c.novendor then
         lines[#lines + 1] = W.ColorText(W.GREY, "Marked: not a vendor (" .. (c.novendor == "auto"
@@ -226,7 +340,7 @@ end
 function Dev.SetMark(npc, name, kind, how)
     local e = Dev.Mark(db().checked, npc, name, kind, how, time())
     for _, r in ipairs(View.rows or {}) do
-        if r.npcID == npc then r.checked = e ~= nil or nil end
+        if r.npcID == npc then r.marks = e end
     end
     View:RefreshList()
 end
@@ -347,15 +461,20 @@ local function initRow(row, r)
             function() toggleMark(r, "novendor") end)
     end
     row.box:SetFrameLevel(row:GetFrameLevel() + 10)
-    local c = r.checked and db().checked[r.npcID] or {}
+    local c = r.marks or {}
     row.box.mark:SetTexture(MARK_ICON.missing)
     row.box.mark:SetShown(c.missing ~= nil)
     row.nv:SetShown(c.novendor ~= nil)
     local name = r.name or ("NPC " .. r.npcID)
-    row.name:SetText(r.checked and W.ColorText(W.GREY, name) or (r.recipe and W.ColorText(W.GOLD, name) or name))
+    local marked = Dev.IsMarked(r, activeEvents)
+    row.name:SetText(marked and W.ColorText(W.GREY, name) or (r.recipe and W.ColorText(W.GOLD, name) or name))
     local parts = {}
     if c.missing then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT.missing) end
     if c.novendor then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT.novendor) end
+    if r.event then
+        local on = activeEvents and activeEvents[r.event]
+        parts[#parts + 1] = "|cffc080ff" .. r.event .. (on and " (on now)" or "") .. "|r"
+    end
     if r.sub then parts[#parts + 1] = W.ColorText(W.GREY, "<" .. r.sub .. ">") end
     if r.zone then parts[#parts + 1] = r.zone end
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
@@ -380,7 +499,7 @@ function View:Build(parent)
     local filter = CreateFrame("DropdownButton", nil, f, "WowStyle1FilterDropdownTemplate")
     filter:SetWidth(80)
     filter:SetPoint("RIGHT", refresh, "LEFT", -6, 0)
-    local DEFAULTS = { recipeOnly = false, countHeard = true, showChecked = false }
+    local DEFAULTS = { recipeOnly = false, countHeard = true, showChecked = false, showOffEvents = false }
     local FACTIONS = { { "Horde" }, { "Both" }, { "Alliance" }, { "Neither" }, { "Unknown" } }
     local WITHIN = { 250, 500, 1000, 2500, 5000, 10000 }
     filter:SetIsDefaultCallback(function()
@@ -430,6 +549,7 @@ function View:Build(parent)
         end
         add("Recipe vendors only", "recipeOnly")
         add("Show marked NPCs (not a vendor / not there)", "showChecked")
+        add("Show event NPCs when their event isn't on", "showOffEvents")
         add("Players' shares count as scanned", "countHeard")
     end)
     self.filter = filter
@@ -462,7 +582,7 @@ function View:RefreshList()
     local d = db()
     local shown = {}
     for _, r in ipairs(self.rows or {}) do
-        if Dev.Passes(r, d) then shown[#shown + 1] = r end
+        if Dev.Passes(r, d, activeEvents) then shown[#shown + 1] = r end
     end
     Dev.Sort(shown, d.sort or "distance", UnitFactionGroup("player"))
     self.list:SetItems(shown)
@@ -559,6 +679,12 @@ end
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
     startWatcher()
+    -- The calendar fills in after a server query; read it when it arrives.
+    local cal = CreateFrame("Frame")
+    pcall(cal.RegisterEvent, cal, "CALENDAR_UPDATE_EVENT_LIST")
+    cal:SetScript("OnEvent", readCalendar)
+    if _G.C_Calendar and _G.C_Calendar.OpenCalendar then pcall(_G.C_Calendar.OpenCalendar) end
+    C_Timer.After(5, readCalendar)
 end
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"

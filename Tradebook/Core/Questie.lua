@@ -289,6 +289,13 @@ function Questie.NpcFaction(id)
     return "Neither"
 end
 
+-- The quests an NPC starts and ends (QuestieDB): two lists of quest IDs (empty when unknown).
+function Questie.NpcQuests(id)
+    if not Questie.Available() then return {}, {} end
+    local starts, ends = get(lib.Npc, id, "questStarts"), get(lib.Npc, id, "questEnds")
+    return type(starts) == "table" and starts or {}, type(ends) == "table" and ends or {}
+end
+
 -- Nearest spawn of any NPC (mobs too: no faction check), with its zone and coordinates, or nil.
 function Questie.NpcNearest(id)
     if not Questie.Available() then return nil end
