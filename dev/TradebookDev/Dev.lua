@@ -15,6 +15,14 @@ local ns -- Tradebook's namespace, from Attach
 local View = {}
 local BATCH = 60 -- vendors located per frame
 
+-- Faction colours and labels (Questie's friendlyToFaction, via Questie.NpcFaction).
+local FACTION_COLOR = { Alliance = "ff4a9eff", Horde = "ffff4040", Both = "ff40ff40", Neither = "ff999999" }
+local FACTION_SHORT = { Alliance = "Alliance", Horde = "Horde", Both = "Both", Neither = "Hostile to both" }
+local function factionText(f)
+    if not f then return "|cff999999faction ?|r" end
+    return "|c" .. FACTION_COLOR[f] .. FACTION_SHORT[f] .. "|r"
+end
+
 local function db()
     TradebookDevDB = TradebookDevDB or {}
     local d = TradebookDevDB
@@ -74,7 +82,8 @@ local function build(done)
                 rows[#rows + 1] = { npcID = npc, items = info.items, recipe = info.recipe,
                     name = place and place.name or (ns.RecipeVendorNames and ns.RecipeVendorNames[npc]),
                     sub = place and place.sub, zone = place and place.zone, distance = place and place.distance,
-                    friendly = place and place.friendly, place = place }
+                    friendly = place and place.friendly, place = place,
+                    faction = ns.Questie.NpcFaction and ns.Questie.NpcFaction(npc) }
             end
             i = i + BATCH
             if i <= #ids then
@@ -109,6 +118,7 @@ local function tooltipFor(r)
     lines[#lines + 1] = ("NPC %d"):format(r.npcID)
     if r.items > 0 then lines[#lines + 1] = ("Questie lists %d items"):format(r.items) end
     if r.recipe then lines[#lines + 1] = W.ColorText(W.GOLD, "Sells recipes (bundled data)") end
+    lines[#lines + 1] = "Faction: " .. factionText(r.faction)
     if r.friendly == false then lines[#lines + 1] = W.ColorText(W.RED, "Not friendly to you") end
     if r.place then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
     return lines
@@ -152,9 +162,8 @@ local function initRow(row, r)
     if r.sub then parts[#parts + 1] = W.ColorText(W.GREY, "<" .. r.sub .. ">") end
     if r.zone then parts[#parts + 1] = r.zone end
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
-    if r.friendly == false then parts[#parts + 1] = W.ColorText(W.RED, "hostile") end
     row.mid:SetText(table.concat(parts, "  "))
-    row.right:SetText(ns.Locations.DistanceText(r.distance) or W.ColorText(W.GREY, "far"))
+    row.right:SetText(factionText(r.faction) .. "   " .. (ns.Locations.DistanceText(r.distance) or W.ColorText(W.GREY, "far")))
 end
 
 function View:Build(parent)

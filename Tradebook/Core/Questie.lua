@@ -277,6 +277,18 @@ function Questie.VendorPlace(id)
     return place or nil
 end
 
+-- Which factions an NPC is friendly to (QuestieDB): "Alliance", "Horde", "Both", "Neither",
+-- or nil when Questie doesn't know the NPC.
+function Questie.NpcFaction(id)
+    if not Questie.Available() or not get(lib.Npc, id, "name") then return nil end
+    local flag = tostring(get(lib.Npc, id, "friendlyToFaction") or "")
+    local a, h = flag:find("A", 1, true) ~= nil, flag:find("H", 1, true) ~= nil
+    if a and h then return "Both" end
+    if a then return "Alliance" end
+    if h then return "Horde" end
+    return "Neither"
+end
+
 -- Nearest spawn of any NPC (mobs too: no faction check), with its zone and coordinates, or nil.
 function Questie.NpcNearest(id)
     if not Questie.Available() then return nil end
