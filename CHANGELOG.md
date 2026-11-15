@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- More vendor and trainer data: the community database now has **220 vendors (3,081 items)** and **73 trainers (1,054 services)** scanned in game.
+- Three Season of Discovery vendors that Questie lists but that aren't in WoW Forever (Gishah, Dokimi, the Rune Broker) are no longer offered anywhere.
+- Right-clicking a vendor or mob line no longer targets it; left-click does.
+
 ## v0.4.0-beta
 
 ### Sharing in game

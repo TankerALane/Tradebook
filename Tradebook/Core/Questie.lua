@@ -78,6 +78,7 @@ end
 Questie.ToWorld = toWorld
 
 local function npcEntry(id, faction)
+    if ns.NotInForever and ns.NotInForever[id] then return nil end -- Data/NotInForever.lua
     local npc = lib.Npc
     local flag = get(npc, id, "friendlyToFaction")
     -- Vendors: QuestieDB uses nil for "hostile to both", so they must be friendly to you.

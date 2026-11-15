@@ -7,6 +7,7 @@ local PURE_FILES = {
     "Tradebook/Core/Namespace.lua",
     "Tradebook/Locales/enUS.lua",
     "Tradebook/Data/Professions.lua",
+    "Tradebook/Data/NotInForever.lua",
     "Tradebook/Data/Camp.lua",
     "Tradebook/Data/SourceData.lua",
     "Tradebook/Data/RecipeVendors.lua",
@@ -717,8 +718,9 @@ test("vendor database: sources merge, scanned first", function()
         items = { [2320] = { n = "Coarse Thread", p = 9, s = -1 } } } }, "scanned")
     V.AddSaved(items, { [10] = { name = "Old", items = { [2320] = { n = "Coarse Thread", p = 10, s = -1 } } },
         [11] = { name = "Theirs", items = { [2320] = { n = "Coarse Thread", p = 10, s = -1 } } } }, "community")
-    V.AddQuestie(items, { { itemID = 2320, name = "Coarse Thread", vendors = { 10, 11, 12 } } }, { [2320] = 10 })
+    V.AddQuestie(items, { { itemID = 2320, name = "Coarse Thread", vendors = { 10, 11, 12, 214098 } } }, { [2320] = 10 })
     local rec = items[2320]
+    eq(rec.vendors[214098], nil, "an NPC that isn't in Forever is left out")
     eq(rec.vendors[10].source, "scanned")
     eq(rec.vendors[10].price, 9, "your price wins")
     eq(rec.vendors[11].source, "community")

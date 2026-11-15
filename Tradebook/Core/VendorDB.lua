@@ -52,7 +52,7 @@ function VendorDB.AddQuestie(items, index, prices)
         end
         rec.name = rec.name or q.name
         for _, npc in ipairs(q.vendors) do
-            if not rec.vendors[npc] then
+            if not rec.vendors[npc] and not (ns.NotInForever and ns.NotInForever[npc]) then
                 rec.vendors[npc] = { npcID = npc, source = "questie", price = prices and prices[q.itemID],
                     priceSeen = false }
             end

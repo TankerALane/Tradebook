@@ -30,6 +30,7 @@ Data\CommunityTrainers.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua
+Data\NotInForever.lua
 Data\Sources.lua
 Data\RankUps.lua
 Data\RankTrainers.lua

@@ -1,0 +1,21 @@
+{
+  "about": "NPCs that Questie's Forever data lists as vendors, checked in game with the Tradebook Dev window (marks: 'not there' = not found at its Questie location, 'not a vendor' = talking to it opens no vendor window). Only findings backed by two sources change the addon (Tradebook/Data/NotInForever.lua). 'not there' on a world-event NPC is seasonal, not evidence.",
+  "checks": [
+    { "npc": 214098, "name": "Gishah", "title": "Supply Officer", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
+    { "npc": 214096, "name": "Dokimi", "title": "Supply Officer", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
+    { "npc": 233428, "name": "Rune Broker", "finding": "not in Forever", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: no NPC page (404)"], "applied": true },
+    { "npc": 272045, "name": "Brother Zendraas", "finding": "exists, not found on one visit", "evidence": ["in game 2026-11-15: not there", "forever.warcraftdb.com: Zephras Isle, sells 24 items", "Questie: 3 spawn points on Zephras Isle (may move or appear at times)"], "applied": false },
+    { "npc": 9087, "name": "Bashana Runetotem", "finding": "no vendor window (one visit)", "evidence": ["in game 2026-11-15: marked not a vendor; Questie: quest giver"], "applied": false },
+    { "npc": 254151, "name": "Vayn Moongaze", "finding": "no vendor window (one visit)", "evidence": ["in game 2026-11-15: marked not a vendor; Questie: quest giver"], "applied": false },
+    { "npc": 5052, "name": "Edward Remington", "title": "Guild Tabard Designer", "finding": "opens the tabard designer, not a vendor window", "evidence": ["in game 2026-11-15"], "applied": false },
+    { "npc": 4731, "name": "Zachariah Post", "title": "Undead Horse Merchant", "finding": "no vendor window for this character (racial mount vendor: Undead or exalted only)", "evidence": ["in game 2026-11-15: no window opened (automatic mark)"], "applied": false },
+    { "npc": 14844, "name": "Sylannia", "title": "Darkmoon Faire Drink Vendor", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 14846, "name": "Lhara", "title": "Darkmoon Faire Exotic Goods", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 14847, "name": "Professor Thaddeus Paleo", "title": "Darkmoon Faire Cards & Exotic Goods", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 14845, "name": "Stamp Thunderhorn", "title": "Darkmoon Faire Food Vendor", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 14860, "name": "Flik", "finding": "seasonal (Darkmoon Faire)", "evidence": ["Questie spawns next to the Faire vendors at both Faire sites (Elwynn 41.8,68.1; Mulgore 37.5,44.1)"], "applied": false },
+    { "npc": 13432, "name": "Seersa Copperpinch", "title": "Smokywood Pastures", "finding": "seasonal (Feast of Winter Veil)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 13431, "name": "Whulwert Copperpinch", "title": "Smokywood Pastures", "finding": "seasonal (Feast of Winter Veil)", "evidence": ["Questie title"], "applied": false },
+    { "npc": 15898, "name": "Lunar Festival Vendor", "finding": "seasonal (Lunar Festival)", "evidence": ["Questie name"], "applied": false }
+  ]
+}

@@ -195,7 +195,13 @@ local function eventModule()
     return questieEvent or nil
 end
 
+-- Event NPCs neither their name, title nor quests give away (docs/research/npc_checks.json).
+Dev.EVENT_NPCS = {
+    [14860] = "Darkmoon Faire", -- Flik: spawns beside the Faire vendors at both Faire sites
+}
+
 function Dev.NpcEvent(npc, name, sub)
+    if Dev.EVENT_NPCS[npc] then return Dev.EVENT_NPCS[npc] end
     local e = Dev.EventOf(name, sub)
     if e then return e end
     local mod = eventModule()
@@ -233,7 +239,7 @@ local lastSet
 local function candidates(done)
     ns.Questie.VendorItems(function(index)
         local d = db()
-        local scanned = { ns.db.vendors, ns.CommunityVendors }
+        local scanned = { ns.db.vendors, ns.CommunityVendors, ns.NotInForever }
         if d.countHeard and ns.Net then scanned[#scanned + 1] = ns.Net.HeardVendors() end
         lastSet = Dev.Unscanned(index, ns.RecipeVendors, scanned)
         done(lastSet)
