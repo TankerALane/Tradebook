@@ -1177,6 +1177,15 @@ test("dev: unscanned vendors leave out everyone's scans", function()
     eq(D.Passes({ faction = "Both", distance = 400, checked = true }, f), false, "checked: hidden")
     f.showChecked = true
     eq(D.Passes({ faction = "Both", distance = 400, checked = true }, f), true)
+    -- marks: "not there" and "not a vendor" are kept apart; no marks left removes the NPC
+    local marks = {}
+    D.Mark(marks, 7, "Brother Zendraas", "missing", "manual", 1)
+    D.Mark(marks, 7, "Brother Zendraas", "novendor", "auto", 2)
+    eq(marks[7].missing, "manual"); eq(marks[7].novendor, "auto")
+    D.Mark(marks, 7, nil, "missing", nil, 3)
+    eq(marks[7].missing, nil); eq(marks[7].novendor, "auto")
+    eq(D.Mark(marks, 7, nil, "novendor", nil, 4), nil)
+    eq(marks[7], nil)
     TradebookDev, SlashCmdList, SLASH_TRADEBOOKDEV1 = nil, nil, nil
 end)
 

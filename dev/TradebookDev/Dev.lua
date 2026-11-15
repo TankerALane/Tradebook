@@ -29,7 +29,14 @@ local function db()
     TradebookDevDB = TradebookDevDB or {}
     local d = TradebookDevDB
     if d.countHeard == nil then d.countHeard = true end
-    d.checked = d.checked or {} -- [npcID] = { name, at, how = "auto" | "manual" }: no vendor window
+    d.checked = d.checked or {} -- [npcID] = { name, at, novendor = "auto"|"manual", missing = "manual" }
+    -- (Earlier builds kept one mark per NPC: { how, reason }.)
+    for _, e in pairs(d.checked) do
+        if e.how or e.reason then
+            e[e.reason or "novendor"] = e.how or "manual"
+            e.how, e.reason = nil, nil
+        end
+    end
     if not d.factions then d.factions = Dev.DefaultFactions(UnitFactionGroup("player")) end
     return d
 end
@@ -179,56 +186,57 @@ local function tooltipFor(r)
     if r.recipe then lines[#lines + 1] = W.ColorText(W.GOLD, "Sells recipes (bundled data)") end
     lines[#lines + 1] = "Faction: " .. factionText(r.faction)
     if r.friendly == false then lines[#lines + 1] = W.ColorText(W.RED, "Not friendly to you") end
-    local c = r.checked and db().checked[r.npcID]
-    if c then
-        local how = c.how == "auto" and "you talked to it and no window opened" or "marked by you"
-        lines[#lines + 1] = W.ColorText(W.GREY, ("Marked: %s (%s)"):format(MARK_TEXT[c.reason or "novendor"], how))
+    local c = r.checked and db().checked[r.npcID] or {}
+    if c.missing then lines[#lines + 1] = W.ColorText(W.GREY, "Marked: not there (couldn't find it here)") end
+    if c.novendor then
+        lines[#lines + 1] = W.ColorText(W.GREY, "Marked: not a vendor (" .. (c.novendor == "auto"
+            and "you talked to it and no window opened" or "marked by you") .. ")")
     end
     if r.place then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
-    lines[#lines + 1] = "Box or right-click: mark as not a vendor / not there"
+    lines[#lines + 1] = "Box: not there.  Right-click: not a vendor."
     return lines
 end
 
 ---------------------------------------------------------------------------
--- Marked NPCs (TradebookDevDB.checked[npcID] = { name, at, how, reason }): ones Questie
--- calls vendors that you checked in game.
---   reason "novendor": talking to it opens no vendor or trainer window (marked automatically
---     when you talk to one and nothing opens, or by hand);
---   reason "missing": not there: you couldn't find it at its marked location (by hand).
--- Mark with the box at the left of a row or a right-click. Marked NPCs are hidden unless
--- "Show marked NPCs" is ticked.
+-- Marked NPCs (TradebookDevDB.checked[npcID] = { name, at, novendor, missing }): ones
+-- Questie calls vendors that you checked in game. Two marks, kept apart (an NPC can have both):
+--   missing  "not there": you couldn't find it at its marked location. The box at the left
+--            of a row switches it.
+--   novendor "not a vendor": talking to it opens no vendor or trainer window. A right-click
+--            switches it; also set automatically ("auto") when you talk to an unscanned vendor
+--            and nothing opens, and cleared again if it does open a window later.
+-- Marked NPCs are hidden unless "Show marked NPCs" is ticked.
 ---------------------------------------------------------------------------
 
-function Dev.SetChecked(npc, name, on, how, reason)
-    local list = db().checked
-    if on then
-        list[npc] = { name = name, at = time(), how = how, reason = reason or "novendor" }
-    else
+-- PURE. Set (how: "auto" / "manual") or clear (how nil) one mark ("novendor" / "missing") in
+-- a marks table; an NPC with no marks left is removed. Returns the NPC's entry or nil.
+function Dev.Mark(list, npc, name, kind, how, now)
+    local e = list[npc] or { name = name }
+    e[kind] = how
+    e.at = now
+    e.name = e.name or name
+    if not (e.novendor or e.missing) then
         list[npc] = nil
+        return nil
     end
+    list[npc] = e
+    return e
+end
+
+function Dev.SetMark(npc, name, kind, how)
+    local e = Dev.Mark(db().checked, npc, name, kind, how, time())
     for _, r in ipairs(View.rows or {}) do
-        if r.npcID == npc then r.checked = on or nil end
+        if r.npcID == npc then r.checked = e ~= nil or nil end
     end
     View:RefreshList()
 end
 
--- The mark menu for row r (from its box or a right-click).
-local function markMenu(owner, r)
-    local name = r.name or ("NPC " .. r.npcID)
-    local function set(reason)
-        Dev.SetChecked(r.npcID, r.name, reason ~= nil, "manual", reason)
-        say(reason and ("%s marked: %s."):format(name, MARK_TEXT[reason]) or ("%s unmarked."):format(name))
-    end
-    local current = r.checked and (db().checked[r.npcID] or {}).reason or nil
-    if r.checked and not current then current = "novendor" end
-    MenuUtil.CreateContextMenu(owner, function(_, root)
-        root:CreateTitle(name)
-        root:CreateRadio("Not a vendor (no vendor window)", function() return current == "novendor" end,
-            function() set("novendor") end)
-        root:CreateRadio("Not there (couldn't find it here)", function() return current == "missing" end,
-            function() set("missing") end)
-        root:CreateRadio("Not marked", function() return current == nil end, function() set(nil) end)
-    end)
+-- Switch one mark by hand (box: "missing", right-click: "novendor").
+local function toggleMark(r, kind)
+    local e = db().checked[r.npcID]
+    local on = not (e and e[kind])
+    Dev.SetMark(r.npcID, r.name, kind, on and "manual" or nil)
+    say(("%s: %s %s."):format(r.name or ("NPC " .. r.npcID), MARK_TEXT[kind], on and "marked" or "unmarked"))
 end
 
 local function npcOf(unit)
@@ -249,19 +257,20 @@ local function onTalkEvent(_, event)
     elseif event == "MERCHANT_SHOW" or event == "TRAINER_SHOW" then
         local id = npcOf("npc")
         if talk and talk.npc == id then talk.opened = true end
-        -- It does have a window after all: forget an automatic check.
+        -- It does have a window after all: forget an automatic "not a vendor".
         local c = id and db().checked[id]
-        if c and c.how == "auto" then Dev.SetChecked(id, c.name, false) end
+        if c and c.novendor == "auto" then Dev.SetMark(id, c.name, "novendor", nil) end
     elseif event == "GOSSIP_CLOSED" then
         local t = talk
         C_Timer.After(1.5, function()
             if talk ~= t then return end
             talk = nil
-            if not t or t.opened or db().checked[t.npc] then return end
+            local c = t and db().checked[t.npc]
+            if not t or t.opened or (c and c.novendor) then return end
             candidates(function(set)
                 if not set[t.npc] then return end -- not an unscanned vendor
-                Dev.SetChecked(t.npc, t.name, true, "auto")
-                say(("%s has no vendor window: marked as not a vendor. Use its box in /tbdev to change it."):format(
+                Dev.SetMark(t.npc, t.name, "novendor", "auto")
+                say(("%s has no vendor window: marked not a vendor. Right-click it in /tbdev to undo."):format(
                     t.name or ("NPC " .. t.npc)))
             end)
         end)
@@ -288,17 +297,22 @@ local function createRow(row)
     row.box.mark = row.box:CreateTexture(nil, "OVERLAY")
     row.box.mark:SetPoint("CENTER")
     row.box.mark:SetSize(12, 12)
-    row.box:SetScript("OnClick", function(self) markMenu(self, self:GetParent().data) end)
+    row.box:SetScript("OnClick", function(self) toggleMark(self:GetParent().data, "missing") end)
     row.box:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Mark this NPC", 1, 1, 1)
-        GameTooltip:AddLine("Not a vendor (no vendor window), or not there (couldn't find it at its marked location).",
-            0.8, 0.8, 0.8, true)
+        GameTooltip:SetText("Not there", 1, 1, 1)
+        GameTooltip:AddLine("Tick when you couldn't find this NPC at its marked location.", 0.8, 0.8, 0.8, true)
+        GameTooltip:AddLine("Right-click the row: not a vendor (no vendor window).", 0.8, 0.8, 0.8, true)
         GameTooltip:Show()
     end)
+    -- Red X after the box when marked "not a vendor".
+    row.nv = row:CreateTexture(nil, "OVERLAY")
+    row.nv:SetSize(14, 14)
+    row.nv:SetPoint("LEFT", row.box, "RIGHT", 2, 0)
+    row.nv:SetTexture(MARK_ICON.novendor)
     row.box:SetScript("OnLeave", GameTooltip_Hide)
     row.name = W.Text(row, "GameFontHighlight")
-    row.name:SetPoint("LEFT", row.box, "RIGHT", 4, 0)
+    row.name:SetPoint("LEFT", row.box, "RIGHT", 20, 0)
     row.name:SetWordWrap(false)
     row.mid = W.Text(row, "GameFontHighlightSmall")
     row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
@@ -312,7 +326,7 @@ local function createRow(row)
     end)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     row:SetScript("OnClick", function(self, mouse)
-        if mouse == "RightButton" then markMenu(self, self.data) else waypoint(self.data) end
+        if mouse == "RightButton" then toggleMark(self.data, "novendor") else waypoint(self.data) end
     end)
     row:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -330,16 +344,18 @@ local function initRow(row, r)
     ns.TargetButtons.Release(row)
     if r.name and r.place then
         ns.TargetButtons.Attach(row, row, r.name, function() waypoint(r) end, tooltipFor(r),
-            function() markMenu(row, r) end)
+            function() toggleMark(r, "novendor") end)
     end
     row.box:SetFrameLevel(row:GetFrameLevel() + 10)
-    local reason = r.checked and ((db().checked[r.npcID] or {}).reason or "novendor") or nil
-    row.box.mark:SetTexture(reason and MARK_ICON[reason] or nil)
-    row.box.mark:SetShown(reason ~= nil)
+    local c = r.checked and db().checked[r.npcID] or {}
+    row.box.mark:SetTexture(MARK_ICON.missing)
+    row.box.mark:SetShown(c.missing ~= nil)
+    row.nv:SetShown(c.novendor ~= nil)
     local name = r.name or ("NPC " .. r.npcID)
     row.name:SetText(r.checked and W.ColorText(W.GREY, name) or (r.recipe and W.ColorText(W.GOLD, name) or name))
     local parts = {}
-    if reason then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT[reason]) end
+    if c.missing then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT.missing) end
+    if c.novendor then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT.novendor) end
     if r.sub then parts[#parts + 1] = W.ColorText(W.GREY, "<" .. r.sub .. ">") end
     if r.zone then parts[#parts + 1] = r.zone end
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
