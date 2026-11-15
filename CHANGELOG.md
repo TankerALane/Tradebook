@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixes
+- The blue skill bar no longer sticks out past its frame on the left and right.
+
 ## v0.4.1-beta
 
 ### More vendor and trainer data
