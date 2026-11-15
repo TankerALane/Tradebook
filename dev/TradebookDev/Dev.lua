@@ -49,13 +49,18 @@ end
 -- PURE. Does row r pass filter settings f? (factions: [faction or "Unknown"] = shown;
 -- within: yards or nil; recipeOnly; showChecked: also NPCs checked to have no vendor window.)
 -- active: { [event name] = true } from the game's calendar, or nil when the calendar can't
--- be read. Event NPCs (r.event) whose event isn't on are hidden unless f.showOffEvents; a
--- "not there" mark on an event NPC doesn't count while its event is on (it's back then).
+-- be read. f.events: which world event NPCs (r.event) to show: "on" (default: only while
+-- their event is on), "all" (all year) or "none" (world events off). A "not there" mark on an
+-- event NPC doesn't count while its event is on (it's back then).
 function Dev.Passes(r, f, active)
     if f.factions and f.factions[r.faction or "Unknown"] == false then return false end
     if f.recipeOnly and not r.recipe then return false end
     if f.within and not (r.distance and r.distance <= f.within) then return false end
-    if r.event and active and not active[r.event] and not f.showOffEvents then return false end
+    if r.event then
+        local mode = f.events or "on"
+        if mode == "none" then return false end
+        if mode == "on" and active and not active[r.event] then return false end
+    end
     if Dev.IsMarked(r, active) and not f.showChecked then return false end
     return true
 end
@@ -499,13 +504,13 @@ function View:Build(parent)
     local filter = CreateFrame("DropdownButton", nil, f, "WowStyle1FilterDropdownTemplate")
     filter:SetWidth(80)
     filter:SetPoint("RIGHT", refresh, "LEFT", -6, 0)
-    local DEFAULTS = { recipeOnly = false, countHeard = true, showChecked = false, showOffEvents = false }
+    local DEFAULTS = { recipeOnly = false, countHeard = true, showChecked = false }
     local FACTIONS = { { "Horde" }, { "Both" }, { "Alliance" }, { "Neither" }, { "Unknown" } }
     local WITHIN = { 250, 500, 1000, 2500, 5000, 10000 }
     filter:SetIsDefaultCallback(function()
         local d = db()
         for k, v in pairs(DEFAULTS) do if (d[k] or false) ~= v then return false end end
-        if d.within then return false end
+        if d.within or (d.events or "on") ~= "on" then return false end
         local def = Dev.DefaultFactions(UnitFactionGroup("player"))
         for k, v in pairs(def) do if (d.factions[k] ~= false) ~= v then return false end end
         return true
@@ -513,7 +518,7 @@ function View:Build(parent)
     filter:SetDefaultCallback(function()
         local d = db()
         for k, v in pairs(DEFAULTS) do d[k] = v end
-        d.within = nil
+        d.within, d.events = nil, nil
         d.factions = Dev.DefaultFactions(UnitFactionGroup("player"))
         View:Load()
     end)
@@ -549,7 +554,15 @@ function View:Build(parent)
         end
         add("Recipe vendors only", "recipeOnly")
         add("Show marked NPCs (not a vendor / not there)", "showChecked")
-        add("Show event NPCs when their event isn't on", "showOffEvents")
+        root:CreateDivider()
+        root:CreateTitle("World event NPCs")
+        for _, opt in ipairs({ { "on", "Only when their event is on" }, { "all", "Always" },
+            { "none", "Never (world events off)" } }) do
+            root:CreateRadio(opt[2], function() return (db().events or "on") == opt[1] end, function()
+                db().events = opt[1] ~= "on" and opt[1] or nil
+                View:RefreshList()
+            end)
+        end
         add("Players' shares count as scanned", "countHeard")
     end)
     self.filter = filter

@@ -1188,6 +1188,13 @@ test("dev: unscanned vendors leave out everyone's scans", function()
     eq(D.Passes(dmf, f, nil), false, "calendar unknown: the not-there mark still counts")
     dmf.marks = { novendor = "manual" }
     eq(D.Passes(dmf, f, D.EventsInTitles({ "Darkmoon Faire" })), false, "not a vendor still counts")
+    dmf.marks = nil
+    f.events = "all"
+    eq(D.Passes(dmf, f, {}), true, "always: shown off-season")
+    f.events = "none"
+    eq(D.Passes(dmf, f, D.EventsInTitles({ "Darkmoon Faire" })), false, "world events off: hidden even when on")
+    eq(D.Passes({ faction = "Both", distance = 100 }, f, {}), true, "other NPCs unaffected")
+    f.events = nil
     -- marks: "not there" and "not a vendor" are kept apart; no marks left removes the NPC
     local marks = {}
     D.Mark(marks, 7, "Brother Zendraas", "missing", "manual", 1)
