@@ -298,6 +298,7 @@ function View:RefreshList()
             end
         end
     end
+    self.rows = rows
     self.list:SetItems(rows)
     local scanned, community, questie, players = ns.VendorDB.Stats()
     local questieText = questie and L.VENDOR_STATUS_QUESTIE:format(questie)

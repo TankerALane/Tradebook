@@ -19,23 +19,37 @@ local ENCHANTING, HERBALISM = 333, 182
 local WHITE_LEATHER_JERKIN = 2163 -- dropped by two mobs, with recorded drop chances
 
 -- Show one recipe on a profession tab, even one the shown character doesn't know.
-local function showRecipe(skillLineID, recipeID)
+-- toSource: scroll the details down so the Source section (last) is in the picture.
+local function showRecipe(skillLineID, recipeID, toSource)
     ns.UI.SelectTab(skillLineID)
     if not ns.db.recipes[recipeID] then ns.Scanner.CacheRecipeInto(ns.db, recipeID, skillLineID) end
     ns.UI.views.profession:SelectRecipe(recipeID)
+    if toSource then
+        C_Timer.After(0.5, function() -- the scroll range is known once the lines are laid out
+            local scroll = ns.UI.views.profession.details.scroll
+            scroll:SetVerticalScroll(scroll:GetVerticalScrollRange())
+        end)
+    end
 end
 
--- A Merchant's Favor recipe (supply camp) of a profession, cached so it can be shown.
+-- A Merchant's Favor recipe (supply camp) of a profession for your faction, cached so it
+-- can be shown: the one needing the least skill, so it suits the made-up character.
 local function favorRecipe(skillLineID)
-    local ids = {}
-    for id, e in pairs(ns.RecipeVendors or {}) do if e.fv and e.cr then ids[#ids + 1] = id end end
-    table.sort(ids)
-    for _, id in ipairs(ids) do
-        if ns.db.recipes[id] or ns.Scanner.CacheRecipeInto(ns.db, id, skillLineID) then
+    local faction = UnitFactionGroup("player")
+    local best, bestSkill
+    for id, e in pairs(ns.RecipeVendors or {}) do
+        if e.fv and e.cr and (ns.db.recipes[id] or ns.Scanner.CacheRecipeInto(ns.db, id, skillLineID)) then
             local r = ns.db.recipes[id]
-            if r and r.s == skillLineID and not r.x then return id end -- x: another profession's
+            local buy = ns.Sources.Purchase(id, faction)
+            if r and r.s == skillLineID and not r.x and buy and buy.favor then -- x: another profession's
+                local skill = ns.Sources.Required(id) or 999
+                if not best or skill < bestSkill or (skill == bestSkill and id < best) then
+                    best, bestSkill = id, skill
+                end
+            end
         end
     end
+    return best
 end
 
 -- A recipe of the shown character with a reagent that can itself be crafted (so the reagent
@@ -146,9 +160,15 @@ Shots.PLAN = {
         local view = ns.UI.views.vendors
         view.search:SetText("pattern")
         view.text = "pattern"
-        local first = ns.VendorDB.Search({ text = "pattern", limit = 1 })[1]
-        if first then view.expanded[first.itemID] = true end
-        view:RefreshList()
+        -- Questie's vendors started loading at the start of the run (Shots.Run), so the
+        -- list doesn't reorder after the item is opened; open the list's first item.
+        ns.VendorDB.Load(function()
+            view.expanded = {}
+            view:RefreshList()
+            local rows = view.rows or {}
+            if rows[1] and rows[1].itemID then view.expanded[rows[1].itemID] = true end
+            view:RefreshList()
+        end)
     end, after = function()
         local view = ns.UI.views.vendors
         view.search:SetText("")
@@ -158,10 +178,10 @@ Shots.PLAN = {
     -- A supply camp recipe: Merchant's Favor cost and the camp reputation needed.
     { name = "supply-camp", run = function()
         local id = favorRecipe(ENCHANTING)
-        if id then showRecipe(ENCHANTING, id) end
+        if id then showRecipe(ENCHANTING, id, true) end
     end },
     -- Who drops a recipe, with zones, levels and drop chances.
-    { name = "drops", run = function() showRecipe(LEATHERWORKING, WHITE_LEATHER_JERKIN) end },
+    { name = "drops", run = function() showRecipe(LEATHERWORKING, WHITE_LEATHER_JERKIN, true) end },
     -- Leveling plan: the cheapest way to the skill cap, with materials and cost.
     { name = "leveling-plan", run = function()
         profession(TAILORING)()
@@ -227,6 +247,7 @@ function Shots.Run()
     TradebookDB.dev.shots = record
     ns.Print(L.SHOTS_START:format(#Shots.PLAN))
     preloadItems()
+    ns.VendorDB.Load() -- Questie's vendors, for the Vendors tab picture (loads over several frames)
 
     local function finish()
         frame:SetSize(saved.w, saved.h)
