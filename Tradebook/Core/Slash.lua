@@ -29,6 +29,8 @@ SlashCmdList.TRADEBOOK = function(msg)
         ns.Settings.Open()
     elseif cmd == "share" then
         ns.Share.Show()
+    elseif cmd == "net" then
+        for _, line in ipairs(ns.Net.Status()) do ns.Print(line) end
     elseif cmd == "vendors" then
         ns.UI.Show()
         ns.UI.SelectTab("vendors")

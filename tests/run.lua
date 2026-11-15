@@ -30,6 +30,7 @@ local PURE_FILES = {
     "Tradebook/Core/Merchants.lua",
     "Tradebook/Core/VendorDB.lua",
     "Tradebook/Core/Share.lua",
+    "Tradebook/Core/Net.lua",
     "Tradebook/Core/Planner.lua",
     "Tradebook/Debug/FakeData.lua",
 }
@@ -1063,6 +1064,73 @@ test("money text", function()
     eq(ns.Prices.MoneyText(10000), "1g")
     eq(ns.Prices.MoneyText(0), "0c")
     eq(ns.Prices.MoneyText(-250), "-2s 50c")
+end)
+
+test("net: share text survives chunking, any part order, and rejects bad parts", function()
+    local N = ns.Net
+    local lines = { "TBV1~b~v~1~0", "V~5~Odd ^ Name~1453~50.1~60.2~100" }
+    for i = 1, 60 do lines[#lines + 1] = ("I~%d~%d~-1~"):format(1000 + i, i * 10) end
+    local text = table.concat(lines, "\n")
+    local parts = assert(N.Chunk(text, "a1"))
+    assert(#parts > 1, "long text is split")
+    for _, p in ipairs(parts) do assert(#p <= 255, "fits in one addon message") end
+    local asm = N.NewAssembler()
+    local full
+    for i = #parts, 1, -1 do full = N.Feed(asm, "p1", parts[i], 0) or full end
+    local back = assert(ns.Share.Decode(full))
+    eq(back[5].name, "Odd   Name", "a ^ in a name can't break the lines")
+    eq(back[5].items[1060].p, 600)
+    eq(N.Feed(asm, "p1", "junk", 0), nil)
+    eq(N.Feed(asm, "p1", "a2~3~2~x", 0), nil, "part beyond the total")
+    eq(N.Feed(asm, "p1", "a3~1~99~x", 0), nil, "too many parts")
+    -- unfinished texts expire
+    N.Feed(asm, "p2", "b1~1~2~TBV1", 0)
+    eq(asm.n, 1)
+    N.Feed(asm, "p3", "c1~1~2~TBV1", 1000)
+    eq(asm.pending["p2/b1"], nil, "expired")
+end)
+
+test("net: heard vendors are checked, and agreeing players confirm them", function()
+    local N, S = ns.Net, ns.Share
+    local NOW_T = 1800000000
+    local v = { name = "Pawani", seenAt = NOW_T - 60, loc = { m = 1453, x = 50, y = 60 },
+        items = { [2320] = { p = 10, s = -1 }, [252941] = { s = -1, c = "currency:3402:90" } } }
+    local text = S.Encode({ [248201] = v }, "b", "v")
+    local heard = {}
+    eq(N.Accept(heard, text, "aaaa", NOW_T), 1)
+    local best = N.BestAll(heard, "vendors")[248201]
+    eq(best.name, "Pawani")
+    eq(best.agree, 1, "one player: unconfirmed")
+    eq(N.Accept(heard, text, "bbbb", NOW_T), 1)
+    eq(N.BestAll(heard, "vendors")[248201].agree, 2, "two players agree")
+    -- a third player with a different price doesn't beat the two who agree
+    local odd = { name = "Pawani", seenAt = NOW_T, loc = v.loc, items = { [2320] = { p = 99, s = -1 } } }
+    N.Accept(heard, S.Encode({ [248201] = odd }, "b", "v"), "cccc", NOW_T)
+    best = N.BestAll(heard, "vendors")[248201]
+    eq(best.items[2320].p, 10)
+    eq(best.agree, 2)
+    -- a fourth player replaces the oldest report (3 kept)
+    N.Accept(heard, text, "dddd", NOW_T + 5)
+    local n = 0
+    for _ in pairs(heard.vendors[248201].reports) do n = n + 1 end
+    eq(n, N.MAX_REPORTERS)
+    -- bad data is dropped
+    eq(N.CleanVendor({ name = "X", items = { [1] = { p = -5 } } }, NOW_T), nil, "negative price")
+    eq(N.CleanVendor({ name = "X", loc = { m = 1, x = 500, y = 1 }, items = { [1] = { p = 1 } } }, NOW_T), nil, "off the map")
+    eq(N.CleanVendor({ name = "X", items = {} }, NOW_T), nil, "sells nothing")
+    eq(N.CleanVendor({ name = string.rep("x", 80), items = { [1] = { p = 1 } } }, NOW_T), nil, "name too long")
+    eq(N.CleanVendor({ name = "X", seenAt = NOW_T * 2, items = { [1] = { p = 1 } } }, NOW_T).seenAt, NOW_T,
+        "a time in the future becomes now")
+    -- confirmations and trainers
+    eq(N.Accept(heard, "TBV1~b~v~1~0\nC~3399~" .. NOW_T, "aaaa", NOW_T), 1)
+    eq(heard.confirms.vendor[3399].aaaa, NOW_T)
+    local t = { [3399] = { name = "Zamja", skill = 185, seenAt = NOW_T, services = { "Spiced Wolf Meat||used|0|Cooking 10|50|" } } }
+    N.Accept(heard, S.Encode({}, "b", "v", t), "aaaa", NOW_T)
+    eq(N.BestAll(heard, "trainers")[3399].services[1], "Spiced Wolf Meat||used|0|Cooking 10|50|")
+    -- the Vendors tab keeps how many agree
+    local items = ns.VendorDB.AddSaved({}, N.BestAll(heard, "vendors"), "players")
+    eq(items[2320].vendors[248201].agree, 2)
+    eq(items[2320].vendors[248201].source, "players")
 end)
 
 test("tracking spell: newest known rank, only for herbalism and mining", function()

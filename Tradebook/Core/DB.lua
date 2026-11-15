@@ -41,10 +41,13 @@ DB.DEFAULTS = {
             skillupColors = { true, true, true } }, -- orange, yellow, green
         collapsed = {},
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
+        netShare = true, -- share NPC data with other Tradebook users in game (Core/Net.lua)
     },
     characters = {},
     trainers = {}, -- [npcID] = what a trainer teaches, read from its window (Core/Trainers.lua)
     vendors = {}, -- [npcID] = recipes a vendor sells, read from its window (Core/Merchants.lua)
+    heard = {}, -- NPC data other players shared in game (Core/Net.lua)
+    netSent = {}, -- ["vendor:npcID"] = { seen, at }: your scans already announced
     account = { bank = {} },
     recipes = {},
     categories = {},

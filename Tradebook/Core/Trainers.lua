@@ -100,11 +100,13 @@ local function read()
     ns.db.trainers = ns.db.trainers or {}
     ns.db.trainers[id] = entry
     Trainers.Invalidate()
+    if ns.Net then ns.Net.Scanned("trainer", id) end
     ns.Debug("trainer", id, entry.name, "skill", entry.skill, "ranks",
         table.concat((function() local t = {} for r in pairs(entry.ranks) do t[#t + 1] = r end return t end)(), ","))
 end
 
--- Every trainer read: your own, then the community's (Data/CommunityTrainers.lua).
+-- Every trainer read: your own, then the community's (Data/CommunityTrainers.lua), then ones
+-- other players shared in game that at least two players agree on (Core/Net.lua).
 -- { [npcID] = entry } (entries have .community = true when not yours).
 local all
 function Trainers.All()
@@ -114,6 +116,13 @@ function Trainers.All()
         if t.services and not t.ranks then t.ranks = Trainers.RanksFromServices(t.services) end
         t.community = true
         all[id] = t
+    end
+    for id, t in pairs(ns.Net and ns.Net.HeardTrainers() or {}) do
+        if not all[id] and (t.agree or 1) >= 2 then
+            t.ranks = t.ranks or Trainers.RanksFromServices(t.services)
+            t.community = true
+            all[id] = t
+        end
     end
     for id, t in pairs(ns.db and ns.db.trainers or {}) do all[id] = t end
     return all

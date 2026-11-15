@@ -23,6 +23,7 @@ L.HELP_LINES = {
     "/tb search <text> - who can craft it?",
     "/tb vendors - find any item a vendor sells",
     "/tb share - share your vendor and trainer scans with everyone",
+    "/tb net - in-game sharing: what was sent and heard",
     "/tb default - use the default Professions window this time",
     "/tb options - open settings",
     "/tb debug - toggle diagnostics",
@@ -182,6 +183,10 @@ L.VENDOR_LIMITED_TIP = "Limited supply: %d left when scanned"
 L.VENDOR_SRC_SCANNED = "scanned by you"
 L.VENDOR_SRC_COMMUNITY = "community"
 L.VENDOR_SRC_QUESTIE = "Questie"
+L.VENDOR_SRC_PLAYERS = "other players"
+L.VENDOR_PLAYERS_ONE = "Shared in game by one player (unconfirmed)."
+L.VENDOR_PLAYERS_AGREE = "Shared in game: %d players agree."
+L.VENDOR_STATUS_PLAYERS = "Other players: %d vendors."
 L.VENDOR_ANY = "Any"
 L.VENDOR_FILTER_FRIENDLY = "Only vendors friendly to me"
 L.VENDOR_FILTER_CONTINENT = "Only on this continent"
@@ -382,6 +387,8 @@ L.LEGACY_UNAVAILABLE = "Legacy data isn't available."
 L.SETTINGS = "Settings"
 L.OPT_REPLACE = "Use Tradebook instead of the default Professions window"
 L.OPT_MINIMAP = "Show minimap button"
+L.OPT_NETSHARE = "Share vendor and trainer data with other Tradebook users in game"
+L.OPT_NETSHARE_TIP = "What vendors sell and trainers teach, from the windows you open. Nothing about your characters."
 L.OPT_GATHERING = "Show gathering profession tabs (Herbalism, Mining, Skinning)"
 L.OPT_SCALE = "Window scale"
 L.OPT_STALE = "Warn when a character hasn't been seen for (days)"

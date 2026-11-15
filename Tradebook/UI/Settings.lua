@@ -52,10 +52,14 @@ local function build()
     end)
     gathering:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 0, -6)
 
+    local netShare = W.Check(panel, L.OPT_NETSHARE, function(v) ns.Net.SetEnabled(v) end)
+    netShare:SetPoint("TOPLEFT", gathering, "BOTTOMLEFT", 0, -6)
+    W.Tooltip(netShare, { L.OPT_NETSHARE, L.OPT_NETSHARE_TIP })
+
     local scale = slider(panel, L.OPT_SCALE, 0.6, 1.4, 0.05,
         function() return ns.db.settings.scale or 1 end,
         function(v) ns.db.settings.scale = v; ns.UI.ApplyScale() end, "%.2f")
-    scale:SetPoint("TOPLEFT", gathering, "BOTTOMLEFT", 6, -36)
+    scale:SetPoint("TOPLEFT", netShare, "BOTTOMLEFT", 6, -36)
 
     local stale = slider(panel, L.OPT_STALE, 7, 180, 1,
         function() return ns.db.settings.staleDays or 30 end,
@@ -78,6 +82,7 @@ local function build()
         replace:SetChecked(ns.db.settings.replaceDefault)
         minimap:SetChecked(not ns.db.settings.minimap.hide)
         gathering:SetChecked(ns.db.settings.showGathering)
+        netShare:SetChecked(ns.db.settings.netShare ~= false)
         scale.Refresh()
         stale.Refresh()
     end)

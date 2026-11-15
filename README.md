@@ -31,7 +31,7 @@ Tradebook works on its own; these add more when installed:
 
 ## Help build the vendor database
 
-Type `/tb share` in game, copy the text and paste it into the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml). Shares are merged with `python -I scripts/merge_vendor_shares.py --issues` into `Tradebook/Data/CommunityVendors.lua` for the next release. Only vendor data is shared.
+Tradebook shares the vendors and trainers you open with other Tradebook users in game, on a hidden channel (setting on by default; `/tb net` for status; see [docs/DATA.md](docs/DATA.md), "In-game sharing"). What your copy hears is exported by the maintainer's "import npc data" step. Or type `/tb share` in game, copy the text and paste it into the [Vendor data form](https://github.com/TankerALane/Tradebook/issues/new?template=vendor-data.yml). Shares are merged with `python -I scripts/merge_vendor_shares.py --issues` into `Tradebook/Data/CommunityVendors.lua` for the next release. Only vendor data is shared.
 
 ## Install
 

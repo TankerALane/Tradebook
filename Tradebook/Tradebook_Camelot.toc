@@ -53,6 +53,7 @@ Core\Trainers.lua
 Core\Merchants.lua
 Core\VendorDB.lua
 Core\Share.lua
+Core\Net.lua
 Core\Planner.lua
 Core\Waypoints.lua
 

@@ -130,6 +130,7 @@ local function read()
     entry.loc = here() or entry.loc
     ns.db.vendors[id] = entry
     index = nil
+    if ns.Net then ns.Net.Scanned("vendor", id) end
     ns.Debug("vendor", id, ns.db.vendors[id].name, "recipes", ns.util.Count(seen))
     if ns.UI and ns.UI.Refresh then ns.UI.Refresh() end
 end

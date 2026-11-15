@@ -1,10 +1,12 @@
 -- Core/VendorDB.lua
 -- The vendor database behind the Vendors tab: which vendors sell an item, where they are, and
--- what they ask. Three sources, best first:
+-- what they ask. Four sources, best first:
 --   scanned    vendors you opened (TradebookDB.vendors, Core/Merchants.lua): real prices (with
 --              your reputation discount), Merchant's Favor / token costs, stock, location;
 --   community  vendors other players scanned and shared with /tb share, merged into
 --              Data/CommunityVendors.lua for each release (same fields);
+--   players    vendors other Tradebook users shared in game (Core/Net.lua): the report most
+--              of them agree with; row.agree = how many players agree (1 = unconfirmed);
 --   questie    QuestieDB's vendor lists, read at runtime when Questie is installed (nothing of
 --              it is copied); price from the game's own item data (Data/ItemPrices.lua, before
 --              reputation discounts).
@@ -16,7 +18,7 @@ local Compat = ns.Compat
 local VendorDB = {}
 ns.VendorDB = VendorDB
 
-VendorDB.SOURCES = { "scanned", "community", "questie" }
+VendorDB.SOURCES = { "scanned", "community", "players", "questie" }
 
 -- PURE. Add the vendors of one saved-vendors table ({ [npcID] = { name, loc, items, seenAt } })
 -- to `items` ({ [itemID] = { itemID, name, vendors = { [npcID] = row } } }), as `source`.
@@ -32,7 +34,7 @@ function VendorDB.AddSaved(items, vendors, source)
             rec.name = rec.name or it.n
             if not rec.vendors[npc] then
                 rec.vendors[npc] = { npcID = npc, name = e.name, source = source, price = it.p, cost = it.c,
-                    stock = it.s, loc = e.loc, seenAt = e.seenAt, priceSeen = it.p ~= nil }
+                    stock = it.s, loc = e.loc, seenAt = e.seenAt, priceSeen = it.p ~= nil, agree = e.agree }
             end
         end
     end
@@ -64,12 +66,14 @@ local cache, cacheKey
 local questieIndex
 function VendorDB.Items()
     local scanned = ns.db and ns.db.vendors or {}
-    local key = tostring(ns.util.Count(scanned)) .. ":" .. tostring(questieIndex ~= nil)
+    local key = tostring(ns.util.Count(scanned)) .. ":" .. tostring(questieIndex ~= nil) .. ":"
+        .. tostring(ns.Net and ns.Net.Version() or 0)
     for _, e in pairs(scanned) do key = key .. ":" .. tostring(e.seenAt) end
     if cache and cacheKey == key then return cache end
     local items = {}
     VendorDB.AddSaved(items, scanned, "scanned")
     VendorDB.AddSaved(items, ns.CommunityVendors, "community")
+    VendorDB.AddSaved(items, ns.Net and ns.Net.HeardVendors() or {}, "players")
     VendorDB.AddQuestie(items, questieIndex, ns.ItemBuyPrice)
     cache, cacheKey = items, key
     return items
@@ -184,5 +188,5 @@ end
 -- Counts for the tab's status line.
 function VendorDB.Stats()
     return ns.util.Count(ns.db and ns.db.vendors or {}), ns.util.Count(ns.CommunityVendors or {}),
-        questieIndex and #questieIndex or nil
+        questieIndex and #questieIndex or nil, ns.util.Count(ns.Net and ns.Net.HeardVendors() or {})
 end

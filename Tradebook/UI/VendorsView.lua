@@ -28,7 +28,8 @@ local function className(id)
 end
 
 local SOURCE_TEXT = function(source)
-    return ({ scanned = L.VENDOR_SRC_SCANNED, community = L.VENDOR_SRC_COMMUNITY, questie = L.VENDOR_SRC_QUESTIE })[source] or source
+    return ({ scanned = L.VENDOR_SRC_SCANNED, community = L.VENDOR_SRC_COMMUNITY, players = L.VENDOR_SRC_PLAYERS,
+        questie = L.VENDOR_SRC_QUESTIE })[source] or source
 end
 
 ---------------------------------------------------------------------------
@@ -63,6 +64,9 @@ end
 -- Tooltip lines for a vendor row (also used by its target button, which covers the row).
 local function vendorTooltip(r)
     local lines = { r.name or ("NPC " .. r.npcID), SOURCE_TEXT(r.source) }
+    if r.source == "players" then
+        lines[#lines + 1] = (r.agree or 1) >= 2 and L.VENDOR_PLAYERS_AGREE:format(r.agree) or L.VENDOR_PLAYERS_ONE
+    end
     if r.seenAt then lines[#lines + 1] = L.VENDOR_SEEN_AGO:format(W.Ago(r.seenAt)) end
     if r.stock and r.stock >= 0 then lines[#lines + 1] = L.VENDOR_LIMITED_TIP:format(r.stock) end
     if r.price and not r.priceSeen then lines[#lines + 1] = L.VENDOR_BASE_PRICE_TIP end
@@ -162,8 +166,11 @@ local function initRow(row, data)
     row.mid:SetPoint("RIGHT", row.right, "LEFT", -8, 0)
     row.mid:SetText(placeText(r))
     -- Scanned vendors (yours or the community's) carry no tag; vendors only QuestieDB lists
-    -- (a good source, but nobody has scanned them yet) say "Questie".
-    row.right:SetText(priceText(r) .. (r.source == "questie" and ("  " .. W.ColorText(W.GREY, L.VENDOR_SRC_QUESTIE)) or ""))
+    -- (a good source, but nobody has scanned them yet) say "Questie"; vendors only one other
+    -- player shared say "(unconfirmed)" until a second player agrees.
+    local tag = r.source == "questie" and L.VENDOR_SRC_QUESTIE
+        or (r.source == "players" and (r.agree or 1) < 2 and L.DROP_UNCONFIRMED) or nil
+    row.right:SetText(priceText(r) .. (tag and ("  " .. W.ColorText(W.GREY, tag)) or ""))
 end
 
 ---------------------------------------------------------------------------
@@ -219,7 +226,8 @@ local function buildFilterMenu(_, root)
         { text = L.VENDOR_PAY_TOKENS, value = "tokens" } }, "payment")
     local src = root:CreateButton(L.VENDOR_FILTER_SOURCE)
     radios(src, { { text = L.VENDOR_ANY, value = nil }, { text = L.VENDOR_SRC_SCANNED, value = "scanned" },
-        { text = L.VENDOR_SRC_COMMUNITY, value = "community" }, { text = L.VENDOR_SRC_QUESTIE, value = "questie" } }, "source")
+        { text = L.VENDOR_SRC_COMMUNITY, value = "community" }, { text = L.VENDOR_SRC_PLAYERS, value = "players" },
+        { text = L.VENDOR_SRC_QUESTIE, value = "questie" } }, "source")
 end
 
 ---------------------------------------------------------------------------
@@ -290,10 +298,11 @@ function View:RefreshList()
         end
     end
     self.list:SetItems(rows)
-    local scanned, community, questie = ns.VendorDB.Stats()
+    local scanned, community, questie, players = ns.VendorDB.Stats()
     local questieText = questie and L.VENDOR_STATUS_QUESTIE:format(questie)
         or (ns.Questie.Available() and L.VENDOR_STATUS_QUESTIE_LOADING or L.VENDOR_STATUS_NO_QUESTIE)
-    self.status:SetText(L.VENDOR_STATUS:format(scanned, community) .. "  " .. questieText)
+    local playersText = (players or 0) > 0 and ("  " .. L.VENDOR_STATUS_PLAYERS:format(players)) or ""
+    self.status:SetText(L.VENDOR_STATUS:format(scanned, community) .. playersText .. "  " .. questieText)
     if #rows > 0 then
         self.empty:SetText("")
     elseif (self.text or "") == "" and not f.zone then

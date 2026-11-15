@@ -133,6 +133,10 @@ pass, `merge_vendors.py`, `make_research.py`, then `scripts/build_recipe_vendors
 After `/reload` in game (SavedVariables are written then):
 1. `luajit scripts/research/seed_from_savedvars.lua <WTF/.../SavedVariables/Tradebook.lua> > scans.txt`
    (vendors and trainers as /tb share text; older recipe-only vendor scans are converted).
+   It also includes NPC data heard from other players in game (`TradebookDB.heard`, see
+   "In-game sharing" below): NPCs at least two players agree on, and other players' "still
+   matches" confirmations. One-player reports are listed on stderr and left out unless `--all`
+   (check them first, like any single source).
 2. `python -I scripts/merge_vendor_shares.py --file scans.txt` (community vendors and trainers).
 3. `luajit scripts/research/check_npcs.lua <SavedVariables>`: every NPC visited vs the data.
    Vendors: recipes in the window confirmed / new / data lists but not in window. Trainers: the
@@ -145,6 +149,26 @@ Trainer data in the addon (Core/Trainers.lua, Data/CommunityTrainers.lua): train
 give the **skill needed** (replacing the classic value) and the **training cost**, and count as
 confirmed rank trainers in the rank-up window. 2026-11-14: 24 trainers read; all ranks matched
 the researched list; 182 classic skill values were wrong (e.g. Linen Bag 5, not 45).
+
+## In-game sharing (Core/Net.lua)
+
+Every Tradebook copy (setting "Share vendor and trainer data with other Tradebook users in
+game", on by default) joins the hidden chat channel `TradebookShare` and announces the vendors
+and trainers its player opens, in the /tb share format, cut into addon messages (prefix
+`TRADEBOOK`). NPCs that still match the shipped data go out as one "confirmed" line. Recent scans
+(30 days) are re-announced slowly after login, an unchanged scan at most once a day. One message
+per ~1.1 s; paused in combat and in dungeons (dungeons not tested yet).
+
+What a copy hears is checked (IDs, sizes, prices, map coordinates, times) and kept in
+`TradebookDB.heard`: up to 3 players' reports per NPC, players known only by a hash of their
+name. The report most players agree with is used. In the addon: heard vendors show in the Vendors
+tab as "other players" ("(unconfirmed)" until two players agree); heard trainers count only once
+two players agree. Your own scans and the shipped community data come first.
+
+Limits seen in Forever (spikes/TradebookNet, 2026-11-14): about 7 messages at once, then
+AddonMessageThrottle; one per second always went through; 255 characters arrive whole; the
+channel can be removed from the chat windows. Whispers to a bare character name don't arrive
+("No player named ..."), so nothing uses whispers.
 
 ## Vendor database (Vendors tab)
 

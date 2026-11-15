@@ -30,6 +30,7 @@ local function onLogin()
     if ns.Questie then ns.Questie.Start() end
     ns.Trainers.Start()
     ns.Merchants.Start()
+    ns.Net.Start()
     ns.Debug("ready as", tostring(key))
 end
 
