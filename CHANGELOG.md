@@ -2,11 +2,23 @@
 
 ## Unreleased
 
+## v0.4.0-beta
+
+### Sharing in game
+- **Tradebook now shares the vendors and trainers you open with other Tradebook users while you play.** What they find shows up in your **Vendors tab** as "other players". A vendor only one player has shared is marked "(unconfirmed)" until a second player agrees.
+- It runs quietly in the background on a hidden channel: nothing shows in your chat, and it pauses in combat and in dungeons. Only NPC data is shared (vendor and trainer names, places, items, training and prices), never anything about your characters.
+- Turn it off in the settings if you like. `/tb net` shows what was sent and heard. `/tb share` and the GitHub form still work as before.
+- This is the first version with sharing, so it gets better as more players update.
+
+### More vendor and trainer data
+- The community database now has **185 vendors (2,694 items)** and **65 trainers (952 services)** scanned in game.
+
+### Gathering
+- **Find Herbs and Find Minerals** on the Herbalism and Mining tabs, on their own row above the search box. Drag the icon to your action bars, or click it to start tracking.
+
+### Fixes
 - Clicking an NPC replaces Tradebook's previous waypoint (TomTom arrow) and moves the purple diamond to the new NPC. Clicking an NPC again, after a try from too far away or when it's already marked, keeps the diamond on instead of taking it off.
-
-- **Sharing in game**: Tradebook now shares the vendors and trainers you open with other Tradebook users while you play, and shows what they found in the Vendors tab ("other players"). A vendor only one player has shared is marked "(unconfirmed)" until a second player agrees. Only NPC data is shared, never anything about your characters. It runs quietly in the background on a hidden channel (nothing shows in your chat) and can be turned off in the settings. `/tb net` shows what was sent and heard. `/tb share` and the GitHub form still work as before.
-
-- **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: an icon next to your character's name. Drag it to your action bars, or click it to start tracking.
+- Vendors only Questie lists no longer show "(base)" next to their price; they already say "Questie".
 
 ## v0.3.0-beta
 
