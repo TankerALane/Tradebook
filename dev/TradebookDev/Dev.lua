@@ -160,6 +160,11 @@ end
 -- view
 ---------------------------------------------------------------------------
 
+-- What a mark means (row text, tooltip, chat).
+local MARK_TEXT = { novendor = "not a vendor", missing = "not there" }
+local MARK_ICON = { novendor = "Interface\\RaidFrame\\ReadyCheck-NotReady",
+    missing = "Interface\\RaidFrame\\ReadyCheck-Waiting" }
+
 local function waypoint(r)
     local p = r.place
     if p and p.areaID then ns.Waypoints.Set(p.areaID, p.x, p.y, r.name) end
@@ -174,37 +179,56 @@ local function tooltipFor(r)
     if r.recipe then lines[#lines + 1] = W.ColorText(W.GOLD, "Sells recipes (bundled data)") end
     lines[#lines + 1] = "Faction: " .. factionText(r.faction)
     if r.friendly == false then lines[#lines + 1] = W.ColorText(W.RED, "Not friendly to you") end
-    if r.checked then
-        local c = db().checked[r.npcID]
-        lines[#lines + 1] = W.ColorText(W.GREY, ("Checked: no vendor window (%s)"):format(c and c.how == "manual"
-            and "marked by you" or "you talked to it"))
+    local c = r.checked and db().checked[r.npcID]
+    if c then
+        local how = c.how == "auto" and "you talked to it and no window opened" or "marked by you"
+        lines[#lines + 1] = W.ColorText(W.GREY, ("Marked: %s (%s)"):format(MARK_TEXT[c.reason or "novendor"], how))
     end
     if r.place then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
-    lines[#lines + 1] = r.checked and "Right-click: unmark (it does have a window)"
-        or "Right-click: mark as checked (no vendor window)"
+    lines[#lines + 1] = "Box or right-click: mark as not a vendor / not there"
     return lines
 end
 
 ---------------------------------------------------------------------------
--- NPCs with no vendor window (Questie lists them as vendors, but talking to them opens
--- nothing to buy or train): marked "checked" automatically when you talk to one and no
--- vendor or trainer window opens, or by hand with a right-click. Checked NPCs are hidden
--- unless "Show checked NPCs" is ticked.
+-- Marked NPCs (TradebookDevDB.checked[npcID] = { name, at, how, reason }): ones Questie
+-- calls vendors that you checked in game.
+--   reason "novendor": talking to it opens no vendor or trainer window (marked automatically
+--     when you talk to one and nothing opens, or by hand);
+--   reason "missing": not there: you couldn't find it at its marked location (by hand).
+-- Mark with the box at the left of a row or a right-click. Marked NPCs are hidden unless
+-- "Show marked NPCs" is ticked.
 ---------------------------------------------------------------------------
 
-function Dev.SetChecked(npc, name, on, how)
+function Dev.SetChecked(npc, name, on, how, reason)
     local list = db().checked
-    if on then list[npc] = { name = name, at = time(), how = how } else list[npc] = nil end
+    if on then
+        list[npc] = { name = name, at = time(), how = how, reason = reason or "novendor" }
+    else
+        list[npc] = nil
+    end
     for _, r in ipairs(View.rows or {}) do
         if r.npcID == npc then r.checked = on or nil end
     end
     View:RefreshList()
 end
 
-local function toggleChecked(r)
-    local on = not r.checked
-    Dev.SetChecked(r.npcID, r.name, on, "manual")
-    say((on and "%s marked as checked (no vendor window)." or "%s unmarked."):format(r.name or ("NPC " .. r.npcID)))
+-- The mark menu for row r (from its box or a right-click).
+local function markMenu(owner, r)
+    local name = r.name or ("NPC " .. r.npcID)
+    local function set(reason)
+        Dev.SetChecked(r.npcID, r.name, reason ~= nil, "manual", reason)
+        say(reason and ("%s marked: %s."):format(name, MARK_TEXT[reason]) or ("%s unmarked."):format(name))
+    end
+    local current = r.checked and (db().checked[r.npcID] or {}).reason or nil
+    if r.checked and not current then current = "novendor" end
+    MenuUtil.CreateContextMenu(owner, function(_, root)
+        root:CreateTitle(name)
+        root:CreateRadio("Not a vendor (no vendor window)", function() return current == "novendor" end,
+            function() set("novendor") end)
+        root:CreateRadio("Not there (couldn't find it here)", function() return current == "missing" end,
+            function() set("missing") end)
+        root:CreateRadio("Not marked", function() return current == nil end, function() set(nil) end)
+    end)
 end
 
 local function npcOf(unit)
@@ -237,7 +261,7 @@ local function onTalkEvent(_, event)
             candidates(function(set)
                 if not set[t.npc] then return end -- not an unscanned vendor
                 Dev.SetChecked(t.npc, t.name, true, "auto")
-                say(("%s has no vendor window: marked as checked. Right-click it in /tbdev to undo."):format(
+                say(("%s has no vendor window: marked as not a vendor. Use its box in /tbdev to change it."):format(
                     t.name or ("NPC " .. t.npc)))
             end)
         end)
@@ -255,8 +279,26 @@ local function createRow(row)
     row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
     -- name | place (shrinks, cut with "...") | faction  distance (always whole).
     -- The name takes up to 38% of the row, so a narrow window cuts the place first.
+    -- The mark box (above the row's target button, so it gets its own clicks).
+    row.box = CreateFrame("Button", nil, row)
+    row.box:SetSize(16, 16)
+    row.box:SetPoint("LEFT", 4, 0)
+    row.box:SetNormalTexture("Interface\\Buttons\\UI-CheckBox-Up")
+    row.box:SetHighlightTexture("Interface\\Buttons\\UI-CheckBox-Highlight", "ADD")
+    row.box.mark = row.box:CreateTexture(nil, "OVERLAY")
+    row.box.mark:SetPoint("CENTER")
+    row.box.mark:SetSize(12, 12)
+    row.box:SetScript("OnClick", function(self) markMenu(self, self:GetParent().data) end)
+    row.box:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Mark this NPC", 1, 1, 1)
+        GameTooltip:AddLine("Not a vendor (no vendor window), or not there (couldn't find it at its marked location).",
+            0.8, 0.8, 0.8, true)
+        GameTooltip:Show()
+    end)
+    row.box:SetScript("OnLeave", GameTooltip_Hide)
     row.name = W.Text(row, "GameFontHighlight")
-    row.name:SetPoint("LEFT", 6, 0)
+    row.name:SetPoint("LEFT", row.box, "RIGHT", 4, 0)
     row.name:SetWordWrap(false)
     row.mid = W.Text(row, "GameFontHighlightSmall")
     row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
@@ -270,7 +312,7 @@ local function createRow(row)
     end)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     row:SetScript("OnClick", function(self, mouse)
-        if mouse == "RightButton" then toggleChecked(self.data) else waypoint(self.data) end
+        if mouse == "RightButton" then markMenu(self, self.data) else waypoint(self.data) end
     end)
     row:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -288,12 +330,16 @@ local function initRow(row, r)
     ns.TargetButtons.Release(row)
     if r.name and r.place then
         ns.TargetButtons.Attach(row, row, r.name, function() waypoint(r) end, tooltipFor(r),
-            function() toggleChecked(r) end)
+            function() markMenu(row, r) end)
     end
+    row.box:SetFrameLevel(row:GetFrameLevel() + 10)
+    local reason = r.checked and ((db().checked[r.npcID] or {}).reason or "novendor") or nil
+    row.box.mark:SetTexture(reason and MARK_ICON[reason] or nil)
+    row.box.mark:SetShown(reason ~= nil)
     local name = r.name or ("NPC " .. r.npcID)
     row.name:SetText(r.checked and W.ColorText(W.GREY, name) or (r.recipe and W.ColorText(W.GOLD, name) or name))
     local parts = {}
-    if r.checked then parts[#parts + 1] = W.ColorText(W.GREY, "checked: no window") end
+    if reason then parts[#parts + 1] = W.ColorText(W.GREY, MARK_TEXT[reason]) end
     if r.sub then parts[#parts + 1] = W.ColorText(W.GREY, "<" .. r.sub .. ">") end
     if r.zone then parts[#parts + 1] = r.zone end
     if r.place and r.place.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(r.place.x, r.place.y) end
@@ -367,7 +413,7 @@ function View:Build(parent)
             end)
         end
         add("Recipe vendors only", "recipeOnly")
-        add("Show checked NPCs (no vendor window)", "showChecked")
+        add("Show marked NPCs (not a vendor / not there)", "showChecked")
         add("Players' shares count as scanned", "countHeard")
     end)
     self.filter = filter
