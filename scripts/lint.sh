@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-files=$(find Tradebook tests -name '*.lua' -not -path 'Tradebook/Libs/*' | sort)
+files=$(find Tradebook tests dev -name '*.lua' -not -path 'Tradebook/Libs/*' | sort)
 LUACHECK=${LUACHECK:-luacheck}
 if ! command -v "$LUACHECK" >/dev/null 2>&1; then
     LUACHECK="$HOME/.luarocks/bin/luacheck.bat"

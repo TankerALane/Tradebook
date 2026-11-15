@@ -31,6 +31,9 @@ local function onLogin()
     ns.Trainers.Start()
     ns.Merchants.Start()
     ns.Net.Start()
+    -- The maintainer's dev addon (dev/TradebookDev, never packaged), if installed.
+    local dev = _G.TradebookDev
+    if type(dev) == "table" and type(dev.Attach) == "function" then pcall(dev.Attach, ns) end
     ns.Debug("ready as", tostring(key))
 end
 

@@ -25,6 +25,9 @@ globals = {
     "SLASH_TRADEBOOK1",
     "SLASH_TRADEBOOK2",
     "SlashCmdList",
+    "TradebookDev",
+    "TradebookDevDB",
+    "SLASH_TRADEBOOKDEV1",
     "StaticPopupDialogs",
     "UISpecialFrames",
 }

@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: Tradebook Dev |cff999999(maintainer only, never released)|r
+## Notes: Maintainer tools for Tradebook: the Unscanned tab (vendors nobody has scanned, nearest first). /tbdev toggles it.
+## Author: Decoupled Lane Studio
+## Version: dev
+## Dependencies: Tradebook
+## SavedVariables: TradebookDevDB
+
+Dev.lua

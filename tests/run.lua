@@ -1133,6 +1133,20 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     eq(items[2320].vendors[248201].source, "players")
 end)
 
+test("dev: unscanned vendors leave out everyone's scans", function()
+    SlashCmdList = {}
+    assert(loadfile("dev/TradebookDev/Dev.lua"))()
+    local set = TradebookDev.Unscanned(
+        { { itemID = 1, vendors = { 10, 11 } }, { itemID = 2, vendors = { 10 } } },
+        { [500] = { v = { 11, 12 } }, [501] = { x = 3 } },
+        { { [11] = {} }, { [99] = {} } })
+    eq(set[10].items, 2)
+    eq(set[11], nil, "scanned")
+    eq(set[12].recipe, true, "recipe vendor Questie doesn't list")
+    eq(set[12].items, 0)
+    TradebookDev, SlashCmdList, SLASH_TRADEBOOKDEV1 = nil, nil, nil
+end)
+
 test("tracking spell: newest known rank, only for herbalism and mining", function()
     local tns = { L = {}, Compat = {}, On = function() end }
     assert(loadfile("Tradebook/UI/TrackingButton.lua"))("Tradebook", tns)

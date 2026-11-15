@@ -20,6 +20,19 @@ local VENDORS, LEGACY, CHARACTERS = "vendors", "legacy", "characters" -- tabs at
 local RIGHT_TABS = { [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
 local MIN_W, MIN_H = 940, 500
 
+-- Extra tabs at the far right, added before the window is built (UI.AddTab). Tradebook itself
+-- adds none; the maintainer's dev addon (dev/TradebookDev, never packaged) adds one.
+local extraTabs, extraOrder = {}, {}
+
+-- Add a right-hand tab showing view `view` (registered with UI.RegisterView). shown() decides
+-- whether it's visible (checked whenever the tabs are laid out). Call before the window opens.
+function UI.AddTab(key, label, view, shown, tooltip)
+    if extraTabs[key] then return end
+    extraTabs[key] = { label = label, view = view, shown = shown, tooltip = tooltip }
+    extraOrder[#extraOrder + 1] = key
+    RIGHT_TABS[key] = true
+end
+
 ---------------------------------------------------------------------------
 -- views
 ---------------------------------------------------------------------------
@@ -67,12 +80,16 @@ local function tabIDs()
     ids[#ids + 1] = VENDORS
     ids[#ids + 1] = LEGACY
     ids[#ids + 1] = CHARACTERS
+    for _, key in ipairs(extraOrder) do ids[#ids + 1] = key end
     return ids
 end
 
 local function tabTooltip(tab)
     GameTooltip:SetOwner(tab, "ANCHOR_TOP")
-    if tab.key == CAMP then
+    if extraTabs[tab.key] then
+        GameTooltip:SetText(extraTabs[tab.key].label, 1, 1, 1)
+        if extraTabs[tab.key].tooltip then GameTooltip:AddLine(extraTabs[tab.key].tooltip, 0.8, 0.8, 0.8, true) end
+    elseif tab.key == CAMP then
         GameTooltip:SetText(L.CAMP_TITLE, 1, 1, 1)
     elseif tab.key == VENDORS then
         GameTooltip:SetText(L.TAB_VENDORS, 1, 1, 1)
@@ -110,7 +127,9 @@ local function buildTabs()
         local tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
         tab:SetID(i)
         tab.key = key
-        if key == CAMP then
+        if extraTabs[key] then
+            tab:SetText(extraTabs[key].label)
+        elseif key == CAMP then
             tab:SetText(L.TAB_CAMP)
         elseif key == VENDORS then
             tab:SetText(L.TAB_VENDORS)
@@ -158,8 +177,10 @@ function UI.LayoutTabs()
     local visible, right = {}, {}
     for _, tab in ipairs(tabs) do
         if RIGHT_TABS[tab.key] then
-            tab:Show()
-            right[#right + 1] = tab
+            local extra = extraTabs[tab.key]
+            local show = not (extra and extra.shown and not extra.shown())
+            tab:SetShown(show)
+            if show then right[#right + 1] = tab end
         else
             local p = tab.key ~= CAMP and ns.Professions.Get(tab.key)
             local show = not (p and p.gathering and not ns.db.settings.showGathering)
@@ -265,7 +286,9 @@ function UI.SelectTab(key, fromClick)
     if not frame then UI.Create() end
     current.tab = key
     ns.db.settings.lastTab = key
-    if key == CAMP then
+    if extraTabs[key] then
+        showView(extraTabs[key].view)
+    elseif key == CAMP then
         showView("camp")
     elseif key == VENDORS then
         showView("vendors")
@@ -291,7 +314,10 @@ local function defaultTab()
     local open = ns.Scanner.OpenProfession()
     if open then return open.professionID end
     local last = ns.db.settings.lastTab
-    if last then return last end
+    -- (A tab that no longer exists, e.g. a dev tab without its addon, is skipped.)
+    local known = last and (ns.Professions.Get(last) or last == CAMP or RIGHT_TABS[last])
+    local extra = known and extraTabs[last]
+    if known and not (extra and extra.shown and not extra.shown()) then return last end
     for _, p in ipairs(ns.Professions.list) do
         if ns.char and ns.char.professions[p.id] then return p.id end
     end
