@@ -389,6 +389,15 @@ local function buildHeader()
     bar.fill:SetPoint("TOPLEFT", 5, -3)
     bar.fill:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     bar.fill:SetStatusBarColor(0.22, 0.52, 1.0)
+    -- The fill is square; like the default window, a mask trims its ends to the frame's
+    -- bevelled corners (otherwise the blue sticks out past the frame on both sides).
+    if C_Texture.GetAtlasInfo("Professions-skillbar-mask") then
+        bar.mask = bar.fill:CreateMaskTexture()
+        bar.mask:SetAtlas("Professions-skillbar-mask")
+        bar.mask:SetPoint("TOPLEFT", bar.fill, "TOPLEFT", 1, 0)
+        bar.mask:SetPoint("BOTTOMRIGHT", bar.fill, "BOTTOMRIGHT", 1, 0)
+        bar.fill:GetStatusBarTexture():AddMaskTexture(bar.mask)
+    end
     -- Border art and number sit on a frame above the fill (a child frame draws over its
     -- parent's textures, so the border can't live on `bar` itself).
     bar.fill:SetFrameLevel(bar:GetFrameLevel() + 1)
