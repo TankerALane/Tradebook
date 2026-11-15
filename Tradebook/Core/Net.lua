@@ -12,7 +12,7 @@
 -- Tested in Forever (spikes/TradebookNet, docs/SPIKE_SHARING.md): a custom channel carries
 -- addon messages and can be removed from the chat windows; 255-character messages arrive whole;
 -- about 7 messages go out at once, then the game throttles (AddonMessageThrottle), while one
--- per second always got through. Not yet tested: dungeons (sending pauses there) and a second
+-- per second always got through. Dungeons tested 2026-11-14 (/tb net test: paused inside, all sent after). Not yet tested: a second
 -- player actually hearing the messages.
 --
 -- Wire format: one share text, its line breaks turned into "^", cut into messages of
