@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+**Tradebook 1.0**, the first full release for WoW Forever, after nine betas. Thanks to everyone who tested and shared vendor data.
+
+What Tradebook does:
+- **A better Professions window** with a tab for every profession and Camp, search, filters, Starred and Pinned recipes, crafting, and a **profit column** (vendor or auction).
+- **Where to get every recipe in Forever**, checked against Forever's own data: trainers, vendors (with Merchant's Favor costs), mobs with drop chances, world drops and quests.
+- **A community vendor database** (471 vendors, 132 trainers scanned in game) in the **Vendors** tab, which grows as players share what they open in game.
+- **Level up faster**: the leveling plan, train the next rank, specializations and shopping lists.
+- **All your characters** in one place: "Who can craft...?", Could learn it, the Characters view, and browsing any profession.
+
+Optional: Questie, Auctionator, TomTom and Fellowship Ledger add more when installed.
+
+### Where to buy materials, without Questie
+- A recipe's materials expand (green plus) to their **nearest vendors** from the vendor database (your scans, the community data, other players and Questie), with the **price**, zone and distance. Click one for a waypoint. Before, this needed Questie.
+- Vendor goods like thread and vials have a vendor price without Questie too, so their recipes' cost and profit show.
+
+### Fixes
+- The **Default UI** button at the top right, next to the close button, shows again (it was hidden behind the window's title art).
+
 ## v0.5.2-beta
 
 ### Profit in recipe details

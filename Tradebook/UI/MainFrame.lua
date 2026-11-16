@@ -369,7 +369,17 @@ local function buildHeader()
 
     local defaultBtn = W.Button(frame, L.DEFAULT_UI, 96, 20)
     defaultBtn:SetPoint("TOPRIGHT", -28, -1)
-    defaultBtn:SetFrameLevel(frame:GetFrameLevel() + 10)
+    -- Draw it above the window's border and title art (NineSlice, TitleContainer, close
+    -- button), whose frame levels the template sets well above the window's own.
+    local function raise()
+        local level = frame:GetFrameLevel()
+        for _, part in ipairs({ frame.NineSlice, frame.TitleContainer, frame.CloseButton }) do
+            if part and part.GetFrameLevel then level = math.max(level, part:GetFrameLevel()) end
+        end
+        defaultBtn:SetFrameLevel(level + 2)
+    end
+    raise()
+    frame:HookScript("OnShow", raise)
     defaultBtn:SetScript("OnClick", function() ns.Takeover.UseDefault() end)
     W.Tooltip(defaultBtn, L.DEFAULT_UI_TIP, "ANCHOR_BOTTOM")
 

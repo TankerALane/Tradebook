@@ -62,9 +62,13 @@ function VendorDB.AddQuestie(items, index, prices)
 end
 
 -- Every item with its vendors, from all sources (rebuilt when the data changes).
-local cache, cacheKey
+local cache, cacheKey, cacheAt
 local questieIndex
 function VendorDB.Items()
+    -- Within one frame nothing changes: skip the key check (the recipe list asks per material).
+    local now = GetTime and GetTime()
+    if cache and now and cacheAt == now then return cache end
+    cacheAt = now
     local scanned = ns.db and ns.db.vendors or {}
     local key = tostring(ns.util.Count(scanned)) .. ":" .. tostring(questieIndex ~= nil) .. ":"
         .. tostring(ns.Net and ns.Net.Version() or 0)
@@ -183,6 +187,33 @@ function VendorDB.Search(opts)
     for z in pairs(zones) do zoneList[#zoneList + 1] = z end
     table.sort(zoneList)
     return out, zoneList
+end
+
+-- Does any source know a vendor for this item? (cheap: no positions)
+function VendorDB.HasVendors(itemID)
+    local rec = itemID and VendorDB.Items()[itemID]
+    return rec ~= nil and next(rec.vendors) ~= nil
+end
+
+-- The vendors of one item that aren't hostile to you, nearest first (vendors with no known
+-- position last): rows as in Search, at most `limit`, and how many there are in all.
+function VendorDB.ItemVendors(itemID, limit)
+    local rec = itemID and VendorDB.Items()[itemID]
+    if not rec then return {}, 0 end
+    local pos = ns.Merchants.Here()
+    local rows = {}
+    for _, row in pairs(rec.vendors) do
+        locate(row, pos)
+        if row.friendly ~= false then rows[#rows + 1] = row end
+    end
+    table.sort(rows, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return tostring(a.name) < tostring(b.name)
+    end)
+    local total = #rows
+    if limit then for i = #rows, limit + 1, -1 do rows[i] = nil end end
+    return rows, total
 end
 
 -- Counts for the tab's status line.

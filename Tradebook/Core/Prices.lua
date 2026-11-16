@@ -46,16 +46,22 @@ function Prices.GameVendorPrice(itemID, soldByVendor)
     return nil
 end
 
+-- Does a vendor sell it: QuestieDB's lists, or the vendor database (scanned, community,
+-- other players), so vendor goods have a price without Questie too.
+local function soldByVendor(itemID)
+    return ns.Questie.SoldByVendor(itemID) or (ns.VendorDB and ns.VendorDB.HasVendors(itemID)) or false
+end
+
 -- { auction = copper or nil, vendor = copper or nil, age = days or nil } for one item.
 -- vendor: what Auctionator saw at a merchant, else the game's own vendor price for items a
--- vendor sells (QuestieDB), so thread, dyes, vials and spices have a price without a visit.
+-- vendor sells (QuestieDB or the vendor database), so thread, dyes, vials and spices have a price without a visit.
 function Prices.Get(itemID)
     if not itemID then return {} end
     local auction = api() and call("GetAuctionPriceByItemID", itemID)
     local vendor = api() and call("GetVendorPriceByItemID", itemID)
     auction = type(auction) == "number" and auction > 0 and auction or nil
     vendor = type(vendor) == "number" and vendor > 0 and vendor or nil
-    if not vendor then vendor = Prices.GameVendorPrice(itemID, ns.Questie.SoldByVendor) end
+    if not vendor then vendor = Prices.GameVendorPrice(itemID, soldByVendor) end
     return { auction = auction, vendor = vendor, age = auction and call("GetAuctionAgeByItemID", itemID) or nil }
 end
 

@@ -363,9 +363,57 @@ function Details.CouldLearnText(cl)
 end
 
 
--- Where to get a material (QuestieDB): nearest vendors, mobs and gathering nodes; click a
--- line to set a waypoint.
+-- Does Tradebook know where to get a material: a vendor in the vendor database (scanned,
+-- community, other players, Questie) or Questie's drops and nodes?
+local function hasSources(itemID)
+    return ns.VendorDB.HasVendors(itemID) or ns.Questie.HasSources(itemID)
+end
+
+-- Questie's vendor lists load in the background (a batch per frame); refresh once they're in.
+local questieVendorsAsked = false
+local function loadQuestieVendors(pane)
+    if questieVendorsAsked or not ns.Questie.Available() or ns.VendorDB.QuestieLoaded() then return end
+    questieVendorsAsked = true
+    ns.VendorDB.Load(function() pane:Refresh() end)
+end
+
+-- The nearest vendors of a material from the vendor database, works without Questie.
+local function vendorSetWaypoint(row)
+    local w = row.waypoint
+    if not w then return end
+    if w.map then ns.Waypoints.SetOnMap(w.map, w.x, w.y, row.name) else ns.Waypoints.Set(w.areaID, w.x, w.y, row.name) end
+end
+
+local function vendorPlace(row)
+    local parts = {}
+    if row.zone then parts[#parts + 1] = row.zone end
+    if row.waypoint and row.waypoint.x then parts[#parts + 1] = ("(%.0f, %.0f)"):format(row.waypoint.x, row.waypoint.y) end
+    local d = ns.Locations.DistanceText(row.distance)
+    if d then parts[#parts + 1] = W.ColorText(W.GREY, d) end
+    return table.concat(parts, "  ")
+end
+
+function Pane:AddVendors(itemID, indent)
+    loadQuestieVendors(self)
+    local rows = ns.VendorDB.ItemVendors(itemID, 5)
+    if #rows == 0 then return false end
+    self:Add({ indent = indent, text = L.SOLD_BY, color = W.GOLD })
+    for _, row in ipairs(rows) do
+        local name = row.name or ("NPC " .. row.npcID)
+        local price = ns.Merchants.PriceText({ price = row.price, cost = row.cost })
+        self:Add({ indent = indent + 1, text = price ~= "" and (name .. "  " .. price) or name,
+            right = vendorPlace(row),
+            onClick = row.waypoint and function() vendorSetWaypoint(row) end or nil,
+            target = row.waypoint and row.name or nil,
+            tooltip = { name, row.waypoint and L.WAYPOINT_TARGET_CLICK or nil } })
+    end
+    return true
+end
+
+-- Where to get a material: the nearest vendors (vendor database), then mobs and gathering
+-- nodes (QuestieDB); click a line to set a waypoint.
 function Pane:AddWhereToGet(itemID, indent)
+    local hadVendors = self:AddVendors(itemID, indent)
     local data = ns.Questie.WhereToGet(itemID)
     if not data then return end
     local function section(title, list, nameOf, isNpc)
@@ -379,7 +427,7 @@ function Pane:AddWhereToGet(itemID, indent)
                 tooltip = e.sub and { e.name, e.sub, hint } or { e.name, hint } })
         end
     end
-    section(L.SOLD_BY, data.vendors, function(e) return e.name end, true)
+    if not hadVendors then section(L.SOLD_BY, data.vendors, function(e) return e.name end, true) end
     section(L.DROPPED_BY, data.drops, function(e) return e.name .. levelText(e) end, true)
     section(L.GATHERED_FROM, data.objects, function(e) return e.name end, false)
     if not data.located then self:Add({ indent = indent, text = L.WHERE_NO_POSITION, color = W.GREY }) end
@@ -390,11 +438,20 @@ local SKILLUP_VALUE_X = 184 -- fallback: the Shopping list button's left edge (2
 function Pane:ReagentTooltip(c, name, item)
     local lines = { name, L.IN_BAGS:format(item.bags), L.IN_BANK:format(item.bank) }
     if item.fetch > 0 then lines[#lines + 1] = L.BANK_FETCH end
-    local where = ns.Questie.HasSources(item.itemID) and ns.Questie.WhereToGet(item.itemID)
-    if where and #where.vendors > 0 then
+    local vendors = ns.VendorDB.ItemVendors(item.itemID, 5)
+    if #vendors > 0 then
         lines[#lines + 1] = " "
         lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY .. ":")
-        for _, e in ipairs(where.vendors) do lines[#lines + 1] = { INDENT .. e.name, placeText(e) } end
+        for _, row in ipairs(vendors) do
+            lines[#lines + 1] = { INDENT .. (row.name or ("NPC " .. row.npcID)), vendorPlace(row) }
+        end
+    else
+        local where = ns.Questie.HasSources(item.itemID) and ns.Questie.WhereToGet(item.itemID)
+        if where and #where.vendors > 0 then
+            lines[#lines + 1] = " "
+            lines[#lines + 1] = W.ColorText(W.GOLD, L.SOLD_BY .. ":")
+            for _, e in ipairs(where.vendors) do lines[#lines + 1] = { INDENT .. e.name, placeText(e) } end
+        end
     end
     if ns.Prices.Available() then
         lines[#lines + 1] = " "
@@ -519,10 +576,10 @@ function Pane:Refresh()
         local node = tree[i]
         local key = "r." .. i
         local hasMakers = node and #node.makers > 0
-        local hasSources = ns.Questie.HasSources(item.itemID)
+        local sourced = hasSources(item.itemID)
         self:Add({ indent = 0, itemID = item.itemID, text = name, right = right, large = true,
             font = "GameFontHighlight", color = (not enough) and W.RED or nil,
-            toggle = (hasMakers or hasSources) and true or nil, expanded = self.expanded[key],
+            toggle = (hasMakers or sourced) and true or nil, expanded = self.expanded[key],
             onToggle = function() self.expanded[key] = not self.expanded[key]; self:Refresh() end,
             tooltip = self:ReagentTooltip(c, name, item) })
         if self.expanded[key] then
@@ -530,7 +587,7 @@ function Pane:Refresh()
             if hasMakers then
                 for _, maker in ipairs(node.makers) do self:AddMaker(maker, 1, key) end
             end
-            if hasSources then self:AddWhereToGet(item.itemID, 1) end
+            if sourced then self:AddWhereToGet(item.itemID, 1) end
         end
     end
     self:Gap()
