@@ -6,6 +6,9 @@
 - **Other players' profession links open in Tradebook**: click a [Tailoring] link in chat and Tradebook shows that player's recipes on the Tailoring tab, with everything Tradebook adds: materials with your bag counts, where to buy them, prices, cost and profit. Their name shows "(linked)" and stays in the character menu of that tab until you log out. Nothing about them is saved.
 - **Link button**, a small chat icon right of the skill bar (like the default window): click to put your profession's link in the chat you were typing in (your last channel, not Say), right-click to post it in Guild, Party, Raid or a channel. It works while that profession is open (the Open button at the bottom).
 
+### Fixes
+- Skill-ups for a recipe you can't learn yet start at the skill it needs: Enchant Bracer - Superior Stamina shows orange 300 - 320, not from your current skill.
+
 ## v1.0.2
 
 ### Fixes

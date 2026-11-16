@@ -600,11 +600,20 @@ function Pane:Refresh()
     -- listed (no section once the recipe is grey).
     local current = ns.Scanner.Difficulty(c, r.s, id)
     local viewed = c and c.professions[r.s]
-    local lines = ns.Sources.SkillUpLines(id, viewed and viewed.rank, current, ns.db.badThresholds[id])
+    local rank = viewed and viewed.rank
+    -- A recipe not learned yet that needs more skill than the character has: the ranges
+    -- start where it can be learned (Superior Stamina needs 300: orange 300 - 320, not from
+    -- your 150).
+    local startAt = rank
+    local need = not (viewed and viewed.recipes and viewed.recipes[id]) and ns.Sources.Required(id)
+    if need and rank and need > rank then
+        startAt, current = need, nil
+    end
+    local lines = ns.Sources.SkillUpLines(id, startAt, current, ns.db.badThresholds[id])
     if #lines > 0 then
         -- Laid out like the other sections: colour (and what it means) on the left, the skill
-        -- range on the right, starting from the character's rank; then where grey starts.
-        local rank = viewed and viewed.rank
+        -- range on the right, starting from the character's rank (or the skill to learn it);
+        -- then where grey starts.
         -- Values line up with the left edge of the Shopping list button below.
         local col = SKILLUP_VALUE_X
         if self.shopBtn:GetLeft() and self.content:GetLeft() then
@@ -617,7 +626,7 @@ function Pane:Refresh()
             self.measure:SetText(text)
             return self.measure:GetStringWidth()
         end
-        local dashX, prev = col, rank
+        local dashX, prev = col, startAt
         for _, line in ipairs(lines) do
             if prev and line.untilSkill then dashX = math.max(dashX, col + width(prev .. " ")) end
             prev = line.untilSkill
@@ -630,7 +639,7 @@ function Pane:Refresh()
         end
         self:Add({ text = L.SKILLUP_LABEL, font = "GameFontNormal", color = W.GOLD, rightAt = math.floor(headerAt + 0.5),
             right = rank and W.ColorText(W.GREY, L.SKILLUP_YOUR_RANK:format(rank)) or nil })
-        local from = rank
+        local from = startAt
         for _, line in ipairs(lines) do
             local name = W.DIFFICULTY[line.colour]:WrapTextInColorCode(L.SKILLUP_COLORS[line.colour + 1])
             local text = name .. "  " .. W.ColorText(W.GREY, L.SKILLUP_CHANCE[line.colour + 1])
