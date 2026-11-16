@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixes
+- Opening Tradebook with the Character window (or another side window) open no longer pushes that window to the middle of the screen behind Tradebook: it stays on the left.
+
 ## v1.0.1
 
 ### Leveling plan

@@ -55,6 +55,65 @@ local function moveOffscreen(f)
     state.moving = false
 end
 
+-- The panel manager gives the (invisible) default frame the left slot and pushes another
+-- panel, like the Character window, to the center slot beside it. While the default frame is
+-- hidden, move that center panel back to where a left panel goes (only its x offset; out of
+-- combat, never a protected frame). `shifted` keeps the anchor the panel manager gave it, to
+-- put back when the default frame shows again. The left position comes from the default
+-- frame's own anchor: x = (LEFT_OFFSET + its xoffset) / its scale.
+local shifted = {}
+
+-- A panel's layout attribute (read only): set on the frame once the panel manager has used
+-- it, else in UIPanelWindows.
+local function panelAttribute(f, key, default)
+    local value = f:GetAttribute("UIPanelLayout-" .. key)
+    if value == nil then
+        local windows = _G.UIPanelWindows
+        local entry = type(windows) == "table" and f:GetName() and windows[f:GetName()]
+        value = type(entry) == "table" and entry[key] or nil
+    end
+    return tonumber(value) or default
+end
+
+local function shiftCenterPanel()
+    local f = frame()
+    local getPanel = _G.GetUIPanel
+    if not (state.hidden and f and state.points and type(getPanel) == "function") or InCombatLockdown() then return end
+    if getPanel("left") ~= f then return end
+    local center = getPanel("center")
+    if not center or center == f or center:IsProtected() or center:GetNumPoints() ~= 1 then return end
+    local p = state.points[1]
+    if p[1] ~= "TOPLEFT" or p[3] ~= "TOPLEFT" then return end
+    local leftOffset = p[4] * f:GetScale() - panelAttribute(f, "xoffset", 35)
+    local point, rel, relPoint, x, y = center:GetPoint(1)
+    if point ~= "TOPLEFT" or relPoint ~= "TOPLEFT" then return end
+    local newX = (leftOffset + panelAttribute(center, "xoffset", 0)) / center:GetScale()
+    if math.abs(x - newX) < 0.5 then return end
+    if not shifted[center] or shifted[center].newX ~= x then
+        shifted[center] = { point, rel, relPoint, x, y } -- the panel manager's anchor
+    end
+    shifted[center].newX = newX
+    center:ClearAllPoints()
+    center:SetPoint(point, rel, relPoint, newX, y)
+end
+
+-- Put shifted panels back where the panel manager had them (default frame showing again).
+local function unshiftPanels()
+    if InCombatLockdown() then return end
+    local getPanel = _G.GetUIPanel
+    for panel, p in pairs(shifted) do
+        local _, _, _, x = panel:GetPoint(1)
+        -- Only while it is still the center panel: once the default frame closes, the panel
+        -- manager moves it to the left slot itself.
+        if panel:IsShown() and x and math.abs(x - p.newX) < 0.5
+            and type(getPanel) == "function" and getPanel("center") == panel then
+            panel:ClearAllPoints()
+            panel:SetPoint(p[1], p[2], p[3], p[4], p[5])
+        end
+    end
+    shifted = {}
+end
+
 local function hideDefault()
     local f = frame()
     if not f then return end
@@ -66,6 +125,7 @@ local function hideDefault()
     f:SetAlpha(0)
     moveOffscreen(f)
     state.hidden = true
+    shiftCenterPanel()
 end
 
 local function restoreDefault()
@@ -79,6 +139,7 @@ local function restoreDefault()
     end
     if state.clamped ~= nil then f:SetClampedToScreen(state.clamped) end
     state.points, state.clamped = nil, nil
+    unshiftPanels()
 end
 
 -- The panel manager re-anchors panels when others open or close; keep ours hidden.
@@ -87,6 +148,7 @@ local function onPanelsMoved()
     if state.hidden and f and f:IsShown() and not state.moving then
         capturePoints(f)
         moveOffscreen(f)
+        shiftCenterPanel()
     end
 end
 
