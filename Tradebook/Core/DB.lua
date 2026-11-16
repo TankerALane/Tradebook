@@ -40,7 +40,8 @@ DB.DEFAULTS = {
             unlearnedNoFavor = false, -- hide recipes only bought with Merchant's Favor
             haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
-        listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction"
+        listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction" | "disenchant"
+        deTooltip = true, -- item tooltips say what an item disenchants into (Core/Disenchant.lua)
         collapsed = {},
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
         netShare = true, -- share NPC data with other Tradebook users in game (Core/Net.lua)
@@ -49,6 +50,7 @@ DB.DEFAULTS = {
     trainers = {}, -- [npcID] = what a trainer teaches, read from its window (Core/Trainers.lua)
     vendors = {}, -- [npcID] = recipes a vendor sells, read from its window (Core/Merchants.lua)
     heard = {}, -- NPC data other players shared in game (Core/Net.lua)
+    disenchants = {}, -- [bandID] = what your disenchants gave (Core/Disenchant.lua)
     netSent = {}, -- ["vendor:npcID"] = { seen, at }: your scans already announced
     account = { bank = {} },
     recipes = {},

@@ -39,6 +39,8 @@ SlashCmdList.TRADEBOOK = function(msg)
             end
         end
         for _, line in ipairs(ns.Net.Status()) do ns.Print(line) end
+    elseif cmd == "de" or cmd == "disenchant" then
+        ns.Disenchant.PrintSummary()
     elseif cmd == "vendors" then
         ns.UI.Show()
         ns.UI.SelectTab("vendors")

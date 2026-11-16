@@ -32,6 +32,7 @@ local function onLogin()
 
     ns.Scanner.Start()
     ns.Takeover.Start()
+    ns.Disenchant.Start()
     if ns.Minimap then ns.Minimap.Start() end
     if ns.Settings then ns.Settings.Start() end
     if ns.Questie then ns.Questie.Start() end

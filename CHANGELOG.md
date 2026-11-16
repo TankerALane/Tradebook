@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Disenchanting
+- **Item tooltips** say what a green, blue or purple weapon or armor disenchants into: each material with its count and chance, and its **value at auction** with Auctionator. Turn it off in the settings.
+- **Disenchant profit**: "Disenchanting it" in the recipe list's profit menu, and a **Disenchant** line in a recipe's Profit section: craft it, disenchant it, sell the materials at auction.
+- **Your disenchants are recorded** (what each band of items really gave, nothing about your characters). `/tb de` lists them.
+- Which items disenchant comes from WoW Forever's own game data. What they give isn't in the game data, so the classic table is shown, marked "not yet confirmed in WoW Forever", until 10 of your disenchants confirm a band; from then on what you actually got is shown.
+
 ## v1.1.0
 
 ### Profession links

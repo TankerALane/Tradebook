@@ -26,7 +26,10 @@ local PURE_FILES = {
     "Tradebook/Core/Reagents.lua",
     "Tradebook/Core/Friends.lua",
     "Tradebook/Core/Locations.lua",
+    "Tradebook/Data/DisenchantBands.lua",
+    "Tradebook/Data/Disenchant.lua",
     "Tradebook/Core/Prices.lua",
+    "Tradebook/Core/Disenchant.lua",
     "Tradebook/Core/Trainers.lua",
     "Tradebook/Core/Merchants.lua",
     "Tradebook/Core/VendorDB.lua",
@@ -1056,6 +1059,75 @@ test("planner: unpriced recipes only when nothing priced works", function()
     })
     eq(plan.steps[1].recipeID, 2, "priced beats unpriced")
     eq(plan.unpriced, false)
+end)
+
+---------------------------------------------------------------------------
+-- disenchanting
+---------------------------------------------------------------------------
+
+test("disenchant: Forever's bands decide what can be disenchanted", function()
+    local D = ns.Disenchant
+    local bands = ns.DisenchantBands
+    assert(#bands >= 50, "bands generated from the game data")
+    eq(D.Band(bands, 4, 2, 18)[3], 16, "green armor 18 is in the 16-20 band")
+    eq(D.Band(bands, 2, 3, 10)[2], 3, "Forever has blue bands below item level 21")
+    eq(D.Band(bands, 4, 4, 30), nil, "no purple band below 40")
+    eq(D.Band(bands, 4, 1, 30), nil, "white items don't disenchant")
+    eq(D.Band(bands, 7, 2, 30), nil, "trade goods don't disenchant")
+end)
+
+test("disenchant: classic table, armor vs weapons", function()
+    local D = ns.Disenchant
+    local armor = D.Classic(ns.DisenchantClassic, 4, 2, 12)
+    eq(armor[1][1], 10940, "green armor 5-15: Strange Dust first")
+    eq(armor[1][2], 0.80)
+    local weapon = D.Classic(ns.DisenchantClassic, 2, 2, 12)
+    eq(weapon[2][1], 10938, "green weapon 5-15: Lesser Magic Essence")
+    eq(weapon[2][2], 0.80, "weapons give essence most often")
+    eq(D.Classic(ns.DisenchantClassic, 4, 3, 33)[1][1], 11138, "blue 31-35: Small Glowing Shard")
+    eq(D.Classic(ns.DisenchantClassic, 2, 4, 58)[1][1], 20725, "purple 56-60: Nexus Crystal")
+    -- Every Forever band has a classic row (so tooltips never go blank for a real band).
+    for _, b in ipairs(ns.DisenchantBands) do
+        for lvl = b[3], math.min(b[4], 70) do
+            assert(D.Classic(ns.DisenchantClassic, b[1], b[2], lvl), "no classic row for band " .. b[7] .. " at " .. lvl)
+        end
+    end
+end)
+
+test("disenchant: recorded disenchants replace the classic table after CONFIRM_AT", function()
+    local D = ns.Disenchant
+    local records = {}
+    local band = D.Band(ns.DisenchantBands, 4, 2, 12)
+    for i = 1, D.CONFIRM_AT - 1 do D.Record(records, band[7], { [10940] = (i % 2) + 1 }) end
+    local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 2, 12)
+    eq(r.source, "classic")
+    eq(r.seen, D.CONFIRM_AT - 1)
+    D.Record(records, band[7], { [10938] = 2 })
+    r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 2, 12)
+    eq(r.source, "seen")
+    eq(r.results[1][1], 10940, "most seen first")
+    eq(r.results[1][2], (D.CONFIRM_AT - 1) / D.CONFIRM_AT)
+    eq(r.results[1][3], 1)
+    eq(r.results[1][4], 2)
+    eq(r.results[2][1], 10938)
+    eq(D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 1, 12), nil, "white: nothing")
+end)
+
+test("disenchant: expected value, nil when a result has no price", function()
+    local D = ns.Disenchant
+    local results = { { 1, 0.75, 1, 3 }, { 2, 0.25, 1, 1 } }
+    eq(D.Value(results, function(id) return id == 1 and 100 or 40 end), 160, "0.75 x 2 x 100 + 0.25 x 1 x 40")
+    eq(D.Value(results, function(id) return id == 1 and 100 or nil end), nil)
+    eq(D.Value({}, function() return 1 end), nil)
+end)
+
+test("disenchant: list profit counts the materials' value as is", function()
+    local mats = { { itemID = 1, need = 2 } }
+    local lookup = function() return { vendor = 10 } end
+    local profit, cost, value = ns.Prices.ListProfit(mats, 1, "disenchant", 95, lookup)
+    eq(cost, 20)
+    eq(value, 95, "the auction cut is already in the disenchant value")
+    eq(profit, 75)
 end)
 
 ---------------------------------------------------------------------------

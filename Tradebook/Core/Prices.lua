@@ -112,7 +112,8 @@ function Prices.ListProfit(materials, made, mode, saleUnit, lookup)
     local value
     if mode == "auction" then
         value = math.floor(saleUnit * made * (1 - Prices.AH_CUT) + 0.5)
-    elseif mode == "vendor" then
+    elseif mode == "vendor" or mode == "disenchant" then
+        -- disenchant: saleUnit is already the materials' auction value after the cut
         value = math.floor(saleUnit * made + 0.5)
     else
         return nil
@@ -142,14 +143,23 @@ function Prices.SellPrice(itemID)
     return type(sell) == "number" and sell or 0
 end
 
--- The recipe list's profit for a recipe in the chosen mode ("vendor" / "auction"):
--- profit, cost, value; or nil, "nosale" when vendors won't buy the item; or nil (unknown).
+-- The recipe list's profit for a recipe in the chosen mode ("vendor" / "auction" /
+-- "disenchant": disenchant what it makes and sell the materials at auction):
+-- profit, cost, value; or nil, "nosale" when vendors won't buy the item; nil, "node" when it
+-- can't be disenchanted; or nil (unknown).
 function Prices.RecipeProfit(r, mode)
     if not r or not r.o then return nil end -- enchants and the like make no item to sell
-    if mode == "auction" and not Prices.Available() then return nil end
+    if (mode == "auction" or mode == "disenchant") and not Prices.Available() then return nil end
     local saleUnit
     if mode == "auction" then
         saleUnit = Prices.Get(r.o).auction
+    elseif mode == "disenchant" then
+        if not ns.Disenchant.ForItem(r.o) then
+            -- Not loaded yet (asked for) or not something that disenchants.
+            if Prices.SellPrice(r.o) ~= nil then return nil, "node" end -- loaded: can't DE
+            return nil
+        end
+        saleUnit = ns.Disenchant.ValueOf(r.o)
     else
         saleUnit = Prices.SellPrice(r.o)
         if saleUnit == 0 then return nil, "nosale" end

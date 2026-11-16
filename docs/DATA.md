@@ -7,6 +7,8 @@ Tradebook ships generated data files. Never edit them by hand; re-run the script
 | `Tradebook/Data/SkillLevels.lua` | Skill-up thresholds (where each recipe turns yellow, green, grey) | WoW Forever's own `SkillLineAbility` table, via wago.tools | **Automatically checked every week** (GitHub Actions "Game data check"); a pull request opens when a new build changes anything |
 | `Tradebook/Data/SourceData.lua` | Where recipes are learned (trainer, vendor, drop, quest, container), NPC names, skill needed to learn | LibProfessionDB (MIT, by Pimptasty) | By hand when LibProfessionDB releases a new version |
 | `Tradebook/Data/RecipeVendors.lua` | Recipe vendors checked for WoW Forever (replace the classic vendor lists above) | `docs/research/recipe_vendors.json` (QuestieDB Forever + Forever web sources) | `python -I scripts/build_recipe_vendors.py` after editing the research file |
+| `Tradebook/Data/DisenchantBands.lua` | Which items can be disenchanted (item class, quality, item level bands) | WoW Forever's own `ItemDisenchantLoot` table, via wago.tools | With the game data, every week |
+| `Tradebook/Data/Disenchant.lua` | What each band gives (materials, chances, counts) | **Classic table** (Warcraft Wiki "Disenchanting tables"; classic guides disagree on some breakpoints). Not in Forever's game data: decided by the server | By hand. Shown as "classic, not yet confirmed" until 10 recorded disenchants of a band (`TradebookDB.disenchants`, `/tb de`); then what was seen in game is shown |
 
 ## Skill-up thresholds (every Forever build)
 

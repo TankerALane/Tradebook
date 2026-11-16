@@ -31,6 +31,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
 - **Recipe details**: materials with bag and bank counts (and which of your characters have them), the **nearest vendors** that sell each one with their price, a tree of craftable materials, and skill-up ranges ("orange until 125").
 - **Craft, quantity and Craft All.**
+- **Disenchanting**: item tooltips show what an item disenchants into and its value; recorded from your own disenchants in Forever.
 - **Profession links**: click another player's profession link in chat and their recipes open in Tradebook, with materials, where to buy them and prices. The **link button** next to the skill bar posts your own profession in chat.
 - **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: drag them to your action bars.
 
@@ -53,7 +54,7 @@ Tradebook works on its own. These add more when installed:
 | Addon | What it adds |
 |---|---|
 | **Questie** | Vendors nobody has scanned yet in the Vendors tab. The nearest trainers and vendors for recipes you haven't learned. For each material: the mobs that drop it and the nodes it's gathered from. |
-| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction or to a vendor, a **profit column in the recipe list** (selling to a vendor or at the auction house), shopping list costs, and **Send to Auctionator**. |
+| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction, to a vendor or by disenchanting it, a **profit column in the recipe list** (vendor, auction house or disenchant), the **disenchant value** in item tooltips, shopping list costs, and **Send to Auctionator**. |
 | **TomTom** | Waypoints use TomTom's arrow (otherwise the game's map pin). |
 | **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab. |
 

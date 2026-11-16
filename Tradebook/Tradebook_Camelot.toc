@@ -30,6 +30,8 @@ Data\CommunityTrainers.lua
 Data\SkillLevels.lua
 Data\Zones.lua
 Data\VendorPrices.lua
+Data\DisenchantBands.lua
+Data\Disenchant.lua
 Data\NotInForever.lua
 Data\Sources.lua
 Data\RankUps.lua
@@ -51,6 +53,7 @@ Core\Crafting.lua
 Core\Takeover.lua
 Core\Questie.lua
 Core\Prices.lua
+Core\Disenchant.lua
 Core\Trainers.lua
 Core\Merchants.lua
 Core\VendorDB.lua

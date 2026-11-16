@@ -22,6 +22,7 @@ L.HELP_LINES = {
     "/tb chars - open the Characters view",
     "/tb search <text> - who can craft it?",
     "/tb vendors - find any item a vendor sells",
+    "/tb de - what your disenchants gave, by item level band",
     "/tb share - share your vendor and trainer scans with everyone",
     "/tb net - in-game sharing: what was sent and heard (/tb net test: queue 20 test messages)",
     "/tb default - use the default Professions window this time",
@@ -58,6 +59,24 @@ L.PROFIT_SHOW = "Show profit"
 L.PROFIT_OFF = "Off"
 L.PROFIT_VENDOR = "Selling to a vendor"
 L.PROFIT_AUCTION = "Selling at the auction house"
+L.PROFIT_DISENCHANT = "Disenchanting it (materials at auction)"
+L.PROFIT_TIP_DISENCHANT = "Disenchanted (materials at auction, after the cut)"
+L.PROFIT_NO_DE = "no disenchant"
+L.PROFIT_NO_DE_TIP = "This item can't be disenchanted."
+L.PROFIT_DISENCHANT_SHORT = "Disenchant"
+L.DE_INTO = "Disenchants into:"
+L.DE_VALUE = "Value at auction"
+L.DE_SEEN = "Seen in WoW Forever (%d disenchants)"
+L.DE_CLASSIC = "Classic table, not yet confirmed in WoW Forever"
+L.DE_CLASSIC_SEEN = "Classic table, not yet confirmed in WoW Forever (%d seen so far)"
+L.DE_GREEN = "Green"
+L.DE_BLUE = "Blue"
+L.DE_PURPLE = "Purple"
+L.DE_WEAPON = "weapons"
+L.DE_ARMOR = "armor"
+L.DE_SUMMARY_LINE = "%s %s %d-%d: %d disenchants: %s"
+L.DE_SUMMARY_NONE = "No disenchants recorded yet. Disenchant something and it is recorded automatically."
+L.OPT_DE_TOOLTIP = "Show what items disenchant into in their tooltips"
 L.PROFIT_TIP_COST = "Buying the materials"
 L.PROFIT_TIP_VENDOR = "Sold to a vendor"
 L.PROFIT_TIP_AUCTION = "Sold at auction (after the cut)"
