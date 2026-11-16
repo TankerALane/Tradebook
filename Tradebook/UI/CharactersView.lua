@@ -11,6 +11,27 @@ ns.UI.RegisterView("characters", View)
 
 local SUMMARY_WIDTH = 280
 
+-- Row layout. Wide: name and info on one line each, professions 236 past the icon, then
+-- the "not learned" column and Hide/Delete at the right. Narrow (the row can't hold all
+-- that): info on two lines, professions closer, Hide/Delete under the info, and the
+-- "not learned" column only when it still fits (otherwise it is in the row's tooltip).
+local ICON_RIGHT = 46 -- 6 + 32 icon + 8
+local PROFS_WIDE, PROFS_NARROW = 236, 170
+local COLS = 110 + 64 -- profession name + rank
+local MISSING = 14 + 130
+local BUTTONS = 8 + 64 + 12 + 64 + 8
+local WIDE_NEED = ICON_RIGHT + PROFS_WIDE + COLS + MISSING + BUTTONS
+
+local LAYOUT_WIDE = { wide = true, missing = true }
+local LAYOUT_NARROW = { wide = false, missing = true }
+local LAYOUT_NARROWEST = { wide = false, missing = false }
+
+local function layoutFor(width)
+    if width >= WIDE_NEED then return LAYOUT_WIDE end
+    if width >= ICON_RIGHT + PROFS_NARROW + COLS + MISSING + 8 then return LAYOUT_NARROW end
+    return LAYOUT_NARROWEST
+end
+
 StaticPopupDialogs["TRADEBOOK_DELETE_CHARACTER"] = {
     text = L.DELETE_CONFIRM,
     button1 = YES,
@@ -66,10 +87,41 @@ local function createRow(row)
     end)
     row.bg = row:CreateTexture(nil, "BACKGROUND")
     row.bg:SetAllPoints()
+    row:SetScript("OnEnter", function(self)
+        if not self.tip then return end
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        for i, line in ipairs(self.tip) do
+            if i == 1 then GameTooltip:SetText(line) else GameTooltip:AddLine(line, nil, nil, nil, true) end
+        end
+        GameTooltip:Show()
+    end)
+    row:SetScript("OnLeave", GameTooltip_Hide)
+end
+
+local function applyLayout(row, layout)
+    if row.layout == layout then return end
+    row.layout = layout
+    row.profs:ClearAllPoints()
+    row.profs:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", layout.wide and PROFS_WIDE or PROFS_NARROW, 0)
+    row.name:SetWidth(layout.wide and 0 or PROFS_NARROW - 6)
+    row.name:SetWordWrap(false)
+    row.hide:ClearAllPoints()
+    row.delete:ClearAllPoints()
+    if layout.wide then
+        row.hide:SetPoint("TOPRIGHT", -76, -8)
+        row.delete:SetPoint("TOPRIGHT", -8, -8)
+    else
+        row.hide:SetPoint("BOTTOMLEFT", ICON_RIGHT, 6)
+        row.delete:SetPoint("LEFT", row.hide, "RIGHT", 6, 0)
+    end
+    row.missing:SetShown(layout.missing)
+    row.warn:SetShown(layout.wide)
 end
 
 local function initRow(row, c)
     row.data = c
+    local layout = View.layout or layoutFor(math.huge)
+    applyLayout(row, layout)
     local isMe = c.key == ns.charKey
     local coords = c.class and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[c.class]
     if coords then
@@ -82,23 +134,35 @@ local function initRow(row, c)
     row.name:SetText(W.ClassName(c) .. (c.hidden and W.ColorText(W.GREY, "  (" .. L.HIDE .. ")") or ""))
     local playType = L.PLAYTYPE[c.playType or "unknown"] or L.PLAYTYPE.unknown
     local seen = isMe and L.NOW_ONLINE or L.LAST_SEEN:format(W.Ago(c.lastSeen))
-    row.info:SetText(string.format("%s %s  -  %s  -  %s", LEVEL or "Level", tostring(c.level or "?"), playType, seen))
     local now = GetServerTime()
-    if Characters.IsStale(c, now, ns.db.settings.staleDays, ns.charKey) then
-        row.warn:SetText(L.STALE:format(Characters.DaysSince(c, now)))
+    local stale = Characters.IsStale(c, now, ns.db.settings.staleDays, ns.charKey)
+        and L.STALE:format(Characters.DaysSince(c, now)) or nil
+    local levelText = string.format("%s %s  -  %s", LEVEL or "Level", tostring(c.level or "?"), playType)
+    if layout.wide then
+        row.info:SetText(levelText .. "  -  " .. seen)
     else
-        row.warn:SetText("")
+        -- Narrow: last seen on its own line, red when the data is stale (the warning is in the tooltip).
+        row.info:SetText(levelText .. "\n" .. (stale and W.ColorText(W.RED, seen) or seen))
     end
+    row.info:SetSpacing(3)
+    row.warn:SetText(stale or "")
     local names, ranks, missingLines = {}, {}, {}
+    local tip = { W.ClassName(c) }
+    if stale then tip[#tip + 1] = W.ColorText(W.RED, stale) end
     for _, p in ipairs(ns.Professions.list) do
         local prof = c.professions[p.id]
         if prof then
             local missing = ns.Recipes.Missing(ns.db, c, p.id)
-            names[#names + 1] = L[p.name] or p.name
+            local profName = L[p.name] or p.name
+            names[#names + 1] = profName
             ranks[#ranks + 1] = L.SKILL_RANK:format(prof.rank or 0, prof.max or 0)
             missingLines[#missingLines + 1] = (missing and #missing > 0) and L.MISSING_FOR:format(#missing) or " "
+            if not layout.missing and missing and #missing > 0 then
+                tip[#tip + 1] = profName .. ": " .. W.ColorText(W.GREY, L.MISSING_FOR:format(#missing))
+            end
         end
     end
+    row.tip = (not layout.wide and #tip > 1) and tip or nil
     -- Explicit height: without it the client keeps these at one line and cuts the rest ("...").
     local _, size = row.profs:GetFont()
     local height = math.max(1, #names) * ((size or 12) + 3)
@@ -140,6 +204,12 @@ function View:Build(parent)
     self.list = W.List(f, 74, createRow, initRow)
     self.list:SetPoint("TOPLEFT", SUMMARY_WIDTH, -40)
     self.list:SetPoint("BOTTOMRIGHT", -22, 8)
+    self.list:HookScript("OnSizeChanged", function(_, width)
+        local layout = layoutFor(width)
+        if layout == self.layout then return end
+        self.layout = layout
+        if f:IsVisible() then self:Refresh() end
+    end)
 end
 
 -- "Ana  145/150  ->  Expert" / "Ana  ready to train Expert" for one profession.

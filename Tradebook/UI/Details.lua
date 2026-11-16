@@ -428,15 +428,26 @@ function Pane:AddCost(r, list, times)
         self:Add({ indent = 1, text = L.COST_UNPRICED:format(unpriced), color = W.GREY })
     end
     local made = ((r.q1 or 1) + (r.q2 or r.q1 or 1)) / 2 * times
-    local sale = r.o and Prices.Get(r.o).auction
-    local value, profit = Prices.Profit(cost, sale, made)
-    if value then
-        self:Add({ indent = 1, text = L.COST_SELLS_FOR, right = Prices.Money(value) })
-        if unpriced == 0 then
-            self:Add({ indent = 1, text = L.COST_PROFIT, right = (profit >= 0 and W.GREEN or W.RED)
-                :WrapTextInColorCode(Prices.Money(profit)) })
-        end
+    local value = Prices.Profit(cost, r.o and Prices.Get(r.o).auction, made)
+    if value then self:Add({ indent = 1, text = L.COST_SELLS_FOR, right = Prices.Money(value) }) end
+    self:Gap()
+    -- Profit section: selling at auction (after the cut) and to a vendor. None from part of
+    -- the materials (it would mislead).
+    if unpriced > 0 or not r.o then return end
+    local lines = {}
+    local function money(profit)
+        return (profit >= 0 and W.GREEN or W.RED):WrapTextInColorCode(Prices.Money(profit))
     end
+    if value then lines[#lines + 1] = { indent = 1, text = L.PROFIT_AUCTION_SHORT, right = money(value - cost) } end
+    local sell = Prices.SellPrice(r.o)
+    if sell == 0 then
+        lines[#lines + 1] = { indent = 1, text = L.PROFIT_VENDOR_SHORT, right = W.ColorText(W.GREY, L.PROFIT_NO_SALE) }
+    elseif sell then
+        lines[#lines + 1] = { indent = 1, text = L.PROFIT_VENDOR_SHORT, right = money(math.floor(sell * made + 0.5) - cost) }
+    end
+    if #lines == 0 then return end
+    self:Add({ text = L.COST_PROFIT, font = "GameFontNormal", color = W.GOLD })
+    for _, line in ipairs(lines) do self:Add(line) end
     self:Gap()
 end
 
