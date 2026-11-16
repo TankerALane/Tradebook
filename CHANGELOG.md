@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.2.0
+
 ### Disenchanting
 - **Item tooltips** say what a green, blue or purple weapon or armor disenchants into. By default it's one line (materials and value); **hold Shift** for the details: each material with its icon, count, chance and auction price, the total **value at auction**, and where the numbers come from. Turn it off, or always show the details, in the settings.
 - **Disenchant or sell?** With Auctionator, the tooltip says what pays most: disenchanting, selling to a vendor or selling at auction ("Roughly equal" when they're close).
@@ -11,6 +13,9 @@
 - **Shared in game**: your disenchants are recorded (`/tb de` lists them) and shared in the background with other Tradebook users, like vendors and trainers. Only the results per item level band are shared, nothing about your characters. Another player's results count once two players have reported that band.
 - **Disenchant database**: Tradebook now ships the disenchant results recorded so far (21 disenchants in 8 bands), so everyone starts with them. First finding: in WoW Forever, green weapons of item level 21-30 have given Greater Magic Essence every time (3 of 3), where the classic table says Astral Essence; their tooltips say so.
 - **Where the numbers come from**: which items disenchant comes from WoW Forever's own game data. What they give isn't in the game data, so the classic table is shown (from the Warcraft Wiki, checked against the classic server databases), marked "not yet confirmed in WoW Forever". Green armor of item level 5-15, 16-20 and 26-30 matches Wowhead's WoW Forever data. After 10 disenchants of a band: "Confirmed in WoW Forever" if they fit the classic table, otherwise what Forever actually gave is shown. Blue items of item level 56+ say the sources disagree on the Nexus Crystal chance.
+
+### Data
+- The community database now has **481 vendors (6,341 items)** and **134 trainers (1,763 services)** scanned in game, up from 471 and 132.
 
 ## v1.1.0
 
