@@ -964,37 +964,46 @@ test("planner: cheapest recipe per point, merged steps, materials", function()
         thresholds = function(id) return recipes[id].t end,
         reagents = function(id) return recipes[id].r end,
         price = function(item) return prices[item] end,
-        inventory = { [2] = 4 }, -- two crafts of B in the bags: used, but not free for choosing
+        inventory = { [2] = 4 }, -- two crafts of B in the bags
     })
     eq(plan.reached, 110)
-    -- A per point: 10 / chance x 4/3 (yellow): 13, 17, 22, 33 for 100-103, then 67 > B's 60.
-    eq(plan.steps[1].recipeID, "A", "the cheap yellow one while it is well under B's cost")
-    eq(plan.steps[1].to, 104)
-    eq(plan.steps[1].from, 100)
-    eq(plan.steps[2].recipeID, "B", "then the orange one")
-    eq(plan.steps[2].to, 110)
-    eq(#plan.steps, 2)
-    eq(plan.materials[2].need, 12, "6 crafts of B")
+    eq(plan.steps[1].recipeID, "B", "orange from what you have first")
+    eq(plan.steps[1].to, 102)
+    eq(plan.steps[1].cost, 0)
+    -- Then A per point: 10 / chance x 4/3 (yellow): 22, 33 at 102-103, then 67 > B's 60.
+    eq(plan.steps[2].recipeID, "A", "the cheap yellow one while it is well under B's cost")
+    eq(plan.steps[2].to, 104)
+    eq(plan.steps[3].recipeID, "B")
+    eq(plan.steps[3].to, 110)
+    eq(#plan.steps, 3)
+    eq(plan.materials[2].need, 16, "8 crafts of B")
     eq(plan.materials[2].have, 4)
-    eq(plan.steps[2].cost, 8 * 30, "the bill only counts what you buy (12 - 4 owned)")
+    eq(plan.steps[3].cost, 12 * 30, "the bill only counts what you buy")
 end)
 
-test("planner: owned materials don't make a yellow recipe beat a cheaper orange one", function()
-    -- Like Enchant 2H Weapon - Minor Impact (yellow, materials owned, 442c) against
-    -- Enchant Boots - Minor Stamina (orange, 396c to buy).
+test("planner: orange from your own materials before a yellow one you also have", function()
+    -- Enchanting at 130: Enchant 2H Weapon - Minor Impact (yellow) and Enchant Boots - Minor
+    -- Stamina / Bracer - Lesser Stamina (orange), materials for all of them in the bags.
     local recipes = {
-        Y = { t = { 130, 140, 150 }, r = { { itemID = 1, count = 1 } } },
-        O = { t = { 150, 160, 170 }, r = { { itemID = 2, count = 1 } } },
+        Impact = { t = { 130, 140, 150 }, r = { { itemID = 1, count = 1 } } },
+        Boots = { t = { 150, 160, 170 }, r = { { itemID = 2, count = 1 } } },
+        Bracer = { t = { 150, 160, 170 }, r = { { itemID = 3, count = 1 } } },
     }
-    local prices = { [1] = 442, [2] = 396 }
+    local prices = { [1] = 442, [2] = 396, [3] = 500 }
     local plan = ns.Planner.Plan({
-        rank = 130, target = 131, recipes = { "Y", "O" },
+        rank = 130, target = 150, recipes = { "Impact", "Boots", "Bracer" },
         thresholds = function(id) return recipes[id].t end,
         reagents = function(id) return recipes[id].r end,
         price = function(item) return prices[item] end,
-        inventory = { [1] = 5 },
+        inventory = { [1] = 20, [2] = 10, [3] = 10 },
     })
-    eq(plan.steps[1].recipeID, "O")
+    eq(plan.reached, 150)
+    eq(plan.steps[1].recipeID, "Boots", "orange, cheapest materials first")
+    eq(plan.steps[1].to, 140)
+    eq(plan.steps[2].recipeID, "Bracer")
+    eq(plan.steps[2].to, 150)
+    eq(#plan.steps, 2, "never the yellow one")
+    eq(plan.cost, 0, "nothing to buy")
 end)
 
 test("planner: orange first unless yellow is clearly cheaper; ties go to orange", function()

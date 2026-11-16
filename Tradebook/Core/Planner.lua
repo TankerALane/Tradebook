@@ -2,17 +2,20 @@
 -- PURE. Leveling planner: the cheapest way to raise a profession from the current skill to a
 -- target (normally the cap), one skill point at a time.
 --
--- At each skill point it picks the recipe with the lowest expected cost per point:
---   chance of a skill-up: orange 100%; yellow and green (grey - skill) / (grey - yellow), the
---     usual classic estimate; grey 0. Expected crafts per point = 1 / chance.
---   cost of a craft, for choosing: every material at its unit price, also the ones in your
---     bags and bank (using them up isn't free: they could make another point or be sold).
---     Owned materials without a price count as free. The bill (step cost, total) only counts
---     what you have to buy: owned materials are used first.
---   orange first: a yellow or green recipe's expected cost is weighed up by ORANGE_BONUS, so
---     it only wins when it is clearly cheaper (a skill-up from it is never sure).
---   Unpriced materials to buy make the recipe unpriced: it's only picked when no priced
---     recipe can give the point.
+-- At each skill point it picks, in this order:
+--   1. an orange recipe you can make from what you have (bags and bank, nothing to buy): a sure
+--      skill-up for free. The one whose materials are worth least goes first.
+--   2. otherwise the lowest expected cost per point:
+--        chance of a skill-up: orange 100%; yellow and green (grey - skill) / (grey - yellow),
+--          the usual classic estimate; grey 0. Expected crafts per point = 1 / chance.
+--        cost: what you'd buy at its price, plus OWNED_WEIGHT of the price of what you have
+--          (using it up isn't quite free: it could make another point later). Owned materials
+--          without a price count as free.
+--        a yellow or green recipe's cost is weighed up by ORANGE_BONUS (a skill-up from it is
+--          never sure); ties go to orange, then the higher chance.
+--      Unpriced materials to buy make the recipe unpriced: it's only picked when no priced
+--      recipe can give the point.
+-- The bill (step cost, total) only counts what you have to buy: owned materials are used first.
 -- Consecutive points from the same recipe are merged into one step.
 -- Estimates, not guarantees: skill-ups are random.
 
@@ -22,6 +25,7 @@ local Planner = {}
 ns.Planner = Planner
 
 Planner.ORANGE_BONUS = 4 / 3 -- yellow/green must be under 3/4 of orange's cost per point
+Planner.OWNED_WEIGHT = 0.25 -- what using up a material you have counts, against buying it
 
 -- PURE. Chance of a skill-up at `rank` for thresholds { yellow, green, grey }.
 function Planner.Chance(t, rank)
@@ -79,24 +83,26 @@ function Planner.Plan(opts)
         end
     end
 
-    -- What a craft uses up, for choosing: all its materials at their price (owned ones too).
-    -- noPrices: the number of materials. Unpriced ones you'd have to buy make it unpriced.
-    local function valueOf(id, crafts)
-        local total, unpricedUnits = 0, 0
+    -- For choosing: what `crafts` crafts cost to buy and what they use up of what you have
+    -- (at its price; noPrices: numbers of materials), and the units to buy with no price.
+    local function split(id, crafts)
+        local buyCost, ownedValue, unpricedUnits = 0, 0, 0
         for _, r in ipairs(opts.reagents(id)) do
             local need = r.count * crafts
+            local owned = math.min(need, inv[r.itemID] or 0)
+            local buy = need - owned
             if opts.noPrices then
-                total = total + need
+                buyCost, ownedValue = buyCost + buy, ownedValue + owned
             else
                 local p = opts.price(r.itemID)
                 if p then
-                    total = total + p * need
+                    buyCost, ownedValue = buyCost + p * buy, ownedValue + p * owned
                 else
-                    unpricedUnits = unpricedUnits + math.max(0, need - (inv[r.itemID] or 0))
+                    unpricedUnits = unpricedUnits + buy
                 end
             end
         end
-        return total, unpricedUnits > 0, unpricedUnits
+        return buyCost, ownedValue, unpricedUnits
     end
 
     local steps, materials = {}, {}
@@ -111,13 +117,18 @@ function Planner.Plan(opts)
                 local chance = Planner.Chance(t, rank)
                 if chance > 0 then
                     local crafts = 1 / chance
-                    local value, unpriced, unpricedUnits = valueOf(id, crafts)
+                    local buyCost, ownedValue, unpricedUnits = split(id, crafts)
                     local orange = rank < t[1]
-                    if not orange then value = value * Planner.ORANGE_BONUS end
-                    -- Recipes needing materials with no known price sort after every priced
-                    -- one, fewest of those materials first; then value per point; then the
-                    -- surer skill-up (orange, then the higher chance).
-                    local score = (unpriced and (1e15 + unpricedUnits * 1e6) or 0) + value
+                    local score
+                    if orange and buyCost == 0 and unpricedUnits == 0 then
+                        score = -1e15 + ownedValue -- 1. orange from what you have
+                    else
+                        local value = buyCost + ownedValue * Planner.OWNED_WEIGHT
+                        if not orange then value = value * Planner.ORANGE_BONUS end
+                        -- Recipes needing materials with no known price sort after every
+                        -- priced one, fewest of those materials first.
+                        score = (unpricedUnits > 0 and (1e15 + unpricedUnits * 1e6) or 0) + value
+                    end
                     local better = not best or score < bestScore - 1e-6
                     if not better and math.abs(score - bestScore) <= 1e-6 then
                         better = (orange and not bestOrange) or (orange == bestOrange and chance > bestChance)
