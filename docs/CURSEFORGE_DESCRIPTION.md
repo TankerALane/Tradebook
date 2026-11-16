@@ -31,7 +31,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
 - **Recipe details**: materials with bag and bank counts (and which of your characters have them), the **nearest vendors** that sell each one with their price, a tree of craftable materials, and skill-up ranges ("orange until 125").
 - **Craft, quantity and Craft All.**
-- **Disenchanting**: item tooltips show what an item disenchants into and its value; recorded from your own disenchants in Forever.
+- **Disenchanting**: item tooltips show what an item disenchants into, its value and whether to disenchant or sell; enchanting materials show what they're disenchanted from. Results are recorded from real disenchants in Forever and shared between Tradebook users, so the table gets confirmed for Forever.
 - **Profession links**: click another player's profession link in chat and their recipes open in Tradebook, with materials, where to buy them and prices. The **link button** next to the skill bar posts your own profession in chat.
 - **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: drag them to your action bars.
 

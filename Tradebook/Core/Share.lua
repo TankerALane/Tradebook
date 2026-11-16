@@ -12,6 +12,9 @@
 --   S~<name>~<subText>~<type>~<level>~<skill req>~<cost>~<prof>  (its services, as read)
 --   C~<npcID>~<seenAt>      a vendor you scanned that still matches the community data
 --   CT~<npcID>~<seenAt>     a trainer that still matches
+--   D~<bandID>~<casts>~<itemID>:<times>:<total>:<min>:<max>;...   what your disenchants of one
+--                           Forever disenchant band gave (Core/Disenchant.lua). Older copies
+--                           of Tradebook skip these lines.
 -- "~" and line breaks are removed from names.
 -- NPCs that still match what Tradebook already ships (Data/CommunityVendors.lua /
 -- CommunityTrainers.lua) are sent as one C / CT line ("confirmed again") instead of in full.
@@ -118,6 +121,7 @@ function Share.Encode(vendors, build, version, trainers, opts)
     end
     local out = { table.concat({ "TBV1", clean(build), clean(version), nv, nt }, "~") }
     for _, c in ipairs(confirm) do out[#out + 1] = table.concat(c, "~") end
+    for _, line in ipairs(Share.DisenchantLines(opts.disenchants)) do out[#out + 1] = line end
     for _, npc in ipairs(ids) do
         local e = vendors[npc]
         local loc = e.loc or {}
@@ -144,12 +148,38 @@ function Share.Encode(vendors, build, version, trainers, opts)
     return table.concat(out, "\n"), nv, nt, { vendors = #ids, trainers = #tids, confirmed = #confirm }
 end
 
--- PURE. Parse share text back: vendors { [npcID] = { name, loc = { m, x, y }, seenAt, items } }
--- and trainers { [npcID] = { name, skill, loc, seenAt, services } }, or nil plus an error.
+-- PURE. D lines for disenchant records ({ [bandID] = { n, mats = { [itemID] = { t, q, lo, hi } } } }),
+-- bands in order.
+function Share.DisenchantLines(records)
+    local bands = {}
+    for band, rec in pairs(records or {}) do
+        if type(band) == "number" and rec.n and rec.n > 0 then bands[#bands + 1] = band end
+    end
+    table.sort(bands)
+    local out = {}
+    for _, band in ipairs(bands) do
+        local rec = records[band]
+        local mats = {}
+        for id in pairs(rec.mats or {}) do mats[#mats + 1] = id end
+        table.sort(mats)
+        local parts = {}
+        for _, id in ipairs(mats) do
+            local m = rec.mats[id]
+            parts[#parts + 1] = table.concat({ id, m.t, m.q, m.lo, m.hi }, ":")
+        end
+        out[#out + 1] = table.concat({ "D", band, rec.n, table.concat(parts, ";") }, "~")
+    end
+    return out
+end
+
+-- PURE. Parse share text back: vendors { [npcID] = { name, loc = { m, x, y }, seenAt, items } },
+-- trainers { [npcID] = { name, skill, loc, seenAt, services } }, confirmations and disenchant
+-- records { [bandID] = { n, mats } } (unchecked: see Net.CleanDisenchant), or nil plus an error.
 function Share.Decode(text)
     local vendors, current = {}, nil
     local trainers, trainer = {}, nil
     local confirmed = {}
+    local disenchants = {}
     local header = false
     for line in (text or ""):gmatch("[^\r\n]+") do
         local f = {}
@@ -174,10 +204,20 @@ function Share.Decode(text)
         elseif f[1] == "S" and trainer then
             table.remove(f, 1)
             trainer.services[#trainer.services + 1] = table.concat(f, "|")
+        elseif f[1] == "D" and tonumber(f[2]) and tonumber(f[3]) then
+            local rec = { n = tonumber(f[3]), mats = {} }
+            for part in (f[4] or ""):gmatch("[^;]+") do
+                local id, t, q, lo, hi = part:match("^(%d+):(%d+):(%d+):(%d+):(%d+)$")
+                if id then
+                    rec.mats[tonumber(id)] = { t = tonumber(t), q = tonumber(q), lo = tonumber(lo), hi = tonumber(hi) }
+                end
+            end
+            disenchants[tonumber(f[2])] = rec
+            current, trainer = nil, nil
         end
     end
     if not header then return nil, "missing TBV1 header" end
-    return vendors, trainers, confirmed
+    return vendors, trainers, confirmed, disenchants
 end
 
 local sharePopup

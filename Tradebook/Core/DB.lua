@@ -42,6 +42,7 @@ DB.DEFAULTS = {
             skillupColors = { true, true, true } }, -- orange, yellow, green
         listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction" | "disenchant"
         deTooltip = true, -- item tooltips say what an item disenchants into (Core/Disenchant.lua)
+        deCompact = true, -- ...in one line, with the details while Shift is held
         collapsed = {},
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
         netShare = true, -- share NPC data with other Tradebook users in game (Core/Net.lua)

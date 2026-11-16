@@ -3,6 +3,9 @@
 -- and announces the vendors and trainers its player opens; what it hears from other players
 -- is checked and kept in TradebookDB.heard, shown in the Vendors tab ("other players") and,
 -- once two players agree, used like scanned data. "import npc data" also exports it.
+-- Disenchant results are shared the same way: each player's totals per Forever disenchant band
+-- (heard.de[who], the player's latest totals replace the older ones; Core/Disenchant.lua
+-- counts them for a band once 2+ players have reported it).
 --
 -- Only NPC data is sent, in the /tb share text format (Core/Share.lua): NPC IDs, names, where
 -- they stand, what they sell or teach and for how much. Nothing about the player's characters.
@@ -41,6 +44,7 @@ Net.RESEND_AFTER = 86400  -- an unchanged scan is announced again after a day
 Net.BACKLOG_DAYS = 30     -- scans this recent are re-announced after login, slowly
 Net.BACKLOG_GAP = 20      -- seconds between re-announced NPCs
 Net.SENDER_LIMIT = 90     -- messages per minute from one player before they're ignored
+Net.MAX_DE_PLAYERS = 300  -- players whose disenchant totals are kept (the oldest is dropped)
 
 ---------------------------------------------------------------------------
 -- PURE: hashing, chunking, reassembly, validation, merging
@@ -166,6 +170,38 @@ local function count(t)
     return n
 end
 
+-- PURE. A checked copy of one band of another player's disenchant totals, or nil.
+function Net.CleanDisenchant(band, rec)
+    if not (okID(band) and band < 100000 and type(rec) == "table") then return nil end
+    local n = tonumber(rec.n)
+    if not n or n < 1 or n > 100000 or n ~= math.floor(n) then return nil end
+    local mats, any = {}, false
+    for id, m in pairs(rec.mats or {}) do
+        local t, q, lo, hi = tonumber(m.t), tonumber(m.q), tonumber(m.lo), tonumber(m.hi)
+        if not (okID(id) and t and q and lo and hi) then return nil end
+        if t < 1 or t > n or lo < 1 or hi < lo or hi > 50 or q < t * lo or q > t * hi then return nil end
+        mats[id] = { t = t, q = q, lo = lo, hi = hi }
+        any = true
+    end
+    if not any or count(mats) > 10 then return nil end
+    return { n = n, mats = mats }
+end
+
+-- PURE. Keep one player's disenchant totals in heard.de ({ [who] = { at, bands } }): their
+-- latest totals replace the older ones; when full, the player heard from longest ago is dropped.
+function Net.RecordDisenchants(heard, bands, who, now)
+    heard.de = heard.de or {}
+    if not heard.de[who] and count(heard.de) >= Net.MAX_DE_PLAYERS then
+        local oldest, at
+        for k, r in pairs(heard.de) do
+            if not at or r.at < at or (r.at == at and k < oldest) then oldest, at = k, r.at end
+        end
+        heard.de[oldest] = nil
+    end
+    heard.de[who] = { at = now, bands = bands }
+    return true
+end
+
 -- PURE. Keep one player's report of an NPC in heard[kind] ({ [npcID] = { reports = { [who] =
 -- { at, e } } } }), replacing that player's older report and, when full, the oldest one.
 -- Returns true when kept.
@@ -207,9 +243,18 @@ end
 
 -- PURE. Take one whole share text from player `who` into `heard`. Returns how many NPCs were kept.
 function Net.Accept(heard, text, who, now)
-    local vendors, trainers, confirmed = ns.Share.Decode(text)
+    local vendors, trainers, confirmed, disenchants = ns.Share.Decode(text)
     if not vendors then return 0 end
     local kept = 0
+    local bands, nb = {}, 0
+    for band, rec in pairs(disenchants or {}) do
+        local clean = Net.CleanDisenchant(band, rec)
+        if clean then bands[band], nb = clean, nb + 1 end
+    end
+    if nb > 0 and nb <= 200 then
+        Net.RecordDisenchants(heard, bands, who, now)
+        kept = kept + nb
+    end
     for npc, e in pairs(vendors) do
         local clean = okID(npc) and Net.CleanVendor(e, now)
         if clean and Net.Record(heard, "vendors", npc, clean, who, now) then kept = kept + 1 end
@@ -308,9 +353,26 @@ function Net.HeardTrainers()
     return cached.trainers
 end
 
+-- Other players' disenchant totals: { [who] = { at, bands } }.
+function Net.HeardDisenchants()
+    return ns.db and ns.db.heard and ns.db.heard.de or {}
+end
+
+-- Total disenchants recorded, to tell when there's something new to announce.
+local function disenchantTotal()
+    local n = 0
+    for _, rec in pairs(ns.db.disenchants or {}) do n = n + (rec.n or 0) end
+    return n
+end
+
 local function textFor(kind, npc)
     local build = Compat.Call("GetBuildInfo") or "?"
     local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
+    if kind == "disenchant" then
+        local total = disenchantTotal()
+        if total == 0 then return nil end
+        return (ns.Share.Encode({}, build, ver, nil, { disenchants = ns.db.disenchants })), total
+    end
     if kind == "vendor" then
         local e = ns.db.vendors and ns.db.vendors[npc]
         if not (e and e.items and next(e.items)) then return nil end
@@ -335,6 +397,13 @@ local function announce(kind, npc, force)
     if not parts or #queue + #parts > 400 then return end
     for _, p in ipairs(parts) do queue[#queue + 1] = p end
     ns.db.netSent[key] = { seen = seenAt, at = now }
+end
+
+-- Called after a disenchant was recorded (Core/Disenchant.lua): your totals go out a minute
+-- after the last one (a session of disenchanting is one announcement).
+function Net.Disenchanted()
+    if not enabled() then return end
+    ns.Throttle("net:disenchant", 60, function() announce("disenchant", 0) end)
 end
 
 -- Called after a vendor or trainer window was read (Core/Merchants.lua, Core/Trainers.lua).
@@ -406,6 +475,8 @@ local function fillBacklog()
         if (t.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "trainer", npc = npc, at = t.seenAt } end
     end
     table.sort(backlog, function(a, b) return a.at > b.at end)
+    -- Your disenchant totals: once per session (skipped when unchanged and sent today).
+    if disenchantTotal() > 0 then table.insert(backlog, 1, { kind = "disenchant", npc = 0, at = GetServerTime() }) end
 end
 
 local function join()
@@ -463,6 +534,7 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
         stats.players[who] = true
         changed()
         if ns.Trainers then ns.Trainers.Invalidate() end
+        if ns.Disenchant then ns.Disenchant.Invalidate() end
         ns.Throttle("net:refresh", 2, function() if ns.UI and ns.UI.Refresh then ns.UI.Refresh() end end)
     end
 end
@@ -476,7 +548,8 @@ function Net.Status()
         ("This session: %d messages sent, %d NPC reports heard from %d players"):format(stats.sent, stats.heard,
             count(stats.players)),
         ("Waiting to send: %d messages, %d NPCs to re-announce"):format(#queue, #backlog),
-        ("Heard so far: %d vendors, %d trainers"):format(count(heard.vendors or {}), count(heard.trainers or {})),
+        ("Heard so far: %d vendors, %d trainers, disenchants from %d players"):format(count(heard.vendors or {}),
+            count(heard.trainers or {}), count(heard.de or {})),
     }
 end
 

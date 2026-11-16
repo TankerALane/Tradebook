@@ -1149,6 +1149,67 @@ test("disenchant: list profit counts the materials' value as is", function()
     eq(profit, 75)
 end)
 
+test("disenchant: shared totals travel in D lines and come back the same", function()
+    local records = { [4] = { n = 10, mats = { [10940] = { t = 7, q = 11, lo = 1, hi = 2 }, [10938] = { t = 3, q = 4, lo = 1, hi = 2 } } } }
+    local text = ns.Share.Encode({}, "1.60.1", "1.2.0", nil, { disenchants = records })
+    assert(text:find("\nD~4~10~10938:3:4:1:2;10940:7:11:1:2", 1, true), text)
+    local vendors, trainers, confirmed, de = ns.Share.Decode(text)
+    assert(vendors and trainers and confirmed)
+    eq(de[4].n, 10)
+    eq(de[4].mats[10940].q, 11)
+    -- A copy that doesn't know D lines (older Tradebook) just skips them: no vendors, no error.
+    eq(next(vendors), nil)
+end)
+
+test("disenchant: shared totals are checked before they're kept", function()
+    local C = ns.Net.CleanDisenchant
+    assert(C(4, { n = 2, mats = { [10940] = { t = 2, q = 3, lo = 1, hi = 2 } } }))
+    eq(C(4, { n = 2, mats = { [10940] = { t = 3, q = 3, lo = 1, hi = 1 } } }), nil, "seen more often than disenchanted")
+    eq(C(4, { n = 2, mats = { [10940] = { t = 2, q = 9, lo = 1, hi = 2 } } }), nil, "total outside min/max")
+    eq(C(4, { n = 0, mats = { [10940] = { t = 0, q = 0, lo = 1, hi = 1 } } }), nil)
+    eq(C(-1, { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } }), nil)
+    eq(C(4, { n = 1, mats = {} }), nil, "nothing in it")
+    local heard = {}
+    ns.Net.Accept(heard, ns.Share.Encode({}, "b", "v", nil, { disenchants = {
+        [4] = { n = 1, mats = { [10940] = { t = 1, q = 2, lo = 2, hi = 2 } } } } }), "p1", 100)
+    eq(heard.de.p1.bands[4].n, 1)
+    ns.Net.Accept(heard, ns.Share.Encode({}, "b", "v", nil, { disenchants = {
+        [4] = { n = 3, mats = { [10940] = { t = 3, q = 4, lo = 1, hi = 2 } } } } }), "p1", 200)
+    eq(heard.de.p1.bands[4].n, 3, "a player's latest totals replace the older ones")
+end)
+
+test("disenchant: other players count for a band once 2+ players reported it", function()
+    local D = ns.Disenchant
+    local one = { mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } }, n = 1 }
+    local heard = { p1 = { at = 1, bands = { [4] = one, [5] = one } }, p2 = { at = 1, bands = { [5] = one } } }
+    local c = D.Combine({ [4] = { n = 2, mats = { [10940] = { t = 2, q = 3, lo = 1, hi = 2 } } } }, heard)
+    eq(c[4].n, 3, "you + p1")
+    eq(c[4].players, 2)
+    eq(c[5].n, 2, "p1 + p2")
+    local alone = D.Combine({}, { p1 = { at = 1, bands = { [6] = one } } })
+    eq(alone[6], nil, "one other player alone doesn't count")
+    local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, c, 4, 2, 12, ns.DisenchantForeverSeen)
+    eq(r.players, 2)
+    eq(r.outside, "Wowhead", "green armor 5-15 was seen in Forever by Wowhead")
+end)
+
+test("disenchant: reverse lookup, disputed row, best option", function()
+    local D = ns.Disenchant
+    local src = D.Sources(ns.DisenchantBands, ns.DisenchantClassic, 10938) -- Lesser Magic Essence
+    eq(#src, 2, "green armor and weapons 5-15")
+    eq(src[1][2], 4, "armor first")
+    eq(src[2][5], 0.80, "weapons give it 80%")
+    local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, {}, 4, 3, 58)
+    eq(r.disputed, true, "blue 56+ Nexus chance is disputed")
+    eq(D.Results(ns.DisenchantBands, ns.DisenchantClassic, {}, 4, 2, 58).disputed, false)
+    eq(D.Best(100, 50, 80), "disenchant")
+    local best, close = D.Best(100, 95, nil)
+    eq(best, "disenchant")
+    eq(close, true, "within 10%: roughly equal")
+    eq(D.Best(100, 300, nil), "vendor")
+    eq(D.Best(nil, 300, nil), nil)
+end)
+
 ---------------------------------------------------------------------------
 -- prices (Auctionator)
 ---------------------------------------------------------------------------

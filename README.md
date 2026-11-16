@@ -42,6 +42,7 @@ Install from CurseForge (search "Tradebook"), or download the zip from [GitHub R
 
 - Developed by **Decoupled Lane Studio**.
 - Recipe source data adapted from **LibProfessionDB** by Pmptasty (MIT License).
+- Classic disenchanting table from the **Warcraft Wiki** "Disenchanting tables" page (CC BY-SA 4.0), shown as classic until confirmed in WoW Forever.
 - Skill-up ranges from WoW Forever's game data (via wago.tools).
 
 ## License

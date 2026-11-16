@@ -1,7 +1,10 @@
 -- Data/Disenchant.lua
 -- PURE. What disenchanting gives, by item quality and item level: the CLASSIC table, from
--- the Warcraft Wiki "Disenchanting tables" page (pre-Battle for Azeroth tables, rows up to item
--- level 65), cross-read with classic guides (which disagree on some breakpoints and amounts).
+-- the Warcraft Wiki "Disenchanting tables" page (https://warcraft.wiki.gg/wiki/Disenchanting_tables,
+-- CC BY-SA 4.0; pre-Battle for Azeroth tables, rows up to item level 65). Cross-checked
+-- (2026-11-16) against the classic server databases cmangos classic-db and vmangos: the green
+-- and purple rows match both exactly; the blue 56+ row (Nexus Crystal chance) differs between
+-- every source, so it's marked disputed.
 --
 -- NOT confirmed for WoW Forever: what a disenchant gives is decided by the server and isn't in
 -- the game data. Forever's own bands (which items can be disenchanted at all) are in
@@ -20,6 +23,16 @@ local LMAGIC, GMAGIC, LASTRAL, GASTRAL = 10938, 10939, 10998, 11082
 local LMYSTIC, GMYSTIC, LNETHER, GNETHER, LETERNAL, GETERNAL = 11134, 11135, 11174, 11175, 16202, 16203
 local SGLIMMER, LGLIMMER, SGLOW, LGLOW, SRADIANT, LRADIANT = 10978, 11084, 11138, 11139, 11177, 11178
 local SBRILLIANT, LBRILLIANT, NEXUS = 14343, 14344, 20725
+
+-- Bands whose results have been seen in WoW Forever by an outside source, by Forever band ID
+-- (Data/DisenchantBands.lua). Wowhead's WoW Forever loot counts for green armor crafts (via
+-- timesaver.gg's Forever enchanting tool, checked 2026-11-16) fit the classic rows below for
+-- these bands. Nothing is copied from it: it only marks the classic row as seen in Forever.
+ns.DisenchantForeverSeen = {
+    [4] = "Wowhead", -- green armor 5-15
+    [5] = "Wowhead", -- green armor 16-20
+    [13] = "Wowhead", -- green armor 26-30
+}
 
 ns.DisenchantClassic = {
     -- Uncommon (green) armor (item class 4).
@@ -59,7 +72,9 @@ ns.DisenchantClassic = {
         { 41, 45, { { SRADIANT, 1, 1, 1 } } },
         { 46, 50, { { LRADIANT, 1, 1, 1 } } },
         { 51, 55, { { SBRILLIANT, 1, 1, 1 } } },
-        { 56, 99, { { LBRILLIANT, 0.995, 1, 1 }, { NEXUS, 0.005, 1, 1 } } },
+        -- Disputed: Wiki 99.5% / 0.5% Nexus, vmangos 99% / 1% (from item level 60), cmangos no
+        -- Nexus below 66.
+        { 56, 99, { { LBRILLIANT, 0.995, 1, 1 }, { NEXUS, 0.005, 1, 1 } }, "disputed" },
     },
     -- Epic (purple), armor and weapons alike.
     epic = {

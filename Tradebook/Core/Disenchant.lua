@@ -48,7 +48,7 @@ function Disenchant.Classic(classic, classID, quality, itemLevel)
         rows = classic[QUALITY_KEY[quality] or ""]
     end
     for _, row in ipairs(rows or {}) do
-        if itemLevel >= row[1] and itemLevel <= row[2] then return row[3] end
+        if itemLevel >= row[1] and itemLevel <= row[2] then return row[3], row[4] end
     end
     return nil
 end
@@ -81,22 +81,58 @@ function Disenchant.Fits(results, record)
 end
 
 -- PURE. Results for an item: { results, source = "classic" | "confirmed" | "seen", seen = n,
--- differs = bool, band } or nil when it can't be disenchanted. records: TradebookDB.disenchants.
-function Disenchant.Results(bands, classic, records, classID, quality, itemLevel)
+-- players = n, differs = bool, outside = source name (seen in Forever elsewhere), disputed =
+-- bool, band } or nil when it can't be disenchanted. records: combined records (Combine).
+-- outsideSeen: ns.DisenchantForeverSeen.
+function Disenchant.Results(bands, classic, records, classID, quality, itemLevel, outsideSeen)
     local band = Disenchant.Band(bands, classID, quality, itemLevel)
     if not band then return nil end
     local record = records and records[band[7]]
     local seen = record and record.n or 0
-    local results = Disenchant.Classic(classic, classID, quality, itemLevel)
+    local players = record and record.players or (seen > 0 and 1 or 0)
+    local results, note = Disenchant.Classic(classic, classID, quality, itemLevel)
     local fits = Disenchant.Fits(results, record)
-    if seen >= Disenchant.CONFIRM_AT then
-        if results and fits then
-            return { results = results, source = "confirmed", seen = seen, band = band }
-        end
-        return { results = Disenchant.Seen(record), source = "seen", seen = seen, band = band }
+    local outside = outsideSeen and outsideSeen[band[7]] or nil
+    local out = { seen = seen, players = players, band = band, outside = outside, disputed = note == "disputed" }
+    if seen >= Disenchant.CONFIRM_AT and not (results and fits) then
+        out.results, out.source, out.outside, out.disputed = Disenchant.Seen(record), "seen", nil, false
+        return out
     end
     if not results then return nil end
-    return { results = results, source = "classic", seen = seen, differs = not fits, band = band }
+    out.results = results
+    out.source = (seen >= Disenchant.CONFIRM_AT) and "confirmed" or "classic"
+    out.differs = not fits
+    return out
+end
+
+-- PURE. Which bands give a material: { { quality, class, min, max, chance } } from the classic
+-- rows of every Forever band (what the tooltips show), most likely first.
+function Disenchant.Sources(bands, classic, materialID)
+    local out = {}
+    for _, b in ipairs(bands or {}) do
+        local results = Disenchant.Classic(classic, b[1], b[2], b[3])
+        for _, r in ipairs(results or {}) do
+            if r[1] == materialID then out[#out + 1] = { b[2], b[1], b[3], b[4], r[2] } end
+        end
+    end
+    table.sort(out, function(a, b)
+        if a[1] ~= b[1] then return a[1] < b[1] end
+        if a[2] ~= b[2] then return a[2] > b[2] end -- armor (4) before weapons (2)
+        return a[3] < b[3]
+    end)
+    return out
+end
+
+-- PURE. "Disenchant", "Vendor" or "Auction" (the most money), and whether the best two are
+-- within 10% ("roughly equal"); nil without a disenchant value. Each value: copper or nil.
+function Disenchant.Best(de, vendor, auction)
+    if not de then return nil end
+    local options = { { "disenchant", de } }
+    if vendor and vendor > 0 then options[#options + 1] = { "vendor", vendor } end
+    if auction and auction > 0 then options[#options + 1] = { "auction", auction } end
+    table.sort(options, function(a, b) return a[2] > b[2] end)
+    local close = options[2] ~= nil and options[1][2] > 0 and (options[1][2] - options[2][2]) / options[1][2] < 0.10
+    return options[1][1], close, options[2] and options[2][1]
 end
 
 -- PURE. Expected copper from one disenchant: each result's chance x average count x price.
@@ -110,6 +146,43 @@ function Disenchant.Value(results, price)
         total = total + r[2] * (r[3] + r[4]) / 2 * p
     end
     return math.floor(total + 0.5)
+end
+
+-- PURE. Your records plus other players' (heard: { [who] = { at, bands } }), per band. Other
+-- players count for a band only once 2+ players (you included) have reported it, so one
+-- player's report never decides on its own. Returns { [bandID] = { n, mats, players } }.
+function Disenchant.Combine(own, heard)
+    local reporters = {}
+    local function addReporter(band) reporters[band] = (reporters[band] or 0) + 1 end
+    for band, rec in pairs(own or {}) do if (rec.n or 0) > 0 then addReporter(band) end end
+    for _, h in pairs(heard or {}) do
+        for band in pairs(h.bands or {}) do addReporter(band) end
+    end
+    local out = {}
+    local function add(band, rec)
+        local c = out[band]
+        if not c then
+            c = { n = 0, mats = {}, players = 0 }
+            out[band] = c
+        end
+        c.n, c.players = c.n + rec.n, c.players + 1
+        for id, m in pairs(rec.mats or {}) do
+            local cm = c.mats[id]
+            if not cm then
+                cm = { t = 0, q = 0, lo = m.lo, hi = m.hi }
+                c.mats[id] = cm
+            end
+            cm.t, cm.q = cm.t + m.t, cm.q + m.q
+            cm.lo, cm.hi = math.min(cm.lo, m.lo), math.max(cm.hi, m.hi)
+        end
+    end
+    for band, rec in pairs(own or {}) do if (rec.n or 0) > 0 then add(band, rec) end end
+    for _, h in pairs(heard or {}) do
+        for band, rec in pairs(h.bands or {}) do
+            if reporters[band] >= 2 then add(band, rec) end
+        end
+    end
+    return out
 end
 
 -- PURE. Add one disenchant to the records: band ID, { [itemID] = count }, and (optional) the
@@ -141,12 +214,25 @@ end
 -- in game
 ---------------------------------------------------------------------------
 
--- Class, quality and item level of an item (nil while the game hasn't loaded it).
+-- Class, quality and base item level of an item (nil while the game hasn't loaded it), and
+-- the "detailed" item level the game reports for it when that differs. Forever's disenchant
+-- bands (and the classic server tables) go by the base item level.
 local function itemFacts(item)
     local name, _, quality, itemLevel, _, _, _, _, _, _, _, classID = Compat.Call("C_Item.GetItemInfo", item)
     if not name then return nil end
     local detailed = type(item) == "string" and Compat.Call("C_Item.GetDetailedItemLevelInfo", item)
-    return classID, quality, detailed or itemLevel
+    return classID, quality, itemLevel, (detailed and detailed ~= itemLevel) and detailed or nil
+end
+
+-- Your disenchants plus other players' (Disenchant.Combine), cached until either changes.
+local combined
+function Disenchant.Invalidate() combined = nil end
+
+function Disenchant.Records()
+    if not combined then
+        combined = Disenchant.Combine(ns.db and ns.db.disenchants, ns.Net and ns.Net.HeardDisenchants() or {})
+    end
+    return combined
 end
 
 -- What an item disenchants into (see Disenchant.Results), or nil.
@@ -154,8 +240,15 @@ function Disenchant.ForItem(item)
     if not item then return nil end
     local classID, quality, itemLevel = itemFacts(item)
     if not classID then return nil end
-    return Disenchant.Results(ns.DisenchantBands, ns.DisenchantClassic, ns.db and ns.db.disenchants,
-        classID, quality, itemLevel)
+    return Disenchant.Results(ns.DisenchantBands, ns.DisenchantClassic, Disenchant.Records(),
+        classID, quality, itemLevel, ns.DisenchantForeverSeen)
+end
+
+-- Weapons and armor of green, blue or purple quality that have no band can't be disenchanted.
+function Disenchant.CantDisenchant(item)
+    local classID, quality, itemLevel = itemFacts(item)
+    if not classID or (classID ~= 2 and classID ~= 4) or not quality or quality < 2 or quality > 4 then return false end
+    return Disenchant.Band(ns.DisenchantBands, classID, quality, itemLevel) == nil
 end
 
 -- Auction value of one disenchant after the auction house cut (needs Auctionator), or nil.
@@ -167,33 +260,117 @@ function Disenchant.ValueOf(item)
     return value and math.floor(value * (1 - ns.Prices.AH_CUT) + 0.5) or nil
 end
 
--- Tooltip lines: { left, right } pairs and plain strings.
-function Disenchant.TooltipLines(item)
+local function icon(itemID)
+    local tex = Compat.Call("C_Item.GetItemIconByID", itemID)
+    return tex and ("|T" .. tex .. ":0|t ") or ""
+end
+
+local function itemIDOf(item)
+    return type(item) == "number" and item or tonumber(tostring(item):match("item:(%d+)"))
+end
+
+-- Disenchant or sell? A line naming the option that pays most (needs Auctionator).
+local BEST_TEXT = { disenchant = "DE_BEST_DISENCHANT", vendor = "DE_BEST_VENDOR", auction = "DE_BEST_AUCTION" }
+local function verdictLine(item, value)
+    local vendor = ns.Prices.SellPrice(itemIDOf(item))
+    local auction = ns.Prices.Get(itemIDOf(item)).auction
+    auction = auction and math.floor(auction * (1 - ns.Prices.AH_CUT) + 0.5) or nil
+    local best, close, second = Disenchant.Best(value, vendor, auction)
+    if not best or not second then return nil end
+    if close then return { "    " .. L.DE_BEST, ns.W.ColorText(ns.W.GOLD, L.DE_ROUGHLY_EQUAL) } end
+    return { "    " .. L.DE_BEST, ns.W.ColorText(ns.W.GREEN, L[BEST_TEXT[best]]) }
+end
+
+-- Tooltip lines: { left, right } pairs and plain strings. Compact (one line) unless `full`.
+function Disenchant.TooltipLines(item, full)
     local de = Disenchant.ForItem(item)
-    if not de then return nil end
-    local lines = { ns.W.ColorText(ns.W.GOLD, L.DE_INTO) }
+    if not de then
+        if Disenchant.CantDisenchant(item) then return { ns.W.ColorText(ns.W.GREY, L.DE_CANT) } end
+        return nil
+    end
+    local value = Disenchant.ValueOf(item)
+    local W = ns.W
+    if not full then
+        local names = {}
+        for i, r in ipairs(de.results) do
+            if i <= 2 then names[#names + 1] = Compat.ItemInfo(r[1]) or ("item:" .. r[1]) end
+        end
+        local left = W.ColorText(W.GOLD, L.DE_SHORT) .. " " .. table.concat(names, ", ") .. (#de.results > 2 and ", ..." or "")
+        local lines = { { left, value and ns.Prices.Money(value) or "" } }
+        local verdict = value and verdictLine(item, value)
+        if verdict then lines[#lines + 1] = verdict end
+        lines[#lines + 1] = W.ColorText(W.GREY, "    " .. L.DE_SHIFT)
+        return lines
+    end
+    local lines = { W.ColorText(W.GOLD, L.DE_INTO) }
+    local priced = ns.Prices.Available()
     for _, r in ipairs(de.results) do
         local name = Compat.ItemInfo(r[1]) or ("item:" .. r[1])
         local count = r[3] == r[4] and tostring(r[3]) or (r[3] .. "-" .. r[4])
-        lines[#lines + 1] = { "    " .. name .. "  x" .. count, ("%d%%"):format(math.floor(r[2] * 100 + 0.5)) }
+        local right = ("%s%%"):format(r[2] < 0.01 and ("%.1f"):format(r[2] * 100) or math.floor(r[2] * 100 + 0.5))
+        if priced then
+            local p = ns.Prices.Get(r[1]).auction
+            right = right .. "  " .. (p and ns.Prices.Money(p) or "?")
+        end
+        lines[#lines + 1] = { "    " .. icon(r[1]) .. name .. "  x" .. count, right }
     end
-    local value = Disenchant.ValueOf(item)
     if value then lines[#lines + 1] = { "    " .. L.DE_VALUE, ns.Prices.Money(value) } end
-    lines[#lines + 1] = ns.W.ColorText(ns.W.GREY, "    " .. Disenchant.SourceText(de))
+    local verdict = value and verdictLine(item, value)
+    if verdict then lines[#lines + 1] = verdict end
+    lines[#lines + 1] = W.ColorText(W.GREY, "    " .. Disenchant.SourceText(de))
+    if de.disputed then lines[#lines + 1] = W.ColorText(W.GREY, "    " .. L.DE_DISPUTED) end
     return lines
 end
 
 -- Where a result comes from, for tooltips: confirmed / seen in Forever / classic.
 function Disenchant.SourceText(de)
-    if de.source == "confirmed" then return L.DE_CONFIRMED:format(de.seen) end
-    if de.source == "seen" then return L.DE_SEEN:format(de.seen) end
-    if de.differs then return L.DE_CLASSIC_DIFFERS:format(de.seen) end
-    return de.seen > 0 and L.DE_CLASSIC_SEEN:format(de.seen) or L.DE_CLASSIC
+    local who = (de.players or 0) > 1 and L.DE_PLAYERS:format(de.seen, de.players) or L.DE_COUNT:format(de.seen)
+    if de.source == "confirmed" then return L.DE_CONFIRMED:format(who) end
+    if de.source == "seen" then return L.DE_SEEN:format(who) end
+    if de.differs then return L.DE_CLASSIC_DIFFERS:format(who) end
+    if de.outside then
+        return de.seen > 0 and L.DE_OUTSIDE_SEEN:format(de.outside, who) or L.DE_OUTSIDE:format(de.outside)
+    end
+    return de.seen > 0 and L.DE_CLASSIC_SEEN:format(who) or L.DE_CLASSIC
+end
+
+-- Material tooltips: which items disenchant into it ("Green armor 16-20 (20%), ...").
+local QUALITY_NAME = { [2] = "DE_GREEN", [3] = "DE_BLUE", [4] = "DE_PURPLE" }
+local sourceCache = {} -- [itemID] = lines or false (every item tooltip asks)
+function Disenchant.SourceLines(itemID)
+    if sourceCache[itemID] == nil then sourceCache[itemID] = Disenchant.BuildSourceLines(itemID) or false end
+    return sourceCache[itemID] or nil
+end
+
+function Disenchant.BuildSourceLines(itemID)
+    local list = Disenchant.Sources(ns.DisenchantBands, ns.DisenchantClassic, itemID)
+    if #list == 0 then return nil end
+    local groups, order = {}, {}
+    for _, s in ipairs(list) do
+        local key = s[1] * 10 + s[2]
+        if not groups[key] then
+            groups[key] = { label = L[QUALITY_NAME[s[1]]] .. " " .. (s[2] == 2 and L.DE_WEAPON or L.DE_ARMOR), parts = {} }
+            order[#order + 1] = key
+        end
+        local pct = s[5] < 0.01 and ("%.1f"):format(s[5] * 100) or tostring(math.floor(s[5] * 100 + 0.5))
+        groups[key].parts[#groups[key].parts + 1] = ("%d-%d (%s%%)"):format(s[3], s[4], pct)
+    end
+    local lines = { ns.W.ColorText(ns.W.GOLD, L.DE_FROM) }
+    for _, key in ipairs(order) do
+        local g = groups[key]
+        lines[#lines + 1] = "    " .. g.label .. ": " .. table.concat(g.parts, ", ")
+    end
+    return lines
 end
 
 local function addTooltip(tooltip, item)
     if not (ns.db and ns.db.settings.deTooltip ~= false) or not item then return end
-    local lines = Disenchant.TooltipLines(item)
+    local full = ns.db.settings.deCompact == false or IsShiftKeyDown()
+    local lines = Disenchant.TooltipLines(item, full)
+    if not lines then
+        local id = itemIDOf(item)
+        lines = id and Disenchant.SourceLines(id)
+    end
     if not lines then return end
     for _, line in ipairs(lines) do
         if type(line) == "table" then
@@ -262,11 +439,15 @@ local function onLootOpened()
         ns.Debug("disenchant: couldn't tell which item was disenchanted")
         return
     end
-    local classID, quality, itemLevel = itemFacts(item)
+    local classID, quality, itemLevel, detailed = itemFacts(item)
     local band = Disenchant.Band(ns.DisenchantBands, classID, quality, itemLevel)
     if not band then
         ns.Debug("disenchant: no Forever band for", item, classID, quality, itemLevel)
         return
+    end
+    if detailed then
+        ns.db.disenchantLevels = ns.db.disenchantLevels or {}
+        ns.db.disenchantLevels[itemIDOf(item) or 0] = { base = itemLevel, detailed = detailed }
     end
     local loot = {}
     for slot = 1, Compat.Call("GetNumLootItems") or 0 do
@@ -277,6 +458,8 @@ local function onLootOpened()
     end
     if not next(loot) then return end
     Disenchant.Record(ns.db.disenchants, band[7], loot, tonumber(tostring(item):match("item:(%d+)")) or tonumber(item), itemLevel)
+    Disenchant.Invalidate()
+    if ns.Net and ns.Net.Disenchanted then ns.Net.Disenchanted() end
     ns.Debug("disenchant recorded: band", band[7], item, "ilvl", itemLevel)
 end
 

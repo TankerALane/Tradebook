@@ -3,10 +3,13 @@
 ## Unreleased
 
 ### Disenchanting
-- **Item tooltips** say what a green, blue or purple weapon or armor disenchants into: each material with its count and chance, and its **value at auction** with Auctionator. Turn it off in the settings.
+- **Item tooltips** say what a green, blue or purple weapon or armor disenchants into. By default it's one line (materials and value); **hold Shift** for the details: each material with its icon, count, chance and auction price, the total **value at auction**, and where the numbers come from. Turn it off, or always show the details, in the settings.
+- **Disenchant or sell?** With Auctionator, the tooltip says what pays most: disenchanting, selling to a vendor or selling at auction ("Roughly equal" when they're close).
+- **"Disenchanted from"** on enchanting materials' tooltips (Strange Dust, essences, shards): which items give it, by quality and item level.
+- **"Can't be disenchanted"** on weapons and armor that WoW Forever won't let you disenchant.
 - **Disenchant profit**: "Disenchanting it" in the recipe list's profit menu, and a **Disenchant** line in a recipe's Profit section: craft it, disenchant it, sell the materials at auction.
-- **Your disenchants are recorded** (what each band of items really gave, nothing about your characters). `/tb de` lists them.
-- Which items disenchant comes from WoW Forever's own game data. What they give isn't in the game data, so the classic table is shown, marked "not yet confirmed in WoW Forever". After 10 of your disenchants of a band: if they fit the classic table it says "Confirmed in WoW Forever"; if they don't, what Forever actually gave is shown instead. A band that already gave something else is flagged sooner.
+- **Shared in game**: your disenchants are recorded (`/tb de` lists them) and shared in the background with other Tradebook users, like vendors and trainers. Only the results per item level band are shared, nothing about your characters. Another player's results count once two players have reported that band.
+- **Where the numbers come from**: which items disenchant comes from WoW Forever's own game data. What they give isn't in the game data, so the classic table is shown (from the Warcraft Wiki, checked against the classic server databases), marked "not yet confirmed in WoW Forever". Green armor of item level 5-15, 16-20 and 26-30 matches Wowhead's WoW Forever data. After 10 disenchants of a band: "Confirmed in WoW Forever" if they fit the classic table, otherwise what Forever actually gave is shown. Blue items of item level 56+ say the sources disagree on the Nexus Crystal chance.
 
 ## v1.1.0
 
