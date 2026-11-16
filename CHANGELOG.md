@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.0.0
+
 **Tradebook 1.0**, the first full release for WoW Forever, after nine betas. Thanks to everyone who tested and shared vendor data.
 
 What Tradebook does:
