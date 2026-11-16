@@ -9,6 +9,12 @@
 -- Click a row for a waypoint, and to target and mark the vendor when it's nearby. It's its
 -- own small window (moved, resized and closed on its own; position saved), so the Tradebook
 -- window can stay closed. /tbdev opens or closes it. Distances refresh every 20 s while open.
+--
+-- Heard notifications: when Tradebook keeps data another player shared in game (its NET_HEARD
+-- message, Core/Net.lua), a few seconds of it from one player become one notification: a chat
+-- line, a message in the middle of the screen and a sound. Vendors and trainers not in your
+-- scans or the community data are marked NEW. /tbdev notify turns it off and on. Players are
+-- only told apart by number this session (Tradebook keeps hashes, never names).
 
 TradebookDev = {}
 local Dev = TradebookDev
@@ -695,8 +701,88 @@ function Dev.Toggle(show)
     win:SetShown(show)
 end
 
+-- Heard notifications ----------------------------------------------------
+
+local heardPending = {} -- [who] = { vendors, trainers, confirms, disenchants }
+local playerNumbers, playerCount = {}, 0
+
+-- PURE. One notification line from what a player shared: { vendors = { [npc] = name },
+-- trainers = { [npc] = name }, confirms, disenchants }; isNew(kind, npc) marks new NPCs.
+function Dev.HeardText(label, h, isNew)
+    local parts = {}
+    local function npcs(list, kind, one, many)
+        local names, n = {}, 0
+        for npc, name in pairs(list) do
+            n = n + 1
+            names[#names + 1] = isNew(kind, npc) and ("|cff40ff40NEW|r " .. name) or name
+        end
+        if n == 0 then return end
+        table.sort(names)
+        if #names > 6 then names = { table.concat(names, ", ", 1, 6) .. ", +" .. (#names - 6) } end
+        parts[#parts + 1] = ("%d %s (%s)"):format(n, n == 1 and one or many, table.concat(names, ", "))
+    end
+    npcs(h.vendors, "vendor", "vendor", "vendors")
+    npcs(h.trainers, "trainer", "trainer", "trainers")
+    if h.confirms > 0 then parts[#parts + 1] = ("%d confirmed again"):format(h.confirms) end
+    if h.disenchants > 0 then parts[#parts + 1] = ("disenchants for %d bands"):format(h.disenchants) end
+    if #parts == 0 then return nil end
+    return label .. ": " .. table.concat(parts, "; ")
+end
+
+-- PURE. What kinds of data came in, for the on-screen message: "2 vendors, disenchants".
+function Dev.HeardKinds(h)
+    local kinds = {}
+    local function n(t) local c = 0 for _ in pairs(t) do c = c + 1 end return c end
+    local v, t = n(h.vendors), n(h.trainers)
+    if v > 0 then kinds[#kinds + 1] = v .. (v == 1 and " vendor" or " vendors") end
+    if t > 0 then kinds[#kinds + 1] = t .. (t == 1 and " trainer" or " trainers") end
+    if h.confirms > 0 then kinds[#kinds + 1] = h.confirms .. " confirmations" end
+    if h.disenchants > 0 then kinds[#kinds + 1] = "disenchants" end
+    return table.concat(kinds, ", ")
+end
+
+local function isNew(kind, npc)
+    if kind == "vendor" then
+        return not ((ns.db.vendors and ns.db.vendors[npc]) or (ns.CommunityVendors and ns.CommunityVendors[npc]))
+    end
+    return not ((ns.db.trainers and ns.db.trainers[npc]) or (ns.CommunityTrainers and ns.CommunityTrainers[npc]))
+end
+
+local function flushHeard(who)
+    local h = heardPending[who]
+    heardPending[who] = nil
+    if not h or db().notify == false then return end
+    if not playerNumbers[who] then
+        playerCount = playerCount + 1
+        playerNumbers[who] = playerCount
+    end
+    local text = Dev.HeardText("Another player (#" .. playerNumbers[who] .. ")", h, isNew)
+    if not text then return end
+    print("|cff33ff99Tradebook Dev|r heard " .. text)
+    local errors = _G.UIErrorsFrame
+    if errors and errors.AddMessage then
+        errors:AddMessage("Tradebook: " .. Dev.HeardKinds(h) .. " from another player", 0.2, 1, 0.6)
+    end
+    if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
+end
+
+local function onHeard(who, info)
+    local h = heardPending[who]
+    if not h then
+        h = { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }
+        heardPending[who] = h
+    end
+    for npc, name in pairs(info.vendors or {}) do h.vendors[npc] = name end
+    for npc, name in pairs(info.trainers or {}) do h.trainers[npc] = name end
+    h.confirms = h.confirms + (info.confirms or 0)
+    h.disenchants = math.max(h.disenchants, info.disenchants or 0)
+    -- A player's backlog arrives one NPC a second or so: one notification for the lot.
+    ns.Throttle("dev:heard:" .. who, 5, function() flushHeard(who) end)
+end
+
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
+    ns.Listen("NET_HEARD", onHeard)
     startWatcher()
     -- The calendar fills in after a server query; read it when it arrives.
     local cal = CreateFrame("Frame")
@@ -707,4 +793,12 @@ function Dev.Attach(tradebookNS)
 end
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"
-SlashCmdList.TRADEBOOKDEV = function() Dev.Toggle() end
+SlashCmdList.TRADEBOOKDEV = function(msg)
+    if (msg or ""):lower():match("^%s*notify") then
+        local d = db()
+        d.notify = d.notify == false
+        print("|cff33ff99Tradebook Dev|r notifications for other players' data: " .. (d.notify and "on" or "off"))
+        return
+    end
+    Dev.Toggle()
+end

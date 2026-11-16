@@ -241,10 +241,13 @@ function Net.Best(rec, matches)
     return best, bestN or 0
 end
 
--- PURE. Take one whole share text from player `who` into `heard`. Returns how many NPCs were kept.
+-- PURE. Take one whole share text from player `who` into `heard`. Returns how many NPCs were
+-- kept, and what: { vendors = { [npcID] = name }, trainers = { [npcID] = name }, confirms = n,
+-- disenchants = bands } (for the maintainer's notifications, dev/TradebookDev).
 function Net.Accept(heard, text, who, now)
     local vendors, trainers, confirmed, disenchants = ns.Share.Decode(text)
-    if not vendors then return 0 end
+    local info = { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }
+    if not vendors then return 0, info end
     local kept = 0
     local bands, nb = {}, 0
     for band, rec in pairs(disenchants or {}) do
@@ -254,14 +257,21 @@ function Net.Accept(heard, text, who, now)
     if nb > 0 and nb <= 200 then
         Net.RecordDisenchants(heard, bands, who, now)
         kept = kept + nb
+        info.disenchants = nb
     end
     for npc, e in pairs(vendors) do
         local clean = okID(npc) and Net.CleanVendor(e, now)
-        if clean and Net.Record(heard, "vendors", npc, clean, who, now) then kept = kept + 1 end
+        if clean and Net.Record(heard, "vendors", npc, clean, who, now) then
+            kept = kept + 1
+            info.vendors[npc] = clean.name or "?"
+        end
     end
     for npc, t in pairs(trainers or {}) do
         local clean = okID(npc) and Net.CleanTrainer(t, now)
-        if clean and Net.Record(heard, "trainers", npc, clean, who, now) then kept = kept + 1 end
+        if clean and Net.Record(heard, "trainers", npc, clean, who, now) then
+            kept = kept + 1
+            info.trainers[npc] = clean.name or "?"
+        end
     end
     heard.confirms = heard.confirms or { vendor = {}, trainer = {} }
     for _, c in ipairs(confirmed or {}) do
@@ -271,9 +281,10 @@ function Net.Accept(heard, text, who, now)
             local seen = okTime(c.seenAt, now)
             if not list[c.npc][who] or seen > list[c.npc][who] then list[c.npc][who] = seen end
             kept = kept + 1
+            info.confirms = info.confirms + 1
         end
     end
-    return kept
+    return kept, info
 end
 
 local function trainerMatches(a, b) return ns.Share.TrainerMatches(a, b) end
@@ -528,8 +539,9 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     local full = Net.Feed(asm, who, text, GetTime())
     if not full then return end
     ns.db.heard = ns.db.heard or {}
-    local kept = Net.Accept(ns.db.heard, full, who, GetServerTime())
+    local kept, info = Net.Accept(ns.db.heard, full, who, GetServerTime())
     if kept > 0 then
+        ns.Fire("NET_HEARD", who, info)
         stats.heard = stats.heard + kept
         stats.players[who] = true
         changed()

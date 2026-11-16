@@ -1222,6 +1222,28 @@ test("disenchant: shipped community totals don't add to your own (the bigger one
     assert(type(ns.CommunityDisenchants) == "table")
 end)
 
+test("dev: heard notifications say what came in, marking new NPCs", function()
+    SlashCmdList = SlashCmdList or {}
+    assert(loadfile("dev/TradebookDev/Dev.lua"))()
+    local text = TradebookDev.HeardText("Another player (#1)",
+        { vendors = { [12027] = "Tukk", [3005] = "Mahu" }, trainers = { [11084] = "Tarn" }, confirms = 2, disenchants = 3 },
+        function(_, npc) return npc == 12027 or npc == 11084 end)
+    assert(text:find("2 vendors (Mahu, |cff40ff40NEW|r Tukk)", 1, true), text)
+    assert(text:find("1 trainer (|cff40ff40NEW|r Tarn)", 1, true), text)
+    assert(text:find("2 confirmed again", 1, true), text)
+    assert(text:find("disenchants for 3 bands", 1, true), text)
+    eq(TradebookDev.HeardText("x", { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }, function() end), nil)
+    -- What Tradebook reports it kept from a share text.
+    local heard = {}
+    local share = ns.Share.Encode({ [3005] = { name = "Mahu", seenAt = 100, items = { [2320] = { p = 10, s = -1 } },
+        loc = { m = 1456, x = 43.7, y = 44.4 } } }, "b", "v", nil, { disenchants = {
+        [4] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } } })
+    local kept, info = ns.Net.Accept(heard, share, "p1", 200)
+    eq(kept, 2)
+    eq(info.vendors[3005], "Mahu")
+    eq(info.disenchants, 1)
+end)
+
 ---------------------------------------------------------------------------
 -- prices (Auctionator)
 ---------------------------------------------------------------------------
