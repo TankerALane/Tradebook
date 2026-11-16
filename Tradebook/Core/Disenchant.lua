@@ -228,9 +228,23 @@ end
 local combined
 function Disenchant.Invalidate() combined = nil end
 
+-- PURE. Per band, whichever has more disenchants: what you recorded and heard (live) or the
+-- shipped community totals (Data/CommunityDisenchants.lua, made from the same kind of data, so
+-- they're never added together: your own results would count twice).
+function Disenchant.WithCommunity(live, community)
+    local out = {}
+    for band, rec in pairs(live or {}) do out[band] = rec end
+    for band, rec in pairs(community or {}) do
+        if not out[band] or (rec.n or 0) > (out[band].n or 0) then out[band] = rec end
+    end
+    return out
+end
+
 function Disenchant.Records()
     if not combined then
-        combined = Disenchant.Combine(ns.db and ns.db.disenchants, ns.Net and ns.Net.HeardDisenchants() or {})
+        combined = Disenchant.WithCommunity(
+            Disenchant.Combine(ns.db and ns.db.disenchants, ns.Net and ns.Net.HeardDisenchants() or {}),
+            ns.CommunityDisenchants)
     end
     return combined
 end

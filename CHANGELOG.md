@@ -9,6 +9,7 @@
 - **"Can't be disenchanted"** on weapons and armor that WoW Forever won't let you disenchant.
 - **Disenchant profit**: "Disenchanting it" in the recipe list's profit menu, and a **Disenchant** line in a recipe's Profit section: craft it, disenchant it, sell the materials at auction.
 - **Shared in game**: your disenchants are recorded (`/tb de` lists them) and shared in the background with other Tradebook users, like vendors and trainers. Only the results per item level band are shared, nothing about your characters. Another player's results count once two players have reported that band.
+- **Disenchant database**: Tradebook now ships the disenchant results recorded so far (21 disenchants in 8 bands), so everyone starts with them. First finding: in WoW Forever, green weapons of item level 21-30 have given Greater Magic Essence every time (3 of 3), where the classic table says Astral Essence; their tooltips say so.
 - **Where the numbers come from**: which items disenchant comes from WoW Forever's own game data. What they give isn't in the game data, so the classic table is shown (from the Warcraft Wiki, checked against the classic server databases), marked "not yet confirmed in WoW Forever". Green armor of item level 5-15, 16-20 and 26-30 matches Wowhead's WoW Forever data. After 10 disenchants of a band: "Confirmed in WoW Forever" if they fit the classic table, otherwise what Forever actually gave is shown. Blue items of item level 56+ say the sources disagree on the Nexus Crystal chance.
 
 ## v1.1.0

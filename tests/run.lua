@@ -28,6 +28,7 @@ local PURE_FILES = {
     "Tradebook/Core/Locations.lua",
     "Tradebook/Data/DisenchantBands.lua",
     "Tradebook/Data/Disenchant.lua",
+    "Tradebook/Data/CommunityDisenchants.lua",
     "Tradebook/Core/Prices.lua",
     "Tradebook/Core/Disenchant.lua",
     "Tradebook/Core/Trainers.lua",
@@ -1208,6 +1209,17 @@ test("disenchant: reverse lookup, disputed row, best option", function()
     eq(close, true, "within 10%: roughly equal")
     eq(D.Best(100, 300, nil), "vendor")
     eq(D.Best(nil, 300, nil), nil)
+end)
+
+test("disenchant: shipped community totals don't add to your own (the bigger one is used)", function()
+    local D = ns.Disenchant
+    local live = { [4] = { n = 3, players = 1, mats = {} }, [7] = { n = 20, players = 2, mats = {} } }
+    local community = { [4] = { n = 10, players = 1, mats = {} }, [7] = { n = 5, players = 1, mats = {} }, [8] = { n = 2, mats = {} } }
+    local r = D.WithCommunity(live, community)
+    eq(r[4].n, 10)
+    eq(r[7].n, 20)
+    eq(r[8].n, 2)
+    assert(type(ns.CommunityDisenchants) == "table")
 end)
 
 ---------------------------------------------------------------------------

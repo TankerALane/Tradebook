@@ -454,7 +454,8 @@ L.OPT_GATHERING = "Show gathering profession tabs (Herbalism, Mining, Skinning)"
 L.OPT_SCALE = "Window scale"
 L.OPT_STALE = "Warn when a character hasn't been seen for (days)"
 L.OPT_DELETE = "Delete saved characters"
-L.OPT_CREDITS = "Developed by Decoupled Lane Studio. Recipe source data adapted from LibProfessionDB (MIT). Classic disenchanting table from the Warcraft Wiki (CC BY-SA 4.0)."
+L.OPT_CREDITS = "Developed by Decoupled Lane Studio. Recipe source data adapted from LibProfessionDB (MIT). "
+    .. "Classic disenchanting table from the Warcraft Wiki (CC BY-SA 4.0)."
 
 -- Minimap / broker
 L.MINIMAP_LEFT = "Left-click: open Tradebook"

@@ -32,6 +32,7 @@ Data\Zones.lua
 Data\VendorPrices.lua
 Data\DisenchantBands.lua
 Data\Disenchant.lua
+Data\CommunityDisenchants.lua
 Data\NotInForever.lua
 Data\Sources.lua
 Data\RankUps.lua
