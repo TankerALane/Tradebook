@@ -9,7 +9,8 @@
 -- Recorder: a Disenchant cast (spell 13262) that succeeds, then the loot window it opens. The
 -- item comes from the bag slot clicked while the spell was targeting (or the loot's source
 -- GUID). Stored per band in TradebookDB.disenchants (no character data):
---   [bandID] = { n = casts, mats = { [itemID] = { t = times seen, q = total count, lo, hi } } }
+--   [bandID] = { n = casts, mats = { [itemID] = { t = times seen, q = total count, lo, hi } },
+--                items = { [itemID] = item level read } }  (what was disenchanted, to check bands)
 -- PURE parts take their inputs as arguments (tests/run.lua).
 
 local _, ns = ...
@@ -90,19 +91,24 @@ function Disenchant.Value(results, price)
     return math.floor(total + 0.5)
 end
 
--- PURE. Add one disenchant to the records: band ID and { [itemID] = count }.
-function Disenchant.Record(records, bandID, loot)
+-- PURE. Add one disenchant to the records: band ID, { [itemID] = count }, and (optional) the
+-- item disenchanted with the item level it was read at.
+function Disenchant.Record(records, bandID, loot, itemID, itemLevel)
     local rec = records[bandID]
     if not rec then
         rec = { n = 0, mats = {} }
         records[bandID] = rec
     end
     rec.n = rec.n + 1
-    for itemID, count in pairs(loot) do
-        local m = rec.mats[itemID]
+    if itemID then
+        rec.items = rec.items or {}
+        rec.items[itemID] = itemLevel or true
+    end
+    for matID, count in pairs(loot) do
+        local m = rec.mats[matID]
         if not m then
             m = { t = 0, q = 0, lo = count, hi = count }
-            rec.mats[itemID] = m
+            rec.mats[matID] = m
         end
         m.t, m.q = m.t + 1, m.q + count
         m.lo, m.hi = math.min(m.lo, count), math.max(m.hi, count)
@@ -245,7 +251,7 @@ local function onLootOpened()
         if id then loot[id] = (loot[id] or 0) + (tonumber(count) or 1) end
     end
     if not next(loot) then return end
-    Disenchant.Record(ns.db.disenchants, band[7], loot)
+    Disenchant.Record(ns.db.disenchants, band[7], loot, tonumber(tostring(item):match("item:(%d+)")) or tonumber(item), itemLevel)
     ns.Debug("disenchant recorded: band", band[7], item, "ilvl", itemLevel)
 end
 
