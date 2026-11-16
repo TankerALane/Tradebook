@@ -163,7 +163,7 @@ function PlannerUI.Refresh()
         local right = step.unpriced and W.ColorText(W.GREY, L.PLAN_PRICE_UNKNOWN) or ns.Prices.Money(step.cost)
         pane:Add({ indent = 1, itemID = r.o, spellID = not r.o and step.recipeID or nil, icon = r.i,
             text = text, right = right,
-            onClick = function() ns.UI.OpenRecipe(step.recipeID, popup.charKey, true) end,
+            onClick = function() ns.UI.OpenRecipe(step.recipeID, popup.charKey, true, step.crafts) end,
             tooltip = function() return stepTooltip(step, r) end })
         entries[#entries + 1] = { recipeID = step.recipeID, times = step.crafts }
     end

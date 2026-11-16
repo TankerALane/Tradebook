@@ -278,6 +278,12 @@ function Pane:Quantity()
     return math.max(1, tonumber(self.qty:GetValue()) or 1)
 end
 
+-- Set the quantity box (1-999), e.g. to a leveling plan step's crafts.
+function Pane:SetQuantity(n)
+    if not (self.qty and n) then return end
+    self.qty:SetValue(math.max(1, math.min(999, math.floor(n))))
+end
+
 ---------------------------------------------------------------------------
 -- content
 ---------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 
 ### Leveling plan
 - Hover a step to see the materials for just that step: need, have and buy, like the totals below. What you have is used by the earlier steps first.
+- Clicking a step opens the recipe with the **quantity set** to that step's number of crafts.
 
 ## v1.2.0
 

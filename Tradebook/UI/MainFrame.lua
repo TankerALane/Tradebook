@@ -780,12 +780,16 @@ function UI.GlobalSearch(text)
 end
 
 -- Jump to a recipe (from search, characters, camp). fromClick: also open the profession.
-function UI.OpenRecipe(recipeID, charKey, fromClick)
+-- quantity: also fill the quantity box (a leveling plan step's crafts).
+function UI.OpenRecipe(recipeID, charKey, fromClick, quantity)
     local r = ns.db.recipes[recipeID]
     if not r then return end
     UI.SelectTab(r.s, fromClick)
     local view = UI.views.profession
-    if current.view == "profession" and view.SelectRecipe then view:SelectRecipe(recipeID, charKey) end
+    if current.view == "profession" and view.SelectRecipe then
+        view:SelectRecipe(recipeID, charKey)
+        if quantity and view.details then view.details:SetQuantity(quantity) end
+    end
 end
 
 function UI.ShowView(name, arg)
