@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v0.5.2-beta
+
+### Profit in recipe details
+- A new **Profit** section under Cost shows the profit of both ways to sell: **Auction** (after the cut) and **Vendor** ("won't sell" for items vendors won't buy).
+
+### Fixes
+- Characters tab in a narrow window: the Hide and Delete buttons no longer cover the professions. When the window is narrow they move under the character's level, "Last seen" gets its own line (red when the data is old), and if there's still no room, the "not learned" counts move to the row's tooltip.
+
 ## v0.5.1-beta
 
 ### Filters
