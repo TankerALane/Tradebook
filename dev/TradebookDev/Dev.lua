@@ -922,6 +922,41 @@ local function logHeard(who, h, ctx)
     return vn, tn, dn
 end
 
+-- Chat lines, the message in the middle of the screen, a sound, and the since-import totals.
+local function showHeard(label, h, ctx, vn, tn, dn, test)
+    local lines = Dev.HeardLines(label, h, ctx)
+    if not lines then return end
+    print("|cff33ff99Tradebook Dev|r " .. (test and "|cffff8000TEST|r " or "") .. "heard " .. lines[1])
+    for i = 2, #lines do print(lines[i]) end
+    local errors = _G.UIErrorsFrame
+    if errors and errors.AddMessage then
+        errors:AddMessage((test and "TEST " or "") .. "Tradebook: " .. Dev.HeardKinds(h, vn, tn, dn) .. " from another player",
+            0.2, 1, 0.6)
+    end
+    if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
+    local since = countText()
+    if since then print("|cff33ff99Tradebook Dev|r " .. since) end
+end
+
+-- /tbdev test: a made-up notification from what Tradebook already has (one shipped vendor and a
+-- made-up new one, a trainer, a confirmation, two disenchant bands). Not logged or counted.
+function Dev.ShowTest()
+    local h = { vendors = {}, trainers = {}, confirmed = {}, deBands = {} }
+    local npc, e = next(ns.CommunityVendors or {})
+    if npc then
+        local n = 0
+        for _ in pairs(e.items or {}) do n = n + 1 end
+        h.vendors[npc] = { name = e.name or "?", items = n, map = e.loc and e.loc.m }
+        h.confirmed["vendor:" .. npc] = { kind = "vendor", npc = npc }
+    end
+    h.vendors[999999] = { name = "Made-up Vendor", items = 3 }
+    local tnpc, t = next(ns.CommunityTrainers or {})
+    if tnpc then h.trainers[tnpc] = { name = t.name or "?", skill = t.skill, services = #(t.services or {}) } end
+    h.deBands[4] = { n = 3, mats = { [10940] = { t = 2, q = 3, lo = 1, hi = 2 }, [10938] = { t = 1, q = 1, lo = 1, hi = 1 } } }
+    h.deBands[999] = { n = 1, mats = { [10939] = { t = 1, q = 2, lo = 2, hi = 2 } } }
+    showHeard("Another player (#0)", h, context(), 1, 0, 1, true)
+end
+
 local function flushHeard(who)
     local h = heardPending[who]
     heardPending[who] = nil
@@ -933,17 +968,7 @@ local function flushHeard(who)
         playerCount = playerCount + 1
         playerNumbers[who] = playerCount
     end
-    local lines = Dev.HeardLines("Another player (#" .. playerNumbers[who] .. ")", h, ctx)
-    if not lines then return end
-    print("|cff33ff99Tradebook Dev|r heard " .. lines[1])
-    for i = 2, #lines do print(lines[i]) end
-    local errors = _G.UIErrorsFrame
-    if errors and errors.AddMessage then
-        errors:AddMessage("Tradebook: " .. Dev.HeardKinds(h, vn, tn, dn) .. " from another player", 0.2, 1, 0.6)
-    end
-    if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
-    local since = countText()
-    if since then print("|cff33ff99Tradebook Dev|r " .. since) end
+    showHeard("Another player (#" .. playerNumbers[who] .. ")", h, ctx, vn, tn, dn)
 end
 
 local function onHeard(who, info)
@@ -985,6 +1010,10 @@ SLASH_TRADEBOOKDEV1 = "/tbdev"
 SlashCmdList.TRADEBOOKDEV = function(msg)
     if (msg or ""):lower():match("^%s*count") then
         print("|cff33ff99Tradebook Dev|r " .. (countText() or "Nothing from other players since the last import."))
+        return
+    end
+    if (msg or ""):lower():match("^%s*test") then
+        Dev.ShowTest()
         return
     end
     if (msg or ""):lower():match("^%s*notify") then
