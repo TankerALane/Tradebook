@@ -1094,7 +1094,7 @@ test("disenchant: classic table, armor vs weapons", function()
     end
 end)
 
-test("disenchant: recorded disenchants replace the classic table after CONFIRM_AT", function()
+test("disenchant: recordings that fit the classic table confirm it (classic chances kept)", function()
     local D = ns.Disenchant
     local records = {}
     local band = D.Band(ns.DisenchantBands, 4, 2, 12)
@@ -1102,16 +1102,34 @@ test("disenchant: recorded disenchants replace the classic table after CONFIRM_A
     local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 2, 12)
     eq(r.source, "classic")
     eq(r.seen, D.CONFIRM_AT - 1)
+    eq(r.differs, false)
     D.Record(records, band[7], { [10938] = 2 }, 2580, 12)
     eq(records[band[7]].items[2580], 12, "the item and the level it was read at are kept")
     r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 2, 12)
+    eq(r.source, "confirmed", "7 Strange Dust + 3 Lesser Magic Essence fit the classic 80/20")
+    eq(r.results[1][2], 0.80, "classic chances kept: 10 disenchants can't measure them better")
+    eq(D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 1, 12), nil, "white: nothing")
+end)
+
+test("disenchant: recordings that don't fit are flagged, then shown instead", function()
+    local D = ns.Disenchant
+    local records = {}
+    local band = D.Band(ns.DisenchantBands, 2, 2, 28) -- green weapon 26-30
+    D.Record(records, band[7], { [10939] = 2 }) -- Greater Magic Essence: not in the classic row
+    local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 2, 2, 28)
+    eq(r.source, "classic")
+    eq(r.differs, true)
+    for _ = 2, D.CONFIRM_AT do D.Record(records, band[7], { [10939] = 1 }) end
+    r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 2, 2, 28)
     eq(r.source, "seen")
-    eq(r.results[1][1], 10940, "most seen first")
-    eq(r.results[1][2], (D.CONFIRM_AT - 1) / D.CONFIRM_AT)
+    eq(r.results[1][1], 10939)
+    eq(r.results[1][2], 1)
     eq(r.results[1][3], 1)
     eq(r.results[1][4], 2)
-    eq(r.results[2][1], 10938)
-    eq(D.Results(ns.DisenchantBands, ns.DisenchantClassic, records, 4, 1, 12), nil, "white: nothing")
+    -- A count outside the classic range doesn't fit either.
+    eq(D.Fits({ { 1, 1, 1, 2 } }, { mats = { [1] = { t = 1, q = 3, lo = 3, hi = 3 } } }), false)
+    eq(D.Fits({ { 1, 0.95, 1, 2 }, { 2, 0.05, 1, 1 } }, { mats = { [1] = { t = 4, q = 6, lo = 1, hi = 2 } } }), true,
+        "a rare material not seen yet is fine")
 end)
 
 test("disenchant: expected value, nil when a result has no price", function()

@@ -4,7 +4,11 @@
 --
 -- Which items can be disenchanted: Forever's own bands (Data/DisenchantBands.lua). What a band
 -- gives: the classic table (Data/Disenchant.lua), shown as "classic, not confirmed in
--- Forever" until CONFIRM_AT recorded disenchants of that band; from then on what was seen.
+-- Forever" until CONFIRM_AT recorded disenchants of that band. Then:
+--   they fit the classic table (only its materials, counts in its ranges): "confirmed", and
+--     the classic chances stay (10 disenchants can't measure a 5% shard or 80/20 better);
+--   they don't: what was seen is shown instead (Forever differs for that band).
+-- Before CONFIRM_AT, a band whose disenchants already don't fit is flagged (differs).
 --
 -- Recorder: a Disenchant cast (spell 13262) that succeeds, then the loot window it opens. The
 -- item comes from the bag slot clicked while the spell was targeting (or the loot's source
@@ -21,7 +25,7 @@ local Disenchant = {}
 ns.Disenchant = Disenchant
 
 Disenchant.SPELL = 13262
-Disenchant.CONFIRM_AT = 10 -- recorded disenchants of a band before its own numbers are used
+Disenchant.CONFIRM_AT = 10 -- recorded disenchants of a band before it counts as checked
 
 local QUALITY_KEY = { [3] = "rare", [4] = "epic" }
 
@@ -63,19 +67,36 @@ function Disenchant.Seen(record)
     return out
 end
 
--- PURE. Results for an item: { results, source = "seen" | "classic", seen = n, band } or nil
--- when it can't be disenchanted. records: TradebookDB.disenchants.
+-- PURE. Do the recorded disenchants fit these results: only their materials, and counts
+-- within their ranges? (A rare material not seen yet is fine.)
+function Disenchant.Fits(results, record)
+    if not (results and record) then return true end
+    local byID = {}
+    for _, r in ipairs(results) do byID[r[1]] = r end
+    for matID, m in pairs(record.mats or {}) do
+        local r = byID[matID]
+        if not r or m.lo < r[3] or m.hi > r[4] then return false end
+    end
+    return true
+end
+
+-- PURE. Results for an item: { results, source = "classic" | "confirmed" | "seen", seen = n,
+-- differs = bool, band } or nil when it can't be disenchanted. records: TradebookDB.disenchants.
 function Disenchant.Results(bands, classic, records, classID, quality, itemLevel)
     local band = Disenchant.Band(bands, classID, quality, itemLevel)
     if not band then return nil end
     local record = records and records[band[7]]
     local seen = record and record.n or 0
+    local results = Disenchant.Classic(classic, classID, quality, itemLevel)
+    local fits = Disenchant.Fits(results, record)
     if seen >= Disenchant.CONFIRM_AT then
+        if results and fits then
+            return { results = results, source = "confirmed", seen = seen, band = band }
+        end
         return { results = Disenchant.Seen(record), source = "seen", seen = seen, band = band }
     end
-    local results = Disenchant.Classic(classic, classID, quality, itemLevel)
     if not results then return nil end
-    return { results = results, source = "classic", seen = seen, band = band }
+    return { results = results, source = "classic", seen = seen, differs = not fits, band = band }
 end
 
 -- PURE. Expected copper from one disenchant: each result's chance x average count x price.
@@ -158,12 +179,16 @@ function Disenchant.TooltipLines(item)
     end
     local value = Disenchant.ValueOf(item)
     if value then lines[#lines + 1] = { "    " .. L.DE_VALUE, ns.Prices.Money(value) } end
-    if de.source == "seen" then
-        lines[#lines + 1] = ns.W.ColorText(ns.W.GREY, "    " .. L.DE_SEEN:format(de.seen))
-    else
-        lines[#lines + 1] = ns.W.ColorText(ns.W.GREY, "    " .. (de.seen > 0 and L.DE_CLASSIC_SEEN:format(de.seen) or L.DE_CLASSIC))
-    end
+    lines[#lines + 1] = ns.W.ColorText(ns.W.GREY, "    " .. Disenchant.SourceText(de))
     return lines
+end
+
+-- Where a result comes from, for tooltips: confirmed / seen in Forever / classic.
+function Disenchant.SourceText(de)
+    if de.source == "confirmed" then return L.DE_CONFIRMED:format(de.seen) end
+    if de.source == "seen" then return L.DE_SEEN:format(de.seen) end
+    if de.differs then return L.DE_CLASSIC_DIFFERS:format(de.seen) end
+    return de.seen > 0 and L.DE_CLASSIC_SEEN:format(de.seen) or L.DE_CLASSIC
 end
 
 local function addTooltip(tooltip, item)

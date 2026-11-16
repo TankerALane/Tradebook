@@ -506,7 +506,7 @@ function Pane:AddCost(r, list, times)
     local deValue = ns.Disenchant.ValueOf(r.o)
     if deValue then
         local de = ns.Disenchant.ForItem(r.o)
-        local note = de and (de.source == "seen" and L.DE_SEEN:format(de.seen) or L.DE_CLASSIC) or nil
+        local note = de and ns.Disenchant.SourceText(de) or nil
         lines[#lines + 1] = { indent = 1, text = L.PROFIT_DISENCHANT_SHORT,
             right = money(math.floor(deValue * made + 0.5) - cost),
             tooltip = { L.PROFIT_TIP_DISENCHANT, note } }
