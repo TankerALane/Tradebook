@@ -202,7 +202,7 @@ end
 
 function View:BuildItems()
     local db = ns.db
-    local c = db.characters[self.charKey]
+    local c = ns.Char(self.charKey)
     local p = c and c.professions[self.skill]
     local learnedMap = p and p.recipes or {}
     local isMe = self.charKey == ns.charKey
@@ -444,6 +444,16 @@ local function charMenu(owner)
                 View:Refresh()
             end)
         end
+        local linked = ns.Linked.char
+        local prof = linked and linked.professions[View.skill]
+        if prof then
+            local text = W.ClassName(linked) .. " " .. W.ColorText(W.GREY, L.LINKED_SUFFIX) .. "  "
+                .. L.SKILL_RANK:format(prof.rank or 0, prof.max or 0)
+            root:CreateRadio(text, function() return View.charKey == linked.key end, function()
+                View.charKey = linked.key
+                View:Refresh()
+            end)
+        end
     end)
 end
 
@@ -559,11 +569,16 @@ function View:Show(skillLineID)
         self.search:SetText("")
         self.query = nil
     end
+    local pending = ns.UI.TakeLinked(skillLineID)
+    if pending then
+        self.charKey = pending
+        self.selected = nil
+    end
     self:Refresh()
 end
 
 function View:PickCharacter()
-    local c = ns.db.characters[self.charKey]
+    local c = ns.Char(self.charKey)
     if c and c.professions[self.skill] then return end
     if ns.char and ns.char.professions[self.skill] then
         self.charKey = ns.charKey
@@ -576,13 +591,14 @@ end
 function View:Refresh()
     if not self.frame or not self.skill then return end
     self:PickCharacter()
-    local c = ns.db.characters[self.charKey]
+    local c = ns.Char(self.charKey)
     local prof = c and c.professions[self.skill]
     local pInfo = ns.Professions.Get(self.skill)
     local profName = L[pInfo.name] or pInfo.name
     local isMe = self.charKey == ns.charKey
+    local linked = ns.Linked.IsKey(self.charKey)
 
-    self.charBtn:SetText(c and W.ClassName(c) or "?")
+    self.charBtn:SetText(c and (W.ClassName(c) .. (linked and (" " .. W.ColorText(W.GREY, L.LINKED_SUFFIX)) or "")) or "?")
     -- Skill bar in the header: the viewed character's rank in this profession.
     -- Link button: your own profession (not gathering ones the game can't link).
     local link
@@ -598,7 +614,7 @@ function View:Refresh()
 
     local notices, showOpen = {}, false
     -- Browsing a profession none of your characters have (from its guide page).
-    self.browsing = #Characters.WithProfession(ns.db, self.skill, ns.charKey) == 0
+    self.browsing = not linked and #Characters.WithProfession(ns.db, self.skill, ns.charKey) == 0
     if self.browsing then
         notices[#notices + 1] = L.BROWSE_NOTE:format(profName)
         showOpen = true
@@ -606,7 +622,11 @@ function View:Refresh()
         self.openBtn:SetEnabled(true)
         isMe = true -- the logged-in character's bags count for the materials
     end
-    if not isMe then notices[#notices + 1] = L.VIEWING_ALT:format(c and ns.CharName(c.key) or "?") end
+    if linked then
+        notices[#notices + 1] = L.VIEWING_LINKED:format(c and c.name or "?")
+    elseif not isMe then
+        notices[#notices + 1] = L.VIEWING_ALT:format(c and ns.CharName(c.key) or "?")
+    end
     if prof and not prof.scannedAt and not pInfo.noRecipes then
         notices[#notices + 1] = (prof.quickAt and L.QUICK_SCANNED or L.NOT_SCANNED):format(profName)
     end
@@ -615,7 +635,7 @@ function View:Refresh()
         self.openBtn:SetText(L.OPEN_PROFESSION:format(profName))
         self.openBtn:SetEnabled(not InCombatLockdown())
     end
-    if prof and prof.scannedAt and not isMe then
+    if prof and prof.scannedAt and not isMe and not linked then
         notices[#notices + 1] = L.LAST_SCANNED:format(W.Ago(prof.scannedAt))
     end
     local shotSpell = ns.Screenshots and ns.Screenshots.trackingShot and ns.TrackingButton.spells[self.skill]
@@ -645,7 +665,7 @@ function View:RefreshList()
 end
 
 function View:SelectRecipe(recipeID, charKey)
-    if charKey and ns.db.characters[charKey] then self.charKey = charKey end
+    if charKey and ns.Char(charKey) then self.charKey = charKey end
     self.selected = recipeID
     local r = ns.db.recipes[recipeID]
     if r then

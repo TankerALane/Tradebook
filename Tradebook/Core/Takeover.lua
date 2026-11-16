@@ -152,15 +152,13 @@ local function onPanelsMoved()
     end
 end
 
--- Someone else's recipe list (a profession link clicked in chat, or a guild member's):
--- Tradebook shows your characters' professions only, so the default window shows these.
+-- Someone else's recipe list (a profession link clicked in chat, or a guild member's).
 function Takeover.IsForeignView()
-    local Compat = ns.Compat
-    return (Compat.Call("C_TradeSkillUI.IsTradeSkillLinked") or Compat.Call("C_TradeSkillUI.IsTradeSkillGuild")) and true or false
+    return ns.Linked.IsOpen()
 end
 
 local function shouldTakeOver()
-    return ns.db and ns.db.settings.replaceDefault and not state.useDefault and not Takeover.IsForeignView()
+    return ns.db and ns.db.settings.replaceDefault and not state.useDefault
 end
 
 -- "Tradebook" button on the default frame, to switch back. It is our own top-level
@@ -171,7 +169,7 @@ local switchButton
 local function updateSwitchButton()
     local f = frame()
     if not switchButton then return end
-    switchButton:SetShown(f ~= nil and f:IsShown() and not state.hidden and not Takeover.IsForeignView())
+    switchButton:SetShown(f ~= nil and f:IsShown() and not state.hidden)
 end
 
 local function ensureSwitchButton(f)
@@ -208,7 +206,18 @@ local function onDefaultShow()
     end
     if shouldTakeOver() then
         hideDefault()
-        if ns.UI then ns.UI.Show() end
+        if Takeover.IsForeignView() then
+            Takeover.OnTradeSkillShow() -- shows the linked list once it's read
+            -- If it can't be read (not a profession Tradebook knows...), don't leave the
+            -- player with nothing: show the default window after all.
+            C_Timer.After(2, function()
+                if Takeover.IsForeignView() and state.hidden and not (ns.UI and ns.UI.IsShown()) then
+                    Takeover.UseDefault()
+                end
+            end)
+        elseif ns.UI then
+            ns.UI.Show()
+        end
     end
     updateSwitchButton()
 end
@@ -226,14 +235,24 @@ function Takeover.Start()
     -- the Tradebook button again.
     ns.On("TRADE_SKILL_SHOW", function() C_Timer.After(0, Takeover.OnTradeSkillShow) end)
     ns.On("TRADE_SKILL_DATA_SOURCE_CHANGED", function() C_Timer.After(0, Takeover.OnTradeSkillShow) end)
+    ns.On("TRADE_SKILL_LIST_UPDATE", function()
+        if Takeover.IsForeignView() and not (ns.Linked.char and ns.UI and ns.UI.IsShown()) then
+            ns.Throttle("linked", 0.3, Takeover.OnTradeSkillShow)
+        end
+    end)
 end
 
+-- Another player's list: read it and show it in Tradebook (on its tab, as that player).
+-- The list can take a moment to arrive; TRADE_SKILL_LIST_UPDATE tries again.
 function Takeover.OnTradeSkillShow()
-    if Takeover.IsForeignView() and state.hidden then
-        Takeover.UseDefault()
-        state.useDefault = false -- your own profession, opened later in it, comes back to Tradebook
-    end
+    if not Takeover.IsForeignView() then return end
+    local f = frame()
+    if not (f and f:IsShown()) or not shouldTakeOver() then return end
+    local c, skill = ns.Linked.Read()
+    if not c then return end
+    if not state.hidden then hideDefault() end
     updateSwitchButton()
+    if ns.UI then ns.UI.ShowLinked(c, skill) end
 end
 
 function Takeover.DebugState()

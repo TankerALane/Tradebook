@@ -4,7 +4,14 @@
 local addonName, ns = ...
 
 -- Display name for a saved character key ("Name Secondname").
+-- A character by key: one of yours, or the linked profession's player (Core/Linked.lua).
+function ns.Char(key)
+    return (ns.Linked and ns.Linked.Get(key)) or (ns.db and ns.db.characters[key]) or nil
+end
+
 function ns.CharName(key)
+    local linked = ns.Linked and ns.Linked.Get(key)
+    if linked then return linked.name end
     local c = ns.db and ns.db.characters[key]
     if not c then return key end
     if c.second and c.second ~= "" then return c.name .. " " .. c.second end

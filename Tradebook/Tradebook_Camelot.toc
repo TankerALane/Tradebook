@@ -46,6 +46,7 @@ Core\Locations.lua
 Core\Compat.lua
 Core\Events.lua
 Core\Scanner.lua
+Core\Linked.lua
 Core\Crafting.lua
 Core\Takeover.lua
 Core\Questie.lua

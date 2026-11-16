@@ -312,7 +312,8 @@ function UI.SelectTab(key, fromClick)
         local mine = ns.char and ns.char.professions[key]
         if fromClick and mine then ns.Crafting.OpenProfession(key) end
         local browse = ns.db.settings.browse and ns.db.settings.browse[key]
-        if #ns.Characters.WithProfession(ns.db, key, ns.charKey) == 0 and not browse then
+        local linked = UI.pendingLinked and UI.pendingLinked.skill == key
+        if #ns.Characters.WithProfession(ns.db, key, ns.charKey) == 0 and not browse and not linked then
             showView("guide", key)
         else
             showView("profession", key)
@@ -323,6 +324,7 @@ end
 
 -- Which tab to show when the window opens.
 local function defaultTab()
+    if UI.pendingLinked then return UI.pendingLinked.skill end
     local open = ns.Scanner.OpenProfession()
     if open then return open.professionID end
     local last = ns.db.settings.lastTab
@@ -472,24 +474,24 @@ local function professionLink()
     return ns.Compat.Call("C_TradeSkillUI.GetTradeSkillListLink")
 end
 
--- Put a link in the chat box: into the one being typed in, else open one with it.
+-- Open the chat box with `text`. No chat frame is passed, so the game picks the box you
+-- used last, still on its channel (Guild, Party, a whisper...), not the first tab's Say.
+local function openChatWith(text)
+    local util = _G.ChatFrameUtil
+    if util and util.OpenChat then util.OpenChat(text)
+    elseif _G.ChatFrame_OpenChat then _G.ChatFrame_OpenChat(text) end
+end
+
+-- Put a link in the chat box: into the one being typed in, else open the last one with it.
 local function insertInChat(link)
     local util = _G.ChatFrameUtil
     if util and util.GetActiveWindow and util.GetActiveWindow() and util.InsertLink then
         util.InsertLink(link)
     elseif _G.ChatEdit_GetActiveWindow and _G.ChatEdit_GetActiveWindow() and _G.ChatEdit_InsertLink then
         _G.ChatEdit_InsertLink(link)
-    elseif util and util.OpenChat then
-        util.OpenChat(link, DEFAULT_CHAT_FRAME)
-    elseif _G.ChatFrame_OpenChat then
-        _G.ChatFrame_OpenChat(link)
+    else
+        openChatWith(link)
     end
-end
-
-local function openChatWith(text)
-    local util = _G.ChatFrameUtil
-    if util and util.OpenChat then util.OpenChat(text, DEFAULT_CHAT_FRAME)
-    elseif _G.ChatFrame_OpenChat then _G.ChatFrame_OpenChat(text) end
 end
 
 -- Right-click: Guild, Party, Raid and your chat channels (as the default window offers).
@@ -524,17 +526,18 @@ end
 
 function UI.CreateLinkButton(parent)
     local b = CreateFrame("Button", nil, parent)
-    b:SetSize(23, 23)
+    b:SetSize(18, 18)
     b.bg = b:CreateTexture(nil, "BACKGROUND")
-    b.bg:SetPoint("CENTER")
+    b.bg:SetAllPoints()
     b.icon = b:CreateTexture(nil, "ARTWORK")
     b.icon:SetPoint("CENTER")
+    b.icon:SetSize(12, 12)
     local function art()
         local enabled, over = b:IsEnabled(), b:IsMouseOver()
-        b.icon:SetAtlas(enabled and "common-icon-chatlink" or "common-icon-chatlink-disable", true)
+        b.icon:SetAtlas(enabled and "common-icon-chatlink" or "common-icon-chatlink-disable")
         b.bg:SetAtlas(not enabled and "common-button-tertiary-square-disabled"
             or (b.down and over and "common-button-tertiary-square-pressed")
-            or (over and "common-button-tertiary-square-hover") or "common-button-tertiary-square-normal", true)
+            or (over and "common-button-tertiary-square-hover") or "common-button-tertiary-square-normal")
     end
     b.UpdateArt = art
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -693,6 +696,13 @@ function UI.Create()
         local onProfession = current.view == "profession" or current.view == "guide"
         if open and open.professionID ~= current.tab and onProfession then
             UI.SelectTab(open.professionID)
+        elseif open and current.view == "profession" then
+            -- Your own profession opened while a linked one of the same kind was shown.
+            local view = UI.views.profession
+            if view and ns.Linked.IsKey(view.charKey) then
+                view.charKey = ns.charKey
+                view:Refresh()
+            end
         end
     end)
     ns.On("TRADE_SKILL_CLOSE", refreshSoon)
@@ -736,6 +746,24 @@ function UI.OnDefaultClosed()
         hideKeepsDefault = true
         frame:Hide()
     end
+end
+
+-- Show another player's linked profession (Core/Linked.lua) on its tab.
+function UI.ShowLinked(c, skill)
+    UI.Create()
+    UI.pendingLinked = { key = c.key, skill = skill }
+    if frame:IsShown() then UI.SelectTab(skill) else frame:Show() end
+    UI.pendingLinked = nil
+end
+
+-- For the profession view: the linked character to show on this tab, once.
+function UI.TakeLinked(skill)
+    local p = UI.pendingLinked
+    if p and p.skill == skill then
+        UI.pendingLinked = nil
+        return p.key
+    end
+    return nil
 end
 
 function UI.ShowCharacters()
