@@ -20,3 +20,6 @@ Tradebook/Libs/
 
 # Cropped screenshots from /tb shots (kept locally; upload the final ones to CurseForge)
 assets/screenshots/
+
+# Written by scripts/research/mark_import.lua at each "import npc data" (dev addon only)
+dev/TradebookDev/LastImport.lua

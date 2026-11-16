@@ -6,4 +6,5 @@
 ## Dependencies: Tradebook
 ## SavedVariables: TradebookDevDB
 
+LastImport.lua
 Dev.lua

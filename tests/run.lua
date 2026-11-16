@@ -1244,6 +1244,26 @@ test("dev: heard notifications say what came in, marking new NPCs", function()
     eq(info.disenchants, 1)
 end)
 
+test("dev: counts what came in since the last import", function()
+    SlashCmdList = SlashCmdList or {}
+    assert(loadfile("dev/TradebookDev/Dev.lua"))()
+    local log = {
+        { at = 50, who = "a", v = 9, vn = 9, t = 0, tn = 0, c = 0, d = 0 }, -- before the import
+        { at = 150, who = "a", v = 2, vn = 1, t = 1, tn = 1, c = 3, d = 0 },
+        { at = 160, who = "b", v = 1, vn = 0, t = 0, tn = 0, c = 0, d = 4 },
+        { at = 170, who = "a", v = 0, vn = 0, t = 0, tn = 0, c = 1, d = 2 },
+    }
+    local s = TradebookDev.SinceImport(log, 100)
+    eq(s.vendors, 3)
+    eq(s.newVendors, 1)
+    eq(s.trainers, 1)
+    eq(s.confirms, 4)
+    eq(s.disenchantPlayers, 2)
+    eq(s.players, 2)
+    eq(TradebookDev.SinceImport(log, 200).messages, 0, "all imported")
+    eq(TradebookDev.SinceText(TradebookDev.SinceImport(log, 200), 200), nil)
+end)
+
 ---------------------------------------------------------------------------
 -- prices (Auctionator)
 ---------------------------------------------------------------------------

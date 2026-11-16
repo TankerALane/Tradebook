@@ -15,6 +15,11 @@
 -- line, a message in the middle of the screen and a sound. Vendors and trainers not in your
 -- scans or the community data are marked NEW. /tbdev notify turns it off and on. Players are
 -- only told apart by number this session (Tradebook keeps hashes, never names).
+-- Since the last import: every notification is also logged (TradebookDevDB.heardLog), and the
+-- totals since the maintainer's last "import npc data" are shown with each notification and
+-- by /tbdev count. The import writes LastImport.lua (TradebookDevLastImport = time) into this
+-- folder (scripts/research/mark_import.lua); it loads on the next /reload and older log
+-- entries stop counting (and are dropped).
 
 TradebookDev = {}
 local Dev = TradebookDev
@@ -748,10 +753,69 @@ local function isNew(kind, npc)
     return not ((ns.db.trainers and ns.db.trainers[npc]) or (ns.CommunityTrainers and ns.CommunityTrainers[npc]))
 end
 
+-- PURE. Totals of log entries after `since`: { vendors, newVendors, trainers, newTrainers,
+-- confirms, disenchantPlayers, players, messages }.
+function Dev.SinceImport(log, since)
+    local out = { vendors = 0, newVendors = 0, trainers = 0, newTrainers = 0, confirms = 0,
+        disenchantPlayers = 0, players = 0, messages = 0 }
+    local players, dePlayers = {}, {}
+    for _, e in ipairs(log or {}) do
+        if (e.at or 0) > (since or 0) then
+            out.messages = out.messages + 1
+            out.vendors, out.newVendors = out.vendors + (e.v or 0), out.newVendors + (e.vn or 0)
+            out.trainers, out.newTrainers = out.trainers + (e.t or 0), out.newTrainers + (e.tn or 0)
+            out.confirms = out.confirms + (e.c or 0)
+            if e.who then players[e.who] = true end
+            if (e.d or 0) > 0 and e.who then dePlayers[e.who] = true end
+        end
+    end
+    for _ in pairs(players) do out.players = out.players + 1 end
+    for _ in pairs(dePlayers) do out.disenchantPlayers = out.disenchantPlayers + 1 end
+    return out
+end
+
+-- PURE. "Since the last import: 12 vendors (3 new), ..." or nil when nothing came in.
+function Dev.SinceText(s, lastImport)
+    if s.messages == 0 then return nil end
+    local parts = {}
+    if s.vendors > 0 then parts[#parts + 1] = ("%d vendors (%d new)"):format(s.vendors, s.newVendors) end
+    if s.trainers > 0 then parts[#parts + 1] = ("%d trainers (%d new)"):format(s.trainers, s.newTrainers) end
+    if s.confirms > 0 then parts[#parts + 1] = ("%d confirmations"):format(s.confirms) end
+    if s.disenchantPlayers > 0 then parts[#parts + 1] = ("disenchants from %d players"):format(s.disenchantPlayers) end
+    local when = lastImport and lastImport > 0 and date("%b %d %H:%M", lastImport) or "ever"
+    return ("Since the last import (%s): %s, from %d players"):format(when, table.concat(parts, ", "), s.players)
+end
+
+local function lastImport() return tonumber(_G.TradebookDevLastImport) or 0 end
+
+local function countText()
+    return Dev.SinceText(Dev.SinceImport(db().heardLog, lastImport()), lastImport())
+end
+
+-- Keep what another player sent in the log (counted until the next import).
+local function logHeard(who, h)
+    local d = db()
+    d.heardLog = d.heardLog or {}
+    local function n(t, kind)
+        local c, new = 0, 0
+        for npc in pairs(t) do
+            c = c + 1
+            if isNew(kind, npc) then new = new + 1 end
+        end
+        return c, new
+    end
+    local v, vn = n(h.vendors, "vendor")
+    local t, tn = n(h.trainers, "trainer")
+    table.insert(d.heardLog, { at = GetServerTime(), who = who, v = v, vn = vn, t = t, tn = tn, c = h.confirms, d = h.disenchants })
+    while #d.heardLog > 2000 do table.remove(d.heardLog, 1) end
+end
+
 local function flushHeard(who)
     local h = heardPending[who]
     heardPending[who] = nil
-    if not h or db().notify == false then return end
+    if not h then return end
+    logHeard(who, h)
+    if db().notify == false then return end
     if not playerNumbers[who] then
         playerCount = playerCount + 1
         playerNumbers[who] = playerCount
@@ -764,6 +828,8 @@ local function flushHeard(who)
         errors:AddMessage("Tradebook: " .. Dev.HeardKinds(h) .. " from another player", 0.2, 1, 0.6)
     end
     if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
+    local since = countText()
+    if since then print("|cff33ff99Tradebook Dev|r " .. since) end
 end
 
 local function onHeard(who, info)
@@ -783,6 +849,13 @@ end
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
     ns.Listen("NET_HEARD", onHeard)
+    -- Entries from before the last import are already in the data: drop them.
+    local d, cutoff = db(), lastImport()
+    if d.heardLog and cutoff > 0 then
+        local keep = {}
+        for _, e in ipairs(d.heardLog) do if (e.at or 0) > cutoff then keep[#keep + 1] = e end end
+        d.heardLog = keep
+    end
     startWatcher()
     -- The calendar fills in after a server query; read it when it arrives.
     local cal = CreateFrame("Frame")
@@ -794,6 +867,10 @@ end
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"
 SlashCmdList.TRADEBOOKDEV = function(msg)
+    if (msg or ""):lower():match("^%s*count") then
+        print("|cff33ff99Tradebook Dev|r " .. (countText() or "Nothing from other players since the last import."))
+        return
+    end
     if (msg or ""):lower():match("^%s*notify") then
         local d = db()
         d.notify = d.notify == false
