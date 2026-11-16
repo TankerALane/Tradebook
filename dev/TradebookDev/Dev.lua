@@ -963,6 +963,8 @@ end
 function Dev.Attach(tradebookNS)
     ns = tradebookNS
     ns.Listen("NET_HEARD", onHeard)
+    -- You collect: other players pass along what they heard until you have received it.
+    if ns.Net and ns.Net.SetCollector then ns.Net.SetCollector(true) end
     -- Entries from before the last import are already in the data: drop them.
     local d, cutoff = db(), lastImport()
     if d.heardLog and cutoff > 0 then

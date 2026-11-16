@@ -1475,6 +1475,46 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     eq(items[2320].vendors[248201].source, "players")
 end)
 
+test("net: passing heard reports along to a collector", function()
+    local N, S = ns.Net, ns.Share
+    -- Control messages, and the wire format doesn't take them as data.
+    local what, arg = N.Control("ab12~CTL~ACK~ab12f")
+    eq(what, "ACK")
+    eq(arg, "ab12f")
+    eq(N.Control("ab12~CTL~HELLO"), "HELLO")
+    eq(N.Control("ab121~1~1~TBV1~x"), nil)
+    eq(N.Feed(N.NewAssembler(), "x", "ab12~CTL~HELLO", 0), nil, "older copies ignore control messages")
+    -- A heard vendor, passed along for player 0badf00d.
+    local text = S.Encode({ [3005] = { name = "Mahu", seenAt = 100, items = { [2320] = { p = 10, s = -1 } } } }, "b", "v")
+    local relay = N.RelayText(text, "0badf00d")
+    assert(relay:sub(1, 5) == "TBR1~", relay)
+    local who, back = N.ParseRelay(relay)
+    eq(who, "0badf00d")
+    eq(back, (text:gsub("^(TBV1[^\n]*)", "%1\nR~0badf00d")), "the R line stays; Decode skips it")
+    local vendors = S.Decode(back)
+    eq(vendors[3005].name, "Mahu")
+    eq(S.Decode(relay), nil, "a regular copy (old or new) doesn't take passed-along text")
+    eq(N.ParseRelay(text), nil)
+    -- It survives being cut into messages and put back together.
+    local asm = N.NewAssembler()
+    local got
+    for _, part in ipairs(N.Chunk(relay, "ab12f")) do got = N.Feed(asm, "relayer", part, 0) or got end
+    eq(N.ParseRelay(got), "0badf00d")
+    -- Which heard reports still wait for a collector.
+    local heard = {}
+    N.Accept(heard, text, "aaaa", 100)
+    local de = { [4] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } }
+    N.Accept(heard, S.Encode({}, "b", "v", nil, { disenchants = de }), "bbbb", 100)
+    local refs = N.Unrelayed(heard, 10)
+    eq(#refs, 2)
+    eq(#N.Unrelayed(heard, 10, "aaaa"), 1, "the collector's own reports aren't sent back to it")
+    eq(#N.Unrelayed(heard, 1), 1, "at most `limit`")
+    for _, ref in ipairs(refs) do ref.rec.relayed = true end
+    eq(#N.Unrelayed(heard, 10), 0, "received: not sent again")
+    N.Accept(heard, text, "aaaa", 200)
+    eq(#N.Unrelayed(heard, 10), 1, "a newer report from that player waits again")
+end)
+
 test("net: own messages are known by the session tag; migration 4 forgets heard data", function()
     local N = ns.Net
     eq(N.IsOwn("ab121f~1~2~TBV1", "ab12"), true)

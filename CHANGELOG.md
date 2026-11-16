@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Sharing in game
+- What you hear from other players is now **passed along to the community database** too: when the Tradebook maintainer comes online, Tradebook sends what it heard from other players (vendors, trainers, disenchant results) that hasn't reached the database yet, a little at a time, and stops once it has arrived. So scans from players who are never online at the same time as the maintainer still make it into the next update. It also re-sends your own recent scans then.
+- Only NPC and disenchant data is passed along, as before; players are told apart only by a short code, never by name. Regular copies of Tradebook don't take in passed-along data, so it never counts twice.
+
 ### Leveling plan
 - Hover a step to see the materials for just that step: need, have and buy, like the totals below. What you have is used by the earlier steps first.
 - Clicking a step opens the recipe with the **quantity set** to that step's number of crafts.

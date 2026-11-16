@@ -7,6 +7,16 @@
 -- (heard.de[who], the player's latest totals replace the older ones; Core/Disenchant.lua
 -- counts them for a band once 2+ players have reported it).
 --
+-- Passing along to a collector (the maintainer, who runs dev/TradebookDev: Net.SetCollector):
+-- a collector says "<session>~CTL~HELLO" when it joins and every COLLECTOR_HELLO seconds.
+-- Players who hear it re-send their own recent scans, and pass along what they heard from
+-- other players that no collector has received yet: one heard report per text, with header
+-- TBR1 (not TBV1, so no regular copy of Tradebook, old or new, takes it in) and an "R~<hash>"
+-- line naming the original player, so "2 players agree" still counts the original players.
+-- The collector answers "<session>~CTL~ACK~<msgID>" and the report is marked relayed (until
+-- that player sends a newer one). Control messages don't fit the wire format: older copies
+-- ignore them.
+--
 -- Only NPC data is sent, in the /tb share text format (Core/Share.lua): NPC IDs, names, where
 -- they stand, what they sell or teach and for how much. Nothing about the player's characters.
 -- Other players are kept apart only by a short hash of their name (to count how many players
@@ -45,6 +55,10 @@ Net.BACKLOG_DAYS = 30     -- scans this recent are re-announced after login, slo
 Net.BACKLOG_GAP = 20      -- seconds between re-announced NPCs
 Net.SENDER_LIMIT = 90     -- messages per minute from one player before they're ignored
 Net.MAX_DE_PLAYERS = 300  -- players whose disenchant totals are kept (the oldest is dropped)
+Net.COLLECTOR_HELLO = 600 -- seconds between a collector's hellos
+Net.RELAY_BATCH = 200     -- heard reports passed along per hello
+Net.RELAY_GAP = 3         -- seconds between passed-along reports
+Net.RELAY_AGAIN = 1800    -- a player answers hellos at most this often
 
 ---------------------------------------------------------------------------
 -- PURE: hashing, chunking, reassembly, validation, merging
@@ -111,7 +125,48 @@ function Net.Feed(asm, sender, msg, now)
     if p.got < n then return nil end
     asm.pending[key] = nil
     asm.n = asm.n - 1
-    return (table.concat(p.parts):gsub("%^", "\n"))
+    return (table.concat(p.parts):gsub("%^", "\n")), id
+end
+
+-- PURE. A control message ("<session>~CTL~HELLO", "<session>~CTL~ACK~<msgID>"): what, arg; or nil.
+function Net.Control(msg)
+    local what, arg = tostring(msg):match("^%w+~CTL~(%u+)~?(.*)$")
+    return what, arg
+end
+
+-- PURE. Share text of one heard report, passed along for player `who` (header TBR1, R line).
+function Net.RelayText(text, who)
+    local body = text:gsub("^TBV1", "TBR1", 1)
+    local header, rest = body:match("^([^\n]*)\n?(.*)$")
+    return header .. "\nR~" .. who .. (rest ~= "" and ("\n" .. rest) or "")
+end
+
+-- PURE. A passed-along text: the original player and the text as a normal share text; or nil.
+function Net.ParseRelay(text)
+    if tostring(text):sub(1, 5) ~= "TBR1~" then return nil end
+    local who = text:match("\nR~(%x+)\n") or text:match("\nR~(%x+)$")
+    if not who or #who > 16 then return nil end
+    return who, (text:gsub("^TBR1", "TBV1", 1))
+end
+
+-- PURE. Heard reports no collector has received yet: { { kind, npc, who, rec } }, at most
+-- `limit`, skipping player `skip` (the collector's own reports).
+function Net.Unrelayed(heard, limit, skip)
+    local out = {}
+    local function add(ref)
+        if #out < limit and ref.who ~= skip then out[#out + 1] = ref end
+    end
+    for _, kind in ipairs({ "vendors", "trainers" }) do
+        for npc, rec in pairs(heard and heard[kind] or {}) do
+            for who, r in pairs(rec.reports or {}) do
+                if not r.relayed then add({ kind = kind, npc = npc, who = who, rec = r }) end
+            end
+        end
+    end
+    for who, h in pairs(heard and heard.de or {}) do
+        if not h.relayed then add({ kind = "de", who = who, rec = h }) end
+    end
+    return out
 end
 
 local function okID(v)
@@ -326,7 +381,11 @@ local selfSender -- how the channel names you (learned from your first echo)
 local version = 0      -- bumped when heard data changes (caches)
 local senders = {}     -- [who] = { minute, n }: flood protection
 local cached = {}
-local stats = { sent = 0, heard = 0, players = {} }
+local stats = { sent = 0, heard = 0, players = {}, relayed = 0, acked = 0 }
+local collector = false -- this copy collects passed-along reports (dev/TradebookDev)
+local relayQueue = {}   -- heard reports to pass along to a collector
+local sentRelay = {}    -- [msgID] = the report it carried (marked relayed on the collector's ACK)
+local lastRelay, answeredAt, collectorWho = 0, nil, nil
 
 local function enabled()
     return ns.db and ns.db.settings and ns.db.settings.netShare ~= false and not ns.fake
@@ -400,6 +459,11 @@ local function textFor(kind, npc)
 end
 
 -- Queue one of your scans for sending (skipped when that scan already went out today).
+-- A control message, first in line (they're short and time-sensitive).
+local function control(what, arg)
+    table.insert(queue, 1, session .. "~CTL~" .. what .. (arg and ("~" .. arg) or ""))
+end
+
 local function announce(kind, npc, force)
     local text, seenAt = textFor(kind, npc)
     if not text then return end
@@ -458,7 +522,30 @@ local function pump()
         if #backlog > 0 and now - lastBacklog >= Net.BACKLOG_GAP then
             lastBacklog = now
             local job = table.remove(backlog, 1)
-            announce(job.kind, job.npc)
+            announce(job.kind, job.npc, job.force)
+        end
+        -- Pass along one heard report to a collector.
+        if #queue == 0 and #relayQueue > 0 and now - lastRelay >= Net.RELAY_GAP then
+            lastRelay = now
+            local ref = table.remove(relayQueue, 1)
+            local build = Compat.Call("GetBuildInfo") or "?"
+            local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
+            local text
+            if ref.kind == "vendors" then
+                text = ns.Share.Encode({ [ref.npc] = ref.rec.e }, build, ver)
+            elseif ref.kind == "trainers" then
+                text = ns.Share.Encode({}, build, ver, { [ref.npc] = ref.rec.e })
+            else
+                text = ns.Share.Encode({}, build, ver, nil, { disenchants = ref.rec.bands })
+            end
+            msgCounter = msgCounter + 1
+            local id = session .. ("%x"):format(msgCounter)
+            local parts = text and Net.Chunk(Net.RelayText(text, ref.who), id)
+            if parts then
+                for _, p in ipairs(parts) do queue[#queue + 1] = p end
+                sentRelay[id] = ref
+                stats.relayed = stats.relayed + 1
+            end
         end
         if #queue == 0 then return end
     end
@@ -480,19 +567,22 @@ function Net.Test(n)
     return true
 end
 
--- Your recent scans, newest first, to re-announce after login.
-local function fillBacklog()
+-- Your recent scans, newest first, to re-announce after login (force: even when they went
+-- out today, for a collector that just came online).
+local function fillBacklog(force)
     backlog = {}
     local cutoff = GetServerTime() - Net.BACKLOG_DAYS * 86400
     for npc, e in pairs(ns.db.vendors or {}) do
-        if (e.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "vendor", npc = npc, at = e.seenAt } end
+        if (e.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "vendor", npc = npc, at = e.seenAt, force = force } end
     end
     for npc, t in pairs(ns.db.trainers or {}) do
-        if (t.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "trainer", npc = npc, at = t.seenAt } end
+        if (t.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "trainer", npc = npc, at = t.seenAt, force = force } end
     end
     table.sort(backlog, function(a, b) return a.at > b.at end)
     -- Your disenchant totals: once per session (skipped when unchanged and sent today).
-    if disenchantTotal() > 0 then table.insert(backlog, 1, { kind = "disenchant", npc = 0, at = GetServerTime() }) end
+    if disenchantTotal() > 0 then
+        table.insert(backlog, 1, { kind = "disenchant", npc = 0, at = GetServerTime(), force = force })
+    end
 end
 
 local function join()
@@ -506,6 +596,15 @@ local function join()
             ns.Debug("net: could not join the channel")
         end
     end)
+end
+
+-- This copy collects passed-along reports (dev/TradebookDev). Says hello now and regularly.
+function Net.SetCollector(on)
+    collector = on and true or false
+    if collector then
+        C_Timer.After(30, function() if enabled() and channelID then control("HELLO") end end)
+        C_Timer.NewTicker(Net.COLLECTOR_HELLO, function() if enabled() and channelID then control("HELLO") end end)
+    end
 end
 
 -- Turn sharing on or off (the setting).
@@ -532,6 +631,28 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     end
     if sender == selfSender then return end
     local who = Net.Hash(sender)
+    local what, arg = Net.Control(text)
+    if what then
+        if what == "HELLO" and not collector then
+            -- A collector is online: re-send your own recent scans and pass along what you heard,
+            -- after a short random wait (so not everyone answers at once), at most every 30 min.
+            collectorWho = who
+            local now = GetTime()
+            if not answeredAt or now - answeredAt >= Net.RELAY_AGAIN then
+                answeredAt = now
+                C_Timer.After(5 + math.random(0, 55), function()
+                    fillBacklog(true)
+                    relayQueue = Net.Unrelayed(ns.db.heard, Net.RELAY_BATCH, collectorWho)
+                    ns.Debug("net: collector online,", #backlog, "own scans and", #relayQueue, "heard reports to send")
+                end)
+            end
+        elseif what == "ACK" and Net.IsOwn(arg, session) and sentRelay[arg] then
+            sentRelay[arg].rec.relayed = true
+            sentRelay[arg] = nil
+            stats.acked = stats.acked + 1
+        end
+        return
+    end
     local minute = math.floor(GetTime() / 60)
     local s = senders[who]
     if not s or s.minute ~= minute then
@@ -541,9 +662,17 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     s.n = s.n + 1
     if s.n > Net.SENDER_LIMIT then s.blocked = true end
     if s.blocked then return end
-    local full = Net.Feed(asm, who, text, GetTime())
+    local full, msgID = Net.Feed(asm, who, text, GetTime())
     if not full then return end
     ns.db.heard = ns.db.heard or {}
+    -- Passed along by `who` for another player: only a collector takes it in, as that player's.
+    local relayed, relayText = Net.ParseRelay(full)
+    if relayed then
+        if not collector then return end
+        control("ACK", msgID)
+        if selfSender and relayed == Net.Hash(selfSender) then return end -- your own data, back again
+        who, full = relayed, relayText
+    end
     local kept, info = Net.Accept(ns.db.heard, full, who, GetServerTime())
     if kept > 0 then
         ns.Fire("NET_HEARD", who, info)
@@ -567,6 +696,9 @@ function Net.Status()
         ("Waiting to send: %d messages, %d NPCs to re-announce"):format(#queue, #backlog),
         ("Heard so far: %d vendors, %d trainers, disenchants from %d players"):format(count(heard.vendors or {}),
             count(heard.trainers or {}), count(heard.de or {})),
+        collector and "Collecting: other players pass along what they heard to you"
+            or ("Passing along to a collector: %d heard reports waiting, %d sent and received this session"):format(
+                #Net.Unrelayed(heard, 100000, collectorWho), stats.acked),
     }
 end
 
