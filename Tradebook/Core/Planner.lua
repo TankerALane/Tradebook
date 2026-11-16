@@ -5,9 +5,14 @@
 -- At each skill point it picks the recipe with the lowest expected cost per point:
 --   chance of a skill-up: orange 100%; yellow and green (grey - skill) / (grey - yellow), the
 --     usual classic estimate; grey 0. Expected crafts per point = 1 / chance.
---   cost of a craft: each material at its unit price, except what's left in your bags and bank
---     (used first, free). Unpriced materials make the recipe unpriced: it's only picked when no
---     priced recipe can give the point.
+--   cost of a craft, for choosing: every material at its unit price, also the ones in your
+--     bags and bank (using them up isn't free: they could make another point or be sold).
+--     Owned materials without a price count as free. The bill (step cost, total) only counts
+--     what you have to buy: owned materials are used first.
+--   orange first: a yellow or green recipe's expected cost is weighed up by ORANGE_BONUS, so
+--     it only wins when it is clearly cheaper (a skill-up from it is never sure).
+--   Unpriced materials to buy make the recipe unpriced: it's only picked when no priced
+--     recipe can give the point.
 -- Consecutive points from the same recipe are merged into one step.
 -- Estimates, not guarantees: skill-ups are random.
 
@@ -15,6 +20,8 @@ local _, ns = ...
 
 local Planner = {}
 ns.Planner = Planner
+
+Planner.ORANGE_BONUS = 4 / 3 -- yellow/green must be under 3/4 of orange's cost per point
 
 -- PURE. Chance of a skill-up at `rank` for thresholds { yellow, green, grey }.
 function Planner.Chance(t, rank)
@@ -72,28 +79,57 @@ function Planner.Plan(opts)
         end
     end
 
+    -- What a craft uses up, for choosing: all its materials at their price (owned ones too).
+    -- noPrices: the number of materials. Unpriced ones you'd have to buy make it unpriced.
+    local function valueOf(id, crafts)
+        local total, unpricedUnits = 0, 0
+        for _, r in ipairs(opts.reagents(id)) do
+            local need = r.count * crafts
+            if opts.noPrices then
+                total = total + need
+            else
+                local p = opts.price(r.itemID)
+                if p then
+                    total = total + p * need
+                else
+                    unpricedUnits = unpricedUnits + math.max(0, need - (inv[r.itemID] or 0))
+                end
+            end
+        end
+        return total, unpricedUnits > 0, unpricedUnits
+    end
+
     local steps, materials = {}, {}
     local totalCost, anyUnpriced = 0, false
     local rank = opts.rank
     while rank < opts.target do
-        local best, bestScore, bestCrafts, bestCost, bestUnpriced
+        local best, bestScore, bestOrange, bestChance, bestCrafts
         for _, id in ipairs(opts.recipes) do
             local learnAt = opts.learnAt and opts.learnAt(id)
             if not learnAt or learnAt <= rank then
-                local chance = Planner.Chance(opts.thresholds(id), rank)
+                local t = opts.thresholds(id)
+                local chance = Planner.Chance(t, rank)
                 if chance > 0 then
                     local crafts = 1 / chance
-                    local cost, unpriced, unpricedUnits = costOf(id, crafts)
+                    local value, unpriced, unpricedUnits = valueOf(id, crafts)
+                    local orange = rank < t[1]
+                    if not orange then value = value * Planner.ORANGE_BONUS end
                     -- Recipes needing materials with no known price sort after every priced
-                    -- one, fewest of those materials first; then cost per point.
-                    local score = (unpriced and (1e15 + unpricedUnits * 1e6) or 0) + cost
-                    if not best or score < bestScore then
-                        best, bestScore, bestCrafts, bestCost, bestUnpriced = id, score, crafts, cost, unpriced
+                    -- one, fewest of those materials first; then value per point; then the
+                    -- surer skill-up (orange, then the higher chance).
+                    local score = (unpriced and (1e15 + unpricedUnits * 1e6) or 0) + value
+                    local better = not best or score < bestScore - 1e-6
+                    if not better and math.abs(score - bestScore) <= 1e-6 then
+                        better = (orange and not bestOrange) or (orange == bestOrange and chance > bestChance)
+                    end
+                    if better then
+                        best, bestScore, bestOrange, bestChance, bestCrafts = id, score, orange, chance, crafts
                     end
                 end
             end
         end
         if not best then break end -- nothing gives skill-ups any more
+        local bestCost, bestUnpriced = costOf(best, bestCrafts)
         useUp(best, bestCrafts, materials)
         local last = steps[#steps]
         if last and last.recipeID == best then

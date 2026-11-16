@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Leveling plan
+- Materials you already have no longer count as free when the plan **chooses** a recipe: a yellow recipe you have materials for doesn't beat a cheaper orange one any more. They are still used first, and the cost only counts what you have to buy.
+- **Orange first**: an orange recipe (a sure skill-up) is chosen unless a yellow or green one is clearly cheaper per skill point (under 3/4 of its cost).
+
 ## v1.0.0
 
 **Tradebook 1.0**, the first full release for WoW Forever, after nine betas. Thanks to everyone who tested and shared vendor data.

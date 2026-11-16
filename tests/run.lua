@@ -953,7 +953,7 @@ test("planner: skill-up chance", function()
 end)
 
 test("planner: cheapest recipe per point, merged steps, materials", function()
-    -- A: cheap but grey at 105. B: dearer, orange until 110, grey at 130.
+    -- A: cheap but yellow from 100, grey at 105. B: dearer, orange until 110, grey at 130.
     local recipes = {
         A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
         B = { t = { 110, 120, 130 }, r = { { itemID = 2, count = 2 } } },
@@ -964,16 +964,56 @@ test("planner: cheapest recipe per point, merged steps, materials", function()
         thresholds = function(id) return recipes[id].t end,
         reagents = function(id) return recipes[id].r end,
         price = function(item) return prices[item] end,
-        inventory = { [2] = 4 }, -- two crafts of B are free
+        inventory = { [2] = 4 }, -- two crafts of B in the bags: used, but not free for choosing
     })
     eq(plan.reached, 110)
-    eq(plan.steps[1].recipeID, "B", "owned materials: two free crafts of B first")
+    -- A per point: 10 / chance x 4/3 (yellow): 13, 17, 22, 33 for 100-103, then 67 > B's 60.
+    eq(plan.steps[1].recipeID, "A", "the cheap yellow one while it is well under B's cost")
+    eq(plan.steps[1].to, 104)
     eq(plan.steps[1].from, 100)
-    eq(plan.steps[2].recipeID, "A", "then the cheap one while it still gives points")
-    eq(plan.steps[#plan.steps].recipeID, "B")
-    eq(plan.steps[#plan.steps].to, 110)
-    assert(plan.materials[2].need >= 4, "B's materials counted")
+    eq(plan.steps[2].recipeID, "B", "then the orange one")
+    eq(plan.steps[2].to, 110)
+    eq(#plan.steps, 2)
+    eq(plan.materials[2].need, 12, "6 crafts of B")
     eq(plan.materials[2].have, 4)
+    eq(plan.steps[2].cost, 8 * 30, "the bill only counts what you buy (12 - 4 owned)")
+end)
+
+test("planner: owned materials don't make a yellow recipe beat a cheaper orange one", function()
+    -- Like Enchant 2H Weapon - Minor Impact (yellow, materials owned, 442c) against
+    -- Enchant Boots - Minor Stamina (orange, 396c to buy).
+    local recipes = {
+        Y = { t = { 130, 140, 150 }, r = { { itemID = 1, count = 1 } } },
+        O = { t = { 150, 160, 170 }, r = { { itemID = 2, count = 1 } } },
+    }
+    local prices = { [1] = 442, [2] = 396 }
+    local plan = ns.Planner.Plan({
+        rank = 130, target = 131, recipes = { "Y", "O" },
+        thresholds = function(id) return recipes[id].t end,
+        reagents = function(id) return recipes[id].r end,
+        price = function(item) return prices[item] end,
+        inventory = { [1] = 5 },
+    })
+    eq(plan.steps[1].recipeID, "O")
+end)
+
+test("planner: orange first unless yellow is clearly cheaper; ties go to orange", function()
+    local function first(yellowPrice)
+        local recipes = {
+            Y = { t = { 100, 110, 120 }, r = { { itemID = 1, count = 1 } } },
+            O = { t = { 120, 130, 140 }, r = { { itemID = 2, count = 1 } } },
+        }
+        local prices = { [1] = yellowPrice, [2] = 100 }
+        return ns.Planner.Plan({
+            rank = 100, target = 101, recipes = { "Y", "O" },
+            thresholds = function(id) return recipes[id].t end,
+            reagents = function(id) return recipes[id].r end,
+            price = function(item) return prices[item] end,
+        }).steps[1].recipeID
+    end
+    eq(first(80), "O", "yellow 80 x 4/3 > 100")
+    eq(first(75), "O", "a tie goes to the sure skill-up")
+    eq(first(60), "Y", "yellow 60 x 4/3 = 80: clearly cheaper")
 end)
 
 test("planner: stops when nothing gives skill-ups; trainer recipes wait for their skill", function()
