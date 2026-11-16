@@ -6,6 +6,7 @@ self = false
 
 exclude_files = {
     "Tradebook/Libs/",
+    "dev/TradebookDev/LastImport.lua", -- local, written by scripts/research/mark_import.lua
     "spikes/",
     ".release/",
     "scripts/lfs_shim/",

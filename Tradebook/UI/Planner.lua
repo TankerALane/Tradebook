@@ -129,6 +129,32 @@ function PlannerUI.Refresh()
 
     -- Steps.
     pane:Add({ text = L.PLAN_STEPS, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(plan.cost) })
+    -- A step's own materials for its tooltip: need / have / buy, like the totals below.
+    local function needHave(m)
+        local buy = math.max(0, m.need - m.have)
+        local right = L.PLAN_NEED_HAVE:format(m.need, math.min(m.have, m.need))
+        if buy > 0 then right = right .. "  " .. W.ColorText(W.RED, L.PLAN_BUY:format(buy)) end
+        return right
+    end
+    local function stepTooltip(step, r)
+        local lines = { r.n }
+        local ids = {}
+        for itemID in pairs(step.materials or {}) do ids[#ids + 1] = itemID end
+        table.sort(ids, function(a, b)
+            return (Compat.ItemInfo(a) or tostring(a)) < (Compat.ItemInfo(b) or tostring(b))
+        end)
+        if #ids > 0 then
+            lines[#lines + 1] = W.ColorText(W.GOLD, L.PLAN_STEP_MATERIALS:format(step.crafts))
+            for _, itemID in ipairs(ids) do
+                local tex = Compat.Call("C_Item.GetItemIconByID", itemID)
+                local name = (tex and ("|T" .. tex .. ":0|t ") or "") .. (Compat.ItemInfo(itemID) or ("item:" .. itemID))
+                lines[#lines + 1] = { "  " .. name, needHave(step.materials[itemID]) }
+            end
+        end
+        lines[#lines + 1] = W.ColorText(W.GREY, L.PLAN_STEP_TIP)
+        return lines
+    end
+
     local entries = {}
     for _, step in ipairs(plan.steps) do
         local r = ns.db.recipes[step.recipeID]
@@ -138,7 +164,7 @@ function PlannerUI.Refresh()
         pane:Add({ indent = 1, itemID = r.o, spellID = not r.o and step.recipeID or nil, icon = r.i,
             text = text, right = right,
             onClick = function() ns.UI.OpenRecipe(step.recipeID, popup.charKey, true) end,
-            tooltip = { r.n, L.PLAN_STEP_TIP } })
+            tooltip = function() return stepTooltip(step, r) end })
         entries[#entries + 1] = { recipeID = step.recipeID, times = step.crafts }
     end
     if plan.reached < plan.target then
@@ -156,11 +182,8 @@ function PlannerUI.Refresh()
     if #ids > 0 then
         pane:Add({ text = L.PLAN_MATERIALS, font = "GameFontNormal", color = W.GOLD })
         for _, itemID in ipairs(ids) do
-            local m = plan.materials[itemID]
-            local buy = math.max(0, m.need - m.have)
-            local right = L.PLAN_NEED_HAVE:format(m.need, math.min(m.have, m.need))
-            if buy > 0 then right = right .. "  " .. W.ColorText(W.RED, L.PLAN_BUY:format(buy)) end
-            pane:Add({ indent = 1, itemID = itemID, text = Compat.ItemInfo(itemID) or ("item:" .. itemID), right = right })
+            pane:Add({ indent = 1, itemID = itemID, text = Compat.ItemInfo(itemID) or ("item:" .. itemID),
+                right = needHave(plan.materials[itemID]) })
         end
     end
     pane:Finish()

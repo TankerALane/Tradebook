@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Leveling plan
+- Hover a step to see the materials for just that step: need, have and buy, like the totals below. What you have is used by the earlier steps first.
+
 ## v1.2.0
 
 ### Disenchanting

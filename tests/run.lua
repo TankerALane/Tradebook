@@ -1029,6 +1029,27 @@ test("planner: orange first unless yellow is clearly cheaper; ties go to orange"
     eq(first(60), "Y", "yellow 60 x 4/3 = 80: clearly cheaper")
 end)
 
+test("planner: each step has its own materials (need, and what you have used first)", function()
+    local recipes = {
+        A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
+        B = { t = { 110, 120, 130 }, r = { { itemID = 2, count = 2 } } },
+    }
+    local plan = ns.Planner.Plan({
+        rank = 100, target = 110, recipes = { "A", "B" },
+        thresholds = function(id) return recipes[id].t end,
+        reagents = function(id) return recipes[id].r end,
+        price = function(item) return ({ [1] = 10, [2] = 30 })[item] end,
+        inventory = { [2] = 5 }, -- 2 crafts of B (and one left over)
+    })
+    -- Steps: B 100-102 (owned), A 102-104, B 104-110 (see the plan test above).
+    local first, last = plan.steps[1], plan.steps[3]
+    eq(first.materials[2].need, 4)
+    eq(first.materials[2].have, 4, "the first B step uses what you have")
+    eq(last.materials[2].need, last.crafts * 2)
+    eq(last.materials[2].have, 1, "the one left over goes to the next B step")
+    eq(plan.steps[2].materials[1].have, 0)
+end)
+
 test("planner: stops when nothing gives skill-ups; trainer recipes wait for their skill", function()
     local plan = ns.Planner.Plan({
         rank = 100, target = 120, recipes = { 1, 2 },
