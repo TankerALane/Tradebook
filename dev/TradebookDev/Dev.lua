@@ -708,41 +708,96 @@ end
 
 -- Heard notifications ----------------------------------------------------
 
-local heardPending = {} -- [who] = { vendors, trainers, confirms, disenchants }
+local heardPending = {} -- [who] = { vendors, trainers, confirmed, deBands } (see Dev.HeardLines)
 local playerNumbers, playerCount = {}, 0
 
--- PURE. One notification line from what a player shared: { vendors = { [npc] = name },
--- trainers = { [npc] = name }, confirms, disenchants }; isNew(kind, npc) marks new NPCs.
-function Dev.HeardText(label, h, isNew)
-    local parts = {}
-    local function npcs(list, kind, one, many)
-        local names, n = {}, 0
-        for npc, name in pairs(list) do
-            n = n + 1
-            names[#names + 1] = isNew(kind, npc) and ("|cff40ff40NEW|r " .. name) or name
-        end
-        if n == 0 then return end
-        table.sort(names)
-        if #names > 6 then names = { table.concat(names, ", ", 1, 6) .. ", +" .. (#names - 6) } end
-        parts[#parts + 1] = ("%d %s (%s)"):format(n, n == 1 and one or many, table.concat(names, ", "))
-    end
-    npcs(h.vendors, "vendor", "vendor", "vendors")
-    npcs(h.trainers, "trainer", "trainer", "trainers")
-    if h.confirms > 0 then parts[#parts + 1] = ("%d confirmed again"):format(h.confirms) end
-    if h.disenchants > 0 then parts[#parts + 1] = ("disenchants for %d bands"):format(h.disenchants) end
-    if #parts == 0 then return nil end
-    return label .. ": " .. table.concat(parts, "; ")
+local GREEN_NEW, YELLOW_DIFFERS = "|cff40ff40NEW|r ", "|cffffd100DIFFERS|r "
+local MAX_LIST = 6
+
+local function size(t)
+    local n = 0
+    for _ in pairs(t or {}) do n = n + 1 end
+    return n
 end
 
--- PURE. What kinds of data came in, for the on-screen message: "2 vendors, disenchants".
-function Dev.HeardKinds(h)
+-- A list cut to MAX_LIST entries ("..., +3 more").
+local function joinList(items)
+    table.sort(items)
+    if #items > MAX_LIST then
+        local more = #items - MAX_LIST
+        for i = #items, MAX_LIST + 1, -1 do items[i] = nil end
+        items[#items + 1] = "+" .. more .. " more"
+    end
+    return table.concat(items, ", ")
+end
+
+-- PURE. The notification, one line per kind of data, from what a player shared:
+--   h = { vendors = { [npc] = { name, items, map } }, trainers = { [npc] = { name, skill, services } },
+--         confirmed = { ["kind:npc"] = { kind, npc } }, deBands = { [band] = { n, mats } } }
+--   ctx = { isNew(kind, npc), mapName(m), profName(skill), npcName(kind, npc), bandLabel(band),
+--           deStatus(band, rec) -> { new = bool, differs = bool }, itemName(id) }
+-- Returns a list of lines (the first is the header), or nil when nothing came in.
+function Dev.HeardLines(label, h, ctx)
+    local lines = {}
+    local vendors = {}
+    for npc, v in pairs(h.vendors or {}) do
+        local where = v.map and ctx.mapName(v.map)
+        vendors[#vendors + 1] = (ctx.isNew("vendor", npc) and GREEN_NEW or "") .. v.name
+            .. (" (%d items%s)"):format(v.items or 0, where and (", " .. where) or "")
+    end
+    if #vendors > 0 then
+        lines[#lines + 1] = ("  %d %s: %s"):format(#vendors, #vendors == 1 and "vendor" or "vendors", joinList(vendors))
+    end
+    local trainers = {}
+    for npc, t in pairs(h.trainers or {}) do
+        local prof = t.skill and ctx.profName(t.skill)
+        trainers[#trainers + 1] = (ctx.isNew("trainer", npc) and GREEN_NEW or "") .. t.name
+            .. (" (%s%d services)"):format(prof and (prof .. ", ") or "", t.services or 0)
+    end
+    if #trainers > 0 then
+        lines[#lines + 1] = ("  %d %s: %s"):format(#trainers, #trainers == 1 and "trainer" or "trainers", joinList(trainers))
+    end
+    local confirmed = {}
+    for _, c in pairs(h.confirmed or {}) do confirmed[#confirmed + 1] = ctx.npcName(c.kind, c.npc) end
+    if #confirmed > 0 then lines[#lines + 1] = ("  %d confirmed again: %s"):format(#confirmed, joinList(confirmed)) end
+    local bands = {}
+    for band in pairs(h.deBands or {}) do bands[#bands + 1] = band end
+    table.sort(bands)
+    local de = {}
+    for _, band in ipairs(bands) do
+        local rec = h.deBands[band]
+        local status = ctx.deStatus(band, rec)
+        local mats = {}
+        for id, m in pairs(rec.mats or {}) do
+            mats[#mats + 1] = ("%s x%s"):format(ctx.itemName(id), m.lo == m.hi and m.lo or (m.lo .. "-" .. m.hi))
+        end
+        table.sort(mats)
+        de[#de + 1] = (status.new and GREEN_NEW or "") .. (status.differs and YELLOW_DIFFERS or "")
+            .. ("%s: %d (%s)"):format(ctx.bandLabel(band), rec.n, table.concat(mats, ", "))
+    end
+    if #de > 0 then
+        if #de > MAX_LIST then
+            local more = #de - MAX_LIST
+            for i = #de, MAX_LIST + 1, -1 do de[i] = nil end
+            de[#de + 1] = "+" .. more .. " more bands"
+        end
+        lines[#lines + 1] = ("  Disenchants, %d %s: %s"):format(#bands, #bands == 1 and "band" or "bands", table.concat(de, "; "))
+    end
+    if #lines == 0 then return nil end
+    table.insert(lines, 1, label .. ":")
+    return lines
+end
+
+-- PURE. What kinds of data came in, for the on-screen message: "2 vendors (1 new), disenchants".
+function Dev.HeardKinds(h, newVendors, newTrainers, newBands)
     local kinds = {}
-    local function n(t) local c = 0 for _ in pairs(t) do c = c + 1 end return c end
-    local v, t = n(h.vendors), n(h.trainers)
-    if v > 0 then kinds[#kinds + 1] = v .. (v == 1 and " vendor" or " vendors") end
-    if t > 0 then kinds[#kinds + 1] = t .. (t == 1 and " trainer" or " trainers") end
-    if h.confirms > 0 then kinds[#kinds + 1] = h.confirms .. " confirmations" end
-    if h.disenchants > 0 then kinds[#kinds + 1] = "disenchants" end
+    local v, t, c = size(h.vendors), size(h.trainers), size(h.confirmed)
+    local function new(n) return (n or 0) > 0 and (" (" .. n .. " new)") or "" end
+    if v > 0 then kinds[#kinds + 1] = v .. (v == 1 and " vendor" or " vendors") .. new(newVendors) end
+    if t > 0 then kinds[#kinds + 1] = t .. (t == 1 and " trainer" or " trainers") .. new(newTrainers) end
+    if c > 0 then kinds[#kinds + 1] = c .. " confirmations" end
+    local b = size(h.deBands)
+    if b > 0 then kinds[#kinds + 1] = "disenchants for " .. b .. (b == 1 and " band" or " bands") .. new(newBands) end
     return table.concat(kinds, ", ")
 end
 
@@ -753,11 +808,52 @@ local function isNew(kind, npc)
     return not ((ns.db.trainers and ns.db.trainers[npc]) or (ns.CommunityTrainers and ns.CommunityTrainers[npc]))
 end
 
+local QUALITY = { [2] = "green", [3] = "blue", [4] = "purple" }
+local function bandOf(id)
+    for _, b in ipairs(ns.DisenchantBands or {}) do if b[7] == id then return b end end
+    return nil
+end
+
+-- What the notification needs from Tradebook (names, places, disenchant bands).
+local function context()
+    return {
+        isNew = isNew,
+        mapName = function(m)
+            local map = _G.C_Map
+            local info = map and map.GetMapInfo and map.GetMapInfo(m)
+            return info and info.name or nil
+        end,
+        profName = function(skill)
+            local p = ns.Professions.Get(skill)
+            return p and (ns.L[p.name] or p.name) or nil
+        end,
+        npcName = function(kind, npc)
+            local e = kind == "vendor" and ((ns.db.vendors and ns.db.vendors[npc]) or (ns.CommunityVendors and ns.CommunityVendors[npc]))
+                or ((ns.db.trainers and ns.db.trainers[npc]) or (ns.CommunityTrainers and ns.CommunityTrainers[npc]))
+            return e and e.name or ("NPC " .. npc)
+        end,
+        bandLabel = function(band)
+            local b = bandOf(band)
+            if not b then return "band " .. band end
+            return ("%s %s %d-%d"):format(QUALITY[b[2]] or "?", b[1] == 2 and "weapon" or "armor", b[3], b[4])
+        end,
+        -- NEW: nobody's results for this band yet (yours or the shipped database). DIFFERS: what
+        -- this player got doesn't fit the classic table.
+        deStatus = function(band, rec)
+            local b = bandOf(band)
+            local new = not ((ns.db.disenchants and ns.db.disenchants[band]) or (ns.CommunityDisenchants and ns.CommunityDisenchants[band]))
+            local classic = b and ns.Disenchant.Classic(ns.DisenchantClassic, b[1], b[2], b[3])
+            return { new = new, differs = classic ~= nil and not ns.Disenchant.Fits(classic, rec) }
+        end,
+        itemName = function(id) return ns.Compat.ItemInfo(id) or ("item " .. id) end,
+    }
+end
+
 -- PURE. Totals of log entries after `since`: { vendors, newVendors, trainers, newTrainers,
 -- confirms, disenchantPlayers, players, messages }.
 function Dev.SinceImport(log, since)
     local out = { vendors = 0, newVendors = 0, trainers = 0, newTrainers = 0, confirms = 0,
-        disenchantPlayers = 0, players = 0, messages = 0 }
+        disenchantPlayers = 0, players = 0, messages = 0, newBands = 0, differs = 0 }
     local players, dePlayers = {}, {}
     for _, e in ipairs(log or {}) do
         if (e.at or 0) > (since or 0) then
@@ -767,6 +863,8 @@ function Dev.SinceImport(log, since)
             out.confirms = out.confirms + (e.c or 0)
             if e.who then players[e.who] = true end
             if (e.d or 0) > 0 and e.who then dePlayers[e.who] = true end
+            out.newBands = out.newBands + (e.dn or 0)
+            out.differs = out.differs + (e.dd or 0)
         end
     end
     for _ in pairs(players) do out.players = out.players + 1 end
@@ -781,7 +879,13 @@ function Dev.SinceText(s, lastImport)
     if s.vendors > 0 then parts[#parts + 1] = ("%d vendors (%d new)"):format(s.vendors, s.newVendors) end
     if s.trainers > 0 then parts[#parts + 1] = ("%d trainers (%d new)"):format(s.trainers, s.newTrainers) end
     if s.confirms > 0 then parts[#parts + 1] = ("%d confirmations"):format(s.confirms) end
-    if s.disenchantPlayers > 0 then parts[#parts + 1] = ("disenchants from %d players"):format(s.disenchantPlayers) end
+    if s.disenchantPlayers > 0 then
+        local extra = {}
+        if s.newBands > 0 then extra[#extra + 1] = s.newBands .. " new bands" end
+        if s.differs > 0 then extra[#extra + 1] = s.differs .. " differing from classic" end
+        parts[#parts + 1] = ("disenchants from %d players%s"):format(s.disenchantPlayers,
+            #extra > 0 and (" (" .. table.concat(extra, ", ") .. ")") or "")
+    end
     local when = lastImport and lastImport > 0 and date("%b %d %H:%M", lastImport) or "ever"
     return ("Since the last import (%s): %s, from %d players"):format(when, table.concat(parts, ", "), s.players)
 end
@@ -793,7 +897,7 @@ local function countText()
 end
 
 -- Keep what another player sent in the log (counted until the next import).
-local function logHeard(who, h)
+local function logHeard(who, h, ctx)
     local d = db()
     d.heardLog = d.heardLog or {}
     local function n(t, kind)
@@ -806,26 +910,36 @@ local function logHeard(who, h)
     end
     local v, vn = n(h.vendors, "vendor")
     local t, tn = n(h.trainers, "trainer")
-    table.insert(d.heardLog, { at = GetServerTime(), who = who, v = v, vn = vn, t = t, tn = tn, c = h.confirms, d = h.disenchants })
+    local dn, dd = 0, 0
+    for band, rec in pairs(h.deBands) do
+        local st = ctx.deStatus(band, rec)
+        if st.new then dn = dn + 1 end
+        if st.differs then dd = dd + 1 end
+    end
+    table.insert(d.heardLog, { at = GetServerTime(), who = who, v = v, vn = vn, t = t, tn = tn,
+        c = size(h.confirmed), d = size(h.deBands), dn = dn, dd = dd })
     while #d.heardLog > 2000 do table.remove(d.heardLog, 1) end
+    return vn, tn, dn
 end
 
 local function flushHeard(who)
     local h = heardPending[who]
     heardPending[who] = nil
     if not h then return end
-    logHeard(who, h)
+    local ctx = context()
+    local vn, tn, dn = logHeard(who, h, ctx) -- before the NEW marks: logging doesn't change them
     if db().notify == false then return end
     if not playerNumbers[who] then
         playerCount = playerCount + 1
         playerNumbers[who] = playerCount
     end
-    local text = Dev.HeardText("Another player (#" .. playerNumbers[who] .. ")", h, isNew)
-    if not text then return end
-    print("|cff33ff99Tradebook Dev|r heard " .. text)
+    local lines = Dev.HeardLines("Another player (#" .. playerNumbers[who] .. ")", h, ctx)
+    if not lines then return end
+    print("|cff33ff99Tradebook Dev|r heard " .. lines[1])
+    for i = 2, #lines do print(lines[i]) end
     local errors = _G.UIErrorsFrame
     if errors and errors.AddMessage then
-        errors:AddMessage("Tradebook: " .. Dev.HeardKinds(h) .. " from another player", 0.2, 1, 0.6)
+        errors:AddMessage("Tradebook: " .. Dev.HeardKinds(h, vn, tn, dn) .. " from another player", 0.2, 1, 0.6)
     end
     if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
     local since = countText()
@@ -835,13 +949,13 @@ end
 local function onHeard(who, info)
     local h = heardPending[who]
     if not h then
-        h = { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }
+        h = { vendors = {}, trainers = {}, confirmed = {}, deBands = {} }
         heardPending[who] = h
     end
-    for npc, name in pairs(info.vendors or {}) do h.vendors[npc] = name end
-    for npc, name in pairs(info.trainers or {}) do h.trainers[npc] = name end
-    h.confirms = h.confirms + (info.confirms or 0)
-    h.disenchants = math.max(h.disenchants, info.disenchants or 0)
+    for npc, v in pairs(info.vendors or {}) do h.vendors[npc] = v end
+    for npc, t in pairs(info.trainers or {}) do h.trainers[npc] = t end
+    for _, c in ipairs(info.confirmed or {}) do h.confirmed[c.kind .. ":" .. c.npc] = c end
+    for band, rec in pairs(info.deBands or {}) do h.deBands[band] = rec end
     -- A player's backlog arrives one NPC a second or so: one notification for the lot.
     ns.Throttle("dev:heard:" .. who, 5, function() flushHeard(who) end)
 end

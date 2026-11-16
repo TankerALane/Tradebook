@@ -1246,14 +1246,32 @@ end)
 test("dev: heard notifications say what came in, marking new NPCs", function()
     SlashCmdList = SlashCmdList or {}
     assert(loadfile("dev/TradebookDev/Dev.lua"))()
-    local text = TradebookDev.HeardText("Another player (#1)",
-        { vendors = { [12027] = "Tukk", [3005] = "Mahu" }, trainers = { [11084] = "Tarn" }, confirms = 2, disenchants = 3 },
-        function(_, npc) return npc == 12027 or npc == 11084 end)
-    assert(text:find("2 vendors (Mahu, |cff40ff40NEW|r Tukk)", 1, true), text)
-    assert(text:find("1 trainer (|cff40ff40NEW|r Tarn)", 1, true), text)
-    assert(text:find("2 confirmed again", 1, true), text)
-    assert(text:find("disenchants for 3 bands", 1, true), text)
-    eq(TradebookDev.HeardText("x", { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }, function() end), nil)
+    local ctx = {
+        isNew = function(_, npc) return npc == 12027 or npc == 11084 end,
+        mapName = function(m) return m == 1454 and "Orgrimmar" or nil end,
+        profName = function() return "Leatherworking" end,
+        npcName = function(_, npc) return npc == 3005 and "Mahu" or "Keena" end,
+        bandLabel = function(band) return band == 7 and "green weapon 21-25" or "green armor 5-15" end,
+        deStatus = function(band) return { new = band == 7, differs = band == 7 } end,
+        itemName = function(id) return id == 10939 and "Greater Magic Essence" or "Strange Dust" end,
+    }
+    local lines = TradebookDev.HeardLines("Another player (#1)", {
+        vendors = { [12027] = { name = "Tukk", items = 12, map = 1454 }, [3005] = { name = "Mahu", items = 27 } },
+        trainers = { [11084] = { name = "Tarn", skill = 165, services = 17 } },
+        confirmed = { ["vendor:3005"] = { kind = "vendor", npc = 3005 }, ["vendor:2821"] = { kind = "vendor", npc = 2821 } },
+        deBands = { [7] = { n = 2, mats = { [10939] = { t = 2, q = 3, lo = 1, hi = 2 } } },
+            [4] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } },
+    }, ctx)
+    local text = table.concat(lines, "\n")
+    eq(lines[1], "Another player (#1):")
+    assert(text:find("2 vendors: Mahu (27 items), |cff40ff40NEW|r Tukk (12 items, Orgrimmar)", 1, true), text)
+    assert(text:find("1 trainer: |cff40ff40NEW|r Tarn (Leatherworking, 17 services)", 1, true), text)
+    assert(text:find("2 confirmed again: Keena, Mahu", 1, true), text)
+    assert(text:find("Disenchants, 2 bands: green armor 5-15: 1 (Strange Dust x1); "
+        .. "|cff40ff40NEW|r |cffffd100DIFFERS|r green weapon 21-25: 2 (Greater Magic Essence x1-2)", 1, true), text)
+    eq(TradebookDev.HeardLines("x", { vendors = {}, trainers = {}, confirmed = {}, deBands = {} }, ctx), nil)
+    eq(TradebookDev.HeardKinds({ vendors = { 1, 2 }, trainers = {}, confirmed = {}, deBands = { [7] = {} } }, 1, 0, 1),
+        "2 vendors (1 new), disenchants for 1 band (1 new)")
     -- What Tradebook reports it kept from a share text.
     local heard = {}
     local share = ns.Share.Encode({ [3005] = { name = "Mahu", seenAt = 100, items = { [2320] = { p = 10, s = -1 } },
@@ -1261,8 +1279,11 @@ test("dev: heard notifications say what came in, marking new NPCs", function()
         [4] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } } })
     local kept, info = ns.Net.Accept(heard, share, "p1", 200)
     eq(kept, 2)
-    eq(info.vendors[3005], "Mahu")
+    eq(info.vendors[3005].name, "Mahu")
+    eq(info.vendors[3005].items, 1)
+    eq(info.vendors[3005].map, 1456)
     eq(info.disenchants, 1)
+    eq(info.deBands[4].n, 1)
 end)
 
 test("dev: counts what came in since the last import", function()

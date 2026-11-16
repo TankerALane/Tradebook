@@ -242,11 +242,14 @@ function Net.Best(rec, matches)
 end
 
 -- PURE. Take one whole share text from player `who` into `heard`. Returns how many NPCs were
--- kept, and what: { vendors = { [npcID] = name }, trainers = { [npcID] = name }, confirms = n,
--- disenchants = bands } (for the maintainer's notifications, dev/TradebookDev).
+-- kept, and what (for the maintainer's notifications, dev/TradebookDev):
+--   { vendors = { [npcID] = { name, items = n, map = uiMapID } },
+--     trainers = { [npcID] = { name, skill, services = n } },
+--     confirmed = { { kind = "vendor" | "trainer", npc } }, confirms = n,
+--     deBands = { [bandID] = checked totals }, disenchants = n bands }
 function Net.Accept(heard, text, who, now)
     local vendors, trainers, confirmed, disenchants = ns.Share.Decode(text)
-    local info = { vendors = {}, trainers = {}, confirms = 0, disenchants = 0 }
+    local info = { vendors = {}, trainers = {}, confirmed = {}, confirms = 0, deBands = {}, disenchants = 0 }
     if not vendors then return 0, info end
     local kept = 0
     local bands, nb = {}, 0
@@ -257,20 +260,21 @@ function Net.Accept(heard, text, who, now)
     if nb > 0 and nb <= 200 then
         Net.RecordDisenchants(heard, bands, who, now)
         kept = kept + nb
-        info.disenchants = nb
+        info.disenchants, info.deBands = nb, bands
     end
     for npc, e in pairs(vendors) do
         local clean = okID(npc) and Net.CleanVendor(e, now)
         if clean and Net.Record(heard, "vendors", npc, clean, who, now) then
             kept = kept + 1
-            info.vendors[npc] = clean.name or "?"
+            info.vendors[npc] = { name = clean.name or "?", items = count(clean.items or {}),
+                map = clean.loc and clean.loc.m }
         end
     end
     for npc, t in pairs(trainers or {}) do
         local clean = okID(npc) and Net.CleanTrainer(t, now)
         if clean and Net.Record(heard, "trainers", npc, clean, who, now) then
             kept = kept + 1
-            info.trainers[npc] = clean.name or "?"
+            info.trainers[npc] = { name = clean.name or "?", skill = clean.skill, services = #(clean.services or {}) }
         end
     end
     heard.confirms = heard.confirms or { vendor = {}, trainer = {} }
@@ -282,6 +286,7 @@ function Net.Accept(heard, text, who, now)
             if not list[c.npc][who] or seen > list[c.npc][who] then list[c.npc][who] = seen end
             kept = kept + 1
             info.confirms = info.confirms + 1
+            info.confirmed[#info.confirmed + 1] = { kind = c.kind, npc = c.npc }
         end
     end
     return kept, info
