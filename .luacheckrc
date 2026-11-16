@@ -35,7 +35,7 @@ globals = {
 -- WoW API used (read-only)
 read_globals = {
     "_G", "NUM_CHAT_WINDOWS", "ChatFrame_RemoveChannel", "ChatFrameUtil", "C_AddOns", "C_Bank", "C_ClassColor", "C_Container", "C_GameRules", "C_Item", "C_QuestLog", "C_Spell",
-    "C_SpellBook", "C_Texture", "C_Timer", "C_TradeSkillUI", "C_Traits", "CLASS_ICON_TCOORDS", "ChatEdit_InsertLink",
+    "C_SpellBook", "C_Texture", "DEFAULT_CHAT_FRAME", "IsInGuild", "GetNumSubgroupMembers", "IsInRaid", "GetChannelList", "C_Timer", "C_TradeSkillUI", "C_Traits", "CLASS_ICON_TCOORDS", "ChatEdit_InsertLink",
     "Constants", "CreateColor", "CreateDataProvider", "CreateFrame", "CreateScrollBoxListLinearView", "Enum",
     "EventRegistry", "GameTooltip", "GameTooltip_Hide", "GetProfessionInfo", "GetProfessions", "GetRealmID",
     "GetRealmName", "GetServerTime", "GetTime", "HIGHLIGHT_FONT_COLOR", "HideUIPanel", "ITEM_QUALITY_COLORS",

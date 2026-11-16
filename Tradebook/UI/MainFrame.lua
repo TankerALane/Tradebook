@@ -457,21 +457,139 @@ local function buildHeader()
     bar.plan:SetScript("OnClick", function(self) if self.action then self.action() end end)
     W.Tooltip(bar.plan, { L.PLAN_BUTTON, L.PLAN_OPEN_TIP }, "ANCHOR_BOTTOM")
     bar.plan:Hide()
+    bar.link = UI.CreateLinkButton(frame)
+    bar.link:Hide()
     bar:Hide()
     frame.rankBar = bar
+end
+
+---------------------------------------------------------------------------
+-- Link button: post the open profession's recipe list in chat, like the default window's
+-- (C_TradeSkillUI.GetTradeSkillListLink; only while that profession is open).
+---------------------------------------------------------------------------
+
+local function professionLink()
+    return ns.Compat.Call("C_TradeSkillUI.GetTradeSkillListLink")
+end
+
+-- Put a link in the chat box: into the one being typed in, else open one with it.
+local function insertInChat(link)
+    local util = _G.ChatFrameUtil
+    if util and util.GetActiveWindow and util.GetActiveWindow() and util.InsertLink then
+        util.InsertLink(link)
+    elseif _G.ChatEdit_GetActiveWindow and _G.ChatEdit_GetActiveWindow() and _G.ChatEdit_InsertLink then
+        _G.ChatEdit_InsertLink(link)
+    elseif util and util.OpenChat then
+        util.OpenChat(link, DEFAULT_CHAT_FRAME)
+    elseif _G.ChatFrame_OpenChat then
+        _G.ChatFrame_OpenChat(link)
+    end
+end
+
+local function openChatWith(text)
+    local util = _G.ChatFrameUtil
+    if util and util.OpenChat then util.OpenChat(text, DEFAULT_CHAT_FRAME)
+    elseif _G.ChatFrame_OpenChat then _G.ChatFrame_OpenChat(text) end
+end
+
+-- Right-click: Guild, Party, Raid and your chat channels (as the default window offers).
+local function linkMenu(owner)
+    local menu = _G.MenuUtil
+    if not (menu and menu.CreateContextMenu) then return end
+    menu.CreateContextMenu(owner, function(_, root)
+        root:CreateTitle(_G.TRADESKILL_POST or L.LINK_POST)
+        local channels = {
+            { _G.SLASH_GUILD1 or "/g", _G.GUILD or "Guild", IsInGuild() },
+            { _G.SLASH_PARTY1 or "/p", _G.PARTY or "Party", (GetNumSubgroupMembers() or 0) > 0 },
+            { _G.SLASH_RAID1 or "/raid", _G.RAID or "Raid", IsInRaid() },
+        }
+        local list = { GetChannelList() }
+        for i = 1, #list, 3 do
+            local util = _G.ChatFrameUtil
+            local name = util and util.ResolveChannelName and util.ResolveChannelName(list[i + 1]) or list[i + 1]
+            -- Tradebook's own hidden sharing channel is no place for links.
+            if not (ns.Net and ns.Net.CHANNEL and tostring(list[i + 1]) == ns.Net.CHANNEL) then
+                channels[#channels + 1] = { "/" .. list[i], name, not list[i + 2] }
+            end
+        end
+        for _, ch in ipairs(channels) do
+            local button = root:CreateButton(ch[2], function()
+                local link = professionLink()
+                if link then openChatWith(ch[1] .. " " .. link) end
+            end)
+            button:SetEnabled(ch[3] and true or false)
+        end
+    end)
+end
+
+function UI.CreateLinkButton(parent)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(23, 23)
+    b.bg = b:CreateTexture(nil, "BACKGROUND")
+    b.bg:SetPoint("CENTER")
+    b.icon = b:CreateTexture(nil, "ARTWORK")
+    b.icon:SetPoint("CENTER")
+    local function art()
+        local enabled, over = b:IsEnabled(), b:IsMouseOver()
+        b.icon:SetAtlas(enabled and "common-icon-chatlink" or "common-icon-chatlink-disable", true)
+        b.bg:SetAtlas(not enabled and "common-button-tertiary-square-disabled"
+            or (b.down and over and "common-button-tertiary-square-pressed")
+            or (over and "common-button-tertiary-square-hover") or "common-button-tertiary-square-normal", true)
+    end
+    b.UpdateArt = art
+    b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    b:SetScript("OnMouseDown", function() b.down = true; art() end)
+    b:SetScript("OnMouseUp", function() b.down = false; art() end)
+    b:SetScript("OnEnable", art)
+    b:SetScript("OnDisable", art)
+    b:SetScript("OnShow", art)
+    b:SetScript("OnEnter", function(self)
+        art()
+        GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+        GameTooltip:SetText(_G.LINK_TRADESKILL_TOOLTIP or L.LINK_TIP, nil, nil, nil, nil, true)
+        if not self:IsEnabled() and self.disabledTip then
+            GameTooltip:AddLine(self.disabledTip, 1, 0.3, 0.3, true)
+        else
+            GameTooltip:AddLine(L.LINK_RIGHT_CLICK, nil, nil, nil, true)
+        end
+        GameTooltip:Show()
+    end)
+    b:SetScript("OnLeave", function() art(); GameTooltip_Hide() end)
+    b:SetMotionScriptsWhileDisabled(true)
+    b:SetScript("OnClick", function(self, button)
+        PlaySound(SOUNDKIT and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or 856)
+        if button == "RightButton" then
+            linkMenu(self)
+            return
+        end
+        local link = professionLink()
+        if link then insertInChat(link) end
+    end)
+    return b
 end
 
 -- Show the skill bar for a character's profession, or hide it (rank == nil).
 -- label: shown in front of the numbers (the profession name).
 -- rankUp: { text, onClick, plan } : text shows the "Train <rank>" button, plan the
 -- "Leveling plan" button, onClick opens the rank window from a click on the bar.
-function UI.SetRankBar(rank, max, tip, label, rankUp)
+-- link: { live = bool, disabledTip } shows the Link button (your own profession), enabled
+-- while that profession is open.
+function UI.SetRankBar(rank, max, tip, label, rankUp, link)
     local bar = frame and frame.rankBar
     if not bar then return end
     local shown = rank and max and max > 0
     local showTrain = shown and rankUp ~= nil and rankUp.text ~= nil
     local showPlan = shown and rankUp ~= nil and rankUp.plan ~= nil
+    local showLink = shown and link ~= nil
     bar.rankUp:SetShown(showTrain)
+    bar.link:SetShown(showLink)
+    if showLink then
+        bar.link:SetEnabled(link.live and true or false)
+        bar.link.disabledTip = link.disabledTip
+        bar.link:UpdateArt()
+        bar.link:ClearAllPoints()
+        bar.link:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -6 or -14, -3)
+    end
     bar.plan:SetShown(showPlan)
     bar.open = rankUp and rankUp.onClick
     if showTrain then
@@ -486,7 +604,11 @@ function UI.SetRankBar(rank, max, tip, label, rankUp)
     -- The bar fills the space between whichever buttons show.
     bar:ClearAllPoints()
     bar:SetPoint("LEFT", showPlan and bar.plan or bar.leftEdge, "RIGHT", showPlan and 10 or 18, -3)
-    bar:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -10 or -18, -3)
+    if showLink then
+        bar:SetPoint("RIGHT", bar.link, "LEFT", -4, 0)
+    else
+        bar:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -10 or -18, -3)
+    end
     if not shown then
         bar:Hide()
         return

@@ -584,9 +584,14 @@ function View:Refresh()
 
     self.charBtn:SetText(c and W.ClassName(c) or "?")
     -- Skill bar in the header: the viewed character's rank in this profession.
+    -- Link button: your own profession (not gathering ones the game can't link).
+    local link
+    if isMe and prof and not pInfo.noRecipes and not ns.fake then
+        link = { live = self:IsLive(), disabledTip = L.LINK_OPEN_FIRST:format(profName) }
+    end
     ns.UI.SetRankBar(prof and prof.rank, prof and prof.max,
         prof and (profName .. " - " .. (c and ns.CharName(c.key) or "")), profName,
-        c and ns.RankUp.ButtonFor(c.key, self.skill))
+        c and ns.RankUp.ButtonFor(c.key, self.skill), link)
     View.friends = ns.Friends.For(self.skill)
     self.friendsBtn:SetShown(#View.friends > 0)
     self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))

@@ -326,6 +326,10 @@ L.RANKUP_BUTTON = "Train %s"
 
 -- Leveling planner
 L.PLAN_BUTTON = "Leveling plan"
+L.LINK_TIP = "Link this profession in chat"
+L.LINK_POST = "Post in"
+L.LINK_RIGHT_CLICK = "Right-click to post it in Guild, Party, Raid or a channel."
+L.LINK_OPEN_FIRST = "Open %s first (the button at the bottom) to link it."
 L.PLAN_OPEN_TIP = "The cheapest way to raise this skill to the cap, with the materials and a shopping list."
 L.PLAN_TITLE = "Leveling plan: %s"
 L.PLAN_FOR = "%s: %s %d to %d"
