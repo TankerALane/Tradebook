@@ -31,6 +31,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
 - **Recipe details**: materials with bag and bank counts (and which of your characters have them), the **nearest vendors** that sell each one with their price, a tree of craftable materials, and skill-up ranges ("orange until 125").
 - **Craft, quantity and Craft All.**
+- **Profession links**: click another player's profession link in chat and their recipes open in Tradebook, with materials, where to buy them and prices. The **link button** next to the skill bar posts your own profession in chat.
 - **Find Herbs and Find Minerals** on the Herbalism and Mining tabs: drag them to your action bars.
 
 ### Level up faster
