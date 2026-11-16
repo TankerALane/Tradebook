@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.0.1
+
 ### Leveling plan
 - **Orange from what you have first**: when you have the materials for an orange recipe (a sure skill-up), the plan uses it before anything else, so you level as far as your bags and bank take you without buying.
 - After that, the cheapest gold per skill point. Materials you have count for a little (a yellow recipe you have materials for no longer beats a cheaper orange one), and an orange recipe is chosen unless a yellow or green one is clearly cheaper (under 3/4 of its cost per point).
