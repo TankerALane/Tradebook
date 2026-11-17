@@ -11,11 +11,12 @@ Confirmations (C and CT lines): a player's scan still matched the shipped data, 
 date is sent; it moves the NPC's "last seen" date forward and counts as a report.
 
 Trainers (T and S lines): a trainer's name, profession and location come from its newest
-report; each service (recipe or rank) keeps its newest fields, with the highest cost reported
+report (except the name: see below); each service (recipe or rank) keeps its newest fields, with the highest cost reported
 (the price before reputation discounts).
 
 Merge rules, per vendor and item:
-  - a vendor's name and location come from its newest report;
+  - a vendor's location comes from its newest report; its name is kept once known (players
+    with a non-English game client report translated names: fix a name by hand);
   - an item's stock and token cost come from its newest report;
   - the gold price is the highest price reported (players with a reputation discount report less;
     the highest is the price before discounts);
@@ -111,7 +112,6 @@ def merge(db, vendors):
         old = db.setdefault(key, {"name": v["name"], "loc": v["loc"], "seenAt": 0, "reports": 0, "items": {}})
         old["reports"] = old.get("reports", 0) + 1
         if v["seenAt"] >= old.get("seenAt", 0):
-            old["name"] = v["name"]
             old["loc"] = v["loc"] or old.get("loc")
             old["seenAt"] = v["seenAt"]
         for item, it in v["items"].items():
@@ -151,7 +151,7 @@ def merge_trainers(db, trainers):
                                   "reports": 0, "services": {}})
         old["reports"] = old.get("reports", 0) + 1
         if t["seenAt"] >= old.get("seenAt", 0):
-            old["name"], old["skill"] = t["name"], t["skill"] or old.get("skill")
+            old["skill"] = t["skill"] or old.get("skill")
             old["loc"] = t["loc"] or old.get("loc")
             old["seenAt"] = t["seenAt"]
         for skey, fields in t["services"].items():
