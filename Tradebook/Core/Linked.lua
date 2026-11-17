@@ -38,10 +38,16 @@ end
 function Linked.Read()
     local linked, linkedName = Compat.Call("C_TradeSkillUI.IsTradeSkillLinked")
     if not linked and not Compat.Call("C_TradeSkillUI.IsTradeSkillGuild") then return nil end
-    if not Compat.Call("C_TradeSkillUI.IsTradeSkillReady") then return nil end
+    if not Compat.Call("C_TradeSkillUI.IsTradeSkillReady") then
+        ns.Debug("linked: list not ready yet")
+        return nil
+    end
     local base = Compat.Call("C_TradeSkillUI.GetBaseProfessionInfo")
     local skill = base and base.professionID
-    if not skill or skill == 0 or not ns.Professions.Get(skill) then return nil end
+    if not skill or skill == 0 or not ns.Professions.Get(skill) then
+        ns.Debug("linked: unknown profession", tostring(skill), base and base.professionName or "?")
+        return nil
+    end
     local ids = Compat.Call("C_TradeSkillUI.GetAllRecipeIDs") or Compat.Call("C_TradeSkillUI.GetFilteredRecipeIDs") or {}
     local learned, cached = {}, false
     for _, id in ipairs(ids) do
@@ -51,7 +57,10 @@ function Linked.Read()
             if info.learned then learned[id] = true end
         end
     end
-    if not next(learned) then return nil end
+    if not next(learned) then
+        ns.Debug("linked: no learned recipes in the list", #ids, "recipes")
+        return nil
+    end
     local name = type(linkedName) == "string" and linkedName ~= "" and linkedName or "?"
     local key = KEY_PREFIX .. name
     local c = Linked.char

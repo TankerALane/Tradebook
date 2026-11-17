@@ -247,7 +247,11 @@ end
 function Takeover.OnTradeSkillShow()
     if not Takeover.IsForeignView() then return end
     local f = frame()
-    if not (f and f:IsShown()) or not shouldTakeOver() then return end
+    if not (f and f:IsShown()) or not shouldTakeOver() then
+        ns.Debug("linked: not taking over", "frame=" .. tostring(f and f:IsShown()),
+            "takeOver=" .. tostring(shouldTakeOver()))
+        return
+    end
     local c, skill = ns.Linked.Read()
     if not c then return end
     if not state.hidden then hideDefault() end
