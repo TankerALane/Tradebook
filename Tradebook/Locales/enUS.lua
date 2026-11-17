@@ -388,6 +388,7 @@ L.UNLEARN_TIP = "Unlearn this profession. You lose your skill and every recipe y
 L.UNLEARN_CONFIRM = "The game asks you to type UNLEARN to confirm, so nothing happens by accident."
 L.PLAN_OPEN_TIP = "The cheapest way to raise this skill to the cap, with the materials and a shopping list."
 L.PLAN_TITLE = "Leveling plan: %s"
+L.PLAN_STEPS_SOME = "Steps (%d of %d ticked)"
 L.PLAN_FOR = "%s: %s %d to %d"
 L.PLAN_AT_CAP = "At the cap: train the next rank first."
 L.PLAN_TRAINER = "Include trainer recipes not learned yet"

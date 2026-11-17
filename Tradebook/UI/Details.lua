@@ -44,6 +44,7 @@ function Pane:Line()
     line:SetPoint("RIGHT", self.content, "RIGHT", 0, 0)
     line.item:Hide()
     line.toggle:Hide()
+    if line.check then line.check:Hide() end
     line.text:SetFontObject("GameFontHighlightSmall")
     line.text:SetTextColor(1, 1, 1)
     line.right:SetText("")
@@ -62,7 +63,8 @@ end
 -- Add a line: { indent, itemID, text, right, color, font, onClick, toggle = bool|nil, expanded, onToggle,
 -- tooltip, large = true for a big icon row (reagents, like the default window's slots),
 -- target = NPC name: clicking also targets it when nearby (secure button, out of combat),
--- rightAt = x: put the right value left-aligned at x instead of at the right edge }
+-- rightAt = x: put the right value left-aligned at x instead of at the right edge,
+-- check = bool|nil: a checkbox at the left, ticked or not; onCheck(on) when it's clicked }
 function Pane:Add(o)
     local line = self:Line()
     local height = o.large and LARGE_LINE_H or LINE_H
@@ -75,6 +77,21 @@ function Pane:Add(o)
         line.toggle:SetPoint("LEFT", x, 0)
         line.toggle:SetNormalAtlas(o.expanded and "Campaign_HeaderIcon_Open" or "Professions-Slot-Plus")
         line.toggle:SetScript("OnClick", o.onToggle)
+    end
+    if o.check ~= nil then
+        if not line.check then
+            line.check = CreateFrame("CheckButton", nil, line, "UICheckButtonTemplate")
+            line.check:SetSize(20, 20)
+        end
+        local check = line.check
+        check:Show()
+        check:ClearAllPoints()
+        check:SetPoint("LEFT", x - 2, 0)
+        check:SetChecked(o.check)
+        check:SetScript("OnClick", function(btn)
+            if o.onCheck then o.onCheck(btn:GetChecked() and true or false) end
+        end)
+        x = x + 20
     end
     -- Large rows always keep the "+" column so their icons line up with or without it.
     if o.toggle ~= nil or o.large then x = x + 16 end

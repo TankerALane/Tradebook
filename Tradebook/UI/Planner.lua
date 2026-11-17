@@ -18,6 +18,22 @@ local function settings()
     return s
 end
 
+-- Which steps are ticked, per character and profession: settings.planSel[charKey:skill] =
+-- { off = { [recipeID:to] = true } (unticked steps), firstTo = where the first step ended when
+-- the window closed }. Opening it again keeps the ticks, unless you've finished a step since
+-- (your skill reached firstTo): then every step is ticked again.
+local function selection(charKey, skill)
+    local s = settings()
+    s.planSel = s.planSel or {}
+    local key = charKey .. ":" .. skill
+    s.planSel[key] = s.planSel[key] or { off = {} }
+    return s.planSel[key]
+end
+
+local function stepKey(step)
+    return step.recipeID .. ":" .. step.to
+end
+
 local function ensure()
     if popup then return popup end
     popup = CreateFrame("Frame", "TradebookPlannerFrame", UIParent, "BasicFrameTemplateWithInset")
@@ -54,6 +70,13 @@ local function ensure()
     popup.note:SetPoint("RIGHT", popup, "RIGHT", -12, 0)
     popup.note:SetText(L.PLAN_NOTE)
     tinsert(UISpecialFrames, "TradebookPlannerFrame")
+    -- Remember where the first step ends, to know next time whether you finished a step.
+    popup:SetScript("OnHide", function(self)
+        if self.charKey and self.skill and self.firstTo ~= nil then
+            selection(self.charKey, self.skill).firstTo = self.firstTo or nil
+        end
+        self.firstTo = nil
+    end)
     popup:Hide()
     return popup
 end
@@ -128,9 +151,25 @@ function PlannerUI.Refresh()
     pane:Gap()
 
     -- Steps.
-    pane:Add({ text = L.PLAN_STEPS, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(plan.cost) })
+    -- Ticked steps count for the cost, the materials and the shopping list.
+    local sel = selection(popup.charKey, skill)
+    local ticked, cost, anyUnpriced, nTicked = {}, 0, false, 0
+    for i, step in ipairs(plan.steps) do
+        ticked[i] = not sel.off[stepKey(step)]
+        if ticked[i] then
+            nTicked = nTicked + 1
+            cost = cost + (step.cost or 0)
+            anyUnpriced = anyUnpriced or step.unpriced
+        end
+    end
+    -- Where the first step ended when the window opened (kept while it's open, so finishing a
+    -- step with the window open counts too).
+    if popup.firstTo == nil then popup.firstTo = plan.steps[1] and plan.steps[1].to or false end
+    local header = L.PLAN_STEPS
+    if nTicked < #plan.steps then header = L.PLAN_STEPS_SOME:format(nTicked, #plan.steps) end
+    pane:Add({ text = header, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(cost) })
     -- Need / have / buy, for the totals and a step's tooltip. Have: everything you have; buy:
-    -- what's missing (for a step, after the earlier steps used what you have).
+    -- what's missing (a step's tooltip counts that step on its own).
     local function needHave(m)
         local buy = m.buy or math.max(0, m.need - m.have)
         local right = L.PLAN_NEED_HAVE:format(m.need, m.have)
@@ -156,27 +195,45 @@ function PlannerUI.Refresh()
         return lines
     end
 
-    local entries = {}
-    for _, step in ipairs(plan.steps) do
+    local entries, totals = {}, {}
+    for i, step in ipairs(plan.steps) do
         local r = ns.db.recipes[step.recipeID]
         local text = L.PLAN_STEP:format(step.from, step.to, step.crafts, r.n)
         if step.learn then text = text .. "  " .. W.ColorText(W.GREY, L.PLAN_LEARN) end
         local right = step.unpriced and W.ColorText(W.GREY, L.PLAN_PRICE_UNKNOWN) or ns.Prices.Money(step.cost)
-        pane:Add({ indent = 1, itemID = r.o, spellID = not r.o and step.recipeID or nil, icon = r.i,
+        if not ticked[i] then
+            text, right = W.ColorText(W.GREY, (text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""))), ""
+        end
+        pane:Add({ indent = 0, itemID = r.o, spellID = not r.o and step.recipeID or nil, icon = r.i,
             text = text, right = right,
+            check = ticked[i],
+            onCheck = function(on)
+                sel.off[stepKey(step)] = (not on) or nil
+                PlannerUI.Refresh()
+            end,
             onClick = function() ns.UI.OpenRecipe(step.recipeID, popup.charKey, true, step.crafts) end,
             tooltip = function() return stepTooltip(step, r) end })
-        entries[#entries + 1] = { recipeID = step.recipeID, times = step.crafts }
+        if ticked[i] then
+            entries[#entries + 1] = { recipeID = step.recipeID, times = step.crafts }
+            for itemID, m in pairs(step.materials or {}) do
+                local t = totals[itemID]
+                if not t then
+                    t = { need = 0, have = m.have }
+                    totals[itemID] = t
+                end
+                t.need = t.need + m.need
+            end
+        end
     end
     if plan.reached < plan.target then
         pane:Add({ indent = 1, text = L.PLAN_STUCK:format(plan.reached), color = W.RED })
     end
-    if plan.unpriced then pane:Add({ indent = 1, text = L.PLAN_SOME_UNPRICED, color = W.GREY }) end
+    if anyUnpriced then pane:Add({ indent = 1, text = L.PLAN_SOME_UNPRICED, color = W.GREY }) end
     pane:Gap()
 
-    -- Materials for the whole plan.
+    -- Materials for the ticked steps.
     local ids = {}
-    for itemID in pairs(plan.materials) do ids[#ids + 1] = itemID end
+    for itemID in pairs(totals) do ids[#ids + 1] = itemID end
     table.sort(ids, function(a, b)
         return (Compat.ItemInfo(a) or tostring(a)) < (Compat.ItemInfo(b) or tostring(b))
     end)
@@ -184,7 +241,7 @@ function PlannerUI.Refresh()
         pane:Add({ text = L.PLAN_MATERIALS, font = "GameFontNormal", color = W.GOLD })
         for _, itemID in ipairs(ids) do
             pane:Add({ indent = 1, itemID = itemID, text = Compat.ItemInfo(itemID) or ("item:" .. itemID),
-                right = needHave(plan.materials[itemID]) })
+                right = needHave(totals[itemID]) })
         end
     end
     pane:Finish()
@@ -199,7 +256,18 @@ function PlannerUI.Show(charKey, skill)
         p:Hide()
         return
     end
+    -- Switching to another profession while open: remember the one being left, as closing would.
+    if p:IsShown() and p.charKey and p.skill and p.firstTo ~= nil then
+        selection(p.charKey, p.skill).firstTo = p.firstTo or nil
+    end
     p.charKey, p.skill = charKey, skill
+    -- Finished a step since it was last closed (your skill reached the end of its first
+    -- step): start again with every step ticked. Otherwise the ticks stay as they were.
+    local c = ns.db.characters[charKey]
+    local prof = c and c.professions[skill]
+    local sel = selection(charKey, skill)
+    if sel.firstTo and prof and (prof.rank or 0) >= sel.firstTo then sel.off = {} end
+    p.firstTo = nil
     p:Show()
     PlannerUI.Refresh()
 end

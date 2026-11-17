@@ -3,6 +3,8 @@
 ## Unreleased
 
 ### Leveling plan
+- **Tick the steps you want**: each step has a checkbox, all ticked at first. Untick steps to leave them out of the cost, the **Materials** list and the **Shopping list**, e.g. to buy only what you need for the next few steps.
+- Your ticks are kept when you close and reopen the plan. Once you've finished a step (your skill reached its end), the plan starts again with every step ticked.
 - A step's tooltip now counts **that step on its own**: with 18 Coarse Thread and a step needing 1, it says nothing to buy, even if an earlier step also uses thread. The Materials totals below still count the whole plan.
 
 ## v1.4.0
