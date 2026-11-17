@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Leveling plan
+- Fixed: a step's tooltip could say to buy 1 or 2 of a material you already have enough of (for example "need 16, have 15, buy 1" with 20 Empty Vials in your bags). It now counts whole items, in step order, matching the totals below.
+
 ### Data
 - New trainer: Rhiannon Davis (Tailoring, Undercity). Trainer data now covers 135 trainers.
 - The disenchant database now has 30 disenchants in 9 bands. New: blue armor of item level 26-30 (Large Glimmering Shard, which matches the classic table).

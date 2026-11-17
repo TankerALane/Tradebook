@@ -71,10 +71,8 @@ function Planner.Plan(opts)
         return total, unpricedUnits > 0, unpricedUnits
     end
 
-    -- Use up materials for `crafts` crafts (what you have first). Returns { [itemID] = from
-    -- what you have } for the step's own totals.
+    -- Use up materials for `crafts` crafts (what you have first), adding to the totals.
     local function useUp(id, crafts, materials)
-        local owned = {}
         for _, r in ipairs(opts.reagents(id)) do
             local need = r.count * crafts
             local m = materials[r.itemID]
@@ -83,10 +81,8 @@ function Planner.Plan(opts)
                 materials[r.itemID] = m
             end
             m.need = m.need + need
-            owned[r.itemID] = (owned[r.itemID] or 0) + math.min(need, inv[r.itemID] or 0)
             inv[r.itemID] = math.max(0, (inv[r.itemID] or 0) - need)
         end
-        return owned
     end
 
     -- For choosing: what `crafts` crafts cost to buy and what they use up of what you have
@@ -147,7 +143,7 @@ function Planner.Plan(opts)
         end
         if not best then break end -- nothing gives skill-ups any more
         local bestCost, bestUnpriced = costOf(best, bestCrafts)
-        local owned = useUp(best, bestCrafts, materials)
+        useUp(best, bestCrafts, materials)
         local last = steps[#steps]
         if last and last.recipeID == best then
             last.to = rank + 1
@@ -156,30 +152,31 @@ function Planner.Plan(opts)
             last.unpriced = last.unpriced or bestUnpriced
         else
             steps[#steps + 1] = { recipeID = best, from = rank, to = rank + 1, crafts = bestCrafts,
-                cost = bestCost, unpriced = bestUnpriced, learn = opts.learnAt and opts.learnAt(best) ~= nil,
-                owned = {} }
-            last = steps[#steps]
+                cost = bestCost, unpriced = bestUnpriced, learn = opts.learnAt and opts.learnAt(best) ~= nil }
         end
-        for itemID, n in pairs(owned) do last.owned[itemID] = (last.owned[itemID] or 0) + n end
         if not opts.noPrices then totalCost = totalCost + bestCost end
         anyUnpriced = anyUnpriced or bestUnpriced
         rank = rank + 1
     end
+    -- Each step's materials: what its whole crafts need, and how many of them you have, taking
+    -- from what you have in step order (whole crafts, so a step never shows a fraction of an
+    -- item as missing that the totals say you have).
+    local left = {}
+    for k, v in pairs(startInv) do left[k] = v end
     for _, s in ipairs(steps) do
         s.crafts = math.ceil(s.crafts - 1e-9)
-        -- This step's materials: what its (whole) crafts need, and how many of them you have.
         s.materials = {}
         for _, r in ipairs(opts.reagents(s.recipeID)) do
             local need = r.count * s.crafts
-            local have = math.min(need, math.floor((s.owned[r.itemID] or 0) + 1e-9))
+            local have = math.min(need, left[r.itemID] or 0)
+            left[r.itemID] = (left[r.itemID] or 0) - have
             local m = s.materials[r.itemID]
             if m then
-                m.need, m.have = m.need + need, math.min(m.need + need, m.have + have)
+                m.need, m.have = m.need + need, m.have + have
             else
                 s.materials[r.itemID] = { need = need, have = have }
             end
         end
-        s.owned = nil
     end
     for _, m in pairs(materials) do m.need = math.ceil(m.need - 1e-9) end
     return { steps = steps, materials = materials, cost = totalCost, unpriced = anyUnpriced,
