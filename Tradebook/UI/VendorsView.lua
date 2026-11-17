@@ -95,7 +95,9 @@ local function createRow(row)
     row.right:SetWordWrap(false)
     row:SetScript("OnClick", function(self)
         local d = self.data
-        if d.kind == "item" then
+        if d.kind == "item" and IsModifiedClick("CHATLINK") then
+            ns.UI.LinkItem(d.itemID)
+        elseif d.kind == "item" then
             if not d.best then return end -- no vendors to list
             View.expanded[d.itemID] = not View.expanded[d.itemID] or nil
             View:RefreshList()

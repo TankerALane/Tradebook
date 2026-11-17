@@ -618,6 +618,22 @@ local function insertInChat(link)
         openChatWith(link)
     end
 end
+UI.InsertInChat = insertInChat
+
+-- Shift-click an item: its link in the chat box (waits for the item's data when it isn't
+-- loaded yet).
+function UI.LinkItem(itemID)
+    local _, link = ns.Compat.ItemInfo(itemID)
+    if link then
+        insertInChat(link)
+    elseif _G.Item and _G.Item.CreateFromItemID then
+        local item = _G.Item:CreateFromItemID(itemID)
+        item:ContinueOnItemLoad(function()
+            local l = item:GetItemLink()
+            if l then insertInChat(l) end
+        end)
+    end
+end
 
 -- Right-click: Guild, Party, Raid and your chat channels (as the default window offers).
 local function linkMenu(owner)

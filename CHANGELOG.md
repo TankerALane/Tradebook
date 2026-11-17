@@ -4,6 +4,7 @@
 
 ### Vendors
 - The **Vendors tab finds any item**, not only what vendors sell. Items no vendor sells come after the vendor results with their **auction price** (Auctionator); items whose vendors are all left out by your filters say so. Finding items no vendor sells needs Questie (its item names are read while you play). To see only vendor items, tick "Only items vendors sell" in the Filter menu.
+- **Shift-click an item** in the Vendors tab to link it in chat.
 
 ### Data
 - New vendors: Ghrawt and Innkeeper Grosk (Durotar); Innkeeper Boorand Plainswind, Moorane Hearthgrain and Uthrok (The Barrens); Killian Sanatha (Silverpine Forest). 491 vendors, 6,459 items.
