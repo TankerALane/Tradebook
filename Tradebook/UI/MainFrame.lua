@@ -241,15 +241,19 @@ local function buildTabs()
         tab:SetText(tabLabel(key))
         tab.badge = tab:CreateFontString(nil, "OVERLAY", "GameFontNormalTiny")
         tab.badge:SetPoint("TOPRIGHT", -6, -4)
-        tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-        tab:SetScript("OnClick", function(self, button)
-            if button == "RightButton" then
-                if not RIGHT_TABS[self.key] then tabMenu(self) end
-                return
-            end
+        tab:SetScript("OnClick", function(self)
             PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
             UI.SelectTab(self.key, true)
         end)
+        -- Right-click menu on mouse-up: the selected tab is disabled by the tab template, and a
+        -- disabled button gets no clicks, but still gets mouse up/down.
+        tab:HookScript("OnMouseUp", function(self, button)
+            if button == "RightButton" and not RIGHT_TABS[self.key] and self:IsMouseOver() then
+                tabMenu(self)
+            end
+        end)
+        -- The tooltip (with the right-click hint) on the selected tab too.
+        tab:SetMotionScriptsWhileDisabled(true)
         tab:SetScript("OnEnter", tabTooltip)
         tab:SetScript("OnLeave", GameTooltip_Hide)
         tabs[i] = tab
