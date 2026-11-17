@@ -24,6 +24,9 @@ local db = assert(env.TradebookDB, "no TradebookDB in " .. svPath)
 local ns = { L = {}, Compat = {} }
 assert(loadfile("Tradebook/Data/DisenchantBands.lua"))("Tradebook", ns)
 assert(loadfile("Tradebook/Core/Disenchant.lua"))("Tradebook", ns)
+assert(loadfile("Tradebook/Core/Net.lua"))("Tradebook", ns)
+-- Your own disenchants passed back to you by other players aren't another player's.
+ns.Net.ForgetMine(db.heard, db.characters)
 
 local combined = ns.Disenchant.Combine(db.disenchants or {}, db.heard and db.heard.de or {})
 

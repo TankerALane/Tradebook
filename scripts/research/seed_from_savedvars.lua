@@ -17,6 +17,8 @@ end
 local env = {}
 assert(loadfile(sv, "t", env))()
 local db = env.TradebookDB or {}
+-- Your own characters' scans passed back to you don't count as another player.
+ns.Net.ForgetMine(db.heard, db.characters)
 local FAVOR = 3402 -- Merchant's Favor currency
 
 -- recipe -> its first recipe item

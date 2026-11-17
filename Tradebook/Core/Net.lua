@@ -130,6 +130,33 @@ function Net.OwnHashes(characters)
     return out
 end
 
+-- PURE. Drop what your own characters "reported" from heard data: your scans and disenchants
+-- passed back to you by other players (already saved, and they must not count as another
+-- player agreeing). Returns how many entries were removed.
+function Net.ForgetMine(heard, characters)
+    if not heard then return 0 end
+    local own, n = Net.OwnHashes(characters), 0
+    for _, kind in ipairs({ "vendors", "trainers" }) do
+        for npc, rec in pairs(heard[kind] or {}) do
+            for who in pairs(rec.reports or {}) do
+                if own[who] then rec.reports[who], n = nil, n + 1 end
+            end
+            if not next(rec.reports or {}) then heard[kind][npc] = nil end
+        end
+    end
+    for who in pairs(heard.de or {}) do
+        if own[who] then heard.de[who], n = nil, n + 1 end
+    end
+    for _, list in pairs(heard.confirms or {}) do
+        for _, byWho in pairs(list) do
+            for who in pairs(byWho) do
+                if own[who] then byWho[who], n = nil, n + 1 end
+            end
+        end
+    end
+    return n
+end
+
 -- Is `who` (a sender hash) one of your own characters?
 function Net.IsMine(who)
     return Net.OwnHashes(ns.db and ns.db.characters)[who] == true
@@ -865,6 +892,14 @@ function Net.Status()
 end
 
 function Net.Start()
+    -- Your own scans passed back to you earlier: drop them (Net.ForgetMine).
+    if ns.db and ns.db.heard then
+        local n = Net.ForgetMine(ns.db.heard, ns.db.characters)
+        if n > 0 then
+            changed()
+            ns.Debug("net: dropped", n, "of your own reports passed back to you")
+        end
+    end
     Compat.Call("C_ChatInfo.RegisterAddonMessagePrefix", Net.PREFIX)
     ns.On("CHAT_MSG_ADDON", onAddonMessage)
     ns.On("PLAYER_ENTERING_WORLD", function()

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Data
+- New vendors: Hagrus and Sovik (Orgrimmar), Grazlix (The Barrens), Zixil (Hillsbrad Foothills). 495 vendors, 6,511 items.
+- New trainers: Thund, Nogg and Roxxik (Engineering, Orgrimmar), Yelmak (Alchemy, Orgrimmar), Kil'hala (Tailoring, The Barrens). 143 trainers, 2,108 services.
+- Disenchanting: 40 disenchants in 12 bands.
+
 ### Sharing in game
 - **Catch up when you log in**: you no longer miss what other players shared while you were offline. A minute after you log in, Tradebook asks the players online, and one of them sends you the newest vendors and trainers of the last week, a little at a time. What arrives this way says "(unconfirmed)" until two players have each sent the same data themselves.
 - A report you already have isn't saved or announced again.

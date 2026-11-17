@@ -1623,6 +1623,19 @@ test("net: your own characters' hashes", function()
     eq(own[N.Hash("Bob-Jones")], true)
     eq(own[N.Hash("Bob")], true)
     eq(own[N.Hash("Cat Smith")], nil)
+    -- your own reports passed back to you are dropped from heard data
+    local me, other = N.Hash("Ann Smith"), "0badf00d"
+    local heard = { vendors = { [1] = { reports = { [me] = { at = 1, e = {} }, [other] = { at = 1, e = {} } } },
+        [2] = { reports = { [me] = { at = 1, e = {} } } } },
+        de = { [me] = { at = 1, bands = {} }, [other] = { at = 1, bands = {} } },
+        confirms = { vendor = { [5] = { [me] = 1, [other] = 1 } } } }
+    eq(N.ForgetMine(heard, { ["Ann-Smith"] = {} }), 4)
+    eq(heard.vendors[1].reports[me], nil)
+    assert(heard.vendors[1].reports[other])
+    eq(heard.vendors[2], nil, "nothing left of that NPC")
+    eq(heard.de[me], nil)
+    eq(heard.confirms.vendor[5][me], nil)
+    eq(heard.confirms.vendor[5][other], 1)
 end)
 
 test("net: a scan goes out again only when something changed", function()
