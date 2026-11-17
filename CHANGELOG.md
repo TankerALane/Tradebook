@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Professions
+- **Unlearn** a main profession from Tradebook: a red cross next to the skill bar (like the one in the default window's profession book), so you don't have to switch back to the default window. It opens the game's own confirmation, where you type UNLEARN. Not shown for Cooking, First Aid and Fishing (the game has no unlearn for them there either), or for other characters and linked professions.
+
 ## v1.2.2
 
 ### Leveling plan

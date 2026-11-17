@@ -461,6 +461,8 @@ local function buildHeader()
     bar.plan:Hide()
     bar.link = UI.CreateLinkButton(frame)
     bar.link:Hide()
+    bar.unlearn = UI.CreateUnlearnButton(frame)
+    bar.unlearn:Hide()
     bar:Hide()
     frame.rankBar = bar
 end
@@ -571,27 +573,81 @@ function UI.CreateLinkButton(parent)
     return b
 end
 
+---------------------------------------------------------------------------
+-- Unlearn button: the red cross the default window has next to a main profession's skill bar
+-- (its profession book page). It opens the game's own "Unlearn" pop-up, where you type UNLEARN
+-- to confirm, so nothing is unlearned by a stray click.
+---------------------------------------------------------------------------
+
+-- Whether the game's unlearn pop-up is there to use.
+function UI.CanUnlearn()
+    return _G.StaticPopupDialogs ~= nil and _G.StaticPopupDialogs.UNLEARN_SKILL ~= nil
+        and _G.StaticPopup_Show ~= nil
+end
+
+function UI.CreateUnlearnButton(parent)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(20, 20)
+    b.icon = b:CreateTexture(nil, "ARTWORK")
+    b.icon:SetPoint("CENTER")
+    b.icon:SetAtlas("Profession-button-red-crossmark", true)
+    b.pressed = b:CreateTexture(nil, "OVERLAY")
+    b.pressed:SetPoint("CENTER")
+    b.pressed:SetAtlas("Profession-button-red-crossmark-pressed", true)
+    b.pressed:Hide()
+    b:SetScript("OnMouseDown", function() b.pressed:Show() end)
+    b:SetScript("OnMouseUp", function() b.pressed:Hide() end)
+    b:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+        GameTooltip:SetText(L.UNLEARN_TITLE:format(self.name or "?"), 1, 0.3, 0.3)
+        GameTooltip:AddLine(_G.UNLEARN_SKILL_TOOLTIP or L.UNLEARN_TIP, nil, nil, nil, true)
+        GameTooltip:AddLine(L.UNLEARN_CONFIRM, nil, nil, nil, true)
+        GameTooltip:Show()
+    end)
+    b:SetScript("OnLeave", function() b.pressed:Hide(); GameTooltip_Hide() end)
+    b:SetScript("OnClick", function(self)
+        if not (self.skillLine and UI.CanUnlearn()) then return end
+        local popup = _G.InputUtil and _G.InputUtil.IsGamepadUIEnabled and _G.InputUtil.IsGamepadUIEnabled()
+            and _G.StaticPopupDialogs.UNLEARN_SKILL_GAMEPAD and "UNLEARN_SKILL_GAMEPAD" or "UNLEARN_SKILL"
+        _G.StaticPopup_Show(popup, self.name, nil, self.skillLine)
+    end)
+    return b
+end
+
 -- Show the skill bar for a character's profession, or hide it (rank == nil).
 -- label: shown in front of the numbers (the profession name).
 -- rankUp: { text, onClick, plan } : text shows the "Train <rank>" button, plan the
 -- "Leveling plan" button, onClick opens the rank window from a click on the bar.
 -- link: { live = bool, disabledTip } shows the Link button (your own profession), enabled
 -- while that profession is open.
-function UI.SetRankBar(rank, max, tip, label, rankUp, link)
+-- unlearn: { name, skillLine } shows the Unlearn button (your own main professions).
+function UI.SetRankBar(rank, max, tip, label, rankUp, link, unlearn)
     local bar = frame and frame.rankBar
     if not bar then return end
     local shown = rank and max and max > 0
     local showTrain = shown and rankUp ~= nil and rankUp.text ~= nil
     local showPlan = shown and rankUp ~= nil and rankUp.plan ~= nil
     local showLink = shown and link ~= nil
+    local showUnlearn = shown and unlearn ~= nil and UI.CanUnlearn()
     bar.rankUp:SetShown(showTrain)
     bar.link:SetShown(showLink)
+    bar.unlearn:SetShown(showUnlearn)
+    -- Right of the bar: [Unlearn] [Link] [Train <rank>], each when it applies.
+    local right, gap = bar.rightEdge, -14
+    if showTrain then right, gap = bar.rankUp, -6 end
     if showLink then
         bar.link:SetEnabled(link.live and true or false)
         bar.link.disabledTip = link.disabledTip
         bar.link:UpdateArt()
         bar.link:ClearAllPoints()
-        bar.link:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -6 or -14, -3)
+        bar.link:SetPoint("RIGHT", right, "LEFT", gap, -3)
+        right, gap = bar.link, -2
+    end
+    if showUnlearn then
+        bar.unlearn.name, bar.unlearn.skillLine = unlearn.name, unlearn.skillLine
+        bar.unlearn:ClearAllPoints()
+        bar.unlearn:SetPoint("RIGHT", right, "LEFT", gap, right == bar.link and 0 or -3)
+        right = bar.unlearn
     end
     bar.plan:SetShown(showPlan)
     bar.open = rankUp and rankUp.onClick
@@ -607,8 +663,8 @@ function UI.SetRankBar(rank, max, tip, label, rankUp, link)
     -- The bar fills the space between whichever buttons show.
     bar:ClearAllPoints()
     bar:SetPoint("LEFT", showPlan and bar.plan or bar.leftEdge, "RIGHT", showPlan and 10 or 18, -3)
-    if showLink then
-        bar:SetPoint("RIGHT", bar.link, "LEFT", -4, 0)
+    if showUnlearn or showLink then
+        bar:SetPoint("RIGHT", right, "LEFT", -2, 0)
     else
         bar:SetPoint("RIGHT", showTrain and bar.rankUp or bar.rightEdge, "LEFT", showTrain and -10 or -18, -3)
     end
