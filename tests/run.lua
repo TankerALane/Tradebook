@@ -145,6 +145,26 @@ test("migration v5: gathering tabs turned off become hidden tabs", function()
     eq(next(on.settings.tabLayout.shared and on.settings.tabLayout.shared.hidden or {}), nil)
 end)
 
+test("recipe list game order: learned, colour, higher level, name; categories by game order", function()
+    local list = {
+        { id = 1, name = "Zeta", learned = true, diff = 3, t = 50 },
+        { id = 2, name = "Alpha", learned = true, diff = 1, t = 60 },
+        { id = 3, name = "Beta", learned = true, diff = 1, t = 90 },
+        { id = 4, name = "Gamma", learned = true, diff = 0, t = 40 },
+        { id = 5, name = "Aaa", learned = false, diff = 0, t = 99 },
+        { id = 6, name = "Delta", learned = true, t = 70 }, -- colour unknown
+        { id = 7, name = "Able", learned = true, diff = 1, t = 60 },
+    }
+    table.sort(list, ns.Recipes.GameOrderLess)
+    local ids = {}
+    for i, it in ipairs(list) do ids[i] = it.id end
+    eq(table.concat(ids, ","), "4,3,7,2,1,6,5")
+    local cats = { "Cloth", "Bags", "Shirts", "Other" }
+    local o = { Cloth = 2, Bags = 5, Shirts = 1 }
+    table.sort(cats, function(a, b) return ns.Recipes.CategoryLess(a, b, o[a], o[b]) end)
+    eq(table.concat(cats, ","), "Shirts,Cloth,Bags,Other")
+end)
+
 test("tab layout: order, move, hide, per character", function()
     local TL = ns.TabLayout
     local keys = { 1, 2, 3, 4, "camp" }

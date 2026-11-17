@@ -229,7 +229,8 @@ function View:BuildItems()
 
     -- Browsing a profession nobody has: the game gives no category names while it's closed,
     -- so recipes are grouped by the rank they need instead (in rank order).
-    local rankOrder = {}
+    local rankOrder, catOrder = {}, {}
+    local gameOrder = (db.settings.listOrder or "game") == "game"
     local function rankGroup(id)
         local need = ns.Sources.Required(id)
         if not need then
@@ -251,7 +252,7 @@ function View:BuildItems()
         local r = db.recipes[id]
         if r.n and r.n ~= "" and (not self.query or ns.util.Matches(r.n, self.query)) then
             local learned = learnedMap[id] ~= nil
-            local item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = db.pinned[id] ~= nil }
+            local item = { id = id, name = r.n, icon = r.i, learned = learned, pinned = db.pinned[id] ~= nil, t = r.t }
             if live and learned then
                 -- Profession open: the game's own colour and skill-up count.
                 local info = Compat.Call("C_TradeSkillUI.GetRecipeInfo", id)
@@ -305,6 +306,7 @@ function View:BuildItems()
             elseif keep then
                 local cat = db.categories[r.c]
                 local group = cat and cat.n or (self.browsing and rankGroup(id)) or OTHER or "Other"
+                if cat and cat.o and catOrder[group] == nil then catOrder[group] = cat.o end
                 add(group, item)
             end
         end
@@ -313,8 +315,15 @@ function View:BuildItems()
         local ra, rb = rankOrder[a], rankOrder[b]
         if ra and rb then return ra < rb end
         if (ra ~= nil) ~= (rb ~= nil) then return ra ~= nil end
+        if gameOrder then return Recipes.CategoryLess(a, b, catOrder[a], catOrder[b]) end
         return a < b
     end)
+    -- Recipes come in name order (A to Z); "Game order" sorts them like the default window.
+    if gameOrder then
+        for _, list in pairs(groups) do table.sort(list, Recipes.GameOrderLess) end
+        table.sort(starred, Recipes.GameOrderLess)
+        table.sort(pinnedList, Recipes.GameOrderLess)
+    end
     table.sort(nearestList, function(a, b)
         if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
         if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
@@ -423,7 +432,17 @@ local function buildFilterMenu(_, root)
         end)
         indent(item) -- under "Gives skill-ups"
     end
-    -- Profit column in the list (not a filter, but this is where the list's options live).
+    -- List order and the profit column (not filters, but this is where the list's options live).
+    root:CreateDivider()
+    root:CreateTitle(L.ORDER_TITLE)
+    local function order(text, value)
+        root:CreateRadio(text, function() return (ns.db.settings.listOrder or "game") == value end, function()
+            ns.db.settings.listOrder = value
+            View:RefreshList()
+        end)
+    end
+    order(L.ORDER_GAME, "game")
+    order(L.ORDER_AZ, "az")
     root:CreateDivider()
     root:CreateTitle(L.PROFIT_SHOW)
     local s = ns.db.settings

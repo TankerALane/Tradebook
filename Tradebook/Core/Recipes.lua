@@ -176,6 +176,28 @@ function Recipes.ForProfession(db, skillLineID, showExtras)
     return out
 end
 
+-- PURE. The default window's order within a category, for list items { learned, diff, t,
+-- name, id }: learned first (the game lists not-learned recipes in their own block below),
+-- then by colour (orange, yellow, green, grey; unknown last), then the higher-level recipe
+-- first (t: the skill where it turns grey), then by name.
+function Recipes.GameOrderLess(a, b)
+    if (a.learned and true or false) ~= (b.learned and true or false) then return a.learned and true or false end
+    local da, db = a.diff or 9, b.diff or 9
+    if da ~= db then return da < db end
+    local ta, tb = a.t or 0, b.t or 0
+    if ta ~= tb then return ta > tb end
+    if a.name ~= b.name then return (a.name or "") < (b.name or "") end
+    return (a.id or 0) < (b.id or 0)
+end
+
+-- PURE. Category order: the game's (o, from the scan), categories without one after those,
+-- by name.
+function Recipes.CategoryLess(a, b, oa, ob)
+    if oa and ob and oa ~= ob then return oa < ob end
+    if (oa ~= nil) ~= (ob ~= nil) then return oa ~= nil end
+    return a < b
+end
+
 -- Recipes of a profession the character hasn't learned (needs the profession scanned once).
 function Recipes.Missing(db, character, skillLineID, showExtras)
     local p = character and character.professions and character.professions[skillLineID]

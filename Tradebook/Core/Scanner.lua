@@ -90,14 +90,15 @@ end
 
 local categoryCache = {}
 
--- Category name/parent. Uses the saved copy when the API can't answer (profession closed).
+-- Category name/parent and the game's order for it (uiOrder: the default window lists
+-- categories by it). Uses the saved copy when the API can't answer (profession closed).
 local function category(id)
     if not id or id == 0 then return nil end
     local c = categoryCache[id]
     if c == nil then
         local info = Compat.Call("C_TradeSkillUI.GetCategoryInfo", id)
         if info and info.name then
-            c = { n = info.name, p = info.parentCategoryID }
+            c = { n = info.name, p = info.parentCategoryID, o = info.uiOrder }
             categoryCache[id] = c
             ns.db.categories[id] = c
         else

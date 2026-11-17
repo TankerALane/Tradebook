@@ -39,6 +39,7 @@ DB.DEFAULTS = {
             unlearnedNoFavor = false, -- hide recipes only bought with Merchant's Favor
             haveMats = false, skillup = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
+        listOrder = "game", -- recipe list order: "game" (like the default window) | "az"
         listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction" | "disenchant"
         deTooltip = true, -- item tooltips say what an item disenchants into (Core/Disenchant.lua)
         deCompact = true, -- ...in one line, with the details while Shift is held

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Recipe list
+- The recipe list is now in the **same order as the default window**, so switching over feels familiar: categories in the game's order, and in each category the recipes you know first, then by colour (orange, yellow, green, grey), then the higher-level recipe first. Prefer alphabetical? **Filter → List order → A to Z**.
+- The game's category order is read when you open a profession; until you've opened it once with this version, its categories stay A to Z.
+
 ### Crafting
 - **Craft All fills in the quantity**, and the quantity **counts down** as each craft finishes, with Craft All or with Craft and a number (like a leveling plan step's). When the batch is done it goes back to 1; if it stops early (you moved, got attacked), it shows how many are left, so Craft carries on from there.
 - Changing the number by hand during a batch stops the count-down (the game keeps crafting the batch it was given).
