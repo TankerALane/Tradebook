@@ -15,7 +15,8 @@
 -- the heard window (its own window, opens by itself; /tbdev heard, /tbdev heard auto; copies in
 -- chat when "Also in chat" is ticked), a message in the middle of the screen and a sound. Vendors and trainers not in your
 -- scans or the community data are marked NEW. /tbdev notify turns it off and on. Players are
--- only told apart by number this session (Tradebook keeps hashes, never names).
+-- shown by character name when this addon saw them send (startNameWatcher), otherwise by number
+-- this session (Tradebook itself keeps hashes, never names).
 -- Since the last import: every notification is also logged (TradebookDevDB.heardLog), and the
 -- totals since the maintainer's last "import npc data" are shown with each notification and
 -- by /tbdev count. The import writes LastImport.lua (TradebookDevLastImport = time) into this
@@ -711,6 +712,7 @@ end
 
 local heardPending = {} -- [who] = { vendors, trainers, confirmed, deBands } (see Dev.HeardLines)
 local playerNumbers, playerCount = {}, 0
+local senderNames = {} -- [hash] = character name, this session only (startNameWatcher)
 
 local GREEN_NEW, YELLOW_DIFFERS = "|cff40ff40NEW|r ", "|cffffd100DIFFERS|r "
 local MAX_LIST = 6
@@ -1092,7 +1094,27 @@ local function flushHeard(who)
         playerCount = playerCount + 1
         playerNumbers[who] = playerCount
     end
-    showHeard("Another player (#" .. playerNumbers[who] .. ")", h, ctx, vn, tn, dn)
+    local name = senderNames[who]
+    showHeard(name and ("|cffffffff" .. name .. "|r") or ("Another player (#" .. playerNumbers[who] .. ")"),
+        h, ctx, vn, tn, dn)
+end
+
+-- Sender names, for the heard notifications only (this addon is never published). Tradebook
+-- itself drops the name the game gives each addon message and keeps only Net.Hash of it; this
+-- listens to the same messages and remembers, for this session, which name gave which hash.
+-- The name map is memory only; the heard window's saved lines (TradebookDevDB.heardMessages,
+-- local, never committed) do show the names. heardLog keeps hashes only. Data relayed for another player carries only
+-- that player's hash, so it shows a name only if they also sent to you directly this session.
+local function startNameWatcher()
+    local f = CreateFrame("Frame")
+    f:RegisterEvent("CHAT_MSG_ADDON")
+    f:SetScript("OnEvent", function(_, _, prefix, _, chatType, sender)
+        if not (ns.Net and prefix == ns.Net.PREFIX and chatType == "CHANNEL") then return end
+        sender = tostring(sender or "")
+        if sender == "" then return end
+        local short = (_G.Ambiguate and _G.Ambiguate(sender, "short")) or sender
+        senderNames[ns.Net.Hash(sender)] = short
+    end)
 end
 
 local function onHeard(who, info)
@@ -1122,6 +1144,7 @@ function Dev.Attach(tradebookNS)
         d.heardLog = keep
     end
     startWatcher()
+    startNameWatcher()
     -- The calendar fills in after a server query; read it when it arrives.
     local cal = CreateFrame("Frame")
     pcall(cal.RegisterEvent, cal, "CALENDAR_UPDATE_EVENT_LIST")
