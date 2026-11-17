@@ -22,6 +22,11 @@
 -- whether the limit is per channel: 3 channels, then as many as are free (a character can be
 -- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
 -- CHANNEL_DURATION s each (past the first burst), delivered rate over the last CHANNEL_SUSTAIN s.
+-- /tbdev ratetest maxchannels: how many chat channels a character can be in: lists the ones
+-- you're in, joins test channels one at a time (MAXCHAN_GAP s apart) until 3 in a row fail
+-- (or MAXCHAN_TRY), reports, and leaves them all again.
+-- Found 2026-11-17: 10 channels with a prefix each went 1/s each, 600 of 600; one prefix shared
+-- by several channels gets about 1/s in all. So the limit is about 1/s per prefix and channel.
 -- /tbdev ratetest stop: stop early (results so far).
 -- Found 2026-11-17 (one prefix): 1/s all through; 2/s and up, 10 went out, then nothing for the
 -- rest of the 20 s (AddonMessageThrottle and ChannelThrottle): sending too often keeps the
@@ -170,6 +175,18 @@ function Dev.RateProgress(p, now)
     end
     return ("%d:%02d  tried %d, accepted %d, refused %d, echoed %d, lost %d"):format(math.floor(now / 60),
         math.floor(now % 60), sent + refused, sent, refused, echoed, lost)
+end
+
+-- PURE. Channels from GetChannelList()'s flat results (id, name, disabled, ...):
+-- { { id, name } }, by number.
+function Dev.ChannelList(...)
+    local out, n = {}, select("#", ...)
+    for i = 1, n, 3 do
+        local id, name = select(i, ...)
+        if type(id) == "number" and name then out[#out + 1] = { id = id, name = tostring(name) } end
+    end
+    table.sort(out, function(a, b) return a.id < b.id end)
+    return out
 end
 
 -- PURE. One line per phase, for the results window.
@@ -389,6 +406,10 @@ function Dev.RateTest(arg)
         if run then finish(true) else say("not running.") end
         return
     end
+    if mode == "maxchannels" then
+        Dev.ChannelLimitTest()
+        return
+    end
     if run then say("already running (/tbdev ratetest stop to stop).") return end
     if not (_G.C_ChatInfo and _G.C_ChatInfo.SendAddonMessage) then say("this game has no addon messages.") return end
     local ns = Dev.NS()
@@ -446,4 +467,60 @@ function Dev.RateTest(arg)
         -- Let the game's allowance fill up before the first phase.
         C_Timer.After(GAP, function() if run then startPhase() end end)
     end)
+end
+
+-- /tbdev ratetest maxchannels (see the top of this file).
+local MAXCHAN_TRY = 40
+local MAXCHAN_GAP = 0.5
+local limitRunning = false
+function Dev.ChannelLimitTest()
+    if limitRunning or run then say("a test is already running.") return end
+    limitRunning = true
+    local before = Dev.ChannelList(_G.GetChannelList())
+    local names = {}
+    for _, c in ipairs(before) do names[#names + 1] = c.id .. ". " .. c.name end
+    say(("you're in %d channels; joining test channels one at a time..."):format(#before))
+    local joined, failedInRow, tried, firstFail = {}, 0, 0, nil
+    local function report()
+        local after = Dev.ChannelList(_G.GetChannelList())
+        local highest = 0
+        for _, c in ipairs(after) do if c.id > highest then highest = c.id end end
+        local lines = {
+            ("Before: in %d channels: %s"):format(#before, table.concat(names, ", ")),
+            ("Joined %d test channels (tried %d)%s."):format(#joined, tried,
+                firstFail and (", the first that failed was number " .. firstFail) or ""),
+            ("All together: %d channels, highest channel number %d."):format(#after, highest),
+        }
+        for _, name in ipairs(joined) do pcall(_G.LeaveChannelByName, name) end
+        limitRunning = false
+        local d = Dev.DB()
+        d.channelLimit = { at = time(), lines = lines }
+        say(("joined %d test channels, %d channels in all; leaving the test channels."):format(#joined, #after))
+        Dev.ShowText("Tradebook Dev: channel limit", "How many chat channels this character could be in at once.",
+            table.concat(lines, "\n"))
+    end
+    local function step()
+        if tried >= MAXCHAN_TRY or failedInRow >= 3 then
+            report()
+            return
+        end
+        tried = tried + 1
+        local name = TEST_CHANNEL .. "Max" .. tried
+        _G.JoinTemporaryChannel(name)
+        C_Timer.After(MAXCHAN_GAP, function()
+            if (tonumber((_G.GetChannelName(name))) or 0) > 0 then
+                joined[#joined + 1] = name
+                failedInRow = 0
+                for f = 1, (NUM_CHAT_WINDOWS or 10) do
+                    local cf = _G["ChatFrame" .. f]
+                    if cf and ChatFrame_RemoveChannel then pcall(ChatFrame_RemoveChannel, cf, name) end
+                end
+            else
+                failedInRow = failedInRow + 1
+                firstFail = firstFail or tried
+            end
+            step()
+        end)
+    end
+    step()
 end
