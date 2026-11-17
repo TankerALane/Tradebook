@@ -14,7 +14,13 @@
 -- messages back, which shows they really went out. Per phase: sends accepted, refused
 -- (AddonMessageThrottle or other), echoed, and the rate echoed in the last SUSTAIN s (after the
 -- first burst is used up). Results: a window to copy, and TradebookDevDB.rateTest.
+-- /tbdev ratetest long [minutes]: one message a second, nonstop, for that long (30 minutes
+-- unless given), with a line per minute: tried, accepted, refused, echoed, lost (accepted but
+-- never echoed). Shows how long 1/s holds up.
 -- /tbdev ratetest stop: stop early (results so far).
+-- Found 2026-11-17 (one prefix): 1/s all through; 2/s and up, 10 went out, then nothing for the
+-- rest of the 20 s (AddonMessageThrottle and ChannelThrottle): sending too often keeps the
+-- allowance from refilling. A 15 s pause gave 10 again.
 
 local Dev = TradebookDev
 
@@ -55,6 +61,45 @@ function Dev.RateSustained(p)
         if at >= DURATION - SUSTAIN and p.echoAt[seq] then n = n + 1 end
     end
     return n / SUSTAIN
+end
+
+-- PURE. The long test, one line per minute (sends in that minute), then the totals.
+-- p: the phase (sentAt / refusedAt / echoAt by seq, seconds from its start); upTo: seconds
+-- run so far. Lost: accepted but not echoed.
+function Dev.RateLongLines(p, upTo)
+    local lines = { "minute  tried  accepted  refused  echoed  lost" }
+    local minutes = math.max(1, math.ceil(upTo / 60))
+    local tot = { tried = 0, sent = 0, refused = 0, echoed = 0, lost = 0 }
+    local firstProblem
+    for m = 1, minutes do
+        local lo, hi = (m - 1) * 60, m * 60
+        local c = { tried = 0, sent = 0, refused = 0, echoed = 0, lost = 0 }
+        for seq, at in pairs(p.sentAt or {}) do
+            if at >= lo and at < hi then
+                c.sent = c.sent + 1
+                if p.echoAt[seq] then
+                    c.echoed = c.echoed + 1
+                else
+                    c.lost = c.lost + 1
+                    if not firstProblem or at < firstProblem then firstProblem = at end
+                end
+            end
+        end
+        for _, at in pairs(p.refusedAt or {}) do
+            if at >= lo and at < hi then
+                c.refused = c.refused + 1
+                if not firstProblem or at < firstProblem then firstProblem = at end
+            end
+        end
+        c.tried = c.sent + c.refused
+        for k, v in pairs(c) do tot[k] = tot[k] + v end
+        lines[#lines + 1] = ("%d  %d  %d  %d  %d  %d"):format(m, c.tried, c.sent, c.refused, c.echoed, c.lost)
+    end
+    lines[#lines + 1] = ("total  %d  %d  %d  %d  %d"):format(tot.tried, tot.sent, tot.refused, tot.echoed, tot.lost)
+    lines[#lines + 1] = firstProblem
+        and ("First problem after %d:%02d."):format(math.floor(firstProblem / 60), math.floor(firstProblem % 60))
+        or "No problems: every message went out and came back."
+    return lines
 end
 
 -- PURE. One line per phase, for the results window.
@@ -116,11 +161,20 @@ local function finish(stopped)
     local ns = Dev.NS()
     if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(false) end
     pcall(_G.LeaveChannelByName, TEST_CHANNEL)
+    if r.ticker then r.ticker:Cancel() end
     local done = {}
     for _, p in ipairs(r.phases) do if p.tried then done[#done + 1] = p end end
-    local lines = Dev.RateLines(done)
-    local header = ("Rate test %s, %s. %d s per rate, %d s between, %d-character messages."):format(
-        date("%Y-%m-%d %H:%M"), stopped and "stopped early" or "finished", DURATION, GAP, MSG_LEN)
+    local lines, header
+    if r.long then
+        local p = r.phases[1]
+        lines = Dev.RateLongLines(p, math.min(p.duration, GetTime() - (r.startAt or GetTime())))
+        header = ("Long rate test %s, %s. 1 message a second for up to %d minutes, %d-character messages."):format(
+            date("%Y-%m-%d %H:%M"), stopped and "stopped early" or "finished", p.duration / 60, MSG_LEN)
+    else
+        lines = Dev.RateLines(done)
+        header = ("Rate test %s, %s. %d s per rate, %d s between, %d-character messages."):format(
+            date("%Y-%m-%d %H:%M"), stopped and "stopped early" or "finished", DURATION, GAP, MSG_LEN)
+    end
     local text = header .. "\n" .. table.concat(lines, "\n")
     local d = Dev.DB()
     d.rateTest = { at = time(), stopped = stopped or nil, lines = lines }
@@ -136,14 +190,30 @@ local function startPhase()
         return
     end
     p.tried, p.sent, p.refused, p.echoed = 0, 0, 0, 0
-    p.sentAt, p.echoAt, p.reasons = {}, {}, {}
+    p.sentAt, p.echoAt, p.reasons, p.refusedAt = {}, {}, {}, {}
     run.phase, run.startAt = p, GetTime()
+    if p.long then
+        say(("1/s nonstop for %d minutes; a line each minute."):format(p.duration / 60))
+        -- Each minute: that minute's line (an echo still on its way shows as lost here, not in the end).
+        local minute = 0
+        run.ticker = C_Timer.NewTicker(60, function()
+            if not run then return end
+            minute = minute + 1
+            local lines = Dev.RateLongLines(p, minute * 60)
+            say("minute " .. lines[minute + 1])
+        end)
+        return
+    end
     say(("%d/s on %d prefix%s for %d s..."):format(p.rate, p.prefixes, p.prefixes == 1 and "" or "es", DURATION))
 end
 
 local function endPhase()
     local p = run.phase
     run.phase = nil
+    if p.long then
+        C_Timer.After(GAP, function() finish(false) end)
+        return
+    end
     -- Report once the late echoes are in, then the next phase.
     C_Timer.After(GAP, function()
         if not run then return end
@@ -176,6 +246,7 @@ local function send(p, seq)
         p.refused = p.refused + 1
         p.reasons[refused] = (p.reasons[refused] or 0) + 1
         p.firstRefused = p.firstRefused or now
+        p.refusedAt[seq] = now
     else
         p.sent = p.sent + 1
         p.sentAt[seq] = now
@@ -186,7 +257,7 @@ local function onUpdate()
     local p = run and run.phase
     if not p then return end
     local elapsed = GetTime() - run.startAt
-    if elapsed >= DURATION then
+    if elapsed >= (p.duration or DURATION) then
         endPhase()
         return
     end
@@ -212,7 +283,9 @@ end
 
 local echoFrame
 function Dev.RateTest(arg)
-    if arg == "stop" then
+    arg = arg or ""
+    local mode, minutes = arg:match("^(%a*)%s*(%d*)")
+    if mode == "stop" then
         if run then finish(true) else say("not running.") end
         return
     end
@@ -225,16 +298,20 @@ function Dev.RateTest(arg)
         echoFrame:RegisterEvent("CHAT_MSG_ADDON")
         echoFrame:SetScript("OnEvent", onEcho)
     end
+    local long = mode == "long"
+    minutes = math.max(1, math.min(240, tonumber(minutes) or 30))
     _G.JoinTemporaryChannel(TEST_CHANNEL)
-    say("joining the test channel and holding Tradebook's own sharing; about 11 minutes. /tbdev ratetest stop to stop.")
+    say(("joining the test channel and holding Tradebook's own sharing; about %d minutes. /tbdev ratetest stop to stop.")
+        :format(long and minutes or 11))
     C_Timer.After(3, function()
         local id = _G.GetChannelName(TEST_CHANNEL)
         id = tonumber(id) or 0
         if id <= 0 then say("couldn't join the test channel.") return end
         hideChannel()
         if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(true) end
-        run = { session = ("%04x"):format(math.random(0, 0xffff)), channel = id, phases = Dev.RatePlan(), index = 1,
-            frame = CreateFrame("Frame") }
+        local phases = long and { { rate = 1, prefixes = 1, long = true, duration = minutes * 60 } } or Dev.RatePlan()
+        run = { session = ("%04x"):format(math.random(0, 0xffff)), channel = id, phases = phases, index = 1,
+            frame = CreateFrame("Frame"), long = long }
         run.frame:SetScript("OnUpdate", onUpdate)
         -- Let the game's allowance fill up before the first phase.
         C_Timer.After(GAP, function() if run then startPhase() end end)

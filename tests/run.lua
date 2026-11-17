@@ -1817,6 +1817,18 @@ test("dev: send rate test plan and results", function()
     assert(lines[2]:find("AddonMessageThrottle 2", 1, true), lines[2])
     assert(lines[2]:find("3.5 s", 1, true), lines[2])
     eq(D.RateClean({ sent = 5, refused = 0, echoed = 5 }), true)
+    -- the long test: a line per minute, then totals and when the first problem came
+    local long = { sentAt = {}, echoAt = {}, refusedAt = {} }
+    for i = 1, 120 do long.sentAt[i] = i - 1; long.echoAt[i] = 1 end
+    long.echoAt[100] = nil -- lost at 1:39
+    long.sentAt[110], long.refusedAt[110] = nil, 109 -- refused at 1:49
+    local ll = D.RateLongLines(long, 120)
+    eq(ll[2], "1  60  60  0  60  0")
+    eq(ll[3], "2  60  59  1  58  1")
+    eq(ll[4], "total  120  119  1  118  1")
+    eq(ll[5], "First problem after 1:39.")
+    long.echoAt[100], long.sentAt[110], long.refusedAt[110] = 1, 109, nil
+    eq(D.RateLongLines(long, 120)[5], "No problems: every message went out and came back.")
     SlashCmdList = nil
 end)
 

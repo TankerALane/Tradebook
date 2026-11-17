@@ -1295,7 +1295,7 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
     end
     local lower = (msg or ""):lower()
     if lower:match("^%s*ratetest") then
-        Dev.RateTest(lower:match("^%s*ratetest%s*(%a*)"))
+        Dev.RateTest(lower:match("^%s*ratetest%s*(.-)%s*$"))
         return
     end
     if lower:match("^%s*thanks") then
