@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.5.0
+
 ### Characters
 - **Alliance and Horde characters are kept apart**: you can't trade or mail between factions, so only your characters of the same faction as the one you're playing count for profession tabs and counts, "Known by", "Could learn", materials on your other characters, the Camp tab, and your **Fellowship Ledger friends** on the profession tabs. The Characters tab still lists everyone. To combine them anyway: Settings → "Combine Alliance and Horde characters".
 
