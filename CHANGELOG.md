@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Data
+- New trainer: Rhiannon Davis (Tailoring, Stormwind). Trainer data now covers 135 trainers.
+- The disenchant database now has 30 disenchants in 9 bands. New: blue armor of item level 26-30 (Large Glimmering Shard, which matches the classic table).
+
 ## v1.2.1
 
 ### Sharing in game
