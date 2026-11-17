@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Tabs
+- **Right-click a profession tab** (or Camp) to arrange the tabs: move it left or right, to the front or the end, or hide it. Hidden tabs come back from the same menu ("Show a hidden tab"), or all at once.
+- **Hide professions none of my characters have**, in one click from that menu.
+- **Per character**: tick "Own tab layout for <character>" in the menu to give that character its own order and hidden tabs; untick it to go back to the layout the others share.
+- A hidden profession you open from the game still shows its tab while it's open. Vendors, Legacy and Characters stay at the right.
+- The "Show gathering profession tabs" setting now hides or shows those three tabs in this layout (if you had turned it off, they start hidden).
+
 ### Professions
 - **Unlearn** a main profession from Tradebook: a red cross next to the skill bar (like the one in the default window's profession book), so you don't have to switch back to the default window. It opens the game's own confirmation, where you type UNLEARN. Not shown for Cooking, First Aid and Fishing (the game has no unlearn for them there either), or for other characters and linked professions.
 

@@ -18,7 +18,7 @@ local _, ns = ...
 local DB = {}
 ns.DB = DB
 
-DB.VERSION = 4
+DB.VERSION = 5
 
 -- The window's scale 1.0 is drawn at this size (1.25x the native frame), per user preference.
 DB.BASE_SCALE = 1.25
@@ -27,7 +27,6 @@ DB.DEFAULTS = {
     settings = {
         replaceDefault = true,
         scale = 1,
-        showGathering = true,
         staleDays = 30,
         showHidden = false,
         debug = false,
@@ -45,6 +44,7 @@ DB.DEFAULTS = {
         deCompact = true, -- ...in one line, with the details while Shift is held
         collapsed = {},
         browse = {}, -- [skillLine] = true: list every recipe of a profession nobody has
+        tabLayout = {}, -- tab order and hidden tabs, shared or per character (Core/TabLayout.lua)
         netShare = true, -- share NPC data with other Tradebook users in game (Core/Net.lua)
     },
     characters = {},
@@ -87,6 +87,21 @@ DB.MIGRATIONS = {
         -- The first in-game sharing build (never released) took its own echoed messages for
         -- another player's: what it "heard" is your own scans again. Forget it.
         db.heard = {}
+        return db
+    end,
+    [5] = function(db)
+        -- "Show gathering profession tabs" off is now those tabs hidden in the tab layout.
+        local s = db.settings
+        if s and s.showGathering == false then
+            s.tabLayout = s.tabLayout or {}
+            s.tabLayout.shared = s.tabLayout.shared or { order = {}, hidden = {} }
+            local hidden = s.tabLayout.shared.hidden or {}
+            s.tabLayout.shared.hidden = hidden
+            for _, p in ipairs(ns.Professions and ns.Professions.list or {}) do
+                if p.gathering then hidden[p.id] = true end
+            end
+        end
+        if s then s.showGathering = nil end
         return db
     end,
 }

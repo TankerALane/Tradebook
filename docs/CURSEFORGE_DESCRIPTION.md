@@ -27,7 +27,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 
 ### A better Professions window
 - **Replaces the default window** (switch back any time with **Default UI**).
-- **A tab for every profession** plus **Camp**, with a skill bar like the default.
+- **A tab for every profession** plus **Camp**, with a skill bar like the default. **Right-click a tab** to move it, hide it or show hidden ones again, hide every profession none of your characters have in one click, or give a character its own tab layout.
 - **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
 - **Recipe details**: materials with bag and bank counts (and which of your characters have them), the **nearest vendors** that sell each one with their price, a tree of craftable materials, and skill-up ranges ("orange until 125").
 - **Craft, quantity and Craft All.**

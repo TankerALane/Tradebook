@@ -38,6 +38,7 @@ StaticPopupDialogs["TRADEBOOK_DELETE_CHARACTER"] = {
     button2 = NO,
     OnAccept = function(_, data)
         Characters.Delete(ns.db, data)
+        ns.TabLayout.Forget(ns.db.settings, data)
         ns.Recipes.Invalidate()
         ns.UI.Refresh()
     end,

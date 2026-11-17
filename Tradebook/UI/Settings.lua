@@ -46,10 +46,18 @@ local function build()
     local minimap = W.Check(panel, L.OPT_MINIMAP, function(v) ns.Minimap.SetShown(v) end)
     minimap:SetPoint("TOPLEFT", replace, "BOTTOMLEFT", 0, -6)
 
+    -- Gathering tabs: shown or hidden in the tab layout (the current character's, Core/TabLayout.lua).
+    local function gatheringIDs()
+        local ids = {}
+        for _, p in ipairs(ns.Professions.list) do if p.gathering then ids[#ids + 1] = p.id end end
+        return ids
+    end
+    local function tabLayout() return ns.TabLayout.Get(ns.db.settings, ns.charKey) end
     local gathering = W.Check(panel, L.OPT_GATHERING, function(v)
-        ns.db.settings.showGathering = v
-        ns.UI.LayoutTabs()
+        for _, id in ipairs(gatheringIDs()) do ns.TabLayout.SetHidden(tabLayout(), id, not v) end
+        if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end
     end)
+    W.Tooltip(gathering, { L.OPT_GATHERING, L.OPT_TABS_TIP })
     gathering:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 0, -6)
 
     local netShare = W.Check(panel, L.OPT_NETSHARE, function(v) ns.Net.SetEnabled(v) end)
@@ -86,7 +94,11 @@ local function build()
     panel:SetScript("OnShow", function()
         replace:SetChecked(ns.db.settings.replaceDefault)
         minimap:SetChecked(not ns.db.settings.minimap.hide)
-        gathering:SetChecked(ns.db.settings.showGathering)
+        local anyShown = false
+        for _, id in ipairs(gatheringIDs()) do
+            if not tabLayout().hidden[id] then anyShown = true end
+        end
+        gathering:SetChecked(anyShown)
         netShare:SetChecked(ns.db.settings.netShare ~= false)
         deTooltip:SetChecked(ns.db.settings.deTooltip ~= false)
         deCompact:SetChecked(ns.db.settings.deCompact ~= false)

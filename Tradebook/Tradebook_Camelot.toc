@@ -40,6 +40,7 @@ Data\RankTrainers.lua
 Data\Specializations.lua
 Core\DB.lua
 Core\Characters.lua
+Core\TabLayout.lua
 Core\Recipes.lua
 Core\Reagents.lua
 Core\Friends.lua

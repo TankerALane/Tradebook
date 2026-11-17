@@ -119,6 +119,9 @@ local function tabTooltip(tab)
             UI.views.guide.AddFriendsToTooltip(GameTooltip, friends, 5)
         end
     end
+    if not RIGHT_TABS[tab.key] then
+        GameTooltip:AddLine(L.TAB_RIGHT_CLICK, 0.5, 0.8, 1, true)
+    end
     GameTooltip:Show()
 end
 
@@ -133,6 +136,103 @@ local function tabLabel(key, short)
     return short and L.TAB_SHORT[p.name] or L[p.name] or p.name
 end
 
+---------------------------------------------------------------------------
+-- Tab layout: order and hidden tabs (Core/TabLayout.lua), from a tab's right-click menu.
+-- Only the profession tabs and Camp; Vendors, Legacy and Characters stay at the right.
+---------------------------------------------------------------------------
+
+-- The left-hand tab keys in their usual order.
+local function leftKeys()
+    local keys = {}
+    for _, key in ipairs(tabIDs()) do
+        if not RIGHT_TABS[key] then keys[#keys + 1] = key end
+    end
+    return keys
+end
+
+local function layout()
+    return ns.TabLayout.Get(ns.db.settings, ns.charKey)
+end
+UI.TabLayout = layout
+
+-- A tab is in use when one of your characters has that profession (Camp always is).
+local function tabUsed(key)
+    if key == CAMP then return true end
+    return #ns.Characters.WithProfession(ns.db, key, ns.charKey) > 0
+end
+
+local function layoutChanged()
+    UI.LayoutTabs()
+    UI.UpdateTabs()
+end
+
+-- Hide a tab; if it's the one open, switch to the first one still shown.
+local function hideTab(key)
+    ns.TabLayout.SetHidden(layout(), key, true)
+    if current.tab == key then
+        local first = ns.TabLayout.Visible(layout(), leftKeys())[1]
+        UI.SelectTab(first or CHARACTERS)
+    end
+    layoutChanged()
+end
+
+local function tabMenu(owner)
+    local menu = _G.MenuUtil
+    if not (menu and menu.CreateContextMenu) then return end
+    local key, keys, TL = owner.key, leftKeys(), ns.TabLayout
+    menu.CreateContextMenu(owner, function(_, root)
+        root:CreateTitle(tabLabel(key))
+        local function move(text, delta)
+            root:CreateButton(text, function()
+                if TL.Move(layout(), keys, key, delta) then layoutChanged() end
+            end)
+        end
+        move(L.TABS_MOVE_LEFT, -1)
+        move(L.TABS_MOVE_RIGHT, 1)
+        move(L.TABS_MOVE_FIRST, "first")
+        move(L.TABS_MOVE_LAST, "last")
+        root:CreateButton(L.TABS_HIDE, function() hideTab(key) end)
+        root:CreateDivider()
+        local hidden = TL.Hidden(layout(), keys)
+        local show = root:CreateButton(L.TABS_SHOW_HIDDEN:format(#hidden))
+        show:SetEnabled(#hidden > 0)
+        for _, k in ipairs(hidden) do
+            show:CreateButton(tabLabel(k), function()
+                TL.SetHidden(layout(), k, false)
+                layoutChanged()
+            end)
+        end
+        if #hidden > 1 then
+            show:CreateDivider()
+            show:CreateButton(L.TABS_SHOW_ALL, function()
+                TL.ShowAll(layout())
+                layoutChanged()
+            end)
+        end
+        root:CreateButton(L.TABS_HIDE_UNUSED, function()
+            local n = TL.HideUnused(layout(), keys, tabUsed)
+            if current.tab and layout().hidden[current.tab] then
+                local first = TL.Visible(layout(), keys)[1]
+                UI.SelectTab(first or CHARACTERS)
+            end
+            layoutChanged()
+            ns.Print(L.TABS_HID_UNUSED:format(n))
+        end)
+        root:CreateDivider()
+        local name = ns.charKey and ns.CharName(ns.charKey) or "?"
+        root:CreateCheckbox(L.TABS_OWN:format(name),
+            function() return TL.HasOwn(ns.db.settings, ns.charKey) end,
+            function()
+                TL.SetOwn(ns.db.settings, ns.charKey, not TL.HasOwn(ns.db.settings, ns.charKey))
+                layoutChanged()
+            end)
+        root:CreateButton(L.TABS_RESET, function()
+            TL.Reset(layout())
+            layoutChanged()
+        end)
+    end)
+end
+
 local function buildTabs()
     for i, key in ipairs(tabIDs()) do
         local tab = CreateFrame("Button", nil, frame, "PanelTabButtonTemplate")
@@ -141,7 +241,12 @@ local function buildTabs()
         tab:SetText(tabLabel(key))
         tab.badge = tab:CreateFontString(nil, "OVERLAY", "GameFontNormalTiny")
         tab.badge:SetPoint("TOPRIGHT", -6, -4)
-        tab:SetScript("OnClick", function(self)
+        tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        tab:SetScript("OnClick", function(self, button)
+            if button == "RightButton" then
+                if not RIGHT_TABS[self.key] then tabMenu(self) end
+                return
+            end
             PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
             UI.SelectTab(self.key, true)
         end)
@@ -154,7 +259,7 @@ local function buildTabs()
 end
 
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
--- Gathering tabs can be hidden in settings (their data is still saved).
+-- Tabs can be hidden and moved (Core/TabLayout.lua; their data is still saved).
 -- The window's minimum width: the largest of MIN_W and what parts of it need to fit without
 -- overlapping (the tab row, the details' button row). The resize grip enforces it.
 local minWidths = {}
@@ -172,18 +277,25 @@ local GROUP_GAP = 10 -- at least this much between the profession tabs and Legac
 local MAX_TAB_WIDTH = 110
 function UI.LayoutTabs()
     if not frame then return end
-    local visible, right = {}, {}
+    local visible, right, byKey = {}, {}, {}
     for _, tab in ipairs(tabs) do
+        byKey[tab.key] = tab
         if RIGHT_TABS[tab.key] then
             local extra = extraTabs[tab.key]
             local show = not (extra and extra.shown and not extra.shown())
             tab:SetShown(show)
             if show then right[#right + 1] = tab end
         else
-            local p = tab.key ~= CAMP and ns.Professions.Get(tab.key)
-            local show = not (p and p.gathering and not ns.db.settings.showGathering)
-            tab:SetShown(show)
-            if show then visible[#visible + 1] = tab end
+            tab:Hide()
+        end
+    end
+    -- Profession tabs and Camp in the layout's order, without hidden ones (the open tab
+    -- shows even when hidden, e.g. a hidden profession opened from the game).
+    for _, key in ipairs(ns.TabLayout.Visible(layout(), leftKeys(), current.tab)) do
+        local tab = byKey[key]
+        if tab then
+            tab:Show()
+            visible[#visible + 1] = tab
         end
     end
     -- PanelTabButtonTemplate re-sizes itself on show from the parent's tabPadding /
@@ -296,7 +408,11 @@ end
 
 function UI.SelectTab(key, fromClick)
     if not frame then UI.Create() end
+    local old = current.tab
     current.tab = key
+    -- A hidden tab shows while it's open: lay the tabs out again when one opens or closes.
+    local hidden = layout().hidden
+    if (old ~= nil and hidden[old]) or hidden[key] then UI.LayoutTabs() end
     ns.db.settings.lastTab = key
     if extraTabs[key] then
         showView(extraTabs[key].view)
@@ -331,10 +447,13 @@ local function defaultTab()
     -- (A tab that no longer exists, e.g. a dev tab without its addon, is skipped.)
     local known = last and (ns.Professions.Get(last) or last == CAMP or RIGHT_TABS[last])
     local extra = known and extraTabs[last]
-    if known and not (extra and extra.shown and not extra.shown()) then return last end
-    for _, p in ipairs(ns.Professions.list) do
-        if ns.char and ns.char.professions[p.id] then return p.id end
+    local hidden = layout().hidden
+    if known and not hidden[last] and not (extra and extra.shown and not extra.shown()) then return last end
+    local visible = ns.TabLayout.Visible(layout(), leftKeys())
+    for _, key in ipairs(visible) do
+        if ns.char and ns.char.professions[key] then return key end
     end
+    if visible[1] then return visible[1] end
     return ns.Professions.list[1].id
 end
 

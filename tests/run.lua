@@ -22,6 +22,7 @@ local PURE_FILES = {
     "Tradebook/Data/Specializations.lua",
     "Tradebook/Core/DB.lua",
     "Tradebook/Core/Characters.lua",
+    "Tradebook/Core/TabLayout.lua",
     "Tradebook/Core/Recipes.lua",
     "Tradebook/Core/Reagents.lua",
     "Tradebook/Core/Friends.lua",
@@ -132,10 +133,60 @@ test("migrate leaves newer data alone", function()
     eq(type(db.characters.Y), "table")
 end)
 
+test("migration v5: gathering tabs turned off become hidden tabs", function()
+    local db = ns.DB.Migrate({ version = 4, settings = { showGathering = false } })
+    eq(db.settings.showGathering, nil)
+    local hidden = db.settings.tabLayout.shared.hidden
+    eq(hidden[182], true, "Herbalism")
+    eq(hidden[186], true, "Mining")
+    eq(hidden[393], true, "Skinning")
+    eq(hidden[171], nil, "Alchemy stays")
+    local on = ns.DB.Migrate({ version = 4, settings = { showGathering = true } })
+    eq(next(on.settings.tabLayout.shared and on.settings.tabLayout.shared.hidden or {}), nil)
+end)
+
+test("tab layout: order, move, hide, per character", function()
+    local TL = ns.TabLayout
+    local keys = { 1, 2, 3, 4, "camp" }
+    local s = {}
+    local l = TL.Get(s, "A")
+    eq(table.concat(TL.Order(l, keys), ","), "1,2,3,4,camp")
+    assert(TL.Move(l, keys, 3, "first"))
+    eq(table.concat(TL.Order(l, keys), ","), "3,1,2,4,camp")
+    TL.SetHidden(l, 1, true)
+    eq(table.concat(TL.Visible(l, keys), ","), "3,2,4,camp")
+    eq(table.concat(TL.Visible(l, keys, 1), ","), "3,1,2,4,camp", "the open tab shows anyway")
+    -- Moving right skips hidden tabs (swaps with the next visible one).
+    assert(TL.Move(l, keys, 3, 1))
+    eq(table.concat(TL.Visible(l, keys), ","), "2,3,4,camp")
+    eq(TL.Move(l, keys, "camp", 1), false, "already last")
+    assert(TL.Move(l, keys, 2, "last"))
+    eq(table.concat(TL.Visible(l, keys), ","), "3,4,camp,2")
+    eq(table.concat(TL.Hidden(l, keys), ","), "1")
+    -- A new tab (not in the saved order) still shows up, in its usual place after the rest.
+    eq(table.concat(TL.Visible(l, { 1, 2, 3, 4, 5, "camp" }), ","), "3,4,camp,2,5")
+    -- Per character: a copy of the shared layout; changes stay with that character.
+    TL.SetOwn(s, "B", true)
+    assert(TL.HasOwn(s, "B") and not TL.HasOwn(s, "A"))
+    local b = TL.Get(s, "B")
+    TL.SetHidden(b, 4, true)
+    eq(table.concat(TL.Visible(b, keys), ","), "3,camp,2")
+    eq(table.concat(TL.Visible(TL.Get(s, "A"), keys), ","), "3,4,camp,2", "A keeps the shared one")
+    TL.SetOwn(s, "B", false)
+    eq(TL.Get(s, "B"), TL.Get(s, "A"), "back to shared")
+    -- Hide what nobody has; show all; reset.
+    eq(TL.HideUnused(l, keys, function(k) return k == 3 or k == "camp" end), 2)
+    eq(table.concat(TL.Visible(l, keys), ","), "3,camp")
+    TL.ShowAll(l)
+    eq(#TL.Visible(l, keys), 5)
+    TL.Reset(l)
+    eq(table.concat(TL.Visible(l, keys), ","), "1,2,3,4,camp")
+end)
+
 test("migration v2 rescales the window scale (old 1.25 -> new 1.0)", function()
     local db = ns.DB.Migrate({ version = 1, settings = { scale = 1.25 } })
     eq(db.settings.scale, 1)
-    eq(db.settings.showGathering, true, "new setting defaulted")
+    eq(type(db.settings.tabLayout), "table", "new setting defaulted")
     eq(ns.DB.Migrate({ version = 1, settings = { scale = 1 } }).settings.scale, 0.8)
     eq(ns.DB.Migrate({ version = 2, settings = { scale = 1.25 } }).settings.scale, 1.25, "not applied twice")
 end)
