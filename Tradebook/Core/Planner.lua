@@ -158,9 +158,9 @@ function Planner.Plan(opts)
         anyUnpriced = anyUnpriced or bestUnpriced
         rank = rank + 1
     end
-    -- Each step's materials: what its whole crafts need, and how many of them you have, taking
-    -- from what you have in step order (whole crafts, so a step never shows a fraction of an
-    -- item as missing that the totals say you have).
+    -- Each step's materials: what its whole crafts need, everything you have, and what to buy:
+    -- what you have goes to the steps in order (whole crafts, so a step never shows a fraction
+    -- of an item as missing that the totals say you have).
     local left = {}
     for k, v in pairs(startInv) do left[k] = v end
     for _, s in ipairs(steps) do
@@ -168,17 +168,20 @@ function Planner.Plan(opts)
         s.materials = {}
         for _, r in ipairs(opts.reagents(s.recipeID)) do
             local need = r.count * s.crafts
-            local have = math.min(need, left[r.itemID] or 0)
-            left[r.itemID] = (left[r.itemID] or 0) - have
+            local used = math.min(need, left[r.itemID] or 0)
+            left[r.itemID] = (left[r.itemID] or 0) - used
             local m = s.materials[r.itemID]
             if m then
-                m.need, m.have = m.need + need, m.have + have
+                m.need, m.buy = m.need + need, m.buy + need - used
             else
-                s.materials[r.itemID] = { need = need, have = have }
+                s.materials[r.itemID] = { need = need, have = startInv[r.itemID] or 0, buy = need - used }
             end
         end
     end
-    for _, m in pairs(materials) do m.need = math.ceil(m.need - 1e-9) end
+    for _, m in pairs(materials) do
+        m.need = math.ceil(m.need - 1e-9)
+        m.buy = math.max(0, m.need - m.have)
+    end
     return { steps = steps, materials = materials, cost = totalCost, unpriced = anyUnpriced,
         reached = rank, target = opts.target }
 end

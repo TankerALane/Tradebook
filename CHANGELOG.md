@@ -4,6 +4,7 @@
 
 ### Leveling plan
 - Fixed: a step's tooltip could say to buy 1 or 2 of a material you already have enough of (for example "need 16, have 15, buy 1" with 20 Empty Vials in your bags). It now counts whole items, in step order, matching the totals below.
+- "Have" now shows everything you have (bags and bank), in the totals and in a step's tooltip, not just as many as are needed. "Buy" is what's missing; for a step, after the earlier steps have used what you have.
 
 ### Data
 - New trainer: Rhiannon Davis (Tailoring, Undercity). Trainer data now covers 135 trainers.

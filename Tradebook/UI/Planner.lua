@@ -129,10 +129,11 @@ function PlannerUI.Refresh()
 
     -- Steps.
     pane:Add({ text = L.PLAN_STEPS, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(plan.cost) })
-    -- A step's own materials for its tooltip: need / have / buy, like the totals below.
+    -- Need / have / buy, for the totals and a step's tooltip. Have: everything you have; buy:
+    -- what's missing (for a step, after the earlier steps used what you have).
     local function needHave(m)
-        local buy = math.max(0, m.need - m.have)
-        local right = L.PLAN_NEED_HAVE:format(m.need, math.min(m.have, m.need))
+        local buy = m.buy or math.max(0, m.need - m.have)
+        local right = L.PLAN_NEED_HAVE:format(m.need, m.have)
         if buy > 0 then right = right .. "  " .. W.ColorText(W.RED, L.PLAN_BUY:format(buy)) end
         return right
     end

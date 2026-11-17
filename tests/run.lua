@@ -1044,15 +1044,18 @@ test("planner: each step has its own materials (need, and what you have used fir
     -- Steps: B 100-102 (owned), A 102-104, B 104-110 (see the plan test above).
     local first, last = plan.steps[1], plan.steps[3]
     eq(first.materials[2].need, 4)
-    eq(first.materials[2].have, 4, "the first B step uses what you have")
+    eq(first.materials[2].have, 5, "have: everything you have")
+    eq(first.materials[2].buy, 0, "the first B step uses what you have")
     eq(last.materials[2].need, last.crafts * 2)
-    eq(last.materials[2].have, 1, "the one left over goes to the next B step")
+    eq(last.materials[2].have, 5)
+    eq(last.materials[2].buy, last.crafts * 2 - 1, "the one left over goes to the next B step")
     eq(plan.steps[2].materials[1].have, 0)
+    eq(plan.steps[2].materials[1].buy, plan.steps[2].materials[1].need)
 end)
 
-test("planner: a step's 'have' counts whole items (fractional crafts don't lose one)", function()
-    -- Yellow all the way: chance < 1, so the expected crafts are fractions. You have 20 vials
-    -- and the step needs fewer: it must show have = need (it showed need 16, have 15).
+test("planner: a step shows everything you have, and buys nothing when it covers whole crafts", function()
+    -- Yellow all the way: chance < 1, so the expected crafts are fractions. You have more than
+    -- the step needs: it once showed "need 16, have 15, buy 1" with 20 vials in the bags.
     local recipes = { P = { t = { 50, 100, 150 }, r = { { itemID = 1, count = 1 }, { itemID = 2, count = 2 } } } }
     local plan = ns.Planner.Plan({
         rank = 75, target = 90, recipes = { "P" },
@@ -1064,8 +1067,10 @@ test("planner: a step's 'have' counts whole items (fractional crafts don't lose 
     local s = plan.steps[1]
     eq(#plan.steps, 1)
     assert(s.crafts <= 30, "few enough crafts for the test: " .. s.crafts)
-    eq(s.materials[1].have, s.materials[1].need, "30 vials cover it")
-    eq(s.materials[2].have, s.materials[2].need, "60 spices cover it")
+    eq(s.materials[1].have, 30, "have: all 30 vials, not just what is needed")
+    eq(s.materials[1].buy, 0, "30 vials cover it")
+    eq(s.materials[2].have, 60)
+    eq(s.materials[2].buy, 0, "60 spices cover it")
 end)
 
 test("planner: stops when nothing gives skill-ups; trainer recipes wait for their skill", function()
