@@ -6,7 +6,7 @@
    "y": 23.4
   },
   "name": "Ug'thok",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794702587,
   "services": {
    "Apprentice Blacksmith|": [
@@ -226,7 +226,7 @@
    "y": 42.2
   },
   "name": "Groum Stonebeard",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718035,
   "services": {
    "Apprentice Blacksmith|": [
@@ -446,7 +446,7 @@
    "y": 56.2
   },
   "name": "Thrag Stonehoof",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681678,
   "services": {
    "Apprentice Blacksmith|": [
@@ -666,7 +666,7 @@
    "y": 30.8
   },
   "name": "Sprite Jumpsprocket",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716138,
   "services": {
    "Apprentice Engineer|": [
@@ -787,7 +787,7 @@
    "y": 43.7
   },
   "name": "Jemma Quikswitch",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794717454,
   "services": {
    "Apprentice Engineer|": [
@@ -908,7 +908,7 @@
    "y": 41.1
   },
   "name": "Jenna Lemkenilli",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794720025,
   "services": {
    "Apprentice Engineer|": [
@@ -1029,7 +1029,7 @@
    "y": 22.6
   },
   "name": "Milla Fairancora",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794721894,
   "services": {
    "Apprentice Alchemist|": [
@@ -1123,7 +1123,7 @@
    "y": 33.1
   },
   "name": "Whuut",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794701979,
   "services": {
    "Apprentice Alchemist|": [
@@ -1217,7 +1217,7 @@
    "y": 34.1
   },
   "name": "Kray",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681927,
   "services": {
    "Apprentice Alchemist|": [
@@ -1304,6 +1304,244 @@
   },
   "skill": 171
  },
+ "11048": {
+  "loc": {
+   "m": 1458,
+   "x": 70.3,
+   "y": 30.0
+  },
+  "name": "Victor Ward",
+  "reports": 1,
+  "seenAt": 1794882881,
+  "services": {
+   "Apprentice Tailoring|": [
+    "Apprentice Tailoring",
+    "",
+    "used",
+    "1",
+    "0",
+    "9",
+    "prof"
+   ],
+   "Barbaric Linen Vest|": [
+    "Barbaric Linen Vest",
+    "",
+    "used",
+    "0",
+    "Tailoring 40",
+    "270",
+    ""
+   ],
+   "Blue Linen Shirt|": [
+    "Blue Linen Shirt",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "Bolt of Woolen Cloth|": [
+    "Bolt of Woolen Cloth",
+    "",
+    "used",
+    "0",
+    "Tailoring 55",
+    "90",
+    ""
+   ],
+   "Brown Linen Pants|": [
+    "Brown Linen Pants",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "Brown Linen Robe|": [
+    "Brown Linen Robe",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "Brown Linen Vest|": [
+    "Brown Linen Vest",
+    "",
+    "used",
+    "0",
+    "Tailoring 10",
+    "45",
+    ""
+   ],
+   "Faction Banner|Tier 1": [
+    "Faction Banner",
+    "Tier 1",
+    "used",
+    "0",
+    "Tailoring 20",
+    "90",
+    ""
+   ],
+   "Green Linen Bracers|": [
+    "Green Linen Bracers",
+    "",
+    "used",
+    "0",
+    "Tailoring 35",
+    "180",
+    ""
+   ],
+   "Green Linen Shirt|": [
+    "Green Linen Shirt",
+    "",
+    "used",
+    "0",
+    "Tailoring 40",
+    "180",
+    ""
+   ],
+   "Handstitched Linen Britches|": [
+    "Handstitched Linen Britches",
+    "",
+    "used",
+    "0",
+    "Tailoring 45",
+    "270",
+    ""
+   ],
+   "Heavy Linen Gloves|": [
+    "Heavy Linen Gloves",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "90",
+    ""
+   ],
+   "Linen Bag|": [
+    "Linen Bag",
+    "",
+    "used",
+    "0",
+    "Tailoring 5",
+    "90",
+    ""
+   ],
+   "Linen Belt|": [
+    "Linen Belt",
+    "",
+    "used",
+    "0",
+    "Tailoring 15",
+    "45",
+    ""
+   ],
+   "Linen Boots|": [
+    "Linen Boots",
+    "",
+    "used",
+    "0",
+    "Tailoring 40",
+    "180",
+    ""
+   ],
+   "Novice Arcanist's Sash|": [
+    "Novice Arcanist's Sash",
+    "",
+    "used",
+    "0",
+    "Tailoring 35",
+    "450",
+    ""
+   ],
+   "Novice Ardent's Sash|": [
+    "Novice Ardent's Sash",
+    "",
+    "used",
+    "0",
+    "Tailoring 35",
+    "450",
+    ""
+   ],
+   "Red Linen Shirt|": [
+    "Red Linen Shirt",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "Reinforced Linen Cape|": [
+    "Reinforced Linen Cape",
+    "",
+    "used",
+    "0",
+    "Tailoring 35",
+    "180",
+    ""
+   ],
+   "Simple Dress|": [
+    "Simple Dress",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "Simple Kilt|": [
+    "Simple Kilt",
+    "",
+    "used",
+    "0",
+    "Tailoring 50",
+    "270",
+    ""
+   ],
+   "Simple Linen Boots|": [
+    "Simple Linen Boots",
+    "",
+    "used",
+    "0",
+    "Tailoring 20",
+    "45",
+    ""
+   ],
+   "White Linen Robe|": [
+    "White Linen Robe",
+    "",
+    "used",
+    "0",
+    "Tailoring 25",
+    "45",
+    ""
+   ],
+   "White Linen Shirt|": [
+    "White Linen Shirt",
+    "",
+    "used",
+    "0",
+    "Tailoring 1",
+    "22",
+    ""
+   ],
+   "Woolen Cape|": [
+    "Woolen Cape",
+    "",
+    "used",
+    "0",
+    "Tailoring 55",
+    "225",
+    ""
+   ]
+  },
+  "skill": 197
+ },
  "11049": {
   "loc": {
    "m": 1458,
@@ -1311,7 +1549,7 @@
    "y": 30.5
   },
   "name": "Rhiannon Davis",
-  "reports": 1,
+  "reports": 2,
   "seenAt": 1794870116,
   "services": {
    "Apprentice Tailoring|": [
@@ -1783,7 +2021,7 @@
    "y": 21.5
   },
   "name": "Trianna",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794721983,
   "services": {
    "Apprentice Tailoring|": [
@@ -2021,7 +2259,7 @@
    "y": 44.5
   },
   "name": "Vhan",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681899,
   "services": {
    "Apprentice Tailoring|": [
@@ -2259,7 +2497,7 @@
    "y": 44.8
   },
   "name": "Thonys Pillarstone",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718245,
   "services": {
    "Apprentice Enchanting|": [
@@ -2358,7 +2596,7 @@
  "11066": {
   "loc": null,
   "name": "Jhag",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794675019,
   "services": {
    "Apprentice Enchanting|": [
@@ -2461,7 +2699,7 @@
    "y": 60.4
   },
   "name": "Malcomb Wynn",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794683497,
   "services": {
    "Apprentice Enchanting|": [
@@ -2564,7 +2802,7 @@
    "y": 73.9
   },
   "name": "Betty Quin",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716807,
   "services": {
    "Apprentice Enchanting|": [
@@ -2667,7 +2905,7 @@
    "y": 13.0
   },
   "name": "Lalina Summermoon",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794721927,
   "services": {
    "Apprentice Enchanting|": [
@@ -2770,7 +3008,7 @@
    "y": 39.3
   },
   "name": "Mot Dawnstrider",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681910,
   "services": {
    "Apprentice Enchanting|": [
@@ -2873,7 +3111,7 @@
    "y": 57.2
   },
   "name": "Hgarth",
-  "reports": 2,
+  "reports": 3,
   "seenAt": 1794863167,
   "services": {
    "Apprentice Enchanting|": [
@@ -3381,7 +3619,7 @@
    "y": 20.7
   },
   "name": "Darianna",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722003,
   "services": {
    "Apprentice Leatherworking|": [
@@ -3547,7 +3785,7 @@
    "y": 62.7
   },
   "name": "Randal Worth",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715707,
   "services": {
    "Apprentice Leatherworking|": [
@@ -3713,7 +3951,7 @@
    "y": 52.0
   },
   "name": "Tognus Flintfire",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718937,
   "services": {
    "Apprentice Blacksmith|": [
@@ -3933,7 +4171,7 @@
    "y": 55.1
   },
   "name": "Vosur Brakthel",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794717438,
   "services": {
    "Apprentice Alchemist|": [
@@ -4027,7 +4265,7 @@
    "y": 66.0
   },
   "name": "Tomas",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715192,
   "services": {
    "Apprentice Cook|": [
@@ -4130,7 +4368,7 @@
    "y": 32.8
   },
   "name": "Gretta Finespindle",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718124,
   "services": {
    "Apprentice Leatherworking|": [
@@ -4296,7 +4534,7 @@
    "y": 62.2
   },
   "name": "Adele Fielder",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715147,
   "services": {
    "Apprentice Leatherworking|": [
@@ -4462,7 +4700,7 @@
    "y": 62.3
   },
   "name": "Lee Brown",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715139,
   "services": {
    "Apprentice Fishing|": [
@@ -4502,7 +4740,7 @@
    "y": 52.4
   },
   "name": "Gremlock Pilsnor",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718870,
   "services": {
    "Apprentice Cook|": [
@@ -4605,7 +4843,7 @@
    "y": 28.4
   },
   "name": "Uthrar Threx",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718151,
   "services": {
    "Apprentice Tailoring|": [
@@ -4843,7 +5081,7 @@
    "y": 52.1
   },
   "name": "Faruza",
-  "reports": 10,
+  "reports": 11,
   "seenAt": 1794682915,
   "services": {
    "Apprentice Herbalism|": [
@@ -4901,7 +5139,7 @@
    "y": 52.3
   },
   "name": "Carolai Anise",
-  "reports": 10,
+  "reports": 11,
   "seenAt": 1794682921,
   "services": {
    "Apprentice Alchemist|": [
@@ -4995,7 +5233,7 @@
    "y": 58.3
   },
   "name": "Dan Golthas",
-  "reports": 9,
+  "reports": 10,
   "seenAt": 1794683605,
   "services": {
    "Apprentice Leatherworking|": [
@@ -5161,7 +5399,7 @@
    "y": 52.5
   },
   "name": "Thamner Pol",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718865,
   "services": {
    "Anti-Venom|": [
@@ -5291,7 +5529,7 @@
    "y": 44.9
   },
   "name": "Shaina Fuller",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716242,
   "services": {
    "Anti-Venom|": [
@@ -5421,7 +5659,7 @@
    "y": 65.7
   },
   "name": "Michelle Belle",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715204,
   "services": {
    "Anti-Venom|": [
@@ -5551,7 +5789,7 @@
    "y": 19.6
   },
   "name": "Aranae Venomblood",
-  "reports": 2,
+  "reports": 3,
   "seenAt": 1794865277,
   "services": {
    "Apprentice Herbalism|": [
@@ -5609,7 +5847,7 @@
    "y": 32.3
   },
   "name": "Kelsey Fargo",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715018,
   "services": {
    "Apprentice Mining|": [
@@ -5631,7 +5869,7 @@
    "y": 40.0
   },
   "name": "Riley Peltskinner",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794714940,
   "services": {
    "Apprentice Skinning|": [
@@ -5653,7 +5891,7 @@
    "y": 43.9
   },
   "name": "Zerril Softbreeze",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682289,
   "services": {
    "Apprentice Cook|": [
@@ -5756,7 +5994,7 @@
    "y": 44.4
   },
   "name": "Aedi Thriceforged",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682264,
   "services": {
    "Apprentice Blacksmith|": [
@@ -5976,7 +6214,7 @@
    "y": 44.3
   },
   "name": "Taleen Shimmerthread",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682266,
   "services": {
    "Apprentice Tailoring|": [
@@ -6448,7 +6686,7 @@
    "y": 48.4
   },
   "name": "Fenn Fairweather",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794708218,
   "services": {
    "Apprentice Fishing|": [
@@ -6488,7 +6726,7 @@
    "y": 44.5
   },
   "name": "Indari Sunseam",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682248,
   "services": {
    "Apprentice Leatherworking|": [
@@ -6650,7 +6888,7 @@
  "252376": {
   "loc": null,
   "name": "Emerii Tallgust",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680634,
   "services": {
    "Apprentice Leatherworking|": [
@@ -7091,7 +7329,7 @@
  "252380": {
   "loc": null,
   "name": "Othesia Evengale",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680648,
   "services": {
    "Apprentice Tailoring|": [
@@ -7559,7 +7797,7 @@
  "252388": {
   "loc": null,
   "name": "Halavuul Cragwind",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680668,
   "services": {
    "Apprentice Mining|": [
@@ -7712,7 +7950,7 @@
  "252479": {
   "loc": null,
   "name": "Daeann Steelwind",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680674,
   "services": {
    "Apprentice Blacksmith|": [
@@ -8225,7 +8463,7 @@
  "254345": {
   "loc": null,
   "name": "Syriel Nightrain",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794681132,
   "services": {
    "Apprentice Herbalism|": [
@@ -8279,7 +8517,7 @@
  "257003": {
   "loc": null,
   "name": "Ishlee Breezewhisper",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794681161,
   "services": {
    "Apprentice Skinning|": [
@@ -8333,7 +8571,7 @@
  "257004": {
   "loc": null,
   "name": "Eaysaa Brightgust",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794681178,
   "services": {
    "Apprentice Enchanting|": [
@@ -8432,7 +8670,7 @@
  "257005": {
   "loc": null,
   "name": "Valiena Swiftgale",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794681170,
   "services": {
    "Apprentice Alchemist|": [
@@ -8522,7 +8760,7 @@
  "257006": {
   "loc": null,
   "name": "Nyalah Brightfire",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680955,
   "services": {
    "Apprentice Cook|": [
@@ -8621,7 +8859,7 @@
  "257007": {
   "loc": null,
   "name": "Melasa Fairmend",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680897,
   "services": {
    "Anti-Venom|": [
@@ -8747,7 +8985,7 @@
  "257008": {
   "loc": null,
   "name": "Baelann Swiftcurrent",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680579,
   "services": {
    "Apprentice Fishing|": [
@@ -8787,7 +9025,7 @@
    "y": 46.4
   },
   "name": "Naleeia Tattermend",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682349,
   "services": {
    "Anti-Venom|": [
@@ -8917,7 +9155,7 @@
    "y": 43.4
   },
   "name": "Nyassa Swiftdraught",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682296,
   "services": {
    "Apprentice Alchemist|": [
@@ -9011,7 +9249,7 @@
    "y": 43.3
   },
   "name": "Nasalanna Windsinger",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682319,
   "services": {
    "Apprentice Enchanting|": [
@@ -9114,7 +9352,7 @@
    "y": 43.6
   },
   "name": "Halassa Fernbreeze",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682308,
   "services": {
    "Apprentice Herbalism|": [
@@ -9172,7 +9410,7 @@
    "y": 44.5
   },
   "name": "Messana Crestwind",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682256,
   "services": {
    "Apprentice Mining|": [
@@ -9329,7 +9567,7 @@
    "y": 43.4
   },
   "name": "Mendalass Tattermend",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682315,
   "services": {
    "Apprentice Skinning|": [
@@ -9381,15 +9619,15 @@
   "skill": 393
  },
  "265944": {
-  "confirmations": 1,
+  "confirmations": 2,
   "loc": {
    "m": 1420,
    "x": 61.8,
    "y": 51.5
   },
   "name": "William Pickman",
-  "reports": 11,
-  "seenAt": 1794867615,
+  "reports": 13,
+  "seenAt": 1794894378,
   "services": {
    "Apprentice Cook|": [
     "Apprentice Cook",
@@ -9491,7 +9729,7 @@
    "y": 65.7
   },
   "name": "Margaret Weaver",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794712321,
   "services": {
    "Apprentice Skinning|": [
@@ -9513,7 +9751,7 @@
    "y": 65.7
   },
   "name": "Walter Mason",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794712312,
   "services": {
    "Apprentice Mining|": [
@@ -9535,7 +9773,7 @@
    "y": 65.2
   },
   "name": "Florence Nightshade",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794712307,
   "services": {
    "Apprentice Herbalism|": [
@@ -9557,7 +9795,7 @@
    "y": 67.9
   },
   "name": "Kagil",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794701212,
   "services": {
    "Apprentice Skinning|": [
@@ -9579,7 +9817,7 @@
    "y": 68.1
   },
   "name": "Norzsh",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794701224,
   "services": {
    "Apprentice Mining|": [
@@ -9601,7 +9839,7 @@
    "y": 67.4
   },
   "name": "Zor'la",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794701176,
   "services": {
    "Apprentice Herbalism|": [
@@ -9623,7 +9861,7 @@
    "y": 38.7
   },
   "name": "Terunne Bearshaper",
-  "reports": 5,
+  "reports": 6,
   "seenAt": 1794723381,
   "services": {
    "Apprentice Skinning|": [
@@ -9645,7 +9883,7 @@
    "y": 41.5
   },
   "name": "Fanorran Stilloak",
-  "reports": 5,
+  "reports": 6,
   "seenAt": 1794723308,
   "services": {
    "Apprentice Mining|": [
@@ -9667,7 +9905,7 @@
    "y": 41.4
   },
   "name": "Eleyna Duskbreeze",
-  "reports": 5,
+  "reports": 6,
   "seenAt": 1794723334,
   "services": {
    "Apprentice Herbalism|": [
@@ -9689,7 +9927,7 @@
    "y": 67.6
   },
   "name": "Brighid Stormflayer",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794719244,
   "services": {
    "Apprentice Skinning|": [
@@ -9711,7 +9949,7 @@
    "y": 67.8
   },
   "name": "Sally Swiftwrench",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794719212,
   "services": {
    "Apprentice Mining|": [
@@ -9733,7 +9971,7 @@
    "y": 66.5
   },
   "name": "Emrys Flintbeard",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794719263,
   "services": {
    "Apprentice Herbalism|": [
@@ -9755,7 +9993,7 @@
    "y": 45.8
   },
   "name": "Angus Hammerhand",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794712728,
   "services": {
    "Apprentice Blacksmith|": [
@@ -10268,7 +10506,7 @@
  "2798": {
   "loc": null,
   "name": "Pand Stonebinder",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680463,
   "services": {
    "Anti-Venom|": [
@@ -10398,7 +10636,7 @@
    "y": 49.5
   },
   "name": "Snang",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794702157,
   "services": {
    "Apprentice Tailoring|": [
@@ -10632,7 +10870,7 @@
  "3001": {
   "loc": null,
   "name": "Brek Stonehoof",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794680286,
   "services": {
    "Apprentice Mining|": [
@@ -10789,7 +11027,7 @@
    "y": 43.0
   },
   "name": "Mak",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681889,
   "services": {
    "Apprentice Leatherworking|": [
@@ -10955,7 +11193,7 @@
    "y": 39.8
   },
   "name": "Komin Winterhoof",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681936,
   "services": {
    "Apprentice Herbalism|": [
@@ -11013,7 +11251,7 @@
    "y": 52.6
   },
   "name": "Aska Mistrunner",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794681974,
   "services": {
    "Apprentice Cook|": [
@@ -11116,7 +11354,7 @@
    "y": 46.8
   },
   "name": "Kah Mistrunner",
-  "reports": 11,
+  "reports": 12,
   "seenAt": 1794682023,
   "services": {
    "Apprentice Fishing|": [
@@ -11156,7 +11394,7 @@
    "y": 61.6
   },
   "name": "Chaw Stronghide",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794699614,
   "services": {
    "Apprentice Leatherworking|": [
@@ -11322,7 +11560,7 @@
    "y": 29.1
   },
   "name": "Lumak",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794702364,
   "services": {
    "Apprentice Fishing|": [
@@ -11358,7 +11596,7 @@
  "3345": {
   "loc": null,
   "name": "Godan",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794675015,
   "services": {
    "Apprentice Enchanting|": [
@@ -11632,7 +11870,7 @@
    "y": 26.3
   },
   "name": "Makaru",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794702352,
   "services": {
    "Apprentice Mining|": [
@@ -11789,7 +12027,7 @@
    "y": 50.0
   },
   "name": "Magar",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794702154,
   "services": {
    "Apprentice Tailoring|": [
@@ -12266,7 +12504,7 @@
  "3399": {
   "loc": null,
   "name": "Zamja",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794674918,
   "services": {
    "Apprentice Cook|": [
@@ -12369,7 +12607,7 @@
    "y": 36.3
   },
   "name": "Tinkerwiz",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794701342,
   "services": {
    "Apprentice Engineer|": [
@@ -12484,14 +12722,15 @@
   "skill": 202
  },
  "3523": {
+  "confirmations": 1,
   "loc": {
    "m": 1420,
    "x": 52.6,
    "y": 55.6
   },
   "name": "Bowen Brisboise",
-  "reports": 7,
-  "seenAt": 1794712130,
+  "reports": 9,
+  "seenAt": 1794935911,
   "services": {
    "Apprentice Tailoring|": [
     "Apprentice Tailoring",
@@ -12728,7 +12967,7 @@
    "y": 40.6
   },
   "name": "Johan Focht",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794714759,
   "services": {
    "Apprentice Mining|": [
@@ -12885,7 +13124,7 @@
    "y": 41.1
   },
   "name": "Guillaume Sorouy",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794714765,
   "services": {
    "Apprentice Blacksmith|": [
@@ -13105,7 +13344,7 @@
    "y": 60.7
   },
   "name": "Cyndra Kindwhisper",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794723006,
   "services": {
    "Apprentice Alchemist|": [
@@ -13199,7 +13438,7 @@
    "y": 60.6
   },
   "name": "Malorne Bladeleaf",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794723007,
   "services": {
    "Apprentice Herbalism|": [
@@ -13257,7 +13496,7 @@
    "y": 49.5
   },
   "name": "Nadyia Maneweaver",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722748,
   "services": {
    "Apprentice Leatherworking|": [
@@ -13423,7 +13662,7 @@
    "y": 93.5
   },
   "name": "Androl Oakhand",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794721637,
   "services": {
    "Apprentice Fishing|": [
@@ -13463,7 +13702,7 @@
    "y": 56.5
   },
   "name": "Astaia",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722446,
   "services": {
    "Apprentice Fishing|": [
@@ -13503,7 +13742,7 @@
    "y": 40.5
   },
   "name": "Grondal Moonbreeze",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794720045,
   "services": {
    "Apprentice Tailoring|": [
@@ -13741,7 +13980,7 @@
    "y": 68.3
   },
   "name": "Firodren Mooncaller",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722325,
   "services": {
    "Apprentice Herbalism|": [
@@ -13799,7 +14038,7 @@
    "y": 21.3
   },
   "name": "Alegorn",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794721868,
   "services": {
    "Apprentice Cook|": [
@@ -13902,7 +14141,7 @@
    "y": 26.1
   },
   "name": "Geofram Bouldertoe",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718192,
   "services": {
    "Apprentice Mining|": [
@@ -14053,14 +14292,14 @@
   "skill": 186
  },
  "4552": {
-  "confirmations": 2,
+  "confirmations": 3,
   "loc": {
    "m": 1458,
    "x": 62.3,
    "y": 44.4
   },
   "name": "Eunice Burch",
-  "reports": 14,
+  "reports": 16,
   "seenAt": 1794871887,
   "services": {
    "Apprentice Cook|": [
@@ -14157,14 +14396,14 @@
   "skill": 185
  },
  "4573": {
-  "confirmations": 1,
+  "confirmations": 2,
   "loc": {
    "m": 1458,
    "x": 80.9,
    "y": 31.2
   },
   "name": "Armand Cromwell",
-  "reports": 8,
+  "reports": 10,
   "seenAt": 1794871336,
   "services": {
    "Apprentice Fishing|": [
@@ -14204,7 +14443,7 @@
    "y": 72.9
   },
   "name": "Graham Van Talen",
-  "reports": 7,
+  "reports": 8,
   "seenAt": 1794711713,
   "services": {
    "Apprentice Engineer|": [
@@ -14325,7 +14564,7 @@
    "y": 55.7
   },
   "name": "Mary Edras",
-  "reports": 9,
+  "reports": 10,
   "seenAt": 1794683614,
   "services": {
    "Anti-Venom|": [
@@ -14455,7 +14694,7 @@
    "y": 36.8
   },
   "name": "Brom Killian",
-  "reports": 10,
+  "reports": 11,
   "seenAt": 1794683300,
   "services": {
    "Apprentice Mining|": [
@@ -14612,7 +14851,7 @@
    "y": 28.5
   },
   "name": "Basil Frye",
-  "reports": 10,
+  "reports": 11,
   "seenAt": 1794683227,
   "services": {
    "Apprentice Blacksmith|": [
@@ -14832,7 +15071,7 @@
    "y": 49.6
   },
   "name": "Martha Alliestar",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794683478,
   "services": {
    "Apprentice Herbalism|": [
@@ -14886,7 +15125,7 @@
  "4616": {
   "loc": null,
   "name": "Lavinia Crowe",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794619697,
   "services": {
    "Apprentice Enchanting|": [
@@ -15160,7 +15399,7 @@
    "y": 58.9
   },
   "name": "Reyna Stonebranch",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718273,
   "services": {
    "Apprentice Herbalism|": [
@@ -15218,7 +15457,7 @@
    "y": 65.6
   },
   "name": "Smith Argus",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715335,
   "services": {
    "Apprentice Blacksmith|": [
@@ -15438,7 +15677,7 @@
    "y": 58.7
   },
   "name": "Nissa Firestone",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718280,
   "services": {
    "Anti-Venom|": [
@@ -15568,7 +15807,7 @@
    "y": 36.9
   },
   "name": "Daryl Riknussun",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718219,
   "services": {
    "Apprentice Cook|": [
@@ -15671,7 +15910,7 @@
    "y": 53.2
   },
   "name": "Stephen Ryback",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715801,
   "services": {
    "Apprentice Cook|": [
@@ -15774,7 +16013,7 @@
    "y": 69.4
   },
   "name": "Arnold Leland",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716732,
   "services": {
    "Apprentice Fishing|": [
@@ -15814,7 +16053,7 @@
    "y": 85.4
   },
   "name": "Tel'Athir",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716645,
   "services": {
    "Apprentice Alchemist|": [
@@ -15908,7 +16147,7 @@
    "y": 37.8
   },
   "name": "Gelman Stonehand",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716115,
   "services": {
    "Apprentice Mining|": [
@@ -16065,7 +16304,7 @@
    "y": 84.4
   },
   "name": "Tannysa",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716588,
   "services": {
    "Apprentice Herbalism|": [
@@ -16117,14 +16356,15 @@
   "skill": 182
  },
  "5695": {
+  "confirmations": 1,
   "loc": {
    "m": 1420,
    "x": 61.7,
    "y": 51.6
   },
   "name": "Vance Undergloom",
-  "reports": 10,
-  "seenAt": 1794682864,
+  "reports": 12,
+  "seenAt": 1794894546,
   "services": {
    "Apprentice Enchanting|": [
     "Apprentice Enchanting",
@@ -16220,14 +16460,15 @@
   "skill": 333
  },
  "5759": {
+  "confirmations": 1,
   "loc": {
    "m": 1420,
    "x": 61.8,
    "y": 52.8
   },
   "name": "Nurse Neela",
-  "reports": 10,
-  "seenAt": 1794682809,
+  "reports": 12,
+  "seenAt": 1794894299,
   "services": {
    "Anti-Venom|": [
     "Anti-Venom",
@@ -16356,7 +16597,7 @@
    "y": 45.0
   },
   "name": "Kamari",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794702033,
   "services": {
    "Apprentice Leatherworking|": [
@@ -16531,7 +16772,7 @@
    "y": 63.9
   },
   "name": "Vira Younghoof",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794699551,
   "services": {
    "Anti-Venom|": [
@@ -16661,7 +16902,7 @@
    "y": 56.9
   },
   "name": "Byancie",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722894,
   "services": {
    "Anti-Venom|": [
@@ -16791,7 +17032,7 @@
    "y": 61.2
   },
   "name": "Zarrin",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722997,
   "services": {
    "Apprentice Cook|": [
@@ -16894,7 +17135,7 @@
    "y": 50.0
   },
   "name": "Radnaal Maneweaver",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722741,
   "services": {
    "Apprentice Skinning|": [
@@ -16952,7 +17193,7 @@
    "y": 61.5
   },
   "name": "Yonn Deepcut",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794699615,
   "services": {
    "Apprentice Skinning|": [
@@ -17010,7 +17251,7 @@
    "y": 33.2
   },
   "name": "Balthus Stoneflayer",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794718131,
   "services": {
    "Apprentice Skinning|": [
@@ -17068,7 +17309,7 @@
    "y": 22.2
   },
   "name": "Eladriel",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794722009,
   "services": {
    "Apprentice Skinning|": [
@@ -17126,7 +17367,7 @@
    "y": 41.0
   },
   "name": "Kurdram Stonehammer",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794720022,
   "services": {
    "Apprentice Mining|": [
@@ -17283,7 +17524,7 @@
    "y": 41.0
   },
   "name": "Delfrum Flintbeard",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794720020,
   "services": {
    "Apprentice Blacksmith|": [
@@ -17503,7 +17744,7 @@
    "y": 62.2
   },
   "name": "Helene Peltskinner",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794715149,
   "services": {
    "Apprentice Skinning|": [
@@ -17561,7 +17802,7 @@
    "y": 59.1
   },
   "name": "Dranh",
-  "reports": 8,
+  "reports": 9,
   "seenAt": 1794699955,
   "services": {
    "Apprentice Skinning|": [
@@ -17619,7 +17860,7 @@
    "y": 58.9
   },
   "name": "Killian Hagey",
-  "reports": 9,
+  "reports": 10,
   "seenAt": 1794683597,
   "services": {
    "Apprentice Skinning|": [
@@ -17677,7 +17918,7 @@
    "y": 45.3
   },
   "name": "Thuwd",
-  "reports": 12,
+  "reports": 13,
   "seenAt": 1794702034,
   "services": {
    "Apprentice Skinning|": [
@@ -17738,14 +17979,14 @@
   "skill": 393
  },
  "7089": {
-  "confirmations": 4,
+  "confirmations": 5,
   "loc": {
    "m": 1456,
    "x": 44.7,
    "y": 42.7
   },
   "name": "Mooranta",
-  "reports": 15,
+  "reports": 17,
   "seenAt": 1794872457,
   "services": {
    "Apprentice Skinning|": [
@@ -17803,7 +18044,7 @@
    "y": 37.3
   },
   "name": "Dane Lindgren",
-  "reports": 6,
+  "reports": 7,
   "seenAt": 1794716062,
   "services": {
    "Apprentice Blacksmith|": [
