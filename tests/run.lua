@@ -1599,6 +1599,35 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     eq(items[2320].vendors[248201].source, "players")
 end)
 
+test("net: a scan goes out again only when something changed", function()
+    local N = ns.Net
+    local e = { name = "Mahu", seenAt = 100, loc = { m = 1, x = 10, y = 10 },
+        items = { [2320] = { p = 10, s = -1 }, [2321] = { p = 50, s = 3 } } }
+    local fp = N.Fingerprint("vendor", e, nil)
+    -- another visit: new date, standing elsewhere, limited stock sold down
+    local again = { name = "Mahu", seenAt = 900, loc = { m = 1, x = 11, y = 12 },
+        items = { [2320] = { p = 10, s = -1 }, [2321] = { p = 50, s = 1 } } }
+    eq(N.Fingerprint("vendor", again, nil), fp, "same vendor, nothing new")
+    again.items[2322] = { p = 5, s = -1 }
+    assert(N.Fingerprint("vendor", again, nil) ~= fp, "a new item")
+    local pricier = { name = "Mahu", items = { [2320] = { p = 12, s = -1 }, [2321] = { p = 50, s = 3 } } }
+    assert(N.Fingerprint("vendor", pricier, nil) ~= fp, "a new price")
+    -- matching the community data: a confirmation, the same every visit
+    eq(N.Fingerprint("vendor", e, { loc = { m = 1, x = 10, y = 10 }, items = { [2320] = { p = 10 }, [2321] = { p = 50 } } }), "C")
+    local t = { name = "Tarn", skill = 165, services = { "a||used|1|0|10|prof" } }
+    local tfp = N.Fingerprint("trainer", t, nil)
+    eq(N.Fingerprint("trainer", { name = "Tarn", skill = 165, seenAt = 5, services = { "a||used|1|0|10|prof" } }, nil), tfp)
+    local more = { name = "Tarn", skill = 165, services = { "a||used|1|0|10|prof", "b||used|1|0|10|prof" } }
+    assert(N.Fingerprint("trainer", more, nil) ~= tfp, "a new service")
+    -- when to send
+    eq(N.ShouldSend(nil, fp), true, "first visit")
+    eq(N.ShouldSend({ fp = fp }, fp), false, "nothing new")
+    eq(N.ShouldSend({ fp = "x" }, fp), true, "something changed")
+    eq(N.ShouldSend({ seen = 100, at = 1 }, fp), true, "sent by an older version: once more")
+    eq(N.ShouldSend({ fp = fp }, fp, true), true, "a collector came online and none was there when it went out")
+    eq(N.ShouldSend({ fp = fp, collector = true }, fp, true), false, "a collector was online when it went out")
+end)
+
 test("net: passing heard reports along to a collector", function()
     local N, S = ns.Net, ns.Share
     -- Control messages, and the wire format doesn't take them as data.

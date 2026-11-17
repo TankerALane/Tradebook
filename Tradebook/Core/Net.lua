@@ -50,7 +50,6 @@ Net.PENDING_TTL = 120     -- seconds before an unfinished text is dropped
 Net.MAX_REPORTERS = 3     -- reports kept per NPC (the oldest is replaced)
 Net.MAX_NPCS = 3000       -- NPCs kept per kind in TradebookDB.heard
 Net.INTERVAL = 1.1        -- seconds between messages sent
-Net.RESEND_AFTER = 86400  -- an unchanged scan is announced again after a day
 Net.BACKLOG_DAYS = 30     -- scans this recent are re-announced after login, slowly
 Net.BACKLOG_GAP = 20      -- seconds between re-announced NPCs
 Net.SENDER_LIMIT = 90     -- messages per minute from one player before they're ignored
@@ -69,6 +68,36 @@ function Net.Hash(s)
     local h = 5381
     for i = 1, #s do h = (h * 33 + s:byte(i)) % 4294967296 end
     return ("%08x"):format(h)
+end
+
+-- PURE. What a scan says, without what changes on every visit (the date, where you stood,
+-- limited stock counts): the same fingerprint means nothing new to send. A vendor or trainer
+-- that matches the community data is just a confirmation.
+function Net.Fingerprint(kind, e, community)
+    if kind == "vendor" then
+        if ns.Share.VendorMatches(e, community) then return "C" end
+        local ids = {}
+        for id in pairs(e.items or {}) do ids[#ids + 1] = id end
+        table.sort(ids)
+        local parts = { tostring(e.name) }
+        for _, id in ipairs(ids) do
+            local it = e.items[id]
+            parts[#parts + 1] = table.concat({ id, it.p or "", (it.s or -1) >= 0 and "L" or "", it.c or "" }, ":")
+        end
+        return Net.Hash(table.concat(parts, ";"))
+    end
+    if ns.Share.TrainerMatches(e, community) then return "CT" end
+    local lines = {}
+    for i, line in ipairs(e.services or {}) do lines[i] = line end
+    table.sort(lines)
+    return Net.Hash(tostring(e.name) .. ";" .. tostring(e.skill) .. ";" .. table.concat(lines, ";"))
+end
+
+-- PURE. Should a scan go out? last: what was sent for it before ({ fp, collector }), or nil.
+-- force: a collector just said hello (re-send what went out while no collector was there).
+function Net.ShouldSend(last, fp, force)
+    if not (last and last.fp == fp) then return true end
+    return force == true and not last.collector
 end
 
 -- PURE. Cut share text into messages. nil when it needs more than MAX_PARTS.
@@ -386,6 +415,7 @@ local collector = false -- this copy collects passed-along reports (dev/Tradeboo
 local relayQueue = {}   -- heard reports to pass along to a collector
 local sentRelay = {}    -- [msgID] = the report it carried (marked relayed on the collector's ACK)
 local lastRelay, answeredAt, collectorWho = 0, nil, nil
+local collectorAt -- GetTime() of the last collector hello heard
 
 local function enabled()
     return ns.db and ns.db.settings and ns.db.settings.netShare ~= false and not ns.fake
@@ -446,37 +476,42 @@ local function textFor(kind, npc)
     if kind == "disenchant" then
         local total = disenchantTotal()
         if total == 0 then return nil end
-        return (ns.Share.Encode({}, build, ver, nil, { disenchants = ns.db.disenchants })), total
+        return (ns.Share.Encode({}, build, ver, nil, { disenchants = ns.db.disenchants })), tostring(total)
     end
     if kind == "vendor" then
         local e = ns.db.vendors and ns.db.vendors[npc]
         if not (e and e.items and next(e.items)) then return nil end
-        return (ns.Share.Encode({ [npc] = e }, build, ver, nil, { community = ns.CommunityVendors })), e.seenAt
+        local community = ns.CommunityVendors and ns.CommunityVendors[npc]
+        return (ns.Share.Encode({ [npc] = e }, build, ver, nil, { community = ns.CommunityVendors })),
+            Net.Fingerprint("vendor", e, community)
     end
     local t = ns.db.trainers and ns.db.trainers[npc]
     if not (t and t.services and #t.services > 0) then return nil end
-    return (ns.Share.Encode({}, build, ver, { [npc] = t }, { communityTrainers = ns.CommunityTrainers })), t.seenAt
+    local community = ns.CommunityTrainers and ns.CommunityTrainers[npc]
+    return (ns.Share.Encode({}, build, ver, { [npc] = t }, { communityTrainers = ns.CommunityTrainers })),
+        Net.Fingerprint("trainer", t, community)
 end
 
--- Queue one of your scans for sending (skipped when that scan already went out today).
 -- A control message, first in line (they're short and time-sensitive).
 local function control(what, arg)
     table.insert(queue, 1, session .. "~CTL~" .. what .. (arg and ("~" .. arg) or ""))
 end
 
+-- Queue one of your scans for sending: only when it says something you haven't sent yet (a
+-- first visit, or something new or changed at the NPC; Net.Fingerprint). force: a collector
+-- said hello, so also what went out while no collector was online.
 local function announce(kind, npc, force)
-    local text, seenAt = textFor(kind, npc)
+    local text, fp = textFor(kind, npc)
     if not text then return end
     ns.db.netSent = ns.db.netSent or {}
     local key = kind .. ":" .. npc
-    local last = ns.db.netSent[key]
-    local now = GetServerTime()
-    if not force and last and last.seen == seenAt and now - last.at < Net.RESEND_AFTER then return end
+    if not Net.ShouldSend(ns.db.netSent[key], fp, force) then return end
     msgCounter = msgCounter + 1
     local parts = Net.Chunk(text, session .. ("%x"):format(msgCounter))
     if not parts or #queue + #parts > 400 then return end
     for _, p in ipairs(parts) do queue[#queue + 1] = p end
-    ns.db.netSent[key] = { seen = seenAt, at = now }
+    local collectorOnline = collectorAt ~= nil and GetTime() - collectorAt < Net.COLLECTOR_HELLO * 1.5
+    ns.db.netSent[key] = { fp = fp, at = GetServerTime(), collector = collectorOnline or nil }
 end
 
 -- Called after a disenchant was recorded (Core/Disenchant.lua): your totals go out a minute
@@ -567,8 +602,8 @@ function Net.Test(n)
     return true
 end
 
--- Your recent scans, newest first, to re-announce after login (force: even when they went
--- out today, for a collector that just came online).
+-- Your recent scans, newest first, to re-announce after login: only what you haven't sent yet
+-- (force: a collector just came online, so also what went out while none was there).
 local function fillBacklog(force)
     backlog = {}
     local cutoff = GetServerTime() - Net.BACKLOG_DAYS * 86400
@@ -579,7 +614,7 @@ local function fillBacklog(force)
         if (t.seenAt or 0) > cutoff then backlog[#backlog + 1] = { kind = "trainer", npc = npc, at = t.seenAt, force = force } end
     end
     table.sort(backlog, function(a, b) return a.at > b.at end)
-    -- Your disenchant totals: once per session (skipped when unchanged and sent today).
+    -- Your disenchant totals (skipped when unchanged since they were sent).
     if disenchantTotal() > 0 then
         table.insert(backlog, 1, { kind = "disenchant", npc = 0, at = GetServerTime(), force = force })
     end
@@ -637,6 +672,7 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
             -- A collector is online: re-send your own recent scans and pass along what you heard,
             -- after a short random wait (so not everyone answers at once), at most every 30 min.
             collectorWho = who
+            collectorAt = GetTime()
             local now = GetTime()
             if not answeredAt or now - answeredAt >= Net.RELAY_AGAIN then
                 answeredAt = now
