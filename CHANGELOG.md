@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Data
+- New vendors: Ghrawt and Innkeeper Grosk (Durotar); Innkeeper Boorand Plainswind, Moorane Hearthgrain and Uthrok (The Barrens); Killian Sanatha (Silverpine Forest). 491 vendors, 6,459 items.
+- New trainer: Josef Gregorian (Tailoring, Undercity). 138 trainers, 1,964 services.
+
 ## v1.6.0
 
 ### Sharing in game
