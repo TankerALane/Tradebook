@@ -15,8 +15,9 @@
 -- (AddonMessageThrottle or other), echoed, and the rate echoed in the last SUSTAIN s (after the
 -- first burst is used up). Results: a window to copy, and TradebookDevDB.rateTest.
 -- /tbdev ratetest long [minutes]: one message a second, nonstop, for that long (30 minutes
--- unless given), with a line per minute: tried, accepted, refused, echoed, lost (accepted but
--- never echoed). Shows how long 1/s holds up.
+-- unless given): running totals in chat every PROGRESS_EVERY s, and in the end a line per
+-- minute: tried, accepted, refused, echoed, lost (accepted but never echoed). Shows how long
+-- 1/s holds up.
 -- /tbdev ratetest channels: 1 message a second on each of several channels at once, to see
 -- whether the limit is per channel: 3 channels, then as many as are free (a character can be
 -- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
@@ -38,6 +39,8 @@ local BASE = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20 }
 local HIGHER = { 30, 40, 50, 75, 100 }
 local SPREAD = { 2, 5, 10 }
 local MAX_CHANNELS = 10
+local PROGRESS_EVERY = 10 -- seconds between the long test's running totals
+local ECHO_WAIT = 5       -- seconds before a message not echoed yet counts as lost
 local CHANNEL_DURATION = 60
 local CHANNEL_SUSTAIN = 30
 local CHANNEL_GAP = 20
@@ -151,6 +154,24 @@ function Dev.RateLongLines(p, upTo)
     return lines
 end
 
+-- PURE. The long test's running totals at `now` (seconds from its start). A message accepted
+-- in the last ECHO_WAIT s isn't lost yet (its echo may be on the way).
+function Dev.RateProgress(p, now)
+    local refused, echoed, lost = 0, 0, 0
+    for _ in pairs(p.refusedAt or {}) do refused = refused + 1 end
+    local sent = 0
+    for seq, at in pairs(p.sentAt or {}) do
+        sent = sent + 1
+        if p.echoAt[seq] then
+            echoed = echoed + 1
+        elseif now - at >= ECHO_WAIT then
+            lost = lost + 1
+        end
+    end
+    return ("%d:%02d  tried %d, accepted %d, refused %d, echoed %d, lost %d"):format(math.floor(now / 60),
+        math.floor(now % 60), sent + refused, sent, refused, echoed, lost)
+end
+
 -- PURE. One line per phase, for the results window.
 function Dev.RateLines(phases)
     local lines = { "rate/s  prefixes  tried  accepted  refused  echoed  echoed/s (last " .. SUSTAIN .. " s)  first refused at" }
@@ -253,14 +274,9 @@ local function startPhase()
         return
     end
     if p.long then
-        say(("1/s nonstop for %d minutes; a line each minute."):format(p.duration / 60))
-        -- Each minute: that minute's line (an echo still on its way shows as lost here, not in the end).
-        local minute = 0
-        run.ticker = C_Timer.NewTicker(60, function()
-            if not run then return end
-            minute = minute + 1
-            local lines = Dev.RateLongLines(p, minute * 60)
-            say("minute " .. lines[minute + 1])
+        say(("1/s nonstop for %d minutes; running totals every %d s."):format(p.duration / 60, PROGRESS_EVERY))
+        run.ticker = C_Timer.NewTicker(PROGRESS_EVERY, function()
+            if run and run.phase == p then say(Dev.RateProgress(p, GetTime() - run.startAt)) end
         end)
         return
     end

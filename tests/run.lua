@@ -1844,6 +1844,9 @@ test("dev: send rate test plan and results", function()
     eq(ll[5], "First problem after 1:39.")
     long.echoAt[100], long.sentAt[110], long.refusedAt[110] = 1, 109, nil
     eq(D.RateLongLines(long, 120)[5], "No problems: every message went out and came back.")
+    -- running totals: a message sent in the last 5 s isn't lost yet
+    local prog = { sentAt = { 0, 1, 2, 18 }, echoAt = { 1, 1 }, refusedAt = { [5] = 3 } }
+    eq(D.RateProgress(prog, 20), "0:20  tried 5, accepted 4, refused 1, echoed 2, lost 1")
     SlashCmdList = nil
 end)
 
