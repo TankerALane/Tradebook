@@ -17,6 +17,16 @@
 -- that player sends a newer one). Control messages don't fit the wire format: older copies
 -- ignore them.
 --
+-- Catching up (players who weren't online when something was shared): 45 s after joining the
+-- channel a copy says "<session>~CTL~SYNC" (once a session). Players who hear it wait 3-20 s
+-- at random; the first to start says "<session>~CTL~SYNCFOR~<asker's session>" (the others
+-- drop their answer) and sends the newest SYNC_BATCH reports of the last SYNC_DAYS days, its
+-- own scans as usual and what it heard as passed-along reports (TBR1, original player's hash),
+-- one every RELAY_GAP s. A copy answers at most every SYNC_ANSWER_AGAIN s, and the same player
+-- at most every SYNC_SAME s. Everyone online keeps them; passed-along reports are marked
+-- indirect and don't count toward players agreeing (only a player's own message does), so
+-- they show as unconfirmed until two players have sent the same data directly.
+--
 -- Only NPC data is sent, in the /tb share text format (Core/Share.lua): NPC IDs, names, where
 -- they stand, what they sell or teach and for how much. Nothing about the player's characters.
 -- Other players are kept apart only by a short hash of their name (to count how many players
@@ -58,6 +68,11 @@ Net.COLLECTOR_HELLO = 600 -- seconds between a collector's hellos
 Net.RELAY_BATCH = 200     -- heard reports passed along per hello
 Net.RELAY_GAP = 3         -- seconds between passed-along reports
 Net.RELAY_AGAIN = 1800    -- a player answers hellos at most this often
+Net.SYNC_ASK_AFTER = 45   -- seconds after joining the channel before asking to catch up
+Net.SYNC_DAYS = 7         -- catch-up covers reports this recent
+Net.SYNC_BATCH = 60       -- reports sent per catch-up
+Net.SYNC_ANSWER_AGAIN = 600 -- a player answers a catch-up at most this often
+Net.SYNC_SAME = 1800      -- the same player is caught up at most this often
 
 ---------------------------------------------------------------------------
 -- PURE: hashing, chunking, reassembly, validation, merging
@@ -307,12 +322,18 @@ function Net.RecordDisenchants(heard, bands, who, now)
 end
 
 -- PURE. Keep one player's report of an NPC in heard[kind] ({ [npcID] = { reports = { [who] =
--- { at, e } } } }), replacing that player's older report and, when full, the oldest one.
--- Returns true when kept.
-function Net.Record(heard, kind, npc, entry, who, now)
+-- { at, e, indirect } } } }), replacing that player's older report and, when full, the oldest
+-- one. indirect: it was passed along by someone else (a catch-up), so it doesn't count toward
+-- players agreeing (Net.Best). Returns true when kept; false when that player's report is
+-- already there and no older (nothing new), or the list is full.
+function Net.Record(heard, kind, npc, entry, who, now, indirect)
     heard[kind] = heard[kind] or {}
     local list = heard[kind]
     local rec = list[npc]
+    local old = rec and rec.reports[who]
+    if old and (old.e.seenAt or 0) >= (entry.seenAt or 0) and (indirect or not old.indirect) then
+        return false
+    end
     if not rec then
         if count(list) >= Net.MAX_NPCS then return false end
         rec = { reports = {} }
@@ -325,24 +346,54 @@ function Net.Record(heard, kind, npc, entry, who, now)
         end
         rec.reports[oldest] = nil
     end
-    rec.reports[who] = { at = now, e = entry }
+    rec.reports[who] = { at = now, e = entry, indirect = indirect or nil }
     return true
 end
 
 -- PURE. The report most players agree with: entry, how many players agree (at least 1).
--- matches(a, b) says whether two reports describe the same NPC data.
+-- matches(a, b) says whether two reports describe the same NPC data. Only reports a player
+-- sent directly count as agreeing; passed-along ones (indirect) are shown but count for none.
 function Net.Best(rec, matches)
     local best, bestN, bestAt
     for _, r in pairs(rec and rec.reports or {}) do
         local n = 0
         for _, s in pairs(rec.reports) do
-            if s == r or matches(r.e, s.e) or matches(s.e, r.e) then n = n + 1 end
+            if not s.indirect and (s == r or matches(r.e, s.e) or matches(s.e, r.e)) then n = n + 1 end
         end
         if not best or n > bestN or (n == bestN and (r.e.seenAt or 0) > (bestAt or 0)) then
             best, bestN, bestAt = r.e, n, r.e.seenAt
         end
     end
+    if best and bestN < 1 then bestN = 1 end
     return best, bestN or 0
+end
+
+-- PURE. What to send a player catching up: the newest reports of the last `days` days, at
+-- most `limit`: { { kind = "vendors"|"trainers", npc, who = original player (nil: your own
+-- scan), e } }. heard: TradebookDB.heard; own: { vendors = ..., trainers = ... } your scans.
+function Net.SyncReports(heard, own, now, days, limit)
+    local cutoff = now - days * 86400
+    local out = {}
+    for _, kind in ipairs({ "vendors", "trainers" }) do
+        for npc, e in pairs(own and own[kind] or {}) do
+            if (e.seenAt or 0) > cutoff then out[#out + 1] = { kind = kind, npc = npc, e = e } end
+        end
+        for npc, rec in pairs(heard and heard[kind] or {}) do
+            for who, r in pairs(rec.reports or {}) do
+                if (r.e and r.e.seenAt or 0) > cutoff then
+                    out[#out + 1] = { kind = kind, npc = npc, who = who, e = r.e }
+                end
+            end
+        end
+    end
+    table.sort(out, function(a, b)
+        local sa, sb = a.e.seenAt or 0, b.e.seenAt or 0
+        if sa ~= sb then return sa > sb end
+        if a.npc ~= b.npc then return a.npc < b.npc end
+        return tostring(a.who) < tostring(b.who)
+    end)
+    for i = #out, limit + 1, -1 do out[i] = nil end
+    return out
 end
 
 -- PURE. Take one whole share text from player `who` into `heard`. Returns how many NPCs were
@@ -351,7 +402,7 @@ end
 --     trainers = { [npcID] = { name, skill, services = n } },
 --     confirmed = { { kind = "vendor" | "trainer", npc } }, confirms = n,
 --     deBands = { [bandID] = checked totals }, disenchants = n bands }
-function Net.Accept(heard, text, who, now)
+function Net.Accept(heard, text, who, now, indirect)
     local vendors, trainers, confirmed, disenchants = ns.Share.Decode(text)
     local info = { vendors = {}, trainers = {}, confirmed = {}, confirms = 0, deBands = {}, disenchants = 0 }
     if not vendors then return 0, info end
@@ -368,7 +419,7 @@ function Net.Accept(heard, text, who, now)
     end
     for npc, e in pairs(vendors) do
         local clean = okID(npc) and Net.CleanVendor(e, now)
-        if clean and Net.Record(heard, "vendors", npc, clean, who, now) then
+        if clean and Net.Record(heard, "vendors", npc, clean, who, now, indirect) then
             kept = kept + 1
             info.vendors[npc] = { name = clean.name or "?", items = count(clean.items or {}),
                 map = clean.loc and clean.loc.m }
@@ -376,7 +427,7 @@ function Net.Accept(heard, text, who, now)
     end
     for npc, t in pairs(trainers or {}) do
         local clean = okID(npc) and Net.CleanTrainer(t, now)
-        if clean and Net.Record(heard, "trainers", npc, clean, who, now) then
+        if clean and Net.Record(heard, "trainers", npc, clean, who, now, indirect) then
             kept = kept + 1
             info.trainers[npc] = { name = clean.name or "?", skill = clean.skill, services = #(clean.services or {}) }
         end
@@ -430,12 +481,17 @@ local selfSender -- how the channel names you (learned from your first echo)
 local version = 0      -- bumped when heard data changes (caches)
 local senders = {}     -- [who] = { minute, n }: flood protection
 local cached = {}
-local stats = { sent = 0, heard = 0, players = {}, relayed = 0, acked = 0 }
+local stats = { sent = 0, heard = 0, players = {}, relayed = 0, acked = 0, synced = 0 }
 local collector = false -- this copy collects passed-along reports (dev/TradebookDev)
 local relayQueue = {}   -- heard reports to pass along to a collector
 local sentRelay = {}    -- [msgID] = the report it carried (marked relayed on the collector's ACK)
 local lastRelay, answeredAt, collectorWho = 0, nil, nil
 local collectorAt -- GetTime() of the last collector hello heard
+local syncQueue = {}    -- catch-up reports to send (Net.SyncReports)
+local syncPending = {}  -- [requester session] = true while waiting to answer it
+local syncAnsweredAt    -- GetTime() of the last catch-up this copy answered
+local syncAnswered = {} -- [who] = GetTime() they were last caught up by this copy
+local syncAsked = false -- this session asked to catch up
 
 local function enabled()
     return ns.db and ns.db.settings and ns.db.settings.netShare ~= false and not ns.fake
@@ -602,6 +658,20 @@ local function pump()
                 stats.relayed = stats.relayed + 1
             end
         end
+        -- Catch-up reports for a player who just came online.
+        if #queue == 0 and #syncQueue > 0 and now - lastRelay >= Net.RELAY_GAP then
+            lastRelay = now
+            local ref = table.remove(syncQueue, 1)
+            local build = Compat.Call("GetBuildInfo") or "?"
+            local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
+            local text = ref.kind == "vendors" and ns.Share.Encode({ [ref.npc] = ref.e }, build, ver)
+                or ns.Share.Encode({}, build, ver, { [ref.npc] = ref.e })
+            if ref.who then text = Net.RelayText(text, ref.who) end
+            msgCounter = msgCounter + 1
+            local parts = Net.Chunk(text, session .. ("%x"):format(msgCounter))
+            for _, p in ipairs(parts or {}) do queue[#queue + 1] = p end
+            stats.synced = stats.synced + 1
+        end
         if #queue == 0 then return end
     end
     local msg = queue[1]
@@ -647,6 +717,16 @@ local function join()
         if findChannel() then
             hideChannel()
             ns.Debug("net: in channel", channelID)
+            -- Ask the players online for what you missed (once a session).
+            if not syncAsked then
+                syncAsked = true
+                C_Timer.After(Net.SYNC_ASK_AFTER, function()
+                    if enabled() and channelID then
+                        control("SYNC")
+                        ns.Debug("net: asked to catch up")
+                    end
+                end)
+            end
         else
             ns.Debug("net: could not join the channel")
         end
@@ -702,6 +782,28 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
                     ns.Debug("net: collector online,", #backlog, "own scans and", #relayQueue, "heard reports to send")
                 end)
             end
+        elseif what == "SYNC" then
+            -- A player came online and asks to catch up: answer after a random wait, unless
+            -- someone else starts first (SYNCFOR), or you answered lately.
+            local asker = tostring(text):match("^(%w+)~CTL~")
+            local now = GetTime()
+            if asker and not syncPending[asker]
+                and not (syncAnsweredAt and now - syncAnsweredAt < Net.SYNC_ANSWER_AGAIN)
+                and not (syncAnswered[who] and now - syncAnswered[who] < Net.SYNC_SAME) then
+                syncPending[asker] = true
+                C_Timer.After(3 + math.random(0, 17), function()
+                    if not syncPending[asker] then return end
+                    syncPending[asker] = nil
+                    if not (enabled() and channelID) then return end
+                    syncAnsweredAt, syncAnswered[who] = GetTime(), GetTime()
+                    control("SYNCFOR", asker)
+                    syncQueue = Net.SyncReports(ns.db.heard, { vendors = ns.db.vendors, trainers = ns.db.trainers },
+                        GetServerTime(), Net.SYNC_DAYS, Net.SYNC_BATCH)
+                    ns.Debug("net: catching a player up,", #syncQueue, "reports")
+                end)
+            end
+        elseif what == "SYNCFOR" then
+            syncPending[arg] = nil -- someone else is answering that player
         elseif what == "ACK" and Net.IsOwn(arg, session) and sentRelay[arg] then
             sentRelay[arg].rec.relayed = true
             sentRelay[arg] = nil
@@ -721,16 +823,18 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     local full, msgID = Net.Feed(asm, who, text, GetTime())
     if not full then return end
     ns.db.heard = ns.db.heard or {}
-    -- Passed along by `who` for another player: only a collector takes it in, as that player's.
+    -- Passed along by `who` for another player (to a collector, or to catch someone up): kept
+    -- as that player's. A collector confirms it got it (ACK); everyone else keeps it as passed
+    -- along (indirect), shown but not counted toward players agreeing.
     local relayed, relayText = Net.ParseRelay(full)
+    local indirect = false
     if relayed then
-        if not collector then return end
-        control("ACK", msgID)
+        if collector then control("ACK", msgID) else indirect = true end
         -- Your own data, back again (this character, or another of yours: already saved).
         if (selfSender and relayed == Net.Hash(selfSender)) or Net.IsMine(relayed) then return end
         who, full = relayed, relayText
     end
-    local kept, info = Net.Accept(ns.db.heard, full, who, GetServerTime())
+    local kept, info = Net.Accept(ns.db.heard, full, who, GetServerTime(), indirect)
     if kept > 0 then
         ns.Fire("NET_HEARD", who, info)
         stats.heard = stats.heard + kept
@@ -750,7 +854,8 @@ function Net.Status()
             enabled() and pauseReason() and (" (paused: " .. pauseReason() .. ")") or ""),
         ("This session: %d messages sent, %d NPC reports heard from %d players"):format(stats.sent, stats.heard,
             count(stats.players)),
-        ("Waiting to send: %d messages, %d NPCs to re-announce"):format(#queue, #backlog),
+        ("Waiting to send: %d messages, %d NPCs to re-announce, %d catch-up reports"):format(#queue, #backlog,
+            #syncQueue),
         ("Heard so far: %d vendors, %d trainers, disenchants from %d players"):format(count(heard.vendors or {}),
             count(heard.trainers or {}), count(heard.de or {})),
         collector and "Collecting: other players pass along what they heard to you"

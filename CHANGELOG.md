@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Sharing in game
+- **Catch up when you log in**: you no longer miss what other players shared while you were offline. A minute after you log in, Tradebook asks the players online, and one of them sends you the newest vendors and trainers of the last week, a little at a time. What arrives this way says "(unconfirmed)" until two players have each sent the same data themselves.
+- A report you already have isn't saved or announced again.
+
 ## v1.7.0
 
 ### Vendors

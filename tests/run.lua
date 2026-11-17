@@ -1690,8 +1690,46 @@ test("net: passing heard reports along to a collector", function()
     eq(#N.Unrelayed(heard, 1), 1, "at most `limit`")
     for _, ref in ipairs(refs) do ref.rec.relayed = true end
     eq(#N.Unrelayed(heard, 10), 0, "received: not sent again")
-    N.Accept(heard, text, "aaaa", 200)
+    eq(N.Accept(heard, text, "aaaa", 200), 0, "the same scan again: nothing new")
+    eq(#N.Unrelayed(heard, 10), 0)
+    local newer = S.Encode({ [3005] = { name = "Mahu", seenAt = 150, items = { [2320] = { p = 10, s = -1 } } } }, "b", "v")
+    N.Accept(heard, newer, "aaaa", 200)
     eq(#N.Unrelayed(heard, 10), 1, "a newer report from that player waits again")
+end)
+
+test("net: catching up a player who just came online", function()
+    local N, S = ns.Net, ns.Share
+    local function vendor(seen, p)
+        return S.Encode({ [3005] = { name = "Mahu", seenAt = seen, items = { [2320] = { p = p or 10, s = -1 } } } }, "b", "v")
+    end
+    local heard = {}
+    -- passed along (indirect): shown, but counts for nobody agreeing
+    N.Accept(heard, vendor(100), "aaaa", 100, true)
+    N.Accept(heard, vendor(100), "bbbb", 100, true)
+    local best = N.BestAll(heard, "vendors")[3005]
+    eq(best.name, "Mahu")
+    eq(best.agree, 1, "two passed-along reports: still unconfirmed")
+    -- one of them sends it directly: that one counts
+    eq(N.Accept(heard, vendor(100), "aaaa", 120), 1, "direct replaces passed-along")
+    eq(N.BestAll(heard, "vendors")[3005].agree, 1)
+    N.Accept(heard, vendor(100), "cccc", 130)
+    eq(N.BestAll(heard, "vendors")[3005].agree, 2, "two players sent it directly")
+    -- a passed-along copy of a direct report changes nothing
+    eq(N.Accept(heard, vendor(100), "cccc", 140, true), 0)
+    eq(heard.vendors[3005].reports.cccc.indirect, nil)
+    -- what a catch-up sends: newest first, recent only, at most `limit`
+    local now = 10 * 86400
+    local own = { vendors = { [1] = { name = "Mine", seenAt = now - 10, items = {} } },
+        trainers = { [2] = { name = "Old", seenAt = now - 9 * 86400, services = {} } } }
+    local h = { vendors = { [3] = { reports = { x = { at = 1, e = { name = "Heard", seenAt = now - 5 } },
+        y = { at = 1, e = { name = "Heard", seenAt = now - 99 * 86400 } } } } } }
+    local out = N.SyncReports(h, own, now, 7, 10)
+    eq(#out, 2, "the old trainer and the old report are left out")
+    eq(out[1].npc, 3)
+    eq(out[1].who, "x", "heard: sent for the original player")
+    eq(out[2].npc, 1)
+    eq(out[2].who, nil, "your own scan")
+    eq(#N.SyncReports(h, own, now, 7, 1), 1, "at most `limit`")
 end)
 
 test("net: own messages are known by the session tag; migration 4 forgets heard data", function()

@@ -23,7 +23,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 ### Vendors tab: a community vendor database
 - Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie).
 - Ships with **491 vendors and 138 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
-- **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
+- **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. Log in later and the players online **catch you up** on what was shared in the last week. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
 
 ### A better Professions window
 - **Replaces the default window** (switch back any time with **Default UI**).
