@@ -17,6 +17,10 @@
 -- /tbdev ratetest long [minutes]: one message a second, nonstop, for that long (30 minutes
 -- unless given), with a line per minute: tried, accepted, refused, echoed, lost (accepted but
 -- never echoed). Shows how long 1/s holds up.
+-- /tbdev ratetest channels: 1 message a second on each of several channels at once, to see
+-- whether the limit is per channel: 3 channels, then as many as are free (a character can be
+-- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
+-- CHANNEL_DURATION s each (past the first burst), delivered rate over the last CHANNEL_SUSTAIN s.
 -- /tbdev ratetest stop: stop early (results so far).
 -- Found 2026-11-17 (one prefix): 1/s all through; 2/s and up, 10 went out, then nothing for the
 -- rest of the 20 s (AddonMessageThrottle and ChannelThrottle): sending too often keeps the
@@ -33,6 +37,49 @@ local MSG_LEN = 255
 local BASE = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20 }
 local HIGHER = { 30, 40, 50, 75, 100 }
 local SPREAD = { 2, 5, 10 }
+local MAX_CHANNELS = 10
+local CHANNEL_DURATION = 60
+local CHANNEL_SUSTAIN = 30
+local CHANNEL_GAP = 20
+
+local function channelName(i)
+    return i == 1 and TEST_CHANNEL or (TEST_CHANNEL .. i)
+end
+
+-- PURE. The channel phases for `free` channels joined: 3 (or fewer) channels, then all of
+-- them; each with one prefix for all (distinct = false) and a prefix per channel.
+function Dev.RateChannelPlan(free)
+    local out = {}
+    local counts = { math.min(3, free) }
+    if free > 3 then counts[2] = free end
+    for _, k in ipairs(counts) do
+        for _, distinct in ipairs({ false, true }) do
+            out[#out + 1] = { rate = k, channels = k, prefixes = distinct and k or 1, distinct = distinct,
+                duration = CHANNEL_DURATION, sustain = CHANNEL_SUSTAIN, gap = CHANNEL_GAP }
+        end
+    end
+    return out
+end
+
+-- PURE. The channel test's lines: per phase, the totals and the delivered rate against what
+-- it tried, then a line per channel.
+function Dev.RateChannelLines(phases)
+    local lines = {}
+    for _, p in ipairs(phases) do
+        lines[#lines + 1] = ("%d channels, %s: %d tried, %d accepted, %d refused, %d echoed; %.1f/s delivered at the end (tried %d/s)")
+            :format(p.channels, p.distinct and "a prefix each" or "one prefix", p.tried, p.sent, p.refused, p.echoed,
+                Dev.RateSustained(p), p.rate)
+        for c = 1, p.channels do
+            local b = p.byChan and p.byChan[c] or { sent = 0, refused = 0, echoed = 0 }
+            local reasons = {}
+            for name, n in pairs(b.reasons or {}) do reasons[#reasons + 1] = name .. " " .. n end
+            table.sort(reasons)
+            lines[#lines + 1] = ("    channel %d: %d accepted, %d refused, %d echoed%s"):format(c, b.sent, b.refused,
+                b.echoed, #reasons > 0 and ("  (" .. table.concat(reasons, ", ") .. ")") or "")
+        end
+    end
+    return lines
+end
 
 -- PURE. The phases: { rate, prefixes, higher = true for the extra fast ones }.
 function Dev.RatePlan()
@@ -54,13 +101,15 @@ function Dev.RateClean(p)
     return p.sent > 0 and p.refused == 0 and p.echoed >= p.sent
 end
 
--- PURE. Messages echoed per second among those sent in the last SUSTAIN s of the phase.
+-- PURE. Messages echoed per second among those sent in the last SUSTAIN s of the phase
+-- (or the phase's own duration and sustain).
 function Dev.RateSustained(p)
+    local duration, window = p.duration or DURATION, p.sustain or SUSTAIN
     local n = 0
     for seq, at in pairs(p.sentAt or {}) do
-        if at >= DURATION - SUSTAIN and p.echoAt[seq] then n = n + 1 end
+        if at >= duration - window and p.echoAt[seq] then n = n + 1 end
     end
-    return n / SUSTAIN
+    return n / window
 end
 
 -- PURE. The long test, one line per minute (sends in that minute), then the totals.
@@ -160,12 +209,17 @@ local function finish(stopped)
     r.frame:SetScript("OnUpdate", nil)
     local ns = Dev.NS()
     if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(false) end
-    pcall(_G.LeaveChannelByName, TEST_CHANNEL)
+    for i = 1, (r.joined or 1) do pcall(_G.LeaveChannelByName, channelName(i)) end
     if r.ticker then r.ticker:Cancel() end
     local done = {}
     for _, p in ipairs(r.phases) do if p.tried then done[#done + 1] = p end end
     local lines, header
-    if r.long then
+    if r.mode == "channels" then
+        lines = Dev.RateChannelLines(done)
+        header = ("Channel test %s, %s. %d channels free; 1 message a second per channel, %d s each, %d-character messages.")
+            :format(date("%Y-%m-%d %H:%M"), stopped and "stopped early" or "finished", #r.channels, CHANNEL_DURATION,
+                MSG_LEN)
+    elseif r.long then
         local p = r.phases[1]
         lines = Dev.RateLongLines(p, math.min(p.duration, GetTime() - (r.startAt or GetTime())))
         header = ("Long rate test %s, %s. 1 message a second for up to %d minutes, %d-character messages."):format(
@@ -191,7 +245,13 @@ local function startPhase()
     end
     p.tried, p.sent, p.refused, p.echoed = 0, 0, 0, 0
     p.sentAt, p.echoAt, p.reasons, p.refusedAt = {}, {}, {}, {}
+    p.byChan, p.chanOf = {}, {}
     run.phase, run.startAt = p, GetTime()
+    if p.channels then
+        say(("%d channels, %s, 1/s each for %d s..."):format(p.channels, p.distinct and "a prefix each" or "one prefix",
+            p.duration))
+        return
+    end
     if p.long then
         say(("1/s nonstop for %d minutes; a line each minute."):format(p.duration / 60))
         -- Each minute: that minute's line (an echo still on its way shows as lost here, not in the end).
@@ -215,8 +275,14 @@ local function endPhase()
         return
     end
     -- Report once the late echoes are in, then the next phase.
-    C_Timer.After(GAP, function()
+    C_Timer.After(p.gap or GAP, function()
         if not run then return end
+        if p.channels then
+            for _, line in ipairs(Dev.RateChannelLines({ p })) do say(line) end
+            run.index = run.index + 1
+            startPhase()
+            return
+        end
         say(("%d/s: %d tried, %d accepted, %d refused, %d echoed, %.1f/s at the end"):format(p.rate, p.tried, p.sent,
             p.refused, p.echoed, Dev.RateSustained(p)))
         -- 20 a second clean: try faster, before the prefix phases.
@@ -235,21 +301,33 @@ local function endPhase()
 end
 
 local function send(p, seq)
-    local prefix = prefixOf(((seq - 1) % p.prefixes) + 1)
+    local prefix, channel, c = prefixOf(((seq - 1) % p.prefixes) + 1), run.channel, nil
+    if p.channels then
+        c = ((seq - 1) % p.channels) + 1
+        prefix, channel = p.distinct and prefixOf(c) or PREFIX, run.channels[c]
+        p.chanOf[seq] = c
+        p.byChan[c] = p.byChan[c] or { sent = 0, refused = 0, echoed = 0, reasons = {} }
+    end
     local head = ("%s:%d:%d:"):format(run.session, run.index, seq)
     local msg = head .. string.rep("x", MSG_LEN - #head)
-    local r = _G.C_ChatInfo.SendAddonMessage(prefix, msg, "CHANNEL", run.channel)
+    local r = _G.C_ChatInfo.SendAddonMessage(prefix, msg, "CHANNEL", channel)
     local now = GetTime() - run.startAt
     p.tried = p.tried + 1
     local refused = resultName(r)
+    local b = c and p.byChan[c]
     if refused then
         p.refused = p.refused + 1
         p.reasons[refused] = (p.reasons[refused] or 0) + 1
         p.firstRefused = p.firstRefused or now
         p.refusedAt[seq] = now
+        if b then
+            b.refused = b.refused + 1
+            b.reasons[refused] = (b.reasons[refused] or 0) + 1
+        end
     else
         p.sent = p.sent + 1
         p.sentAt[seq] = now
+        if b then b.sent = b.sent + 1 end
     end
 end
 
@@ -278,6 +356,8 @@ local function onEcho(_, _, prefix, text, chatType)
     if p and p.echoAt and p.sentAt[seq] and not p.echoAt[seq] then
         p.echoAt[seq] = GetTime()
         p.echoed = p.echoed + 1
+        local c = p.chanOf and p.chanOf[seq]
+        if c and p.byChan[c] then p.byChan[c].echoed = p.byChan[c].echoed + 1 end
     end
 end
 
@@ -299,7 +379,37 @@ function Dev.RateTest(arg)
         echoFrame:SetScript("OnEvent", onEcho)
     end
     local long = mode == "long"
+    local multi = mode == "channels"
     minutes = math.max(1, math.min(240, tonumber(minutes) or 30))
+    if multi then
+        for i = 1, MAX_CHANNELS do _G.JoinTemporaryChannel(channelName(i)) end
+        say("joining up to 10 test channels and holding Tradebook's own sharing; about 6 minutes."
+            .. " /tbdev ratetest stop to stop.")
+        C_Timer.After(5, function()
+            local ids = {}
+            for i = 1, MAX_CHANNELS do
+                local id = tonumber((_G.GetChannelName(channelName(i)))) or 0
+                if id > 0 then ids[#ids + 1] = id end
+            end
+            if #ids == 0 then say("couldn't join any test channel.") return end
+            for i = 1, MAX_CHANNELS do
+                if (tonumber((_G.GetChannelName(channelName(i)))) or 0) > 0 then
+                    for f = 1, (NUM_CHAT_WINDOWS or 10) do
+                        local cf = _G["ChatFrame" .. f]
+                        if cf and ChatFrame_RemoveChannel then pcall(ChatFrame_RemoveChannel, cf, channelName(i)) end
+                    end
+                end
+            end
+            say(("%d test channels joined (the rest of the 10 channel slots are in use)."):format(#ids))
+            if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(true) end
+            run = { session = ("%04x"):format(math.random(0, 0xffff)), channels = ids, channel = ids[1],
+                phases = Dev.RateChannelPlan(#ids), index = 1, frame = CreateFrame("Frame"), mode = "channels",
+                joined = MAX_CHANNELS }
+            run.frame:SetScript("OnUpdate", onUpdate)
+            C_Timer.After(CHANNEL_GAP, function() if run then startPhase() end end)
+        end)
+        return
+    end
     _G.JoinTemporaryChannel(TEST_CHANNEL)
     say(("joining the test channel and holding Tradebook's own sharing; about %d minutes. /tbdev ratetest stop to stop.")
         :format(long and minutes or 11))

@@ -1817,6 +1817,21 @@ test("dev: send rate test plan and results", function()
     assert(lines[2]:find("AddonMessageThrottle 2", 1, true), lines[2])
     assert(lines[2]:find("3.5 s", 1, true), lines[2])
     eq(D.RateClean({ sent = 5, refused = 0, echoed = 5 }), true)
+    -- the channel test: 3 channels, then all free ones, each one prefix and a prefix each
+    local cp = D.RateChannelPlan(7)
+    eq(#cp, 4)
+    eq(cp[1].channels, 3)
+    eq(cp[1].prefixes, 1)
+    eq(cp[2].prefixes, 3, "a prefix per channel")
+    eq(cp[3].channels, 7)
+    eq(#D.RateChannelPlan(2), 2, "only 2 free: just those")
+    local ch = { channels = 2, distinct = false, rate = 2, tried = 4, sent = 3, refused = 1, echoed = 3, duration = 60,
+        sustain = 30, sentAt = { 0, 40, 41 }, echoAt = { 1, 1, 1 },
+        byChan = { { sent = 2, refused = 0, echoed = 2, reasons = {} },
+            { sent = 1, refused = 1, echoed = 1, reasons = { ChannelThrottle = 1 } } } }
+    local cl = D.RateChannelLines({ ch })
+    eq(cl[1], "2 channels, one prefix: 4 tried, 3 accepted, 1 refused, 3 echoed; 0.1/s delivered at the end (tried 2/s)")
+    eq(cl[3], "    channel 2: 1 accepted, 1 refused, 1 echoed  (ChannelThrottle 1)")
     -- the long test: a line per minute, then totals and when the first problem came
     local long = { sentAt = {}, echoAt = {}, refusedAt = {} }
     for i = 1, 120 do long.sentAt[i] = i - 1; long.echoAt[i] = 1 end
