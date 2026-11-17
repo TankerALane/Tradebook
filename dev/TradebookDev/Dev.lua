@@ -1224,12 +1224,12 @@ function Dev.Attach(tradebookNS)
     C_Timer.After(5, readCalendar)
 end
 
--- /tbdev thanks: the thank-you list in its own window, as text to copy (Ctrl+C).
-local thanksWin
-function Dev.ShowThanks()
-    if not thanksWin then
-        local w = CreateFrame("Frame", "TradebookDevThanksFrame", UIParent, "BasicFrameTemplateWithInset")
-        w:SetSize(420, 340)
+-- A window of text to copy (Select all, Ctrl+C): the thank-you list, the rate test results.
+local textWin
+function Dev.ShowText(title, help, text)
+    if not textWin then
+        local w = CreateFrame("Frame", "TradebookDevTextFrame", UIParent, "BasicFrameTemplateWithInset")
+        w:SetSize(460, 380)
         w:SetPoint("CENTER")
         w:SetFrameStrata("DIALOG")
         w:SetToplevel(true)
@@ -1238,25 +1238,22 @@ function Dev.ShowThanks()
         w:RegisterForDrag("LeftButton")
         w:SetScript("OnDragStart", w.StartMoving)
         w:SetScript("OnDragStop", w.StopMovingOrSizing)
-        local title = w:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-        title:SetPoint("TOP", 0, -5)
-        title:SetText("Tradebook Dev: thank you list")
-        local help = w:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-        help:SetPoint("TOPLEFT", 14, -32)
-        help:SetPoint("RIGHT", -14, 0)
-        help:SetJustifyH("LEFT")
-        help:SetText("Players who sent you data (vendors, trainers, confirmations, disenchants), most first."
-            .. " Click Select all, then Ctrl+C to copy.")
+        w.title = w:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        w.title:SetPoint("TOP", 0, -5)
+        w.help = w:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        w.help:SetPoint("TOPLEFT", 14, -32)
+        w.help:SetPoint("RIGHT", -14, 0)
+        w.help:SetJustifyH("LEFT")
         local scroll = CreateFrame("ScrollFrame", nil, w, "UIPanelScrollFrameTemplate")
-        scroll:SetPoint("TOPLEFT", help, "BOTTOMLEFT", 0, -10)
+        scroll:SetPoint("TOPLEFT", w.help, "BOTTOMLEFT", 0, -10)
         scroll:SetPoint("BOTTOMRIGHT", -32, 40)
         local box = CreateFrame("EditBox", nil, scroll)
         box:SetMultiLine(true)
         box:SetFontObject("ChatFontNormal")
-        box:SetWidth(360)
+        box:SetWidth(400)
         box:SetAutoFocus(false)
         box:SetScript("OnEscapePressed", function() w:Hide() end)
-        -- Read only: typing puts the list back.
+        -- Read only: typing puts the text back.
         box:SetScript("OnTextChanged", function(self, user) if user then self:SetText(w.text or "") end end)
         scroll:SetScrollChild(box)
         w.box = box
@@ -1268,14 +1265,27 @@ function Dev.ShowThanks()
             box:SetFocus()
             box:HighlightText()
         end)
-        tinsert(UISpecialFrames, "TradebookDevThanksFrame") -- ESC closes it
-        thanksWin = w
+        tinsert(UISpecialFrames, "TradebookDevTextFrame") -- ESC closes it
+        textWin = w
     end
-    local lines = Dev.ThanksLines(db().helpers)
-    thanksWin.text = #lines > 0 and table.concat(lines, "\n") or "No data from other players yet."
-    thanksWin.box:SetText(thanksWin.text)
-    thanksWin:Show()
+    textWin.title:SetText(title)
+    textWin.help:SetText(help .. " Click Select all, then Ctrl+C to copy.")
+    textWin.text = text
+    textWin.box:SetText(text)
+    textWin:Show()
 end
+
+-- /tbdev thanks: the thank-you list in its own window.
+function Dev.ShowThanks()
+    local lines = Dev.ThanksLines(db().helpers)
+    Dev.ShowText("Tradebook Dev: thank you list",
+        "Players who sent you data (vendors, trainers, confirmations, disenchants), most first.",
+        #lines > 0 and table.concat(lines, "\n") or "No data from other players yet.")
+end
+
+-- For the other files of this addon (RateTest.lua): Tradebook's namespace and this saved table.
+function Dev.NS() return ns end
+Dev.DB = db
 
 SLASH_TRADEBOOKDEV1 = "/tbdev"
 SlashCmdList.TRADEBOOKDEV = function(msg)
@@ -1284,6 +1294,10 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
         return
     end
     local lower = (msg or ""):lower()
+    if lower:match("^%s*ratetest") then
+        Dev.RateTest(lower:match("^%s*ratetest%s*(%a*)"))
+        return
+    end
     if lower:match("^%s*thanks") then
         Dev.ShowThanks()
         return

@@ -1792,6 +1792,34 @@ test("dev: thank-you list counts what each player sent", function()
     SlashCmdList = nil
 end)
 
+test("dev: send rate test plan and results", function()
+    SlashCmdList = {}
+    assert(loadfile("dev/TradebookDev/Dev.lua"))()
+    assert(loadfile("dev/TradebookDev/RateTest.lua"))()
+    local D = TradebookDev
+    local plan = D.RatePlan()
+    eq(plan[1].rate, 1)
+    eq(plan[11].rate, 20)
+    eq(plan[12].prefixes, 2, "then spread over prefixes")
+    eq(#plan, 14)
+    eq(D.RateHigher()[1].rate, 30)
+    -- 20 sent in a 20 s phase, 2 a second; the last 10 s: 10 sent, 8 echoed
+    local p = { rate = 2, prefixes = 1, tried = 22, sent = 20, refused = 2, echoed = 18, sentAt = {}, echoAt = {},
+        reasons = { AddonMessageThrottle = 2 }, firstRefused = 3.5 }
+    for i = 1, 20 do
+        p.sentAt[i] = (i - 1) / 2 * 2
+        if i ~= 15 and i ~= 20 then p.echoAt[i] = 1 end
+    end
+    eq(D.RateClean(p), false)
+    eq(D.RateSustained(p), 0.8)
+    local lines = D.RateLines({ p })
+    eq(#lines, 2)
+    assert(lines[2]:find("AddonMessageThrottle 2", 1, true), lines[2])
+    assert(lines[2]:find("3.5 s", 1, true), lines[2])
+    eq(D.RateClean({ sent = 5, refused = 0, echoed = 5 }), true)
+    SlashCmdList = nil
+end)
+
 test("dev: unscanned vendors leave out everyone's scans", function()
     SlashCmdList = {}
     assert(loadfile("dev/TradebookDev/Dev.lua"))()

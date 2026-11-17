@@ -643,8 +643,12 @@ local function pauseReason()
 end
 
 local lastPause = false -- the reason last logged (false = sending)
+-- Hold all sending (the maintainer's send-rate test, dev/TradebookDev/RateTest.lua).
+local held = false
+function Net.Hold(on) held = on and true or false end
+
 local function pump()
-    if not enabled() or not channelID then return end
+    if held or not enabled() or not channelID then return end
     local reason = pauseReason()
     if (reason or false) ~= lastPause then
         lastPause = reason or false
