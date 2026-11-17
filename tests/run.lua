@@ -165,6 +165,23 @@ test("recipe list game order: learned, colour, higher level, name; categories by
     eq(table.concat(cats, ","), "Shirts,Cloth,Bags,Other")
 end)
 
+test("characters of the other faction aren't combined (unless crossFaction)", function()
+    local db = ns.DB.Migrate(nil)
+    db.characters.A = { key = "A", faction = "Horde", professions = { [197] = { rank = 50 } }, bags = { [2589] = 5 } }
+    db.characters.B = { key = "B", faction = "Alliance", professions = { [197] = { rank = 80 } }, bags = { [2589] = 9 } }
+    db.characters.C = { key = "C", faction = "Horde", professions = { [197] = { rank = 20 } }, bags = { [2589] = 1 } }
+    local with = ns.Characters.WithProfession(db, 197, "A")
+    eq(#with, 2)
+    eq(with[1].key, "A")
+    eq(ns.Characters.ProfessionCounts(db, "A")[197], 2)
+    local others = ns.Reagents.OnOtherCharacters(db, 2589, "A")
+    eq(#others, 1)
+    eq(others[1].key, "C")
+    db.settings.crossFaction = true
+    eq(#ns.Characters.WithProfession(db, 197, "A"), 3)
+    eq(#ns.Reagents.OnOtherCharacters(db, 2589, "A"), 2)
+end)
+
 test("tab layout: order, move, hide, per character", function()
     local TL = ns.TabLayout
     local keys = { 1, 2, 3, 4, "camp" }

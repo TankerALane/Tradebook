@@ -105,12 +105,24 @@ function Characters.List(db, currentKey, includeHidden)
     return out
 end
 
--- Characters (not hidden) that have a profession, sorted by rank (highest first).
+-- Is character `c` on the same side as the current one? Alliance and Horde characters can't
+-- trade or mail each other, so their professions, recipes and materials aren't combined
+-- (settings.crossFaction turns that off). Unknown faction counts as the same side.
+function Characters.SameSide(db, c, currentKey)
+    if db.settings and db.settings.crossFaction then return true end
+    local me = currentKey and db.characters[currentKey]
+    if not (me and me.faction and c and c.faction) then return true end
+    return me.faction == c.faction
+end
+
+-- Characters (not hidden, same side) that have a profession, sorted by rank (highest first).
 function Characters.WithProfession(db, skillLineID, currentKey)
     local out = {}
     for key, c in pairs(db.characters) do
         local p = c.professions and c.professions[skillLineID]
-        if p and (not c.hidden or key == currentKey) then out[#out + 1] = c end
+        if p and (not c.hidden or key == currentKey) and Characters.SameSide(db, c, currentKey) then
+            out[#out + 1] = c
+        end
     end
     table.sort(out, function(a, b)
         local ra, rb = a.professions[skillLineID].rank or 0, b.professions[skillLineID].rank or 0
@@ -120,11 +132,11 @@ function Characters.WithProfession(db, skillLineID, currentKey)
     return out
 end
 
--- How many visible characters have each profession.
+-- How many visible characters (same side) have each profession.
 function Characters.ProfessionCounts(db, currentKey)
     local counts = {}
     for key, c in pairs(db.characters) do
-        if not c.hidden or key == currentKey then
+        if (not c.hidden or key == currentKey) and Characters.SameSide(db, c, currentKey) then
             for id in pairs(c.professions or {}) do counts[id] = (counts[id] or 0) + 1 end
         end
     end

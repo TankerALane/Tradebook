@@ -17,12 +17,13 @@ function Reagents.Have(db, character, itemID)
 end
 
 -- How many of an item each OTHER saved character has (bags + bank), from their last
--- login / bank visit. Only characters that have some; hidden characters left out.
+-- login / bank visit. Only characters that have some; hidden characters and the other
+-- faction's (they can't mail it to you) left out.
 -- Returns { { key, name, bags, bank, total } }, most first.
 function Reagents.OnOtherCharacters(db, itemID, excludeKey)
     local out = {}
     for key, c in pairs(db.characters) do
-        if key ~= excludeKey and not c.hidden then
+        if key ~= excludeKey and not c.hidden and ns.Characters.SameSide(db, c, excludeKey) then
             local bags = c.bags and c.bags[itemID] or 0
             local bank = c.bank and c.bank[itemID] or 0
             if bags + bank > 0 then

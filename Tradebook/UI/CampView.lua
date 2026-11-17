@@ -131,7 +131,9 @@ function View:Refresh()
     if byCharacter then
         for _, c in ipairs(ns.Characters.List(ns.db, ns.charKey, false)) do
             local mine = {}
-            for _, p in ipairs(ns.Professions.list) do
+            -- (The other faction's characters are left out: no trading or mail between them.)
+            local sameSide = ns.Characters.SameSide(ns.db, c, ns.charKey)
+            for _, p in ipairs(sameSide and ns.Professions.list or {}) do
                 for _, id in ipairs(camp[p.id] or {}) do
                     local prof = c.professions[p.id]
                     if prof and prof.recipes[id] then mine[#mine + 1] = id end

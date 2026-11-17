@@ -83,12 +83,15 @@ local function getIndex(db)
     return index or build(db)
 end
 
--- Keys of every saved character that knows the recipe (hidden ones excluded unless asked).
+-- Keys of every saved character that knows the recipe (hidden ones excluded unless asked;
+-- characters of the other faction left out: Characters.SameSide).
 function Recipes.KnownBy(db, recipeID, includeHidden)
     local out = {}
     for _, key in ipairs(getIndex(db).knownBy[recipeID] or {}) do
         local c = db.characters[key]
-        if c and (includeHidden or not c.hidden) then out[#out + 1] = key end
+        if c and (includeHidden or not c.hidden) and ns.Characters.SameSide(db, c, ns.charKey) then
+            out[#out + 1] = key
+        end
     end
     return out
 end
@@ -105,7 +108,7 @@ function Recipes.CouldLearn(db, recipeID)
     local required = ns.Sources and ns.Sources.Required(recipeID)
     local out = {}
     for key, c in pairs(db.characters) do
-        local prof = not c.hidden and c.professions and c.professions[r.s]
+        local prof = not c.hidden and ns.Characters.SameSide(db, c, ns.charKey) and c.professions and c.professions[r.s]
         if prof and not (prof.recipes and prof.recipes[recipeID]) then
             local rank, max = prof.rank or 0, prof.max or 0
             local status
