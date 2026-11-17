@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Professions
+- **Profession spell icons** on each profession's tab: Tailoring, Alchemy, Cooking, Smelting on the Mining tab, Fishing and the rest, next to Find Herbs and Find Minerals. Forever's spellbook doesn't list them, so drag them from here to your action bars. Clicking one opens that profession (Fishing casts).
+
 ## v1.5.0
 
 ### Characters

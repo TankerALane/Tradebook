@@ -1733,5 +1733,26 @@ test("tracking spell: newest known rank, only for herbalism and mining", functio
     eq(T.KnownSpell(393, knows({ [2383] = true })), nil, "skinning has no tracking")
 end)
 
+test("profession spell icons: the profession, then tracking", function()
+    local tns = { L = {}, Compat = {}, On = function() end }
+    assert(loadfile("Tradebook/UI/TrackingButton.lua"))("Tradebook", tns)
+    local T = tns.TrackingButton
+    local knows = function(set) return function(id) return set[id] == true end end
+    local s = T.SpellsFor(197, knows({ [3908] = true, [3909] = true }))
+    eq(#s, 1)
+    eq(s[1].spellID, 3909, "newest Tailoring rank")
+    eq(s[1].cast, false, "Tailoring opens through Tradebook")
+    s = T.SpellsFor(186, knows({ [2656] = true, [2580] = true }))
+    eq(#s, 2)
+    eq(s[1].spellID, 2656, "Smelting first")
+    eq(s[2].spellID, 2580, "then Find Minerals")
+    eq(s[2].cast, true)
+    eq(s[2].tracking, true)
+    s = T.SpellsFor(356, knows({ [7620] = true }))
+    eq(s[1].cast, true, "Fishing is cast")
+    eq(#T.SpellsFor(393, knows({ [2656] = true })), 0, "skinning has none")
+    eq(#T.SpellsFor(197, knows({})), 0, "not learned")
+end)
+
 print(string.format("%d passed, %d failed", passed, failed))
 if failed > 0 then os.exit(1) end
