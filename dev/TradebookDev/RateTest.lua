@@ -14,10 +14,10 @@
 -- messages back, which shows they really went out. Per phase: sends accepted, refused
 -- (AddonMessageThrottle or other), echoed, and the rate echoed in the last SUSTAIN s (after the
 -- first burst is used up). Results: a window to copy, and TradebookDevDB.rateTest.
--- /tbdev ratetest long [minutes]: one message a second, nonstop, for that long (30 minutes
--- unless given): running totals in chat every PROGRESS_EVERY s, and in the end a line per
--- minute: tried, accepted, refused, echoed, lost (accepted but never echoed). Shows how long
--- 1/s holds up.
+-- /tbdev ratetest long [minutes]: the setup Tradebook would use: LONG_CHANNELS channels, a
+-- prefix each, one message a second on each, nonstop, for that long (30 minutes unless
+-- given): running totals in chat every PROGRESS_EVERY s, and in the end a line per minute
+-- (tried, accepted, refused, echoed, lost = accepted but never echoed) and per channel.
 -- /tbdev ratetest channels: 1 message a second on each of several channels at once, to see
 -- whether the limit is per channel: 3 channels, then as many as are free (a character can be
 -- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
@@ -44,6 +44,7 @@ local BASE = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20 }
 local HIGHER = { 30, 40, 50, 75, 100 }
 local SPREAD = { 2, 5, 10 }
 local MAX_CHANNELS = 10
+local LONG_CHANNELS = 3
 local PROGRESS_EVERY = 60 -- seconds between the long test's running totals
 local ECHO_WAIT = 5       -- seconds before a message not echoed yet counts as lost
 local CHANNEL_DURATION = 60
@@ -260,8 +261,13 @@ local function finish(stopped)
     elseif r.long then
         local p = r.phases[1]
         lines = Dev.RateLongLines(p, math.min(p.duration, GetTime() - (r.startAt or GetTime())))
-        header = ("Long rate test %s, %s. 1 message a second for up to %d minutes, %d-character messages."):format(
-            date("%Y-%m-%d %H:%M"), stopped and "stopped early" or "finished", p.duration / 60, MSG_LEN)
+        if p.channels then
+            local per = Dev.RateChannelLines({ p })
+            for i = 2, #per do lines[#lines + 1] = per[i] end
+        end
+        header = ("Long rate test %s, %s. %d channels with a prefix each, 1 message a second on each, for up to %d"
+            .. " minutes, %d-character messages."):format(date("%Y-%m-%d %H:%M"), stopped and "stopped early"
+            or "finished", p.channels or 1, p.duration / 60, MSG_LEN)
     else
         lines = Dev.RateLines(done)
         header = ("Rate test %s, %s. %d s per rate, %d s between, %d-character messages."):format(
@@ -285,16 +291,24 @@ local function startPhase()
     p.sentAt, p.echoAt, p.reasons, p.refusedAt = {}, {}, {}, {}
     p.byChan, p.chanOf = {}, {}
     run.phase, run.startAt = p, GetTime()
+    if p.long then
+        say(("%d channels, 1/s each, nonstop for %d minutes; running totals every %d s."):format(p.channels or 1,
+            p.duration / 60, PROGRESS_EVERY))
+        run.ticker = C_Timer.NewTicker(PROGRESS_EVERY, function()
+            if not (run and run.phase == p) then return end
+            local per = {}
+            for c = 1, (p.channels or 0) do
+                local b = p.byChan[c]
+                per[#per + 1] = b and (b.sent .. "/" .. (b.sent + b.refused)) or "0/0"
+            end
+            say(Dev.RateProgress(p, GetTime() - run.startAt)
+                .. (#per > 0 and ("  (accepted per channel: " .. table.concat(per, ", ") .. ")") or ""))
+        end)
+        return
+    end
     if p.channels then
         say(("%d channels, %s, 1/s each for %d s..."):format(p.channels, p.distinct and "a prefix each" or "one prefix",
             p.duration))
-        return
-    end
-    if p.long then
-        say(("1/s nonstop for %d minutes; running totals every %d s."):format(p.duration / 60, PROGRESS_EVERY))
-        run.ticker = C_Timer.NewTicker(PROGRESS_EVERY, function()
-            if run and run.phase == p then say(Dev.RateProgress(p, GetTime() - run.startAt)) end
-        end)
         return
     end
     say(("%d/s on %d prefix%s for %d s..."):format(p.rate, p.prefixes, p.prefixes == 1 and "" or "es", DURATION))
@@ -422,47 +436,51 @@ function Dev.RateTest(arg)
     local long = mode == "long"
     local multi = mode == "channels"
     minutes = math.max(1, math.min(240, tonumber(minutes) or 30))
-    if multi then
-        for i = 1, MAX_CHANNELS do _G.JoinTemporaryChannel(channelName(i)) end
-        say("joining up to 10 test channels and holding Tradebook's own sharing; about 6 minutes."
-            .. " /tbdev ratetest stop to stop.")
+    if multi or long then
+        local want = long and LONG_CHANNELS or MAX_CHANNELS
+        for i = 1, want do _G.JoinTemporaryChannel(channelName(i)) end
+        say(("joining %d test channels and holding Tradebook's own sharing; about %d minutes."
+            .. " /tbdev ratetest stop to stop."):format(want, long and minutes or 6))
         C_Timer.After(5, function()
             local ids = {}
-            for i = 1, MAX_CHANNELS do
+            for i = 1, want do
                 local id = tonumber((_G.GetChannelName(channelName(i)))) or 0
-                if id > 0 then ids[#ids + 1] = id end
-            end
-            if #ids == 0 then say("couldn't join any test channel.") return end
-            for i = 1, MAX_CHANNELS do
-                if (tonumber((_G.GetChannelName(channelName(i)))) or 0) > 0 then
+                if id > 0 then
+                    ids[#ids + 1] = id
                     for f = 1, (NUM_CHAT_WINDOWS or 10) do
                         local cf = _G["ChatFrame" .. f]
                         if cf and ChatFrame_RemoveChannel then pcall(ChatFrame_RemoveChannel, cf, channelName(i)) end
                     end
                 end
             end
-            say(("%d test channels joined (the rest of the 10 channel slots are in use)."):format(#ids))
+            if #ids == 0 then say("couldn't join any test channel.") return end
+            if long and #ids < want then
+                say(("only %d of %d test channels joined; stopping."):format(#ids, want))
+                for i = 1, want do pcall(_G.LeaveChannelByName, channelName(i)) end
+                return
+            end
+            say(("%d test channels joined."):format(#ids))
             if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(true) end
+            local phases = long and { { rate = want, channels = want, prefixes = want, distinct = true, long = true,
+                duration = minutes * 60, sustain = 60 } } or Dev.RateChannelPlan(#ids)
             run = { session = ("%04x"):format(math.random(0, 0xffff)), channels = ids, channel = ids[1],
-                phases = Dev.RateChannelPlan(#ids), index = 1, frame = CreateFrame("Frame"), mode = "channels",
-                joined = MAX_CHANNELS }
+                phases = phases, index = 1, frame = CreateFrame("Frame"), mode = multi and "channels" or nil,
+                long = long, joined = want }
             run.frame:SetScript("OnUpdate", onUpdate)
             C_Timer.After(CHANNEL_GAP, function() if run then startPhase() end end)
         end)
         return
     end
     _G.JoinTemporaryChannel(TEST_CHANNEL)
-    say(("joining the test channel and holding Tradebook's own sharing; about %d minutes. /tbdev ratetest stop to stop.")
-        :format(long and minutes or 11))
+    say("joining the test channel and holding Tradebook's own sharing; about 11 minutes. /tbdev ratetest stop to stop.")
     C_Timer.After(3, function()
         local id = _G.GetChannelName(TEST_CHANNEL)
         id = tonumber(id) or 0
         if id <= 0 then say("couldn't join the test channel.") return end
         hideChannel()
         if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(true) end
-        local phases = long and { { rate = 1, prefixes = 1, long = true, duration = minutes * 60 } } or Dev.RatePlan()
-        run = { session = ("%04x"):format(math.random(0, 0xffff)), channel = id, phases = phases, index = 1,
-            frame = CreateFrame("Frame"), long = long }
+        run = { session = ("%04x"):format(math.random(0, 0xffff)), channel = id, phases = Dev.RatePlan(), index = 1,
+            frame = CreateFrame("Frame") }
         run.frame:SetScript("OnUpdate", onUpdate)
         -- Let the game's allowance fill up before the first phase.
         C_Timer.After(GAP, function() if run then startPhase() end end)
