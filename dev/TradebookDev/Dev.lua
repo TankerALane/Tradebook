@@ -11,8 +11,9 @@
 -- window can stay closed. /tbdev opens or closes it. Distances refresh every 20 s while open.
 --
 -- Heard notifications: when Tradebook keeps data another player shared in game (its NET_HEARD
--- message, Core/Net.lua), a few seconds of it from one player become one notification: a chat
--- line, a message in the middle of the screen and a sound. Vendors and trainers not in your
+-- message, Core/Net.lua), a few seconds of it from one player become one notification: lines in
+-- the heard window (its own window, opens by itself; /tbdev heard, /tbdev heard auto; copies in
+-- chat when "Also in chat" is ticked), a message in the middle of the screen and a sound. Vendors and trainers not in your
 -- scans or the community data are marked NEW. /tbdev notify turns it off and on. Players are
 -- only told apart by number this session (Tradebook keeps hashes, never names).
 -- Since the last import: every notification is also logged (TradebookDevDB.heardLog), and the
@@ -922,20 +923,143 @@ local function logHeard(who, h, ctx)
     return vn, tn, dn
 end
 
--- Chat lines, the message in the middle of the screen, a sound, and the since-import totals.
+-- The heard window: its own scrolling log of notifications (TradebookDevDB.heardMessages, the
+-- last MAX_HEARD_LINES lines, kept over /reload), the since-import totals on top, Clear, and
+-- "Also in chat". Opens by itself when data arrives (unless turned off: /tbdev heard auto).
+local heardWin
+local MAX_HEARD_LINES = 300
+
+local function heardLines()
+    local d = db()
+    d.heardMessages = d.heardMessages or {}
+    return d.heardMessages
+end
+
+local function updateHeardSummary()
+    if heardWin then heardWin.summary:SetText(countText() or "Nothing from other players since the last import.") end
+end
+
+local function saveHeardPosition()
+    local point, _, rel, x, y = heardWin:GetPoint()
+    db().heardWindow = { point = point, rel = rel, x = x, y = y, w = heardWin:GetWidth(), h = heardWin:GetHeight() }
+end
+
+local function createHeardWindow()
+    local w = CreateFrame("Frame", "TradebookDevHeardFrame", UIParent, "BasicFrameTemplateWithInset")
+    heardWin = w
+    local pos = db().heardWindow
+    w:SetSize(pos and pos.w or 620, pos and pos.h or 300)
+    if pos and pos.point then
+        w:SetPoint(pos.point, UIParent, pos.rel or pos.point, pos.x, pos.y)
+    else
+        w:SetPoint("TOP", 0, -120)
+    end
+    w:SetFrameStrata("MEDIUM")
+    w:SetClampedToScreen(true)
+    w:SetMovable(true)
+    w:SetResizable(true)
+    if w.SetResizeBounds then w:SetResizeBounds(380, 160, 1400, 1000) end
+    w:EnableMouse(true)
+    w:RegisterForDrag("LeftButton")
+    w:SetScript("OnDragStart", w.StartMoving)
+    w:SetScript("OnDragStop", function()
+        w:StopMovingOrSizing()
+        saveHeardPosition()
+    end)
+    if w.TitleText then w.TitleText:SetText("Tradebook Dev: heard from other players") end
+    local grip = CreateFrame("Button", nil, w)
+    grip:SetSize(16, 16)
+    grip:SetPoint("BOTTOMRIGHT", -3, 3)
+    grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+    grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+    grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+    grip:SetScript("OnMouseDown", function() w:StartSizing("BOTTOMRIGHT") end)
+    grip:SetScript("OnMouseUp", function()
+        w:StopMovingOrSizing()
+        saveHeardPosition()
+    end)
+    w.summary = w:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    w.summary:SetPoint("TOPLEFT", 12, -30)
+    w.summary:SetPoint("RIGHT", -12, 0)
+    w.summary:SetJustifyH("LEFT")
+    w.summary:SetWordWrap(true)
+    local log = CreateFrame("ScrollingMessageFrame", nil, w)
+    log:SetPoint("TOPLEFT", w.summary, "BOTTOMLEFT", 0, -6)
+    log:SetPoint("BOTTOMRIGHT", -12, 34)
+    log:SetFontObject(_G.ChatFontNormal)
+    log:SetJustifyH("LEFT")
+    log:SetFading(false)
+    log:SetMaxLines(MAX_HEARD_LINES + 50)
+    log:SetInsertMode(_G.SCROLLING_MESSAGE_FRAME_INSERT_MODE_BOTTOM or "BOTTOM")
+    log:EnableMouseWheel(true)
+    log:SetScript("OnMouseWheel", function(self, delta)
+        if delta > 0 then self:ScrollUp() else self:ScrollDown() end
+    end)
+    w.log = log
+    local clear = CreateFrame("Button", nil, w, "UIPanelButtonTemplate")
+    clear:SetSize(80, 22)
+    clear:SetPoint("BOTTOMLEFT", 10, 8)
+    clear:SetText("Clear")
+    clear:SetScript("OnClick", function()
+        db().heardMessages = {}
+        log:Clear()
+    end)
+    local chat = CreateFrame("CheckButton", nil, w, "UICheckButtonTemplate")
+    chat:SetSize(24, 24)
+    chat:SetPoint("LEFT", clear, "RIGHT", 12, 0)
+    local chatLabel = w:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    chatLabel:SetPoint("LEFT", chat, "RIGHT", 2, 0)
+    chatLabel:SetText("Also in chat")
+    chat:SetScript("OnClick", function(self) db().heardChat = self:GetChecked() and true or false end)
+    w:SetScript("OnShow", function()
+        chat:SetChecked(db().heardChat == true)
+        updateHeardSummary()
+        log:Clear()
+        for _, line in ipairs(heardLines()) do log:AddMessage(line) end
+        log:ScrollToBottom()
+    end)
+    tinsert(UISpecialFrames, "TradebookDevHeardFrame") -- ESC closes it
+    w:Hide()
+end
+
+-- Open or close the heard window (show: true / false, or nil to switch).
+function Dev.ToggleHeard(show)
+    if not ns then say("Tradebook isn't loaded.") return end
+    if not heardWin then createHeardWindow() end
+    if show == nil then show = not heardWin:IsShown() end
+    heardWin:SetShown(show)
+end
+
+-- Add lines to the heard log (and the window when it's open).
+local function addHeard(lines)
+    local log = heardLines()
+    for _, line in ipairs(lines) do
+        log[#log + 1] = line
+        if heardWin and heardWin:IsShown() then heardWin.log:AddMessage(line) end
+    end
+    while #log > MAX_HEARD_LINES do table.remove(log, 1) end
+end
+
+-- The heard window (and chat, when chosen), the message in the middle of the screen, a sound,
+-- and the since-import totals.
 local function showHeard(label, h, ctx, vn, tn, dn, test)
     local lines = Dev.HeardLines(label, h, ctx)
     if not lines then return end
-    print("|cff33ff99Tradebook Dev|r " .. (test and "|cffff8000TEST|r " or "") .. "heard " .. lines[1])
-    for i = 2, #lines do print(lines[i]) end
+    local stamp = "|cff999999" .. date("%H:%M") .. "|r " .. (test and "|cffff8000TEST|r " or "")
+    lines[1] = stamp .. lines[1]
+    addHeard(lines)
+    if db().heardAuto ~= false then Dev.ToggleHeard(true) end
+    updateHeardSummary()
+    if db().heardChat == true then
+        print("|cff33ff99Tradebook Dev|r heard " .. lines[1])
+        for i = 2, #lines do print(lines[i]) end
+    end
     local errors = _G.UIErrorsFrame
     if errors and errors.AddMessage then
         errors:AddMessage((test and "TEST " or "") .. "Tradebook: " .. Dev.HeardKinds(h, vn, tn, dn) .. " from another player",
             0.2, 1, 0.6)
     end
     if PlaySound and SOUNDKIT then pcall(PlaySound, SOUNDKIT.TELL_MESSAGE or SOUNDKIT.IG_PLAYER_INVITE) end
-    local since = countText()
-    if since then print("|cff33ff99Tradebook Dev|r " .. since) end
 end
 
 -- /tbdev test: a made-up notification from what Tradebook already has (one shipped vendor and a
@@ -1010,6 +1134,17 @@ SLASH_TRADEBOOKDEV1 = "/tbdev"
 SlashCmdList.TRADEBOOKDEV = function(msg)
     if (msg or ""):lower():match("^%s*count") then
         print("|cff33ff99Tradebook Dev|r " .. (countText() or "Nothing from other players since the last import."))
+        return
+    end
+    local lower = (msg or ""):lower()
+    if lower:match("^%s*heard%s+auto") then
+        local d = db()
+        d.heardAuto = d.heardAuto == false
+        say("the heard window opens by itself when data comes in: " .. (d.heardAuto and "on" or "off"))
+        return
+    end
+    if lower:match("^%s*heard") then
+        Dev.ToggleHeard()
         return
     end
     if (msg or ""):lower():match("^%s*test") then
