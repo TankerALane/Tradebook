@@ -1218,6 +1218,59 @@ function Dev.Attach(tradebookNS)
     C_Timer.After(5, readCalendar)
 end
 
+-- /tbdev thanks: the thank-you list in its own window, as text to copy (Ctrl+C).
+local thanksWin
+function Dev.ShowThanks()
+    if not thanksWin then
+        local w = CreateFrame("Frame", "TradebookDevThanksFrame", UIParent, "BasicFrameTemplateWithInset")
+        w:SetSize(420, 340)
+        w:SetPoint("CENTER")
+        w:SetFrameStrata("DIALOG")
+        w:SetToplevel(true)
+        w:SetMovable(true)
+        w:EnableMouse(true)
+        w:RegisterForDrag("LeftButton")
+        w:SetScript("OnDragStart", w.StartMoving)
+        w:SetScript("OnDragStop", w.StopMovingOrSizing)
+        local title = w:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        title:SetPoint("TOP", 0, -5)
+        title:SetText("Tradebook Dev: thank you list")
+        local help = w:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        help:SetPoint("TOPLEFT", 14, -32)
+        help:SetPoint("RIGHT", -14, 0)
+        help:SetJustifyH("LEFT")
+        help:SetText("Players who sent you data (vendors, trainers, confirmations, disenchants), most first."
+            .. " Click Select all, then Ctrl+C to copy.")
+        local scroll = CreateFrame("ScrollFrame", nil, w, "UIPanelScrollFrameTemplate")
+        scroll:SetPoint("TOPLEFT", help, "BOTTOMLEFT", 0, -10)
+        scroll:SetPoint("BOTTOMRIGHT", -32, 40)
+        local box = CreateFrame("EditBox", nil, scroll)
+        box:SetMultiLine(true)
+        box:SetFontObject("ChatFontNormal")
+        box:SetWidth(360)
+        box:SetAutoFocus(false)
+        box:SetScript("OnEscapePressed", function() w:Hide() end)
+        -- Read only: typing puts the list back.
+        box:SetScript("OnTextChanged", function(self, user) if user then self:SetText(w.text or "") end end)
+        scroll:SetScrollChild(box)
+        w.box = box
+        local select = CreateFrame("Button", nil, w, "UIPanelButtonTemplate")
+        select:SetSize(120, 22)
+        select:SetPoint("BOTTOMLEFT", 12, 10)
+        select:SetText("Select all")
+        select:SetScript("OnClick", function()
+            box:SetFocus()
+            box:HighlightText()
+        end)
+        tinsert(UISpecialFrames, "TradebookDevThanksFrame") -- ESC closes it
+        thanksWin = w
+    end
+    local lines = Dev.ThanksLines(db().helpers)
+    thanksWin.text = #lines > 0 and table.concat(lines, "\n") or "No data from other players yet."
+    thanksWin.box:SetText(thanksWin.text)
+    thanksWin:Show()
+end
+
 SLASH_TRADEBOOKDEV1 = "/tbdev"
 SlashCmdList.TRADEBOOKDEV = function(msg)
     if (msg or ""):lower():match("^%s*count") then
@@ -1226,9 +1279,7 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
     end
     local lower = (msg or ""):lower()
     if lower:match("^%s*thanks") then
-        local lines = Dev.ThanksLines(db().helpers)
-        say(#lines > 0 and "players who sent you data:" or "no data from other players yet.")
-        for _, line in ipairs(lines) do print(line) end
+        Dev.ShowThanks()
         return
     end
     if lower:match("^%s*heard%s+auto") then
