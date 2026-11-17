@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.6.0
+
 ### Sharing in game
 - **Less chatter**: your Tradebook now sends a vendor or trainer only the first time you visit, and again only when something there has changed (a new item, price, recipe or service). Visiting the same unchanged vendor again, or logging in, no longer sends it again. Limited-stock counts going up and down don't count as a change.
 
@@ -10,6 +12,10 @@
 
 ### Professions
 - **Profession spell icons** on each profession's tab: Tailoring, Alchemy, Cooking, Smelting on the Mining tab, Fishing and the rest, next to Find Herbs and Find Minerals. Forever's spellbook doesn't list them, so drag them from here to your action bars. Clicking one opens that profession (Fishing casts).
+
+### Data
+- New vendors: Quartermaster Lewis (Westfall) and Corporal Bluth (Stranglethorn Vale). 485 vendors, 6,409 items.
+- New trainer: Faldron (Leatherworking, Darnassus). 137 trainers, 1,887 services.
 
 ## v1.5.0
 
