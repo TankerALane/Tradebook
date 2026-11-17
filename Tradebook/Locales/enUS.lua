@@ -216,6 +216,7 @@ L.TAB_VENDORS_TIP = "Find any item a vendor sells: nearest vendor, price, and a 
 L.VENDORS_TITLE = "Vendors"
 L.VENDOR_SEARCH = "Search any item"
 L.VENDOR_NOT_SOLD = "Not sold by vendors"
+L.VENDOR_FILTER_VENDOR_ONLY = "Only items vendors sell"
 L.VENDOR_NONE_FILTERED = "No vendor with these filters"
 L.VENDOR_NO_AUCTION = "no auction price"
 L.VENDOR_NEED_AUCTIONATOR = "Auctionator shows auction prices"

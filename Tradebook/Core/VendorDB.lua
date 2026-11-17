@@ -179,8 +179,8 @@ end
 -- payment, source, class (classID), limit }. An empty text lists everything that passes the
 -- filters only when a zone is chosen (otherwise nothing: the list would be huge).
 -- A name search also finds items no vendor sells (Questie's item names; best = nil,
--- noVendor set), after the vendor items, for their auction price. Not when a zone, payment or
--- source filter is chosen: those ask about vendors.
+-- noVendor set), after the vendor items, for their auction price. Not with opts.vendorOnly, nor
+-- when a zone, payment or source filter is chosen: those ask about vendors.
 function VendorDB.Search(opts)
     local needle = (opts.text or ""):lower()
     if needle == "" and not opts.zone then return {}, {} end
@@ -215,7 +215,7 @@ function VendorDB.Search(opts)
         if da and db and da ~= db then return da < db end
         return a.name < b.name
     end)
-    if needle ~= "" and not (opts.zone or opts.payment or opts.source) then
+    if needle ~= "" and not (opts.vendorOnly or opts.zone or opts.payment or opts.source) then
         for _, e in ipairs(VendorDB.WithoutVendors(ns.Questie.AllItems(), vendorItems, filtered, needle,
             opts.class, classOf)) do
             out[#out + 1] = e

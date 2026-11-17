@@ -227,6 +227,7 @@ local function buildFilterMenu(_, root)
             end)
         end
     end
+    check(L.VENDOR_FILTER_VENDOR_ONLY, "vendorOnly")
     check(L.VENDOR_FILTER_FRIENDLY, "friendlyOnly")
     check(L.VENDOR_FILTER_CONTINENT, "thisContinent")
     -- Zone: the zones the current results are in.
@@ -303,7 +304,7 @@ function View:RefreshList()
     if not self.frame then return end
     local f = filters()
     local opts = { text = self.text, zone = f.zone, friendlyOnly = f.friendlyOnly, thisContinent = f.thisContinent,
-        payment = f.payment, source = f.source, class = f.class, limit = 300 }
+        payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, limit = 300 }
     local results, zones = ns.VendorDB.Search(opts)
     self.zones = zones
     local rows = {}
