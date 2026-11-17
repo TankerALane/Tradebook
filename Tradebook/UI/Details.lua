@@ -220,19 +220,36 @@ function Details.Create(parent)
     self.qty:SetPoint("RIGHT", self.craftAll, "LEFT", -34, 0)
     self.qty:SetMinMaxValues(1, 999)
     self.qty:SetValue(1)
-    self.qty:SetOnValueChangedCallback(function() self:RefreshReagents() end)
+    self.qty:SetOnValueChangedCallback(function()
+        -- Typed or spun by hand during a batch: stop counting down (the game keeps crafting
+        -- the batch it was given; the box now shows your number).
+        if not self.settingQty then self.qtyDetached = true end
+        self:RefreshReagents()
+    end)
     self.craft = W.Button(f, L.CRAFT, 80, 22)
     self.craft:SetPoint("RIGHT", self.qty, "LEFT", -30, 0)
     -- Each click makes exactly one call (Phase 0: crafting and opening need a hardware event).
     -- If only the profession is closed, the button reads "Open <profession>" and opens it.
+    -- The quantity box counts down as the crafts finish (Core/Crafting.lua: CRAFT_PROGRESS).
     self.craft:SetScript("OnClick", function()
+        self.qtyDetached = false
         ns.Crafting.Click(self.recipeID, self:Quantity())
         C_Timer.After(0.3, function() self:Refresh() end)
     end)
     self.craftAll:SetScript("OnClick", function()
         local _, max = ns.Crafting.State(self.recipeID)
-        if max and max > 0 then ns.Crafting.Craft(self.recipeID, max) end
+        if max and max > 0 then
+            self.qtyDetached = false
+            local ok, times = ns.Crafting.Craft(self.recipeID, max)
+            if ok then self:SetQuantity(times) end
+        end
         C_Timer.After(0.2, function() self:Refresh() end)
+    end)
+    ns.Listen("CRAFT_PROGRESS", function(recipeID, left, stopped)
+        if recipeID ~= self.recipeID or self.qtyDetached then return end
+        -- Done: back to 1. Stopped early: what's left, to carry on with Craft.
+        self:SetQuantity(left > 0 and left or 1)
+        if left <= 0 and not stopped then self.qtyDetached = false end
     end)
 
     self.defaultBtn = W.Button(f, L.OPEN_IN_DEFAULT, 180, 22)
@@ -281,7 +298,9 @@ end
 -- Set the quantity box (1-999), e.g. to a leveling plan step's crafts.
 function Pane:SetQuantity(n)
     if not (self.qty and n) then return end
+    self.settingQty = true
     self.qty:SetValue(math.max(1, math.min(999, math.floor(n))))
+    self.settingQty = false
 end
 
 ---------------------------------------------------------------------------
@@ -291,7 +310,10 @@ end
 function Pane:SetRecipe(recipeID, charKey)
     if self.recipeID ~= recipeID then
         self.expanded = {}
-        if self.qty then self.qty:SetValue(1) end
+        -- Back on a recipe that's still being crafted: show what's left of its batch.
+        local batch = ns.Crafting.Batch()
+        self.qtyDetached = false
+        self:SetQuantity(batch and batch.recipeID == recipeID and batch.left or 1)
     end
     self.recipeID, self.charKey = recipeID, charKey
     self:Refresh()

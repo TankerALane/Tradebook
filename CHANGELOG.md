@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Crafting
+- **Craft All fills in the quantity**, and the quantity **counts down** as each craft finishes, with Craft All or with Craft and a number (like a leveling plan step's). When the batch is done it goes back to 1; if it stops early (you moved, got attacked), it shows how many are left, so Craft carries on from there.
+- Changing the number by hand during a batch stops the count-down (the game keeps crafting the batch it was given).
+
 ## v1.3.0
 
 ### Tabs

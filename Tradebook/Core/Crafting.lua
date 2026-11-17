@@ -56,8 +56,40 @@ function Crafting.Craft(recipeID, times)
     times = math.max(1, math.min(tonumber(times) or 1, max))
     Compat.Call("C_TradeSkillUI.CraftRecipe", recipeID, times)
     ns.Debug("craft", recipeID, times)
-    return true
+    Crafting.batch = { recipeID = recipeID, left = times }
+    ns.Fire("CRAFT_PROGRESS", recipeID, times, false)
+    return true, times
 end
+
+---------------------------------------------------------------------------
+-- Batch progress: how many of the last Craft / Craft All are still to come, counted down as
+-- each craft finishes (UNIT_SPELLCAST_SUCCEEDED; a recipe's ID is its craft spell's ID). Fires
+-- CRAFT_PROGRESS (recipeID, left, stopped): stopped when the batch ended early (interrupted,
+-- out of materials), with `left` still to make.
+---------------------------------------------------------------------------
+
+function Crafting.Batch()
+    return Crafting.batch
+end
+
+local function onSucceeded(_, unit, _, spellID)
+    local b = Crafting.batch
+    if unit ~= "player" or not b or spellID ~= b.recipeID then return end
+    b.left = b.left - 1
+    if b.left <= 0 then Crafting.batch = nil end
+    ns.Fire("CRAFT_PROGRESS", b.recipeID, math.max(0, b.left), false)
+end
+
+local function onStopped(_, unit, _, spellID)
+    local b = Crafting.batch
+    if unit ~= "player" or not b or spellID ~= b.recipeID then return end
+    Crafting.batch = nil
+    ns.Fire("CRAFT_PROGRESS", b.recipeID, b.left, true)
+end
+
+ns.On("UNIT_SPELLCAST_SUCCEEDED", onSucceeded)
+ns.On("UNIT_SPELLCAST_INTERRUPTED", onStopped)
+ns.On("UNIT_SPELLCAST_FAILED", onStopped)
 
 -- Open one of the current character's professions. Must be called from a click.
 function Crafting.OpenProfession(skillLineID)
