@@ -39,7 +39,7 @@ local BASE = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20 }
 local HIGHER = { 30, 40, 50, 75, 100 }
 local SPREAD = { 2, 5, 10 }
 local MAX_CHANNELS = 10
-local PROGRESS_EVERY = 10 -- seconds between the long test's running totals
+local PROGRESS_EVERY = 60 -- seconds between the long test's running totals
 local ECHO_WAIT = 5       -- seconds before a message not echoed yet counts as lost
 local CHANNEL_DURATION = 60
 local CHANNEL_SUSTAIN = 30
@@ -264,7 +264,7 @@ local function startPhase()
         C_Timer.After(5, function() finish(false) end)
         return
     end
-    p.tried, p.sent, p.refused, p.echoed = 0, 0, 0, 0
+    p.tried, p.sent, p.refused, p.echoed, p.nextAt = 0, 0, 0, 0, 0
     p.sentAt, p.echoAt, p.reasons, p.refusedAt = {}, {}, {}, {}
     p.byChan, p.chanOf = {}, {}
     run.phase, run.startAt = p, GetTime()
@@ -355,10 +355,14 @@ local function onUpdate()
         endPhase()
         return
     end
-    local due = math.floor(elapsed * p.rate) + 1
+    -- On schedule, never catching up: after a loading screen (or a slow frame) the missed
+    -- sends are skipped, so they can't go out in a burst and trip the game's limit.
+    p.nextAt = p.nextAt or 0
+    if elapsed - p.nextAt > 1 then p.nextAt = elapsed end
     local n = 0
-    while p.tried < due and n < 200 do
+    while elapsed >= p.nextAt and n < 200 do
         send(p, p.tried + 1)
+        p.nextAt = p.nextAt + 1 / p.rate
         n = n + 1
     end
 end
