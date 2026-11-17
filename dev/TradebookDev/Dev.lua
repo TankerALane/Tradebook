@@ -736,7 +736,7 @@ end
 function Dev.ThanksLines(helpers)
     local rows = {}
     for who, e in pairs(helpers or {}) do
-        rows[#rows + 1] = { who = tostring(who), name = e.name, via = e.via,
+        rows[#rows + 1] = { who = tostring(who), name = e.name, via = e.via, full = e.full,
             n = (e.vendors or 0) + (e.trainers or 0) + (e.confirmed or 0) + (e.de or 0) }
     end
     table.sort(rows, function(a, b)
@@ -746,7 +746,8 @@ function Dev.ThanksLines(helpers)
     local lines = {}
     for _, r in ipairs(rows) do
         local unknown = "name not seen yet, " .. r.who .. (r.via and (", passed along by " .. r.via) or "")
-        lines[#lines + 1] = ("%s (%d)"):format(r.name or unknown, r.n)
+        lines[#lines + 1] = ("%s (%d)%s"):format(r.name or unknown, r.n,
+            (r.name and r.full and r.full ~= r.name) and (" [as the game sends it: " .. r.full .. "]") or "")
     end
     return lines
 end
@@ -1173,7 +1174,11 @@ local function startNameWatcher()
         local original = Dev.RelayedFor(text)
         if original then relayedBy[original] = short end
         local helpers = db().helpers
-        if helpers and helpers[hash] then helpers[hash].name = short end
+        if helpers and helpers[hash] then
+            helpers[hash].name = short
+            -- As the game gave it (may name their server); shown by /tbdev thanks when it differs.
+            helpers[hash].full = sender ~= short and sender or nil
+        end
     end)
 end
 

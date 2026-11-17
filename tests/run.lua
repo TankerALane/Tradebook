@@ -1674,6 +1674,8 @@ test("dev: thank-you list counts what each player sent", function()
     eq(lines[3], "name not seen yet, cc (1)")
     helpers.cc.via = "Dan"
     eq(D.ThanksLines(helpers)[3], "name not seen yet, cc, passed along by Dan (1)")
+    helpers.aa.full = "Bob-Server"
+    eq(D.ThanksLines(helpers)[1], "Bob (8) [as the game sends it: Bob-Server]")
     -- the first message of a passed-along report names the original player (as Net cuts it)
     local relay = ns.Net.RelayText(ns.Share.Encode({ [3005] = { name = "Mahu", seenAt = 100,
         items = { [2320] = { p = 10, s = -1 } } } }, "b", "v"), "0badf00d")
