@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Characters
-- **Alliance and Horde characters are kept apart**: you can't trade or mail between factions, so only your characters of the same faction as the one you're playing count for profession tabs and counts, "Known by", "Could learn", materials on your other characters, and the Camp tab. The Characters tab still lists everyone. To combine them anyway: Settings → "Combine Alliance and Horde characters".
+- **Alliance and Horde characters are kept apart**: you can't trade or mail between factions, so only your characters of the same faction as the one you're playing count for profession tabs and counts, "Known by", "Could learn", materials on your other characters, the Camp tab, and your **Fellowship Ledger friends** on the profession tabs. The Characters tab still lists everyone. To combine them anyway: Settings → "Combine Alliance and Horde characters".
 
 ### Leveling plan
 - **Tick the steps you want**: each step has a checkbox, all ticked at first. Untick steps to leave them out of the cost, the **Materials** list and the **Shopping list**, e.g. to buy only what you need for the next few steps.

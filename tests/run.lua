@@ -165,6 +165,19 @@ test("recipe list game order: learned, colour, higher level, name; categories by
     eq(table.concat(cats, ","), "Shirts,Cloth,Bags,Other")
 end)
 
+test("Fellowship Ledger friends: only the same faction when asked", function()
+    local fl = { friends = { f1 = { name = "F", characters = {
+        a = { name = "Ha", faction = "Horde", professions = { ["197"] = { rank = 100 } } },
+        b = { name = "Al", faction = "Alliance", professions = { ["197"] = { rank = 150 } } },
+        c = { name = "Old", professions = { ["197"] = { rank = 50 } } },
+    } } } }
+    eq(#ns.Friends.WithProfession(fl, 197), 3)
+    local horde = ns.Friends.WithProfession(fl, 197, "Horde")
+    eq(#horde, 2)
+    eq(horde[1].name, "Ha")
+    eq(horde[2].name, "Old", "no faction saved: kept")
+end)
+
 test("characters of the other faction aren't combined (unless crossFaction)", function()
     local db = ns.DB.Migrate(nil)
     db.characters.A = { key = "A", faction = "Horde", professions = { [197] = { rank = 50 } }, bags = { [2589] = 5 } }
