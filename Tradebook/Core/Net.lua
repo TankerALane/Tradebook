@@ -100,6 +100,26 @@ function Net.ShouldSend(last, fp, force)
     return force == true and not last.collector
 end
 
+-- PURE. Hashes your own characters can have on the channel ("First Second", as Forever names
+-- senders, plus the saved key and the first name alone), from TradebookDB.characters keys
+-- ("First-Second"). Worked out on the fly, never stored.
+function Net.OwnHashes(characters)
+    local out = {}
+    for key in pairs(characters or {}) do
+        if type(key) == "string" then
+            out[Net.Hash(key)] = true
+            out[Net.Hash((key:gsub("-", " ")))] = true
+            out[Net.Hash(key:match("^[^-]+") or key)] = true
+        end
+    end
+    return out
+end
+
+-- Is `who` (a sender hash) one of your own characters?
+function Net.IsMine(who)
+    return Net.OwnHashes(ns.db and ns.db.characters)[who] == true
+end
+
 -- PURE. Cut share text into messages. nil when it needs more than MAX_PARTS.
 function Net.Chunk(text, msgID)
     local body = (text:gsub("%^", " "):gsub("\n", "^"))
@@ -706,7 +726,8 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     if relayed then
         if not collector then return end
         control("ACK", msgID)
-        if selfSender and relayed == Net.Hash(selfSender) then return end -- your own data, back again
+        -- Your own data, back again (this character, or another of yours: already saved).
+        if (selfSender and relayed == Net.Hash(selfSender)) or Net.IsMine(relayed) then return end
         who, full = relayed, relayText
     end
     local kept, info = Net.Accept(ns.db.heard, full, who, GetServerTime())

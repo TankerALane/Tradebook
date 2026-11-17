@@ -966,6 +966,7 @@ local function logHeard(who, h, ctx)
         c = size(h.confirmed), d = size(h.deBands), dn = dn, dd = dd })
     while #d.heardLog > 2000 do table.remove(d.heardLog, 1) end
     d.helpers = d.helpers or {}
+    if ns.Net.IsMine and ns.Net.IsMine(who) then return vn, tn, dn end -- your own characters
     local e = Dev.Credit(d.helpers, who, { v = v, t = t, new = vn + tn + dn, c = size(h.confirmed),
         d = size(h.deBands) }, GetServerTime(), senderNames[who])
     if relayedBy[who] then e.via = relayedBy[who] end
@@ -1210,6 +1211,11 @@ function Dev.Attach(tradebookNS)
     end
     startWatcher()
     startNameWatcher()
+    -- Your own characters don't belong in the thank-you list (relayed scans of your alts).
+    if d.helpers and ns.Net.OwnHashes then
+        local own = ns.Net.OwnHashes(ns.db and ns.db.characters)
+        for who in pairs(d.helpers) do if own[who] then d.helpers[who] = nil end end
+    end
     -- The calendar fills in after a server query; read it when it arrives.
     local cal = CreateFrame("Frame")
     pcall(cal.RegisterEvent, cal, "CALENDAR_UPDATE_EVENT_LIST")

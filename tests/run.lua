@@ -1616,6 +1616,15 @@ test("vendors tab: items no vendor sells, by name", function()
     eq(#V.WithoutVendors(nil, vendorItems, {}, "linen"), 0, "no Questie")
 end)
 
+test("net: your own characters' hashes", function()
+    local N = ns.Net
+    local own = N.OwnHashes({ ["Ann-Smith"] = {}, ["Bob-Jones"] = {} })
+    eq(own[N.Hash("Ann Smith")], true, "as Forever names senders")
+    eq(own[N.Hash("Bob-Jones")], true)
+    eq(own[N.Hash("Bob")], true)
+    eq(own[N.Hash("Cat Smith")], nil)
+end)
+
 test("net: a scan goes out again only when something changed", function()
     local N = ns.Net
     local e = { name = "Mahu", seenAt = 100, loc = { m = 1, x = 10, y = 10 },
