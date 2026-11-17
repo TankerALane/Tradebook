@@ -5,6 +5,8 @@
 ### Leveling plan
 - **Tick the steps you want**: each step has a checkbox, all ticked at first. Untick steps to leave them out of the cost, the **Materials** list and the **Shopping list**, e.g. to buy only what you need for the next few steps.
 - Your ticks are kept when you close and reopen the plan. Once you finish the step that was first in the plan when you closed it, the plan starts again with every step ticked (steps finished while the plan is open don't count, so you can craft one step, then go get materials for the next).
+- **The plan holds still while you shop**: once made, it keeps its steps and costs for 30 minutes (also when you close and reopen it), so buying materials doesn't reshuffle it. "Have" and "buy" still follow your bags and bank, so you see your shopping progress. It's made again when you change zones, change one of its options, after 30 minutes, or when you press the new **Update plan** button. The plan says how old it is.
+- Steps you finish while the plan holds are marked **done** (and left out of the totals) instead of the list changing.
 - A step's tooltip now counts **that step on its own**: with 18 Coarse Thread and a step needing 1, it says nothing to buy, even if an earlier step also uses thread. The Materials totals below still count the whole plan.
 
 ## v1.4.0

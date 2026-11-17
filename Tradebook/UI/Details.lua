@@ -64,7 +64,8 @@ end
 -- tooltip, large = true for a big icon row (reagents, like the default window's slots),
 -- target = NPC name: clicking also targets it when nearby (secure button, out of combat),
 -- rightAt = x: put the right value left-aligned at x instead of at the right edge,
--- check = bool|nil: a checkbox at the left, ticked or not; onCheck(on) when it's clicked }
+-- check = bool|nil: a checkbox at the left, ticked or not; onCheck(on) when it's clicked;
+-- checkSpace = true: no checkbox, but the same space for it }
 function Pane:Add(o)
     local line = self:Line()
     local height = o.large and LARGE_LINE_H or LINE_H
@@ -92,6 +93,8 @@ function Pane:Add(o)
             if o.onCheck then o.onCheck(btn:GetChecked() and true or false) end
         end)
         x = x + 20
+    elseif o.checkSpace then
+        x = x + 20 -- lines up with rows that have a checkbox
     end
     -- Large rows always keep the "+" column so their icons line up with or without it.
     if o.toggle ~= nil or o.large then x = x + 16 end
