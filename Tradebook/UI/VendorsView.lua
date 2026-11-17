@@ -68,7 +68,10 @@ local function vendorTooltip(r)
     if r.source == "players" then
         lines[#lines + 1] = (r.agree or 1) >= 2 and L.VENDOR_PLAYERS_AGREE:format(r.agree) or L.VENDOR_PLAYERS_ONE
     end
-    if r.seenAt then lines[#lines + 1] = L.VENDOR_SEEN_AGO:format(W.Ago(r.seenAt)) end
+    -- When it was scanned: only while one player's word is all there is (your own scan, or one
+    -- other player's). Confirmed vendors (community data, 2+ players agree) don't change.
+    local confirmed = r.source == "community" or (r.source == "players" and (r.agree or 1) >= 2)
+    if r.seenAt and not confirmed then lines[#lines + 1] = L.VENDOR_SEEN_AGO:format(W.Ago(r.seenAt)) end
     if r.stock and r.stock >= 0 then lines[#lines + 1] = L.VENDOR_LIMITED_TIP:format(r.stock) end
     if r.price and not r.priceSeen then lines[#lines + 1] = L.VENDOR_BASE_PRICE_TIP end
     if r.waypoint then lines[#lines + 1] = L.WAYPOINT_TARGET_CLICK end
