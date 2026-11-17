@@ -21,8 +21,8 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - Click any vendor, trainer or mob for a waypoint. If it's nearby, it's also targeted and marked.
 
 ### Vendors tab: a community vendor database
-- Search anything a vendor sells and see the **nearest vendors**, their price (gold, Merchant's Favor or other currency), zone and distance.
-- Ships with **471 vendors and 132 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
+- Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie).
+- Ships with **491 vendors and 138 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
 - **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
 
 ### A better Professions window
@@ -54,8 +54,8 @@ Tradebook works on its own. These add more when installed:
 
 | Addon | What it adds |
 |---|---|
-| **Questie** | Vendors nobody has scanned yet in the Vendors tab. The nearest trainers and vendors for recipes you haven't learned. For each material: the mobs that drop it and the nodes it's gathered from. |
-| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction, to a vendor or by disenchanting it, a **profit column in the recipe list** (vendor, auction house or disenchant), the **disenchant value** in item tooltips, shopping list costs, and **Send to Auctionator**. |
+| **Questie** | Vendors nobody has scanned yet in the Vendors tab, and finding items no vendor sells there. The nearest trainers and vendors for recipes you haven't learned. For each material: the mobs that drop it and the nodes it's gathered from. |
+| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction, to a vendor or by disenchanting it, a **profit column in the recipe list** (vendor, auction house or disenchant), the **disenchant value** in item tooltips, shopping list costs, auction prices for items no vendor sells in the Vendors tab, and **Send to Auctionator**. |
 | **TomTom** | Waypoints use TomTom's arrow (otherwise the game's map pin). |
 | **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab. |
 

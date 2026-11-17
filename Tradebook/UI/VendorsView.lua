@@ -1,6 +1,7 @@
 -- UI/VendorsView.lua
 -- The Vendors tab: search any item and see which vendors sell it (Core/VendorDB.lua), nearest
--- first. Each item expands to its 5 closest vendors (price, zone, distance; click for a
+-- first. Items no vendor sells (or none passing the filters) come after, with their auction
+-- price (Auctionator). Each item expands to its 5 closest vendors (price, zone, distance; click for a
 -- waypoint) with "See all" for the rest. Filters: zone, friendly to you, this continent, item
 -- type, how it's paid for, and where the data came from. "Share your scans" opens /tb share.
 
@@ -95,6 +96,7 @@ local function createRow(row)
     row:SetScript("OnClick", function(self)
         local d = self.data
         if d.kind == "item" then
+            if not d.best then return end -- no vendors to list
             View.expanded[d.itemID] = not View.expanded[d.itemID] or nil
             View:RefreshList()
         elseif d.kind == "more" then
@@ -121,6 +123,14 @@ local function createRow(row)
     row:SetScript("OnLeave", GameTooltip_Hide)
 end
 
+-- An item no vendor sells (or none passing the filters): its auction price.
+local function auctionText(itemID)
+    if not ns.Prices.Available() then return W.ColorText(W.GREY, L.VENDOR_NEED_AUCTIONATOR) end
+    local auction = ns.Prices.Get(itemID).auction
+    if not auction then return W.ColorText(W.GREY, L.VENDOR_NO_AUCTION) end
+    return W.ColorText(W.GREY, L.PRICE_AUCTION .. " ") .. ns.Prices.Money(auction)
+end
+
 local function initRow(row, data)
     row.data = data
     -- Rows are reused while scrolling: drop this row's old target button first.
@@ -144,6 +154,12 @@ local function initRow(row, data)
         local best = data.best
         row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
         row.mid:SetPoint("RIGHT", row.right, "LEFT", -8, 0)
+        if not best then
+            row.toggle:Hide()
+            row.mid:SetText(W.ColorText(W.GREY, data.noVendor == "filtered" and L.VENDOR_NONE_FILTERED or L.VENDOR_NOT_SOLD))
+            row.right:SetText(auctionText(data.itemID))
+            return
+        end
         row.mid:SetText((best.name or "?") .. "  " .. W.ColorText(W.GREY, placeText(best)))
         row.right:SetText(priceText(best) .. "  " .. W.ColorText(W.GREY, L.VENDOR_COUNT:format(#data.vendors)))
         return
@@ -292,8 +308,9 @@ function View:RefreshList()
     self.zones = zones
     local rows = {}
     for _, item in ipairs(results) do
-        rows[#rows + 1] = { kind = "item", itemID = item.itemID, name = item.name, vendors = item.vendors, best = item.best }
-        if self.expanded[item.itemID] then
+        rows[#rows + 1] = { kind = "item", itemID = item.itemID, name = item.name, vendors = item.vendors, best = item.best,
+            noVendor = item.noVendor }
+        if item.best and self.expanded[item.itemID] then
             local n = self.showAll[item.itemID] and #item.vendors or math.min(TOP_N, #item.vendors)
             for i = 1, n do rows[#rows + 1] = { kind = "vendor", row = item.vendors[i], itemID = item.itemID } end
             if n < #item.vendors then

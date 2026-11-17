@@ -1599,6 +1599,23 @@ test("net: heard vendors are checked, and agreeing players confirm them", functi
     eq(items[2320].vendors[248201].source, "players")
 end)
 
+test("vendors tab: items no vendor sells, by name", function()
+    local V = ns.VendorDB
+    local all = { { itemID = 1, name = "Copper Bar" }, { itemID = 2, name = "Copper Ore" },
+        { itemID = 3, name = "Linen Cloth" }, { itemID = 4, name = "Coarse Thread" } }
+    local vendorItems = { [4] = { vendors = { [9] = {} } }, [2] = { vendors = { [9] = {} } } }
+    local classes = { [1] = 7, [2] = 7, [3] = 7 }
+    local out = V.WithoutVendors(all, vendorItems, { [2] = "Copper Ore" }, "copper", nil, function(id) return classes[id] end)
+    eq(#out, 2)
+    eq(out[1].name, "Copper Bar")
+    eq(out[1].noVendor, "none")
+    eq(out[2].name, "Copper Ore")
+    eq(out[2].noVendor, "filtered", "a vendor sells it, but not one passing the filters")
+    eq(#V.WithoutVendors(all, vendorItems, {}, "thread", nil, function() end), 0, "sold by a vendor: listed with its vendors")
+    eq(#V.WithoutVendors(all, vendorItems, {}, "linen", 2, function(id) return classes[id] end), 0, "item type filter")
+    eq(#V.WithoutVendors(nil, vendorItems, {}, "linen"), 0, "no Questie")
+end)
+
 test("net: a scan goes out again only when something changed", function()
     local N = ns.Net
     local e = { name = "Mahu", seenAt = 100, loc = { m = 1, x = 10, y = 10 },

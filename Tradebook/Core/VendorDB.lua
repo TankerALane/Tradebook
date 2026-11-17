@@ -147,16 +147,47 @@ function VendorDB.RowPasses(row, f)
     return true
 end
 
+-- PURE. Items found by name that no vendor (passing the filters) sells, for the auction price:
+-- { { itemID, name, vendors = {}, noVendor = "filtered" | "none" } }, by name.
+-- all: { { itemID, name } } (every item, Questie.AllItems); vendorItems: VendorDB.Items();
+-- filtered: { [itemID] = name } items with vendors that the filters left out;
+-- classOfItem(itemID) for opts.class.
+function VendorDB.WithoutVendors(all, vendorItems, filtered, needle, class, classOfItem)
+    local out, seen = {}, {}
+    for itemID, name in pairs(filtered or {}) do
+        out[#out + 1] = { itemID = itemID, name = name, vendors = {}, noVendor = "filtered" }
+        seen[itemID] = true
+    end
+    for _, e in ipairs(all or {}) do
+        if not seen[e.itemID] and not (vendorItems and vendorItems[e.itemID]) then
+            e.lower = e.lower or e.name:lower()
+            if e.lower:find(needle, 1, true) and (not class or classOfItem(e.itemID) == class) then
+                out[#out + 1] = { itemID = e.itemID, name = e.name, vendors = {}, noVendor = "none" }
+                seen[e.itemID] = true
+            end
+        end
+    end
+    table.sort(out, function(a, b)
+        if a.name ~= b.name then return a.name < b.name end
+        return a.itemID < b.itemID
+    end)
+    return out
+end
+
 -- Search: { { itemID, name, classID, vendors = { rows nearest first }, best } }, items sorted
 -- by their nearest vendor, then name. opts = { text, zone, friendlyOnly, thisContinent,
 -- payment, source, class (classID), limit }. An empty text lists everything that passes the
 -- filters only when a zone is chosen (otherwise nothing: the list would be huge).
+-- A name search also finds items no vendor sells (Questie's item names; best = nil,
+-- noVendor set), after the vendor items, for their auction price. Not when a zone, payment or
+-- source filter is chosen: those ask about vendors.
 function VendorDB.Search(opts)
     local needle = (opts.text or ""):lower()
     if needle == "" and not opts.zone then return {}, {} end
     local pos = ns.Merchants.Here()
-    local out, zones = {}, {}
-    for itemID, rec in pairs(VendorDB.Items()) do
+    local out, zones, filtered = {}, {}, {}
+    local vendorItems = VendorDB.Items()
+    for itemID, rec in pairs(vendorItems) do
         local name = rec.name or Compat.ItemInfo(itemID)
         if name and (needle == "" or name:lower():find(needle, 1, true))
             and (not opts.class or classOf(itemID) == opts.class) then
@@ -173,6 +204,8 @@ function VendorDB.Search(opts)
                     return tostring(a.name) < tostring(b.name)
                 end)
                 out[#out + 1] = { itemID = itemID, name = name, vendors = rows, best = rows[1] }
+            elseif needle ~= "" then
+                filtered[itemID] = name
             end
         end
     end
@@ -182,6 +215,12 @@ function VendorDB.Search(opts)
         if da and db and da ~= db then return da < db end
         return a.name < b.name
     end)
+    if needle ~= "" and not (opts.zone or opts.payment or opts.source) then
+        for _, e in ipairs(VendorDB.WithoutVendors(ns.Questie.AllItems(), vendorItems, filtered, needle,
+            opts.class, classOf)) do
+            out[#out + 1] = e
+        end
+    end
     if opts.limit then for i = #out, opts.limit + 1, -1 do out[i] = nil end end
     local zoneList = {}
     for z in pairs(zones) do zoneList[#zoneList + 1] = z end

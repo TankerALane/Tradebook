@@ -215,9 +215,11 @@ end
 
 ---------------------------------------------------------------------------
 -- Vendor items (the Vendors tab): every item QuestieDB lists a vendor for, read at runtime.
+-- The same pass keeps every item's name (Questie.AllItems), so the tab can find any item.
 ---------------------------------------------------------------------------
 
 local vendorIndex          -- { { itemID, name, vendors = { npcID, ... } } } once built
+local allItems             -- { { itemID, name } } every item QuestieDB knows, once built
 local vendorBuilding, vendorWaiting = false, {}
 local VENDOR_BATCH = 400   -- items read per frame while building (no hitch)
 
@@ -231,14 +233,16 @@ function Questie.VendorItems(done)
     vendorBuilding = true
     local ok, ids = pcall(lib.Item.GetAllIds)
     if not ok or type(ids) ~= "table" then ids = {} end
-    local out, i = {}, 1
+    local out, all, i = {}, {}, 1
     local function step()
         local last = math.min(#ids, i + VENDOR_BATCH - 1)
         for k = i, last do
             local id = ids[k]
+            local name = get(lib.Item, id, "name")
+            if type(name) == "string" and name ~= "" then all[#all + 1] = { itemID = id, name = name } end
             local vendors = get(lib.Item, id, "vendors")
             if type(vendors) == "table" and #vendors > 0 then
-                out[#out + 1] = { itemID = id, name = get(lib.Item, id, "name"), vendors = vendors }
+                out[#out + 1] = { itemID = id, name = name, vendors = vendors }
             end
         end
         i = last + 1
@@ -246,12 +250,17 @@ function Questie.VendorItems(done)
             C_Timer.After(0, step)
             return
         end
-        vendorIndex, vendorBuilding = out, false
+        vendorIndex, allItems, vendorBuilding = out, all, false
         local waiting = vendorWaiting
         vendorWaiting = {}
         for _, fn in ipairs(waiting) do fn(vendorIndex) end
     end
     step()
+end
+
+-- Every item QuestieDB knows: { { itemID, name } }, or nil until Questie.VendorItems has run.
+function Questie.AllItems()
+    return allItems
 end
 
 -- Where a vendor NPC stands (nearest spawn): { name, sub, areaID, x, y, distance, zone,
