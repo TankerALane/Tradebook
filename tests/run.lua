@@ -1657,6 +1657,24 @@ test("net: test messages are known as your own and ignored by everyone else", fu
     assert(#msg <= 255)
 end)
 
+test("dev: thank-you list counts what each player sent", function()
+    SlashCmdList = {}
+    assert(loadfile("dev/TradebookDev/Dev.lua"))()
+    local D, helpers = TradebookDev, {}
+    D.Credit(helpers, "aa", { v = 3, t = 1, new = 2, c = 2, d = 0 }, 100, nil)
+    D.Credit(helpers, "aa", { v = 1, t = 0, new = 0, c = 0, d = 1 }, 200, "Bob")
+    D.Credit(helpers, "bb", { v = 2 }, 150, "Ann")
+    D.Credit(helpers, "cc", { c = 1 }, 150, nil)
+    eq(helpers.aa.reports, 2)
+    eq(helpers.aa.first, 100)
+    eq(helpers.aa.last, 200)
+    local lines = D.ThanksLines(helpers)
+    eq(lines[1], "Bob (8)")
+    eq(lines[2], "Ann (2)")
+    eq(lines[3], "name not seen yet, cc (1)")
+    SlashCmdList = nil
+end)
+
 test("dev: unscanned vendors leave out everyone's scans", function()
     SlashCmdList = {}
     assert(loadfile("dev/TradebookDev/Dev.lua"))()

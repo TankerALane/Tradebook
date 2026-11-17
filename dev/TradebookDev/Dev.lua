@@ -710,6 +710,46 @@ end
 
 -- Heard notifications ----------------------------------------------------
 
+-- Thank-you list (TradebookDevDB.helpers, local only, never committed; this addon is never
+-- published): what each player sent you, all time, by Tradebook's hash of their name, with the
+-- character name once this addon has seen them send (startNameWatcher).
+-- PURE. Add one notification's counts { v, t, new, c, d } for `who` at time `now`.
+function Dev.Credit(helpers, who, counts, now, name)
+    local e = helpers[who]
+    if not e then
+        e = { first = now, reports = 0, vendors = 0, trainers = 0, new = 0, confirmed = 0, de = 0 }
+        helpers[who] = e
+    end
+    e.reports = e.reports + 1
+    e.vendors = e.vendors + (counts.v or 0)
+    e.trainers = e.trainers + (counts.t or 0)
+    e.new = e.new + (counts.new or 0)
+    e.confirmed = e.confirmed + (counts.c or 0)
+    e.de = e.de + (counts.d or 0)
+    e.last = now
+    if name then e.name = name end
+    return e
+end
+
+-- PURE. Lines for /tbdev thanks: "Name (N)", N = everything they sent you (vendors, trainers,
+-- confirmations, disenchant results), most first.
+function Dev.ThanksLines(helpers)
+    local rows = {}
+    for who, e in pairs(helpers or {}) do
+        rows[#rows + 1] = { who = tostring(who), name = e.name,
+            n = (e.vendors or 0) + (e.trainers or 0) + (e.confirmed or 0) + (e.de or 0) }
+    end
+    table.sort(rows, function(a, b)
+        if a.n ~= b.n then return a.n > b.n end
+        return (a.name or "~" .. a.who) < (b.name or "~" .. b.who)
+    end)
+    local lines = {}
+    for _, r in ipairs(rows) do
+        lines[#lines + 1] = ("%s (%d)"):format(r.name or ("name not seen yet, " .. r.who), r.n)
+    end
+    return lines
+end
+
 local heardPending = {} -- [who] = { vendors, trainers, confirmed, deBands } (see Dev.HeardLines)
 local playerNumbers, playerCount = {}, 0
 local senderNames = {} -- [hash] = character name, this session only (startNameWatcher)
@@ -922,6 +962,9 @@ local function logHeard(who, h, ctx)
     table.insert(d.heardLog, { at = GetServerTime(), who = who, v = v, vn = vn, t = t, tn = tn,
         c = size(h.confirmed), d = size(h.deBands), dn = dn, dd = dd })
     while #d.heardLog > 2000 do table.remove(d.heardLog, 1) end
+    d.helpers = d.helpers or {}
+    Dev.Credit(d.helpers, who, { v = v, t = t, new = vn + tn + dn, c = size(h.confirmed), d = size(h.deBands) },
+        GetServerTime(), senderNames[who])
     return vn, tn, dn
 end
 
@@ -1113,7 +1156,10 @@ local function startNameWatcher()
         sender = tostring(sender or "")
         if sender == "" then return end
         local short = (_G.Ambiguate and _G.Ambiguate(sender, "short")) or sender
-        senderNames[ns.Net.Hash(sender)] = short
+        local hash = ns.Net.Hash(sender)
+        senderNames[hash] = short
+        local helpers = db().helpers
+        if helpers and helpers[hash] then helpers[hash].name = short end
     end)
 end
 
@@ -1160,6 +1206,12 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
         return
     end
     local lower = (msg or ""):lower()
+    if lower:match("^%s*thanks") then
+        local lines = Dev.ThanksLines(db().helpers)
+        say(#lines > 0 and "players who sent you data:" or "no data from other players yet.")
+        for _, line in ipairs(lines) do print(line) end
+        return
+    end
     if lower:match("^%s*heard%s+auto") then
         local d = db()
         d.heardAuto = d.heardAuto == false
