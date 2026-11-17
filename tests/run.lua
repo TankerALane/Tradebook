@@ -1672,6 +1672,15 @@ test("dev: thank-you list counts what each player sent", function()
     eq(lines[1], "Bob (8)")
     eq(lines[2], "Ann (2)")
     eq(lines[3], "name not seen yet, cc (1)")
+    helpers.cc.via = "Dan"
+    eq(D.ThanksLines(helpers)[3], "name not seen yet, cc, passed along by Dan (1)")
+    -- the first message of a passed-along report names the original player (as Net cuts it)
+    local relay = ns.Net.RelayText(ns.Share.Encode({ [3005] = { name = "Mahu", seenAt = 100,
+        items = { [2320] = { p = 10, s = -1 } } } }, "b", "v"), "0badf00d")
+    eq(D.RelayedFor(ns.Net.Chunk(relay, "ab12f")[1]), "0badf00d")
+    eq(D.RelayedFor("ab12cd~1~3~TBR1~x^R~0badf00d^V~1~A"), "0badf00d")
+    eq(D.RelayedFor("ab12cd~2~3~TBR1~x^R~0badf00d"), nil, "not the first part")
+    eq(D.RelayedFor("ab12cd~1~1~TBV1~x^V~1~A"), nil, "not passed along")
     SlashCmdList = nil
 end)
 

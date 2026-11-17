@@ -736,7 +736,7 @@ end
 function Dev.ThanksLines(helpers)
     local rows = {}
     for who, e in pairs(helpers or {}) do
-        rows[#rows + 1] = { who = tostring(who), name = e.name,
+        rows[#rows + 1] = { who = tostring(who), name = e.name, via = e.via,
             n = (e.vendors or 0) + (e.trainers or 0) + (e.confirmed or 0) + (e.de or 0) }
     end
     table.sort(rows, function(a, b)
@@ -745,7 +745,8 @@ function Dev.ThanksLines(helpers)
     end)
     local lines = {}
     for _, r in ipairs(rows) do
-        lines[#lines + 1] = ("%s (%d)"):format(r.name or ("name not seen yet, " .. r.who), r.n)
+        local unknown = "name not seen yet, " .. r.who .. (r.via and (", passed along by " .. r.via) or "")
+        lines[#lines + 1] = ("%s (%d)"):format(r.name or unknown, r.n)
     end
     return lines
 end
@@ -753,6 +754,7 @@ end
 local heardPending = {} -- [who] = { vendors, trainers, confirmed, deBands } (see Dev.HeardLines)
 local playerNumbers, playerCount = {}, 0
 local senderNames = {} -- [hash] = character name, this session only (startNameWatcher)
+local relayedBy = {} -- [original player's hash] = name of who last passed their data along
 
 local GREEN_NEW, YELLOW_DIFFERS = "|cff40ff40NEW|r ", "|cffffd100DIFFERS|r "
 local MAX_LIST = 6
@@ -963,8 +965,9 @@ local function logHeard(who, h, ctx)
         c = size(h.confirmed), d = size(h.deBands), dn = dn, dd = dd })
     while #d.heardLog > 2000 do table.remove(d.heardLog, 1) end
     d.helpers = d.helpers or {}
-    Dev.Credit(d.helpers, who, { v = v, t = t, new = vn + tn + dn, c = size(h.confirmed), d = size(h.deBands) },
-        GetServerTime(), senderNames[who])
+    local e = Dev.Credit(d.helpers, who, { v = v, t = t, new = vn + tn + dn, c = size(h.confirmed),
+        d = size(h.deBands) }, GetServerTime(), senderNames[who])
+    if relayedBy[who] then e.via = relayedBy[who] end
     return vn, tn, dn
 end
 
@@ -1138,8 +1141,11 @@ local function flushHeard(who)
         playerNumbers[who] = playerCount
     end
     local name = senderNames[who]
-    showHeard(name and ("|cffffffff" .. name .. "|r") or ("Another player (#" .. playerNumbers[who] .. ")"),
-        h, ctx, vn, tn, dn)
+    local label = name and ("|cffffffff" .. name .. "|r") or ("Another player (#" .. playerNumbers[who] .. ")")
+    if not name and relayedBy[who] then
+        label = label .. ", passed along by |cffffffff" .. relayedBy[who] .. "|r"
+    end
+    showHeard(label, h, ctx, vn, tn, dn)
 end
 
 -- Sender names, for the heard notifications only (this addon is never published). Tradebook
@@ -1148,16 +1154,24 @@ end
 -- The name map is memory only; the heard window's saved lines (TradebookDevDB.heardMessages,
 -- local, never committed) do show the names. heardLog keeps hashes only. Data relayed for another player carries only
 -- that player's hash, so it shows a name only if they also sent to you directly this session.
+-- PURE. The original player's hash in the first message of a passed-along report, or nil.
+function Dev.RelayedFor(msg)
+    return tostring(msg):match("^%w+~1~%d+~TBR1~[^%^]*%^R~(%x+)")
+end
+
 local function startNameWatcher()
     local f = CreateFrame("Frame")
     f:RegisterEvent("CHAT_MSG_ADDON")
-    f:SetScript("OnEvent", function(_, _, prefix, _, chatType, sender)
+    f:SetScript("OnEvent", function(_, _, prefix, text, chatType, sender)
         if not (ns.Net and prefix == ns.Net.PREFIX and chatType == "CHANNEL") then return end
         sender = tostring(sender or "")
         if sender == "" then return end
         local short = (_G.Ambiguate and _G.Ambiguate(sender, "short")) or sender
         local hash = ns.Net.Hash(sender)
         senderNames[hash] = short
+        -- Passed along for another player: the first part names them (TBR1 header, then R~hash).
+        local original = Dev.RelayedFor(text)
+        if original then relayedBy[original] = short end
         local helpers = db().helpers
         if helpers and helpers[hash] then helpers[hash].name = short end
     end)
