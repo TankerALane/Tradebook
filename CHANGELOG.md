@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.3.0
+
 ### Tabs
 - **Right-click a profession tab** (or Camp) to arrange the tabs: move it left or right, to the front or the end, or hide it. Hidden tabs come back from the same menu ("Show a hidden tab"), or all at once.
 - **Hide professions none of my characters have**, in one click from that menu.
