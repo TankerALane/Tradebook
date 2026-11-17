@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Leveling plan
+- A step's tooltip now counts **that step on its own**: with 18 Coarse Thread and a step needing 1, it says nothing to buy, even if an earlier step also uses thread. The Materials totals below still count the whole plan.
+
 ## v1.4.0
 
 ### Recipe list

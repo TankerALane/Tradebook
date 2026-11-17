@@ -1100,7 +1100,7 @@ test("planner: orange first unless yellow is clearly cheaper; ties go to orange"
     eq(first(60), "Y", "yellow 60 x 4/3 = 80: clearly cheaper")
 end)
 
-test("planner: each step has its own materials (need, and what you have used first)", function()
+test("planner: each step has its own materials (need, have, buy for that step alone)", function()
     local recipes = {
         A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
         B = { t = { 110, 120, 130 }, r = { { itemID = 2, count = 2 } } },
@@ -1119,7 +1119,7 @@ test("planner: each step has its own materials (need, and what you have used fir
     eq(first.materials[2].buy, 0, "the first B step uses what you have")
     eq(last.materials[2].need, last.crafts * 2)
     eq(last.materials[2].have, 5)
-    eq(last.materials[2].buy, last.crafts * 2 - 1, "the one left over goes to the next B step")
+    eq(last.materials[2].buy, last.crafts * 2 - 5, "on its own: all 5 count, the earlier step isn't subtracted")
     eq(plan.steps[2].materials[1].have, 0)
     eq(plan.steps[2].materials[1].buy, plan.steps[2].materials[1].need)
 end)
