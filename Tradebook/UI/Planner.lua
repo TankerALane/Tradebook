@@ -19,9 +19,9 @@ local function settings()
 end
 
 -- Which steps are ticked, per character and profession: settings.planSel[charKey:skill] =
--- { off = { [recipeID:to] = true } (unticked steps), firstTo = where the first step ended when
--- the window closed }. Opening it again keeps the ticks, unless you've finished a step since
--- (your skill reached firstTo): then every step is ticked again.
+-- { off = { [recipeID:to] = true } (unticked steps), firstTo = where the plan's first step
+-- ended when the window closed }. Opening it again keeps the ticks, unless you've finished
+-- that step since (your skill reached firstTo): then every step is ticked again.
 local function selection(charKey, skill)
     local s = settings()
     s.planSel = s.planSel or {}
@@ -162,9 +162,10 @@ function PlannerUI.Refresh()
             anyUnpriced = anyUnpriced or step.unpriced
         end
     end
-    -- Where the first step ended when the window opened (kept while it's open, so finishing a
-    -- step with the window open counts too).
-    if popup.firstTo == nil then popup.firstTo = plan.steps[1] and plan.steps[1].to or false end
+    -- Where the plan's first step ends now. Saved when the window closes: the ticks reset
+    -- only once that step is finished after closing (finishing one with the window open
+    -- doesn't count; you may be crafting one step and then fetching materials for the next).
+    popup.firstTo = plan.steps[1] and plan.steps[1].to or false
     local header = L.PLAN_STEPS
     if nTicked < #plan.steps then header = L.PLAN_STEPS_SOME:format(nTicked, #plan.steps) end
     pane:Add({ text = header, font = "GameFontNormal", color = W.GOLD, right = ns.Prices.Money(cost) })
