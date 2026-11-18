@@ -14,6 +14,7 @@ ns.UI.RegisterView("vendors", View)
 local TOP_N = 5
 local ITEM_CLASSES = { 7, 5, 0, 9, 1, 2, 4, 6, 11, 15 } -- trade goods first: the common reason to look
 local DEFAULTS = { friendlyOnly = true }
+local MAX_LEVEL, LEVEL_STEP = 60, 5
 
 local function filters()
     local s = ns.db.settings
@@ -256,6 +257,19 @@ local function buildFilterMenu(_, root)
     local qualities = { { text = L.VENDOR_ANY, value = nil } }
     for q = 0, 5 do qualities[#qualities + 1] = { text = qualityName(q), value = q } end
     radios(quality, qualities, "quality")
+    -- Required level, in steps of LEVEL_STEP (like the auction house's level range).
+    local level = root:CreateButton(L.VENDOR_LEVEL)
+    local function levelRadio(text, lo, hi)
+        level:CreateRadio(text, function() return f.minLevel == lo and f.maxLevel == hi end, function()
+            f.minLevel, f.maxLevel = lo, hi
+            View:RefreshList()
+        end)
+    end
+    levelRadio(L.VENDOR_ANY, nil, nil)
+    for lo = 1, MAX_LEVEL, LEVEL_STEP do
+        local hi = math.min(MAX_LEVEL, lo + LEVEL_STEP - 1)
+        levelRadio(L.VENDOR_LEVEL_RANGE:format(lo, hi), lo, hi)
+    end
     local pay = root:CreateButton(L.VENDOR_FILTER_PAYMENT)
     radios(pay, { { text = L.VENDOR_ANY, value = nil }, { text = L.VENDOR_PAY_GOLD, value = "gold" },
         { text = L.VENDOR_PAY_TOKENS, value = "tokens" } }, "payment")
@@ -289,34 +303,6 @@ function View:Build(parent)
     self.filterBtn:SetDefaultCallback(resetFilters)
     self.filterBtn:SetIsDefaultCallback(filtersAreDefault)
     self.filterBtn:SetupMenu(buildFilterMenu)
-    -- Required level range, like the auction house.
-    self.levelLabel = W.Text(f, "GameFontHighlightSmall")
-    self.levelLabel:SetPoint("LEFT", self.filterBtn, "RIGHT", 14, 0)
-    self.levelLabel:SetText(L.VENDOR_LEVEL)
-    local function levelBox(key)
-        local box = CreateFrame("EditBox", nil, f, "InputBoxTemplate")
-        box:SetSize(26, 20)
-        box:SetAutoFocus(false)
-        box:SetNumeric(true)
-        box:SetMaxLetters(2)
-        box:SetScript("OnTextChanged", function(b, userInput)
-            if not userInput then return end
-            local v = tonumber(b:GetText())
-            filters()[key] = v and v > 0 and v or nil
-            View:RefreshList()
-        end)
-        box:SetScript("OnEnterPressed", box.ClearFocus)
-        box:SetScript("OnEscapePressed", box.ClearFocus)
-        W.Tooltip(box, { L.VENDOR_LEVEL, L.VENDOR_LEVEL_TIP })
-        return box
-    end
-    self.minLevel = levelBox("minLevel")
-    self.minLevel:SetPoint("LEFT", self.levelLabel, "RIGHT", 10, 0)
-    self.levelDash = W.Text(f, "GameFontHighlightSmall")
-    self.levelDash:SetPoint("LEFT", self.minLevel, "RIGHT", 2, 0)
-    self.levelDash:SetText("-")
-    self.maxLevel = levelBox("maxLevel")
-    self.maxLevel:SetPoint("LEFT", self.levelDash, "RIGHT", 8, 0)
     -- What's usable changes with level, skills and recipes learned.
     for _, event in ipairs({ "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED", "NEW_RECIPE_LEARNED", "LEARNED_SPELL_IN_TAB" }) do
         ns.On(event, function() ns.VendorDB.ForgetUsable() end)
@@ -352,10 +338,6 @@ function View:RefreshList()
     local opts = { text = self.text, zone = f.zone, friendlyOnly = f.friendlyOnly, thisContinent = f.thisContinent,
         payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, quality = f.quality,
         minLevel = f.minLevel, maxLevel = f.maxLevel, usable = f.usable, limit = 300 }
-    -- The level boxes follow the filters (Reset clears them), unless being typed in.
-    for key, box in pairs({ minLevel = self.minLevel, maxLevel = self.maxLevel }) do
-        if not box:HasFocus() then box:SetText(f[key] and tostring(f[key]) or "") end
-    end
     local results, zones = ns.VendorDB.Search(opts)
     self.zones = zones
     local rows = {}
