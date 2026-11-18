@@ -15,6 +15,7 @@ local TOP_N = 5
 local ITEM_CLASSES = { 7, 5, 0, 9, 1, 2, 4, 6, 11, 15 } -- trade goods first: the common reason to look
 local DEFAULTS = { friendlyOnly = true }
 local MAX_LEVEL, LEVEL_STEP = 60, 5
+local SEARCH_DELAY = 0.15
 
 local function filters()
     local s = ns.db.settings
@@ -291,9 +292,19 @@ function View:Build(parent)
     self.title = W.Text(f, "GameFontNormalLarge")
     self.title:SetPoint("TOPLEFT", 12, -10)
     self.title:SetText(L.VENDORS_TITLE)
+    -- Search once typing pauses (SEARCH_DELAY s), not on every key; clearing is at once.
     self.search = W.SearchBox(f, 240, function(text)
         View.text = text
-        View:RefreshList()
+        if View.searchTimer then View.searchTimer:Cancel() end
+        View.searchTimer = nil
+        if text == "" then
+            View:RefreshList()
+            return
+        end
+        View.searchTimer = C_Timer.NewTimer(SEARCH_DELAY, function()
+            View.searchTimer = nil
+            View:RefreshList()
+        end)
     end)
     self.search:SetPoint("LEFT", self.title, "RIGHT", 18, 0)
     if self.search.Instructions then self.search.Instructions:SetText(L.VENDOR_SEARCH) end

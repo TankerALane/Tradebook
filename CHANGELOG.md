@@ -4,6 +4,7 @@
 
 ### Vendors
 - **Filters like the auction house**: in the Filter menu, **Required level** (in steps of 5 levels), **Rarity** (at least Poor, Common, Uncommon, Rare, Epic or Legendary) and **Only items this character can use** (anything the game's tooltip shows in red, like level, class, armor or weapon skill, profession skill or already known, leaves it out). With an item type, rarity or level chosen you can browse vendor items without typing a name.
+- **Faster searching**: the search waits until you pause typing, narrows from what it already found as you type more, and no longer looks up every vendor's spawns again each time you move a little.
 
 ### Options
 - **Turn disenchant information off**: a new "Show disenchant information" option (Options > AddOns > Tradebook) hides it everywhere: item tooltips, the disenchant profit in recipe details and the "Disenchanting it" profit column. What you disenchant is still recorded and shared.

@@ -70,9 +70,15 @@ function VendorDB.Items()
     if cache and now and cacheAt == now then return cache end
     cacheAt = now
     local scanned = ns.db and ns.db.vendors or {}
-    local key = tostring(ns.util.Count(scanned)) .. ":" .. tostring(questieIndex ~= nil) .. ":"
+    -- Scanning a vendor adds one or changes its seenAt: count and sum of seenAt catch both
+    -- (numbers, not a string built from every vendor).
+    local count, sum = 0, 0
+    for _, e in pairs(scanned) do
+        count = count + 1
+        sum = sum + (tonumber(e.seenAt) or 0)
+    end
+    local key = count .. ":" .. sum .. ":" .. tostring(questieIndex ~= nil) .. ":"
         .. tostring(ns.Net and ns.Net.Version() or 0)
-    for _, e in pairs(scanned) do key = key .. ":" .. tostring(e.seenAt) end
     if cache and cacheKey == key then return cache end
     local items = {}
     VendorDB.AddSaved(items, scanned, "scanned")
@@ -127,6 +133,53 @@ local function locate(row, pos)
         row.friendly = place.friendly
         row.waypoint = { areaID = place.areaID, x = place.x, y = place.y }
     end
+end
+
+-- PURE. Entries of `pool` whose lower-case name (lowerOf(e)) contains needle; entries whose
+-- name isn't known yet are kept too (it may load), so a longer needle can start from this.
+function VendorDB.NameMatches(pool, needle, lowerOf)
+    if needle == "" then return pool end
+    local out = {}
+    for _, e in ipairs(pool) do
+        local lower = lowerOf(e)
+        if not lower or lower:find(needle, 1, true) then out[#out + 1] = e end
+    end
+    return out
+end
+
+-- Typing narrows: "copp" searches only what "cop" matched (any name with "copp" has "cop"),
+-- as long as the data is the same. kind = "vendor" | "all".
+local lastMatch = {}
+local function matches(kind, src, pool, needle, lowerOf)
+    local last = lastMatch[kind]
+    if needle ~= "" and last and last.src == src and last.needle ~= "" and needle:find(last.needle, 1, true) then
+        pool = last.list
+    end
+    local list = VendorDB.NameMatches(pool, needle, lowerOf)
+    lastMatch[kind] = { src = src, needle = needle, list = list }
+    return list
+end
+
+-- The vendor items as a list (rebuilt with the Items() cache), with lower-case names.
+local itemList, itemListOf
+local function vendorList(items)
+    if itemListOf ~= items then
+        itemList, itemListOf = {}, items
+        for _, rec in pairs(items) do itemList[#itemList + 1] = rec end
+    end
+    return itemList
+end
+local function recLower(rec)
+    if not rec.lower then
+        local name = rec.name or Compat.ItemInfo(rec.itemID)
+        if not name then return nil end
+        rec.name, rec.lower = name, name:lower()
+    end
+    return rec.lower
+end
+local function entryLower(e)
+    e.lower = e.lower or (e.name and e.name:lower())
+    return e.lower
 end
 
 -- Item type (class) of an item: classID, or nil while unknown.
@@ -257,10 +310,9 @@ function VendorDB.Search(opts)
     local pos = ns.Merchants.Here()
     local out, zones, filtered = {}, {}, {}
     local vendorItems = VendorDB.Items()
-    for itemID, rec in pairs(vendorItems) do
-        local name = rec.name or Compat.ItemInfo(itemID)
-        if name and (needle == "" or name:lower():find(needle, 1, true))
-            and (not passes or passes(itemID)) then
+    for _, rec in ipairs(matches("vendor", vendorItems, vendorList(vendorItems), needle, recLower)) do
+        local itemID, name = rec.itemID, rec.name
+        if name and recLower(rec) and (not passes or passes(itemID)) then
             local rows = {}
             for _, row in pairs(rec.vendors) do
                 locate(row, pos)
@@ -286,7 +338,9 @@ function VendorDB.Search(opts)
         return a.name < b.name
     end)
     if needle ~= "" and not (opts.vendorOnly or opts.zone or opts.payment or opts.source) then
-        for _, e in ipairs(VendorDB.WithoutVendors(ns.Questie.AllItems(), vendorItems, filtered, needle, passes)) do
+        local all = ns.Questie.AllItems()
+        local pool = all and matches("all", all, all, needle, entryLower)
+        for _, e in ipairs(VendorDB.WithoutVendors(pool, vendorItems, filtered, needle, passes)) do
             out[#out + 1] = e
         end
     end

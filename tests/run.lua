@@ -843,6 +843,12 @@ test("vendor database: sources merge, scanned first", function()
     eq(V.RowPasses({ source = "questie" }, { source = "scanned" }), false)
     -- item filters, like the auction house's
     eq(V.ItemPasses({ class = 2 }, {}), true)
+    -- name matches keep unknown names (they may load) so typing can narrow from them
+    local pool = { { lower = "copper bar" }, { lower = "tin bar" }, {} }
+    local low = function(e) return e.lower end
+    eq(#V.NameMatches(pool, "copper", low), 2)
+    eq(#V.NameMatches(pool, "", low), 3)
+    eq(#V.NameMatches(V.NameMatches(pool, "bar", low), "tin", low), 2)
     eq(V.ItemPasses({ class = 4 }, { class = 2 }), false)
     eq(V.ItemPasses({ quality = 2 }, { quality = 2 }), true, "at least uncommon")
     eq(V.ItemPasses({ quality = 3 }, { quality = 2 }), true)

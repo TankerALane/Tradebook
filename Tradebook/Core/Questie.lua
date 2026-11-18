@@ -154,11 +154,14 @@ function Questie.QuestName(id)
 end
 
 -- Zone name for an area ID.
+local zoneNames = {}
 function Questie.ZoneName(areaID)
+    local hit = zoneNames[areaID]
+    if hit then return hit end
     local map = ns.ZoneMaps and ns.ZoneMaps[areaID]
     local info = map and Compat.Call("C_Map.GetMapInfo", map)
-    if info and info.name then return info.name end
-    local name = Compat.Call("C_Map.GetAreaInfo", areaID)
+    local name = info and info.name or Compat.Call("C_Map.GetAreaInfo", areaID)
+    if name then zoneNames[areaID] = name end
     return name or ("Zone " .. tostring(areaID))
 end
 
@@ -265,26 +268,36 @@ end
 
 -- Where a vendor NPC stands (nearest spawn): { name, sub, areaID, x, y, distance, zone,
 -- friendly }, or nil when QuestieDB has no spawn for it.
+-- What doesn't change as you move (name, friendly, spawn points with world positions) is
+-- read from QuestieDB once per vendor; moving only redoes the distances (a little arithmetic),
+-- and within one position (here(), 2 s) the place itself is reused.
 local placeCache = {}
 function Questie.VendorPlace(id)
     if not Questie.Available() then return nil end
     local faction = Compat.Call("UnitFactionGroup", "player")
-    local _, bucket = here()
-    local hit = placeCache[id]
-    if hit and hit.bucket == bucket then return hit.place or nil end
-    local friendly = true
-    local e = nearestNpc(id, faction)
-    if not e then
-        e = nearestNpc(id, nil)
-        friendly = false
+    local s = placeCache[id]
+    if not s or s.faction ~= faction then
+        s = { faction = faction }
+        local friendly = true
+        local e = npcEntry(id, faction)
+        if not e then
+            e = npcEntry(id, nil)
+            friendly = false
+        end
+        if e then
+            s.name, s.sub, s.friendly = e.name, e.sub, friendly
+            s.points = Locations.SpawnPoints(e.spawns, toWorld)
+        end
+        placeCache[id] = s
     end
-    local place = false
-    if e then
-        place = { name = e.name, sub = e.sub, areaID = e.areaID, x = e.x, y = e.y, distance = e.distance,
-            zone = Questie.ZoneName(e.areaID), friendly = friendly }
-    end
-    placeCache[id] = { bucket = bucket, place = place }
-    return place or nil
+    if not s.points then return nil end
+    local pos = here()
+    if s.at ~= nil and s.pos == pos then return s.place or nil end
+    local spot = Locations.NearestPoint(s.points, pos)
+    s.pos, s.at = pos, true
+    s.place = spot and { name = s.name, sub = s.sub, areaID = spot.areaID, x = spot.x, y = spot.y,
+        distance = spot.distance, zone = Questie.ZoneName(spot.areaID), friendly = s.friendly } or false
+    return s.place or nil
 end
 
 -- Which factions an NPC is friendly to (QuestieDB): "Alliance", "Horde", "Both", "Neither",
