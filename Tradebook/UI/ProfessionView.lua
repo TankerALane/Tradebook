@@ -7,6 +7,14 @@ local L, W, Compat = ns.L, ns.W, ns.Compat
 local Recipes, Reagents, Characters = ns.Recipes, ns.Reagents, ns.Characters
 
 local View = {}
+
+-- The recipe list's profit mode; "disenchant" counts as off while disenchant information is
+-- switched off in the settings.
+local function profitMode()
+    local mode = ns.db.settings.listProfit
+    if mode == "disenchant" and not ns.Disenchant.Shown() then return "off" end
+    return mode
+end
 ns.UI.RegisterView("profession", View)
 
 local LEFT_WIDTH = 330
@@ -84,7 +92,7 @@ local function createRow(row)
         -- Recipes without a result item (enchants and the like): what the spell does.
         local desc = r and not r.o and ns.Compat.Call("C_Spell.GetSpellDescription", data.id)
         if desc == "" then desc = nil end
-        local mode = ns.db.settings.listProfit
+        local mode = profitMode()
         local profit, cost, value
         if mode == "vendor" or mode == "auction" or mode == "disenchant" then
             profit, cost, value = ns.Prices.RecipeProfit(r, mode)
@@ -153,7 +161,7 @@ local function initRow(row, data)
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
     row.name:SetFontObject("GameFontHighlightSmall")
     -- Profit of one craft in the chosen mode (blank when a price is unknown).
-    local mode = ns.db.settings.listProfit
+    local mode = profitMode()
     local on = mode == "vendor" or mode == "auction" or mode == "disenchant"
     -- With the column on, the count/distance on the right gets a fixed width so the profits
     -- line up (0 = as wide as its text).
@@ -447,7 +455,7 @@ local function buildFilterMenu(_, root)
     root:CreateTitle(L.PROFIT_SHOW)
     local s = ns.db.settings
     local function mode(text, value)
-        root:CreateRadio(text, function() return (s.listProfit or "off") == value end, function()
+        root:CreateRadio(text, function() return (profitMode() or "off") == value end, function()
             s.listProfit = value
             View:RefreshList()
         end)
@@ -456,7 +464,7 @@ local function buildFilterMenu(_, root)
     mode(L.PROFIT_VENDOR, "vendor")
     if ns.Prices.Available() then -- auction prices: Auctionator
         mode(L.PROFIT_AUCTION, "auction")
-        mode(L.PROFIT_DISENCHANT, "disenchant")
+        if ns.Disenchant.Shown() then mode(L.PROFIT_DISENCHANT, "disenchant") end
     end
 end
 

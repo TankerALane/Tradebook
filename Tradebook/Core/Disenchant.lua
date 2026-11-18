@@ -377,8 +377,15 @@ function Disenchant.BuildSourceLines(itemID)
     return lines
 end
 
+-- Whether to show disenchant information at all (the Settings switch). Off hides the
+-- tooltips, the recipe details' disenchant profit and the "Disenchanting it" profit column;
+-- your disenchants are still recorded and shared.
+function Disenchant.Shown()
+    return not (ns.db and ns.db.settings.deShow == false)
+end
+
 local function addTooltip(tooltip, item)
-    if not (ns.db and ns.db.settings.deTooltip ~= false) or not item then return end
+    if not (Disenchant.Shown() and ns.db.settings.deTooltip ~= false) or not item then return end
     local full = ns.db.settings.deCompact == false or IsShiftKeyDown()
     local lines = Disenchant.TooltipLines(item, full)
     if not lines then

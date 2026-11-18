@@ -551,7 +551,7 @@ function Pane:AddCost(r, list, times)
         lines[#lines + 1] = { indent = 1, text = L.PROFIT_VENDOR_SHORT, right = money(math.floor(sell * made + 0.5) - cost) }
     end
     -- Disenchanting it and selling the materials at auction (after the cut).
-    local deValue = ns.Disenchant.ValueOf(r.o)
+    local deValue = ns.Disenchant.Shown() and ns.Disenchant.ValueOf(r.o)
     if deValue then
         local de = ns.Disenchant.ForItem(r.o)
         local note = de and ns.Disenchant.SourceText(de) or nil

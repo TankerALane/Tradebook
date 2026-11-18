@@ -73,15 +73,31 @@ local function build()
     netShare:SetPoint("TOPLEFT", crossFaction, "BOTTOMLEFT", 0, -6)
     W.Tooltip(netShare, { L.OPT_NETSHARE, L.OPT_NETSHARE_TIP })
 
-    local deTooltip = W.Check(panel, L.OPT_DE_TOOLTIP, function(v) ns.db.settings.deTooltip = v end)
-    deTooltip:SetPoint("TOPLEFT", netShare, "BOTTOMLEFT", 0, -6)
-    local deCompact = W.Check(panel, L.OPT_DE_COMPACT, function(v) ns.db.settings.deCompact = v end)
+    -- Disenchant information: one switch for all of it, the tooltip options under it.
+    local deTooltip, deCompact
+    local function deSubOptions()
+        local on = ns.db.settings.deShow ~= false
+        for _, c in ipairs({ deTooltip, deCompact }) do
+            c:SetEnabled(on)
+            if c.text then c.text:SetFontObject(on and "GameFontHighlight" or "GameFontDisable") end
+        end
+    end
+    local deShow = W.Check(panel, L.OPT_DE_SHOW, function(v)
+        ns.db.settings.deShow = v
+        deSubOptions()
+        ns.UI.Refresh()
+    end)
+    deShow:SetPoint("TOPLEFT", netShare, "BOTTOMLEFT", 0, -6)
+    W.Tooltip(deShow, { L.OPT_DE_SHOW, L.OPT_DE_SHOW_TIP })
+    deTooltip = W.Check(panel, L.OPT_DE_TOOLTIP, function(v) ns.db.settings.deTooltip = v end)
+    deTooltip:SetPoint("TOPLEFT", deShow, "BOTTOMLEFT", 20, -6)
+    deCompact = W.Check(panel, L.OPT_DE_COMPACT, function(v) ns.db.settings.deCompact = v end)
     deCompact:SetPoint("TOPLEFT", deTooltip, "BOTTOMLEFT", 0, -6)
 
     local scale = slider(panel, L.OPT_SCALE, 0.6, 1.4, 0.05,
         function() return ns.db.settings.scale or 1 end,
         function(v) ns.db.settings.scale = v; ns.UI.ApplyScale() end, "%.2f")
-    scale:SetPoint("TOPLEFT", deCompact, "BOTTOMLEFT", 6, -36)
+    scale:SetPoint("TOPLEFT", deCompact, "BOTTOMLEFT", -14, -36)
 
     local stale = slider(panel, L.OPT_STALE, 7, 180, 1,
         function() return ns.db.settings.staleDays or 30 end,
@@ -110,8 +126,10 @@ local function build()
         gathering:SetChecked(anyShown)
         crossFaction:SetChecked(ns.db.settings.crossFaction == true)
         netShare:SetChecked(ns.db.settings.netShare ~= false)
+        deShow:SetChecked(ns.db.settings.deShow ~= false)
         deTooltip:SetChecked(ns.db.settings.deTooltip ~= false)
         deCompact:SetChecked(ns.db.settings.deCompact ~= false)
+        deSubOptions()
         scale.Refresh()
         stale.Refresh()
     end)

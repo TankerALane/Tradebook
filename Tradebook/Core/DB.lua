@@ -42,6 +42,7 @@ DB.DEFAULTS = {
         crossFaction = false, -- combine Alliance and Horde characters (Characters.SameSide)
         listOrder = "game", -- recipe list order: "game" (like the default window) | "az"
         listProfit = "off", -- recipe list profit column: "off" | "vendor" | "auction" | "disenchant"
+        deShow = true, -- any disenchant information at all (Disenchant.Shown; recording goes on either way)
         deTooltip = true, -- item tooltips say what an item disenchants into (Core/Disenchant.lua)
         deCompact = true, -- ...in one line, with the details while Shift is held
         collapsed = {},
