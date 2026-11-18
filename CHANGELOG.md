@@ -6,6 +6,7 @@
 - **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply.
 
 ### Window
+- **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
 
 ### Data

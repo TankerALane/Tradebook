@@ -621,17 +621,43 @@ local function insertInChat(link)
 end
 UI.InsertInChat = insertInChat
 
--- Shift-click an item: its link in the chat box (waits for the item's data when it isn't
+-- PURE. Is an edit box (its name, whether it belongs to a chat frame) a chat box?
+function UI.IsChatBox(name, chatFrame)
+    return chatFrame ~= nil or (name or ""):match("^ChatFrame%d+EditBox$") ~= nil
+end
+
+-- The box being typed in when it isn't a chat box (the auction house's or Auctionator's search
+-- box, or any other), else nil.
+local function searchBox()
+    local focus = _G.GetCurrentKeyBoardFocus and _G.GetCurrentKeyBoardFocus()
+    if not (focus and focus.GetObjectType and focus:GetObjectType() == "EditBox") then return nil end
+    if UI.IsChatBox(focus.GetName and focus:GetName(), focus.chatFrame) then return nil end
+    return focus
+end
+
+-- Shift-click an item link: while typing in a search box (the auction house's, Auctionator's...)
+-- the item's name goes there, as the game's own bags do; else the link goes in the chat box.
+function UI.InsertItemLink(link)
+    local box = searchBox()
+    local name = box and link and link:match("|h%[(.-)%]|h")
+    if name then
+        if box.IsMultiLine and box:IsMultiLine() then box:Insert(name) else box:SetText(name) end
+        return
+    end
+    insertInChat(link)
+end
+
+-- Shift-click an item (by ID): UI.InsertItemLink (waits for the item's data when it isn't
 -- loaded yet).
 function UI.LinkItem(itemID)
     local _, link = ns.Compat.ItemInfo(itemID)
     if link then
-        insertInChat(link)
+        UI.InsertItemLink(link)
     elseif _G.Item and _G.Item.CreateFromItemID then
         local item = _G.Item:CreateFromItemID(itemID)
         item:ContinueOnItemLoad(function()
             local l = item:GetItemLink()
-            if l then insertInChat(l) end
+            if l then UI.InsertItemLink(l) end
         end)
     end
 end

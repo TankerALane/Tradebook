@@ -186,7 +186,9 @@ function W.ItemButton(parent, size)
     end)
     b:SetScript("OnLeave", GameTooltip_Hide)
     b:SetScript("OnClick", function(self)
-        if self.link and IsModifiedClick("CHATLINK") then ChatEdit_InsertLink(self.link) end
+        if self.link and IsModifiedClick("CHATLINK") then
+            if ns.UI and ns.UI.InsertItemLink then ns.UI.InsertItemLink(self.link) else ChatEdit_InsertLink(self.link) end
+        end
     end)
     -- spellID: shown on hover when there's no item (a recipe's spell, for enchants).
     function b:SetItem(itemID, link, icon, spellID)
