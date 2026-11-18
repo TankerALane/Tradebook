@@ -13,6 +13,7 @@ local PURE_FILES = {
     "Tradebook/Data/RecipeVendors.lua",
     "Tradebook/Data/RecipeItems.lua",
     "Tradebook/Data/ItemPrices.lua",
+    "Tradebook/Data/SellPrices.lua",
     "Tradebook/Data/CommunityVendors.lua",
     "Tradebook/Data/CommunityTrainers.lua",
     "Tradebook/Data/SkillLevels.lua",

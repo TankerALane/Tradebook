@@ -301,11 +301,10 @@ function VendorDB.BelowSellPrice(pools, needle, lowerOf, auctionOf, sellOf, pass
     return out
 end
 
--- What a vendor pays for one (copper), or nil (none, or not loaded yet: asked for).
+-- What a vendor pays for one (copper), or nil: from the game's item data (Data/SellPrices.lua),
+-- so nothing has to load (loading items one by one made the list jump around as they came in).
 local function sellPriceOf(itemID)
-    local name, _, _, _, _, _, _, _, _, _, sell = Compat.Call("C_Item.GetItemInfo", itemID)
-    if not name then Compat.Call("C_Item.RequestLoadItemDataByID", itemID) end
-    return type(sell) == "number" and sell > 0 and sell or nil
+    return ns.SellPrice and ns.SellPrice[itemID]
 end
 
 -- PURE. Items found by name that no vendor (passing the filters) sells, for the auction price:
