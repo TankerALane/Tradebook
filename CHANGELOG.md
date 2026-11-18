@@ -5,6 +5,9 @@
 ### Vendors
 - **Cheaper at a vendor**: a new "Only items cheaper at a vendor than at the auction house" filter (needs Auctionator) lists the items a vendor sells for less than they cost at the auction house, with only those vendors and the auction price next to the vendor's. You can browse them without typing a name. Items a vendor sells several at a time (200 arrows, 5 water) are compared per item.
 
+### Window
+- With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
+
 ### Data
 - 37 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag and Nipsy. 538 vendors, 7,157 items.
 - New trainers: Flora Silverwind, Eldrin and Me'lynn. 153 trainers, 2,433 services.
