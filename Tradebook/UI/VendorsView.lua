@@ -3,7 +3,8 @@
 -- first. Items no vendor sells (or none passing the filters) come after, with their auction
 -- price (Auctionator). Each item expands to its 5 closest vendors (price, zone, distance; click for a
 -- waypoint) with "See all" for the rest. Filters: zone, friendly to you, this continent, item
--- type, rarity, required level, usable by you, how it's paid for, and where the data came from. "Share your scans" opens /tb share.
+-- type, rarity, required level, usable by you, cheaper at the auction house (Auctionator), how
+-- it's paid for, and where the data came from. "Share your scans" opens /tb share.
 
 local _, ns = ...
 local L, W, Compat = ns.L, ns.W, ns.Compat
@@ -172,7 +173,14 @@ local function initRow(row, data)
             return
         end
         row.mid:SetText((best.name or "?") .. "  " .. W.ColorText(W.GREY, placeText(best)))
-        row.right:SetText(priceText(best) .. "  " .. W.ColorText(W.GREY, L.VENDOR_COUNT:format(#data.vendors)))
+        local auction = ""
+        if data.auction then
+            -- For as many as one purchase from that vendor gives (its price is for that many).
+            local n = best.source ~= "questie" and data.stack or 1
+            auction = "  " .. W.ColorText(W.GREY, L.PRICE_AUCTION .. " ") .. ns.Prices.Money(data.auction * n)
+        end
+        row.right:SetText(priceText(best) .. auction .. "  "
+            .. W.ColorText(W.GREY, L.VENDOR_COUNT:format(#data.vendors)))
         return
     end
     row.toggle:Hide()
@@ -242,6 +250,7 @@ local function buildFilterMenu(_, root)
     check(L.VENDOR_FILTER_FRIENDLY, "friendlyOnly")
     check(L.VENDOR_FILTER_CONTINENT, "thisContinent")
     check(L.VENDOR_FILTER_USABLE, "usable")
+    if ns.Prices.Available() then check(L.VENDOR_FILTER_CHEAPER_AUCTION, "cheaperAuction") end
     -- Zone: the zones the current results are in.
     local zone = root:CreateButton(L.VENDOR_FILTER_ZONE)
     local zones = { { text = L.VENDOR_ANY, value = nil } }
@@ -348,13 +357,14 @@ function View:RefreshList()
     local f = filters()
     local opts = { text = self.text, zone = f.zone, friendlyOnly = f.friendlyOnly, thisContinent = f.thisContinent,
         payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, quality = f.quality,
-        minLevel = f.minLevel, maxLevel = f.maxLevel, usable = f.usable, limit = 300 }
+        minLevel = f.minLevel, maxLevel = f.maxLevel, usable = f.usable,
+        cheaperAuction = f.cheaperAuction and ns.Prices.Available() or nil, limit = 300 }
     local results, zones = ns.VendorDB.Search(opts)
     self.zones = zones
     local rows = {}
     for _, item in ipairs(results) do
         rows[#rows + 1] = { kind = "item", itemID = item.itemID, name = item.name, vendors = item.vendors, best = item.best,
-            noVendor = item.noVendor }
+            noVendor = item.noVendor, auction = item.auction, stack = item.stack }
         if item.best and self.expanded[item.itemID] then
             local n = self.showAll[item.itemID] and #item.vendors or math.min(TOP_N, #item.vendors)
             for i = 1, n do rows[#rows + 1] = { kind = "vendor", row = item.vendors[i], itemID = item.itemID } end

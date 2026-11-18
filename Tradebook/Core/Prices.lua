@@ -65,6 +65,12 @@ function Prices.Get(itemID)
     return { auction = auction, vendor = vendor, age = auction and call("GetAuctionAgeByItemID", itemID) or nil }
 end
 
+-- Auctionator's auction price for one item (copper), or nil.
+function Prices.Auction(itemID)
+    local a = itemID and api() and call("GetAuctionPriceByItemID", itemID)
+    return type(a) == "number" and a > 0 and a or nil
+end
+
 -- Auctionator's recorded vendor price for an item (seen at a merchant), or nil.
 function Prices.VendorPrice(itemID)
     local v = api() and call("GetVendorPriceByItemID", itemID)
