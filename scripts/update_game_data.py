@@ -126,18 +126,13 @@ def write_disenchant_bands(build):
 def write_item_prices(build):
     """Vendor buy price of every item that has one (ItemSparse BuyPrice / VendorStackCount):
     the price a vendor asks before reputation discounts. The Vendors tab uses it when nobody has
-    scanned a vendor that sells the item yet. Also how many come in one purchase where that's
-    more than 1 (VendorStackCount: arrows 200, water 5): a vendor's window shows the price of
-    that many, so the Vendors tab can compare per item with the auction house."""
-    prices, stacks = {}, {}
+    scanned a vendor that sells the item yet."""
+    prices = {}
     for r in csv.DictReader(io.StringIO(fetch("https://wago.tools/db2/ItemSparse/csv?build=%s" % build))):
         buy = int(r["BuyPrice"] or 0)
-        stack = max(1, int(r["VendorStackCount"] or 1))
         if buy > 0:
-            per = buy / stack
+            per = buy / max(1, int(r["VendorStackCount"] or 1))
             prices[int(r["ID"])] = per
-            if stack > 1:
-                stacks[int(r["ID"])] = stack
     if len(prices) < 1000:
         sys.exit("only %d item prices for build %s; refusing to overwrite" % (len(prices), build))
     out = [
@@ -155,11 +150,6 @@ def write_item_prices(build):
     for iid in sorted(prices):
         p = prices[iid]
         out.append("[%d]=%s," % (iid, ("%d" % p) if p == int(p) else ("%.2f" % p)))
-    out += ["}", "",
-            "-- [itemID] = how many one purchase from a vendor gives, where more than 1 (the price in a",
-            "-- vendor's window is for that many).",
-            "ns.VendorStack = {"]
-    out += ["[%d]=%d," % (iid, stacks[iid]) for iid in sorted(stacks)]
     out += ["}", ""]
     ITEM_PRICES_OUT.write_text("\n".join(out), encoding="utf-8", newline="\n")
     return len(prices)

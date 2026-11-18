@@ -266,26 +266,46 @@ function VendorDB.RowPasses(row, f)
     return true
 end
 
--- PURE. What one item costs at a vendor row (copper), or nil (tokens only, or unknown).
--- A vendor's window shows the price of one purchase, which for some items is several (stack:
--- 200 arrows, 5 water; Data/ItemPrices.lua VendorStack); Questie rows carry the game's price
--- per item already.
-function VendorDB.UnitPrice(row, stack)
-    if not row.price then return nil end
-    if row.source == "questie" then return row.price end
-    return row.price / (stack or 1)
+-- PURE. Items you can buy at the auction house for less than a vendor pays for them:
+-- { { itemID, name, auction, sell, vendors = {}, noVendor = "belowSell" } }, the biggest
+-- difference first. pools: lists of entries with itemID and name (an item in two is counted
+-- once); lowerOf(e): lower-case name or nil while unknown; auctionOf / sellOf(itemID): copper
+-- per item or nil; passes(itemID): the item filters (nil = none).
+function VendorDB.BelowSellPrice(pools, needle, lowerOf, auctionOf, sellOf, passes)
+    local out, seen = {}, {}
+    for _, pool in ipairs(pools) do
+        for _, e in ipairs(pool) do
+            local id = e.itemID
+            if id and not seen[id] then
+                local lower = lowerOf(e)
+                if lower then
+                    seen[id] = true
+                    if needle == "" or lower:find(needle, 1, true) then
+                        local auction = auctionOf(id)
+                        local sell = auction and sellOf(id)
+                        if sell and auction < sell and (not passes or passes(id)) then
+                            out[#out + 1] = { itemID = id, name = e.name, auction = auction, sell = sell, vendors = {},
+                                noVendor = "belowSell" }
+                        end
+                    end
+                end
+            end
+        end
+    end
+    table.sort(out, function(a, b)
+        local da, db = a.sell - a.auction, b.sell - b.auction
+        if da ~= db then return da > db end
+        if a.name ~= b.name then return a.name < b.name end
+        return a.itemID < b.itemID
+    end)
+    return out
 end
 
--- PURE. The vendor rows that sell an item for less than the auction house (per item, gold
--- only). Empty without an auction price.
-function VendorDB.CheaperThanAuction(rows, auction, stack)
-    local out = {}
-    if not auction then return out end
-    for _, row in ipairs(rows) do
-        local unit = VendorDB.UnitPrice(row, stack)
-        if unit and unit < auction then out[#out + 1] = row end
-    end
-    return out
+-- What a vendor pays for one (copper), or nil (none, or not loaded yet: asked for).
+local function sellPriceOf(itemID)
+    local name, _, _, _, _, _, _, _, _, _, sell = Compat.Call("C_Item.GetItemInfo", itemID)
+    if not name then Compat.Call("C_Item.RequestLoadItemDataByID", itemID) end
+    return type(sell) == "number" and sell > 0 and sell or nil
 end
 
 -- PURE. Items found by name that no vendor (passing the filters) sells, for the auction price:
@@ -317,47 +337,49 @@ end
 
 -- Search: { { itemID, name, classID, vendors = { rows nearest first }, best } }, items sorted
 -- by their nearest vendor, then name. opts = { text, zone, friendlyOnly, thisContinent,
--- payment, source, class (classID), quality, minLevel, maxLevel, usable, cheaperVendor, limit }.
--- An empty text lists the vendor items that pass the filters only when a zone, item type,
--- rarity, level or "cheaper at the auction house" is chosen (otherwise nothing: the list would
--- be huge). cheaperVendor: only items a vendor sells for less than the auction price
--- (Auctionator), per item, and only those vendors; results carry auction (per item) and stack.
+-- payment, source, class (classID), quality, minLevel, maxLevel, usable, belowSell, limit }. An
+-- empty text lists the vendor items that pass the filters only when a zone, item type, rarity,
+-- level or belowSell is chosen (otherwise nothing: the list would be huge).
+-- belowSell: instead, any item (vendor items and Questie's) whose auction price (Auctionator)
+-- is below what a vendor pays for it (VendorDB.BelowSellPrice); the item filters still apply.
 -- A name search also finds items no vendor sells (Questie's item names; best = nil,
 -- noVendor set), after the vendor items, for their auction price. Not with opts.vendorOnly, nor
 -- when a zone, payment or source filter is chosen: those ask about vendors.
 function VendorDB.Search(opts)
     local needle = (opts.text or ""):lower()
     if needle == "" and not (opts.zone or opts.class or opts.quality or opts.minLevel or opts.maxLevel
-        or opts.cheaperVendor) then
+        or opts.belowSell) then
         return {}, {}
     end
     local passes = itemFilter(opts)
+    if opts.belowSell then
+        local vendorItems = VendorDB.Items()
+        local out = VendorDB.BelowSellPrice({ vendorList(vendorItems), ns.Questie.AllItems() or {} }, needle,
+            function(e) if e.vendors then return recLower(e) end return entryLower(e) end,
+            ns.Prices.Auction, sellPriceOf, passes)
+        if opts.limit then for i = #out, opts.limit + 1, -1 do out[i] = nil end end
+        return out, {}
+    end
     local pos = ns.Merchants.Here()
     local out, zones, filtered = {}, {}, {}
     local vendorItems = VendorDB.Items()
     for _, rec in ipairs(matches("vendor", vendorItems, vendorList(vendorItems), needle, recLower)) do
         local itemID, name = rec.itemID, rec.name
-        local auction = opts.cheaperVendor and ns.Prices.Auction(itemID)
-        if name and recLower(rec) and (not passes or passes(itemID)) and (auction or not opts.cheaperVendor) then
+        if name and recLower(rec) and (not passes or passes(itemID)) then
             local rows = {}
             for _, row in pairs(rec.vendors) do
                 locate(row, pos)
                 if row.zone then zones[row.zone] = true end
                 if VendorDB.RowPasses(row, opts) then rows[#rows + 1] = row end
             end
-            local stack = ns.VendorStack and ns.VendorStack[itemID]
-            -- Only the vendors cheaper than the auction house (none: the item is left out, not
-            -- listed as "no vendor passes the filters").
-            if opts.cheaperVendor then rows = VendorDB.CheaperThanAuction(rows, auction, stack) end
             if #rows > 0 then
                 table.sort(rows, function(a, b)
                     if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
                     if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
                     return tostring(a.name) < tostring(b.name)
                 end)
-                out[#out + 1] = { itemID = itemID, name = name, vendors = rows, best = rows[1],
-                    auction = auction or nil, stack = stack }
-            elseif needle ~= "" and not opts.cheaperVendor then
+                out[#out + 1] = { itemID = itemID, name = name, vendors = rows, best = rows[1] }
+            elseif needle ~= "" then
                 filtered[itemID] = name
             end
         end
@@ -368,7 +390,7 @@ function VendorDB.Search(opts)
         if da and db and da ~= db then return da < db end
         return a.name < b.name
     end)
-    if needle ~= "" and not (opts.vendorOnly or opts.zone or opts.payment or opts.source or opts.cheaperVendor) then
+    if needle ~= "" and not (opts.vendorOnly or opts.zone or opts.payment or opts.source) then
         local all = ns.Questie.AllItems()
         local pool = all and matches("all", all, all, needle, entryLower)
         for _, e in ipairs(VendorDB.WithoutVendors(pool, vendorItems, filtered, needle, passes)) do

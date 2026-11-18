@@ -843,18 +843,21 @@ test("vendor database: sources merge, scanned first", function()
     eq(V.RowPasses({ source = "questie" }, { source = "scanned" }), false)
     -- item filters, like the auction house's
     eq(V.ItemPasses({ class = 2 }, {}), true)
-    -- cheaper at the auction house: per item, a vendor's window price is for a whole purchase
-    eq(V.UnitPrice({ price = 10, source = "scanned" }, 200), 0.05, "200 arrows for 10c")
-    eq(V.UnitPrice({ price = 5, source = "questie" }, 5), 5, "Questie rows are per item")
-    eq(V.UnitPrice({ cost = "currency:3402:60" }), nil)
-    local C = V.CheaperThanAuction
-    eq(#C({ { price = 100 }, { price = 60 } }, 70), 1, "only the vendor under the auction price")
-    eq(#C({ { price = 100 }, { price = 80 } }, 70), 0)
-    eq(#C({ { price = 10, source = "community" } }, 1, 200), 1, "0.05c an arrow vs 1c")
-    eq(#C({ { price = 25 } }, 4, 5), 0, "water 5c each vs 4c")
-    eq(#C({ { price = 25 } }, 6, 5), 1, "water 5c each vs 6c")
-    eq(#C({ { cost = "item:1:1" } }, 100), 0, "no gold price to compare")
-    eq(#C({ { price = 1 } }, nil), 0, "no auction price")
+    -- cheaper at the auction house than a vendor pays: Light Leather sells for 15c
+    local A = { [2318] = 10, [2319] = 30, [2589] = 5, [4306] = 20 }
+    local S = { [2318] = 15, [2319] = 20, [2589] = 1, [4306] = 60 }
+    local pool1 = { { itemID = 2318, name = "Light Leather" }, { itemID = 2319, name = "Medium Leather" } }
+    local pool2 = { { itemID = 2318, name = "Light Leather" }, { itemID = 2589, name = "Linen Cloth" },
+        { itemID = 4306, name = "Silk Cloth" }, { itemID = 9999 } }
+    local function lowerOf(e) return e.name and e.name:lower() end
+    local function auc(id) return A[id] end
+    local function sel(id) return S[id] end
+    local got = V.BelowSellPrice({ pool1, pool2 }, "", lowerOf, auc, sel)
+    eq(#got, 2, "Light Leather and Silk Cloth, once each")
+    eq(got[1].name, "Silk Cloth", "biggest difference first (40c)")
+    eq(got[2].sell, 15)
+    eq(#V.BelowSellPrice({ pool1, pool2 }, "leather", lowerOf, auc, sel), 1)
+    eq(#V.BelowSellPrice({ pool2 }, "", lowerOf, auc, sel, function(id) return id ~= 4306 end), 1, "item filters")
     -- name matches keep unknown names (they may load) so typing can narrow from them
     local pool = { { lower = "copper bar" }, { lower = "tin bar" }, {} }
     local low = function(e) return e.lower end
