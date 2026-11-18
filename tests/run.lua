@@ -1551,6 +1551,33 @@ test("money text", function()
     eq(ns.Prices.MoneyText(-250), "-2s 50c")
 end)
 
+test("net: channels (lanes), their prefixes, how many to join, send results", function()
+    local N = ns.Net
+    eq(N.LaneName(1), "TradebookShare")
+    eq(N.LaneName(3), "TradebookShare3")
+    eq(N.LanePrefix(1), "TRADEBOOK")
+    eq(N.LanePrefix(5), "TRADEBOOK5")
+    eq(N.LaneOfPrefix("TRADEBOOK"), 1)
+    eq(N.LaneOfPrefix("TRADEBOOK4"), 4)
+    eq(N.LaneOfPrefix("TRADEBOOK9"), nil, "beyond the lanes")
+    eq(N.LaneOfPrefix("TRADEBOOK1"), nil)
+    eq(N.LaneOfPrefix("TBRATE1"), nil)
+    eq(N.LaneOfChannel("TradebookShare2"), 2)
+    eq(N.LaneOfChannel("TradebookRateTest"), nil)
+    eq(N.LaneOfChannel("General - Durotar"), nil)
+    -- 20 channels at most, 5 kept free: in 7 (lane 1 counted) -> all 4 extra; in 13 -> 2; in 16 -> none
+    eq(N.ExtraLanes(7, 20, 5, 5), 4)
+    eq(N.ExtraLanes(13, 20, 5, 5), 2)
+    eq(N.ExtraLanes(16, 20, 5, 5), 0)
+    local E = { AddonMessageThrottle = 3, ChannelThrottle = 8, InvalidChannel = 7, Success = 0, GeneralError = 9 }
+    eq(N.SendOutcome(nil, E), "sent", "older clients return nothing")
+    eq(N.SendOutcome(0, E), "sent")
+    eq(N.SendOutcome(3, E), "backoff")
+    eq(N.SendOutcome(8, E), "backoff")
+    eq(N.SendOutcome(7, E), "gone")
+    eq(N.SendOutcome(9, E), "sent", "other errors: dropped as before")
+end)
+
 test("net: share text survives chunking, any part order, and rejects bad parts", function()
     local N = ns.Net
     local lines = { "TBV1~b~v~1~0", "V~5~Odd ^ Name~1453~50.1~60.2~100" }

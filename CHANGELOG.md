@@ -17,6 +17,7 @@
 ### Sharing in game
 - **Catch up when you log in**: you no longer miss what other players shared while you were offline. A minute after you log in, Tradebook asks the players online, and one of them sends you the newest vendors and trainers of the last week, a little at a time. What arrives this way says "(unconfirmed)" until two players have each sent the same data themselves.
 - A report you already have isn't saved or announced again.
+- **About 4 times faster**: sharing now uses up to 5 hidden channels at once instead of 1 (only while that leaves at least 5 of your 20 chat channels free), so catch-ups and passed-along reports arrive in seconds instead of minutes. Each channel sends at a pace tested clean for 15 minutes, and a channel the game slows down waits a moment while the others carry on. Older versions still hear everything they did before.
 
 ## v1.7.0
 

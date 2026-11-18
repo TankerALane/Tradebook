@@ -22,7 +22,7 @@
 -- at random; the first to start says "<session>~CTL~SYNCFOR~<asker's session>" (the others
 -- drop their answer) and sends the newest SYNC_BATCH reports of the last SYNC_DAYS days, its
 -- own scans as usual and what it heard as passed-along reports (TBR1, original player's hash),
--- one every RELAY_GAP s. A copy answers at most every SYNC_ANSWER_AGAIN s, and the same player
+-- spread over the lanes. A copy answers at most every SYNC_ANSWER_AGAIN s, and the same player
 -- at most every SYNC_SAME s. Everyone online keeps them; passed-along reports are marked
 -- indirect and don't count toward players agreeing (only a player's own message does), so
 -- they show as unconfirmed until two players have sent the same data directly.
@@ -35,9 +35,20 @@
 -- Tested in Forever (spikes/TradebookNet, docs/SPIKE_SHARING.md): a custom channel carries
 -- addon messages and can be removed from the chat windows; 255-character messages arrive whole;
 -- about 7 messages go out at once, then the game throttles (AddonMessageThrottle), while one
--- per second always got through. Measured 2026-11-17 (dev /tbdev ratetest): 1/s is clean; at
--- 2/s or more only the first 10 go out and then none at all (AddonMessageThrottle and
--- ChannelThrottle: trying too often keeps the allowance from refilling), so never faster.
+-- per second always got through. Measured 2026-11-17 (dev /tbdev ratetest): at 2/s or more on
+-- one channel only the first 10 go out and then none at all (AddonMessageThrottle and
+-- ChannelThrottle: trying too often keeps the allowance from refilling); at 1/s a channel is
+-- refused after about 12 s and averages about 0.5/s with a back-off; the limit is per channel
+-- and prefix: 5 channels with a prefix each at 0.75/s each went 15 minutes, 3375 of 3375, none
+-- refused. So:
+--
+-- Channels ("lanes"): lane 1 is TradebookShare with prefix TRADEBOOK (what older copies use);
+-- lanes 2..LANES are TradebookShare2.. with prefixes TRADEBOOK2.., joined only while that leaves
+-- CHANNEL_RESERVE of the MAX_CHAT_CHANNELS chat channels free for the player. Each lane sends at
+-- most one message every INTERVAL s (0.75/s); a refused lane waits BACKOFF s, the others go on.
+-- All parts of one text go on one lane. Your own scans and control messages go on lane 1 (older
+-- copies hear them); passed-along reports and catch-ups go on any lane whose queue is empty, up
+-- to the lanes the receiver listens on (HELLO~<lanes>, SYNC~<lanes>; none given = 1).
 -- Dungeons tested 2026-11-14 (/tb net test: paused inside, all sent after). Not yet tested: a second
 -- player actually hearing the messages.
 --
@@ -62,14 +73,18 @@ Net.MAX_PENDING = 30      -- unfinished incoming texts kept at once
 Net.PENDING_TTL = 120     -- seconds before an unfinished text is dropped
 Net.MAX_REPORTERS = 3     -- reports kept per NPC (the oldest is replaced)
 Net.MAX_NPCS = 3000       -- NPCs kept per kind in TradebookDB.heard
-Net.INTERVAL = 1.1        -- seconds between messages sent
+Net.INTERVAL = 1.35       -- seconds between messages on one channel (0.75/s, tested clean)
+Net.LANES = 5             -- channels used at most (lane 1 = CHANNEL)
+Net.MAX_CHAT_CHANNELS = 20 -- chat channels a character can be in (measured)
+Net.CHANNEL_RESERVE = 5   -- channels always left free for the player
+Net.BACKOFF = 15          -- seconds a refused channel waits
+Net.TICK = 0.2            -- seconds between looks at the lanes
 Net.BACKLOG_DAYS = 30     -- scans this recent are re-announced after login, slowly
 Net.BACKLOG_GAP = 20      -- seconds between re-announced NPCs
 Net.SENDER_LIMIT = 90     -- messages per minute from one player before they're ignored
 Net.MAX_DE_PLAYERS = 300  -- players whose disenchant totals are kept (the oldest is dropped)
 Net.COLLECTOR_HELLO = 600 -- seconds between a collector's hellos
 Net.RELAY_BATCH = 200     -- heard reports passed along per hello
-Net.RELAY_GAP = 3         -- seconds between passed-along reports
 Net.RELAY_AGAIN = 1800    -- a player answers hellos at most this often
 Net.SYNC_ASK_AFTER = 45   -- seconds after joining the channel before asking to catch up
 Net.SYNC_DAYS = 7         -- catch-up covers reports this recent
@@ -496,12 +511,46 @@ function Net.BestAll(heard, kind)
     return out
 end
 
+-- PURE. Lane i's channel name and addon-message prefix.
+function Net.LaneName(i) return i == 1 and Net.CHANNEL or (Net.CHANNEL .. i) end
+function Net.LanePrefix(i) return i == 1 and Net.PREFIX or (Net.PREFIX .. i) end
+
+-- PURE. Which lane a prefix / channel name belongs to, or nil when it isn't Tradebook's.
+function Net.LaneOfPrefix(prefix)
+    if prefix == Net.PREFIX then return 1 end
+    local n = tonumber(tostring(prefix):match("^" .. Net.PREFIX .. "(%d)$"))
+    return n and n >= 2 and n <= Net.LANES and n or nil
+end
+function Net.LaneOfChannel(name)
+    if name == Net.CHANNEL then return 1 end
+    local n = tonumber(tostring(name):match("^" .. Net.CHANNEL .. "(%d)$"))
+    return n and n >= 2 and n <= Net.LANES and n or nil
+end
+
+-- PURE. How many extra lanes (beyond lane 1) to join: `inUse` = chat channels the player is in,
+-- lane 1 counted, the extra lanes not.
+function Net.ExtraLanes(inUse, max, reserve, lanes)
+    return math.max(0, math.min(lanes - 1, max - inUse - reserve))
+end
+
+-- PURE. What a SendAddonMessage result means: "sent", "backoff" (throttled: wait, then the same
+-- message again) or "gone" (not in that channel any more). Older clients return nothing.
+function Net.SendOutcome(result, enum)
+    if result == nil or result == true or not enum then return "sent" end
+    if result == enum.AddonMessageThrottle or result == enum.ChannelThrottle then return "backoff" end
+    if (enum.InvalidChannel and result == enum.InvalidChannel)
+        or (enum.NotInChannel and result == enum.NotInChannel) then return "gone" end
+    return "sent" -- anything else: dropped, as before (it won't go out on a retry either)
+end
+
 ---------------------------------------------------------------------------
 -- In game: channel, sending queue, receiving
 ---------------------------------------------------------------------------
 
 local asm = Net.NewAssembler()
-local queue = {}       -- messages waiting to go out
+local lanes = {}       -- [i] = { id = channel number or nil, queue, nextAt, pauseUntil }
+for i = 1, Net.LANES do lanes[i] = { queue = {}, nextAt = 0, pauseUntil = 0 } end
+local queue = lanes[1].queue -- lane 1: your own scans and control messages
 local backlog = {}     -- { kind, npc } of your scans to re-announce, slowly
 local lastBacklog = 0
 local channelID
@@ -511,11 +560,12 @@ local selfSender -- how the channel names you (learned from your first echo)
 local version = 0      -- bumped when heard data changes (caches)
 local senders = {}     -- [who] = { minute, n }: flood protection
 local cached = {}
-local stats = { sent = 0, heard = 0, players = {}, relayed = 0, acked = 0, synced = 0 }
+local stats = { sent = 0, heard = 0, players = {}, relayed = 0, acked = 0, synced = 0, refused = 0 }
 local collector = false -- this copy collects passed-along reports (dev/TradebookDev)
 local relayQueue = {}   -- heard reports to pass along to a collector
 local sentRelay = {}    -- [msgID] = the report it carried (marked relayed on the collector's ACK)
-local lastRelay, answeredAt, collectorWho = 0, nil, nil
+local answeredAt, collectorWho = nil, nil
+local relayLanes, syncLanes = 1, 1 -- lanes the collector / the player catching up listens on
 local collectorAt -- GetTime() of the last collector hello heard
 local syncQueue = {}    -- catch-up reports to send (Net.SyncReports)
 local syncPending = {}  -- [requester session] = true while waiting to answer it
@@ -527,23 +577,38 @@ local function enabled()
     return ns.db and ns.db.settings and ns.db.settings.netShare ~= false and not ns.fake
 end
 
-local function hideChannel()
+local function hideChannel(name)
     for i = 1, (NUM_CHAT_WINDOWS or 10) do
         local cf = _G["ChatFrame" .. i]
         if cf then
             if ChatFrame_RemoveChannel then
-                pcall(ChatFrame_RemoveChannel, cf, Net.CHANNEL)
+                pcall(ChatFrame_RemoveChannel, cf, name)
             elseif ChatFrameUtil and ChatFrameUtil.RemoveChannel then
-                pcall(ChatFrameUtil.RemoveChannel, cf, Net.CHANNEL)
+                pcall(ChatFrameUtil.RemoveChannel, cf, name)
             end
         end
     end
 end
 
+local function channelNumber(name)
+    local id = Compat.Call("GetChannelName", name)
+    return (tonumber(id) or 0) > 0 and id or nil
+end
+
 local function findChannel()
-    local id = Compat.Call("GetChannelName", Net.CHANNEL)
-    channelID = (tonumber(id) or 0) > 0 and id or nil
+    channelID = channelNumber(Net.CHANNEL)
+    lanes[1].id = channelID
     return channelID
+end
+
+-- Lanes in use, counted from lane 1 without a gap.
+local function laneCount()
+    local n = 0
+    for i = 1, Net.LANES do
+        if not lanes[i].id then break end
+        n = i
+    end
+    return n
 end
 
 function Net.Version() return version end
@@ -650,6 +715,50 @@ local lastPause = false -- the reason last logged (false = sending)
 local held = false
 function Net.Hold(on) held = on and true or false end
 
+-- Share text of a passed-along report / a catch-up report.
+local function bulkText(ref, sync)
+    local build = Compat.Call("GetBuildInfo") or "?"
+    local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
+    local text
+    if sync then
+        text = ref.kind == "vendors" and ns.Share.Encode({ [ref.npc] = ref.e }, build, ver)
+            or ns.Share.Encode({}, build, ver, { [ref.npc] = ref.e })
+        if ref.who then text = Net.RelayText(text, ref.who) end
+        return text
+    end
+    if ref.kind == "vendors" then
+        text = ns.Share.Encode({ [ref.npc] = ref.rec.e }, build, ver)
+    elseif ref.kind == "trainers" then
+        text = ns.Share.Encode({}, build, ver, { [ref.npc] = ref.rec.e })
+    else
+        text = ns.Share.Encode({}, build, ver, nil, { disenchants = ref.rec.bands })
+    end
+    return text and Net.RelayText(text, ref.who)
+end
+
+-- An idle lane takes the next passed-along or catch-up report (if the receiver listens there).
+local function fillBulk(i)
+    local lane = lanes[i]
+    if #relayQueue > 0 and i <= relayLanes then
+        local ref = table.remove(relayQueue, 1)
+        msgCounter = msgCounter + 1
+        local id = session .. ("%x"):format(msgCounter)
+        local text = bulkText(ref, false)
+        local parts = text and Net.Chunk(text, id)
+        if parts then
+            for _, p in ipairs(parts) do lane.queue[#lane.queue + 1] = p end
+            sentRelay[id] = ref
+            stats.relayed = stats.relayed + 1
+        end
+    elseif #syncQueue > 0 and i <= syncLanes then
+        local ref = table.remove(syncQueue, 1)
+        msgCounter = msgCounter + 1
+        local parts = Net.Chunk(bulkText(ref, true), session .. ("%x"):format(msgCounter))
+        for _, p in ipairs(parts or {}) do lane.queue[#lane.queue + 1] = p end
+        stats.synced = stats.synced + 1
+    end
+end
+
 local function pump()
     if held or not enabled() or not channelID then return end
     local reason = pauseReason()
@@ -662,59 +771,38 @@ local function pump()
         end
     end
     if reason then return end
-    if #queue == 0 then
-        local now = GetTime()
-        if #backlog > 0 and now - lastBacklog >= Net.BACKLOG_GAP then
-            lastBacklog = now
-            local job = table.remove(backlog, 1)
-            announce(job.kind, job.npc, job.force)
-        end
-        -- Pass along one heard report to a collector.
-        if #queue == 0 and #relayQueue > 0 and now - lastRelay >= Net.RELAY_GAP then
-            lastRelay = now
-            local ref = table.remove(relayQueue, 1)
-            local build = Compat.Call("GetBuildInfo") or "?"
-            local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
-            local text
-            if ref.kind == "vendors" then
-                text = ns.Share.Encode({ [ref.npc] = ref.rec.e }, build, ver)
-            elseif ref.kind == "trainers" then
-                text = ns.Share.Encode({}, build, ver, { [ref.npc] = ref.rec.e })
-            else
-                text = ns.Share.Encode({}, build, ver, nil, { disenchants = ref.rec.bands })
-            end
-            msgCounter = msgCounter + 1
-            local id = session .. ("%x"):format(msgCounter)
-            local parts = text and Net.Chunk(Net.RelayText(text, ref.who), id)
-            if parts then
-                for _, p in ipairs(parts) do queue[#queue + 1] = p end
-                sentRelay[id] = ref
-                stats.relayed = stats.relayed + 1
-            end
-        end
-        -- Catch-up reports for a player who just came online.
-        if #queue == 0 and #syncQueue > 0 and now - lastRelay >= Net.RELAY_GAP then
-            lastRelay = now
-            local ref = table.remove(syncQueue, 1)
-            local build = Compat.Call("GetBuildInfo") or "?"
-            local ver = Compat.Call("C_AddOns.GetAddOnMetadata", "Tradebook", "Version") or "?"
-            local text = ref.kind == "vendors" and ns.Share.Encode({ [ref.npc] = ref.e }, build, ver)
-                or ns.Share.Encode({}, build, ver, { [ref.npc] = ref.e })
-            if ref.who then text = Net.RelayText(text, ref.who) end
-            msgCounter = msgCounter + 1
-            local parts = Net.Chunk(text, session .. ("%x"):format(msgCounter))
-            for _, p in ipairs(parts or {}) do queue[#queue + 1] = p end
-            stats.synced = stats.synced + 1
-        end
-        if #queue == 0 then return end
+    local now = GetTime()
+    -- Your recent scans again, slowly (lane 1).
+    if #queue == 0 and #backlog > 0 and now - lastBacklog >= Net.BACKLOG_GAP then
+        lastBacklog = now
+        local job = table.remove(backlog, 1)
+        announce(job.kind, job.npc, job.force)
     end
-    local msg = queue[1]
-    local result = Compat.Call("C_ChatInfo.SendAddonMessage", Net.PREFIX, msg, "CHANNEL", channelID)
-    local throttled = Enum and Enum.SendAddonMessageResult and result == Enum.SendAddonMessageResult.AddonMessageThrottle
-    if throttled then return end -- try the same message again next tick
-    table.remove(queue, 1)
-    stats.sent = stats.sent + 1
-    ns.Debug("net: sent a message,", #queue, "waiting")
+    local enum = Enum and Enum.SendAddonMessageResult
+    for i, lane in ipairs(lanes) do
+        if lane.id and now >= lane.nextAt and now >= lane.pauseUntil then
+            if #lane.queue == 0 then fillBulk(i) end
+            local msg = lane.queue[1]
+            if msg then
+                lane.nextAt = now + Net.INTERVAL
+                local result = Compat.Call("C_ChatInfo.SendAddonMessage", Net.LanePrefix(i), msg, "CHANNEL", lane.id)
+                local outcome = Net.SendOutcome(result, enum)
+                if outcome == "backoff" then
+                    lane.pauseUntil = now + Net.BACKOFF
+                    stats.refused = stats.refused + 1
+                    ns.Debug("net: channel", i, "throttled, waiting", Net.BACKOFF, "s")
+                elseif outcome == "gone" and i > 1 then
+                    -- Not in that channel any more: its messages go on lane 1.
+                    for _, m in ipairs(lane.queue) do queue[#queue + 1] = m end
+                    lane.queue, lane.id = {}, nil
+                    ns.Debug("net: lost channel", i)
+                else
+                    table.remove(lane.queue, 1)
+                    stats.sent = stats.sent + 1
+                end
+            end
+        end
+    end
 end
 
 -- /tb net test: queue `n` test messages, enough backlog to watch sending pause in a dungeon.
@@ -744,19 +832,48 @@ local function fillBacklog(force)
     end
 end
 
+-- Extra lanes: join as many as leave CHANNEL_RESERVE chat channels free; leave the rest.
+local function joinLanes()
+    local list = { Compat.Call("GetChannelList") }
+    local inUse = 0
+    for i = 1, #list, 3 do
+        local lane = Net.LaneOfChannel(tostring(list[i + 1]))
+        if not (lane and lane > 1) then inUse = inUse + 1 end
+    end
+    local want = 1 + Net.ExtraLanes(inUse, Net.MAX_CHAT_CHANNELS, Net.CHANNEL_RESERVE, Net.LANES)
+    for i = 2, Net.LANES do
+        local name = Net.LaneName(i)
+        if i <= want then
+            if not channelNumber(name) then Compat.Call("JoinTemporaryChannel", name) end
+        elseif channelNumber(name) then
+            Compat.Call("LeaveChannelByName", name)
+        end
+    end
+    C_Timer.After(2, function()
+        for i = 2, Net.LANES do
+            local name = Net.LaneName(i)
+            lanes[i].id = i <= want and channelNumber(name) or nil
+            if lanes[i].id then hideChannel(name) end
+        end
+        ns.Debug("net: sharing on", laneCount(), "channels (" .. inUse, "chat channels in use)")
+    end)
+end
+
 local function join()
     if not enabled() then return end
     if not findChannel() then Compat.Call("JoinTemporaryChannel", Net.CHANNEL) end
     C_Timer.After(2, function()
         if findChannel() then
-            hideChannel()
+            hideChannel(Net.CHANNEL)
             ns.Debug("net: in channel", channelID)
-            -- Ask the players online for what you missed (once a session).
+            joinLanes()
+            -- Ask the players online for what you missed (once a session), saying how many
+            -- lanes you listen on.
             if not syncAsked then
                 syncAsked = true
                 C_Timer.After(Net.SYNC_ASK_AFTER, function()
                     if enabled() and channelID then
-                        control("SYNC")
+                        control("SYNC", tostring(laneCount()))
                         ns.Debug("net: asked to catch up")
                     end
                 end)
@@ -771,8 +888,9 @@ end
 function Net.SetCollector(on)
     collector = on and true or false
     if collector then
-        C_Timer.After(30, function() if enabled() and channelID then control("HELLO") end end)
-        C_Timer.NewTicker(Net.COLLECTOR_HELLO, function() if enabled() and channelID then control("HELLO") end end)
+        local function hello() if enabled() and channelID then control("HELLO", tostring(laneCount())) end end
+        C_Timer.After(30, hello)
+        C_Timer.NewTicker(Net.COLLECTOR_HELLO, hello)
     end
 end
 
@@ -783,14 +901,18 @@ function Net.SetEnabled(on)
         join()
         fillBacklog()
     else
-        queue, backlog = {}, {}
-        if findChannel() then Compat.Call("LeaveChannelByName", Net.CHANNEL) end
+        backlog = {}
+        for i, lane in ipairs(lanes) do
+            for k = #lane.queue, 1, -1 do lane.queue[k] = nil end
+            if channelNumber(Net.LaneName(i)) then Compat.Call("LeaveChannelByName", Net.LaneName(i)) end
+            lane.id = nil
+        end
         channelID = nil
     end
 end
 
 local function onAddonMessage(_, prefix, text, chatType, sender)
-    if prefix ~= Net.PREFIX or chatType ~= "CHANNEL" or not enabled() then return end
+    if not Net.LaneOfPrefix(prefix) or chatType ~= "CHANNEL" or not enabled() then return end
     sender = tostring(sender or "")
     -- Your own messages come back on the channel: known by this session's tag (and, once one
     -- has come back, by how the channel names you).
@@ -807,6 +929,7 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
             -- after a short random wait (so not everyone answers at once), at most every 30 min.
             collectorWho = who
             collectorAt = GetTime()
+            relayLanes = math.max(1, math.min(Net.LANES, tonumber(arg) or 1))
             local now = GetTime()
             if not answeredAt or now - answeredAt >= Net.RELAY_AGAIN then
                 answeredAt = now
@@ -830,6 +953,7 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
                     syncPending[asker] = nil
                     if not (enabled() and channelID) then return end
                     syncAnsweredAt, syncAnswered[who] = GetTime(), GetTime()
+                    syncLanes = math.max(1, math.min(Net.LANES, tonumber(arg) or 1))
                     control("SYNCFOR", asker)
                     syncQueue = Net.SyncReports(ns.db.heard, { vendors = ns.db.vendors, trainers = ns.db.trainers },
                         GetServerTime(), Net.SYNC_DAYS, Net.SYNC_BATCH)
@@ -880,15 +1004,22 @@ local function onAddonMessage(_, prefix, text, chatType, sender)
     end
 end
 
+local function waiting()
+    local n = 0
+    for _, lane in ipairs(lanes) do n = n + #lane.queue end
+    return n
+end
+
 -- Status lines for /tb net.
 function Net.Status()
     local heard = ns.db and ns.db.heard or {}
     return {
-        ("Sharing: %s, channel: %s%s"):format(enabled() and "on" or "off", channelID and tostring(channelID) or "not joined",
+        ("Sharing: %s, channel: %s, %d of %d channels%s"):format(enabled() and "on" or "off",
+            channelID and tostring(channelID) or "not joined", laneCount(), Net.LANES,
             enabled() and pauseReason() and (" (paused: " .. pauseReason() .. ")") or ""),
-        ("This session: %d messages sent, %d NPC reports heard from %d players"):format(stats.sent, stats.heard,
-            count(stats.players)),
-        ("Waiting to send: %d messages, %d NPCs to re-announce, %d catch-up reports"):format(#queue, #backlog,
+        ("This session: %d messages sent (%d refused, waited), %d NPC reports heard from %d players"):format(
+            stats.sent, stats.refused, stats.heard, count(stats.players)),
+        ("Waiting to send: %d messages, %d NPCs to re-announce, %d catch-up reports"):format(waiting(), #backlog,
             #syncQueue),
         ("Heard so far: %d vendors, %d trainers, disenchants from %d players"):format(count(heard.vendors or {}),
             count(heard.trainers or {}), count(heard.de or {})),
@@ -907,7 +1038,7 @@ function Net.Start()
             ns.Debug("net: dropped", n, "of your own reports passed back to you")
         end
     end
-    Compat.Call("C_ChatInfo.RegisterAddonMessagePrefix", Net.PREFIX)
+    for i = 1, Net.LANES do Compat.Call("C_ChatInfo.RegisterAddonMessagePrefix", Net.LanePrefix(i)) end
     ns.On("CHAT_MSG_ADDON", onAddonMessage)
     ns.On("PLAYER_ENTERING_WORLD", function()
         C_Timer.After(10, join)
@@ -915,5 +1046,5 @@ function Net.Start()
     -- Joining a channel right at login can fail while the chat system starts; try again later.
     C_Timer.After(60, function() if not channelID then join() end end)
     C_Timer.After(90, function() if enabled() then fillBacklog() end end)
-    C_Timer.NewTicker(Net.INTERVAL, pump)
+    C_Timer.NewTicker(Net.TICK, pump)
 end

@@ -1165,7 +1165,7 @@ local function startNameWatcher()
     local f = CreateFrame("Frame")
     f:RegisterEvent("CHAT_MSG_ADDON")
     f:SetScript("OnEvent", function(_, _, prefix, text, chatType, sender)
-        if not (ns.Net and prefix == ns.Net.PREFIX and chatType == "CHANNEL") then return end
+        if not (ns.Net and ns.Net.LaneOfPrefix(prefix) and chatType == "CHANNEL") then return end
         sender = tostring(sender or "")
         if sender == "" then return end
         local short = (_G.Ambiguate and _G.Ambiguate(sender, "short")) or sender

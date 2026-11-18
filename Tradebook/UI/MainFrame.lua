@@ -650,8 +650,8 @@ local function linkMenu(owner)
         for i = 1, #list, 3 do
             local util = _G.ChatFrameUtil
             local name = util and util.ResolveChannelName and util.ResolveChannelName(list[i + 1]) or list[i + 1]
-            -- Tradebook's own hidden sharing channel is no place for links.
-            if not (ns.Net and ns.Net.CHANNEL and tostring(list[i + 1]) == ns.Net.CHANNEL) then
+            -- Tradebook's own hidden sharing channels are no place for links.
+            if not (ns.Net and ns.Net.LaneOfChannel and ns.Net.LaneOfChannel(tostring(list[i + 1]))) then
                 channels[#channels + 1] = { "/" .. list[i], name, not list[i + 2] }
             end
         end
