@@ -14,10 +14,16 @@
 -- messages back, which shows they really went out. Per phase: sends accepted, refused
 -- (AddonMessageThrottle or other), echoed, and the rate echoed in the last SUSTAIN s (after the
 -- first burst is used up). Results: a window to copy, and TradebookDevDB.rateTest.
--- /tbdev ratetest long [minutes]: the setup Tradebook would use: LONG_CHANNELS channels, a
--- prefix each, one message a second on each, nonstop, for that long (30 minutes unless
--- given): running totals in chat every PROGRESS_EVERY s, and in the end a line per minute
--- (tried, accepted, refused, echoed, lost = accepted but never echoed) and per channel.
+-- /tbdev ratetest long [minutes] [channels] [warm-up s]: the setup Tradebook would use:
+-- channels (LONG_CHANNELS unless given, up to MAX_CHANNELS) with a prefix each, one message a
+-- second on each, nonstop, for that long (30 minutes unless given), starting warm-up s after
+-- joining (CHANNEL_GAP unless given). A channel that's refused pauses BACKOFF s (sends due then
+-- are skipped, not retried), as Tradebook would. Running totals in chat every PROGRESS_EVERY
+-- s; in the end a line per minute (tried, accepted, refused, echoed, lost = accepted but never
+-- echoed) and per channel.
+-- Found 2026-11-17: 3 channels 25 s after joining (no back-off): ChannelThrottle after 11 s,
+-- then almost nothing; the 10-channel round of the channel test, ~4 minutes after joining, was
+-- clean. Joined lately, or a penalty left by the tests just before?
 -- /tbdev ratetest channels: 1 message a second on each of several channels at once, to see
 -- whether the limit is per channel: 3 channels, then as many as are free (a character can be
 -- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
@@ -45,6 +51,7 @@ local HIGHER = { 30, 40, 50, 75, 100 }
 local SPREAD = { 2, 5, 10 }
 local MAX_CHANNELS = 10
 local LONG_CHANNELS = 3
+local BACKOFF = 15 -- seconds a refused channel waits in the long test
 local PROGRESS_EVERY = 60 -- seconds between the long test's running totals
 local ECHO_WAIT = 5       -- seconds before a message not echoed yet counts as lost
 local CHANNEL_DURATION = 60
@@ -174,8 +181,9 @@ function Dev.RateProgress(p, now)
             lost = lost + 1
         end
     end
-    return ("%d:%02d  tried %d, accepted %d, refused %d, echoed %d, lost %d"):format(math.floor(now / 60),
-        math.floor(now % 60), sent + refused, sent, refused, echoed, lost)
+    return ("%d:%02d  tried %d, accepted %d, refused %d, echoed %d, lost %d%s"):format(math.floor(now / 60),
+        math.floor(now % 60), sent + refused, sent, refused, echoed, lost,
+        (p.skipped or 0) > 0 and (", skipped while paused " .. p.skipped) or "")
 end
 
 -- PURE. Channels from GetChannelList()'s flat results (id, name, disabled, ...):
@@ -287,7 +295,7 @@ local function startPhase()
         C_Timer.After(5, function() finish(false) end)
         return
     end
-    p.tried, p.sent, p.refused, p.echoed, p.nextAt = 0, 0, 0, 0, 0
+    p.tried, p.sent, p.refused, p.echoed, p.nextAt, p.slot, p.skipped = 0, 0, 0, 0, 0, 0, 0
     p.sentAt, p.echoAt, p.reasons, p.refusedAt = {}, {}, {}, {}
     p.byChan, p.chanOf = {}, {}
     run.phase, run.startAt = p, GetTime()
@@ -352,8 +360,14 @@ local function send(p, seq)
     if p.channels then
         c = ((seq - 1) % p.channels) + 1
         prefix, channel = p.distinct and prefixOf(c) or PREFIX, run.channels[c]
-        p.chanOf[seq] = c
         p.byChan[c] = p.byChan[c] or { sent = 0, refused = 0, echoed = 0, reasons = {} }
+        -- Backing off after a refusal: skip this send (it doesn't count as tried).
+        local t = GetTime() - run.startAt
+        if p.long and p.pauseUntil and p.pauseUntil[c] and t < p.pauseUntil[c] then
+            p.skipped = (p.skipped or 0) + 1
+            return false
+        end
+        p.chanOf[seq] = c
     end
     local head = ("%s:%d:%d:"):format(run.session, run.index, seq)
     local msg = head .. string.rep("x", MSG_LEN - #head)
@@ -370,6 +384,10 @@ local function send(p, seq)
         if b then
             b.refused = b.refused + 1
             b.reasons[refused] = (b.reasons[refused] or 0) + 1
+        end
+        if p.long and c then
+            p.pauseUntil = p.pauseUntil or {}
+            p.pauseUntil[c] = now + BACKOFF
         end
     else
         p.sent = p.sent + 1
@@ -392,7 +410,8 @@ local function onUpdate()
     if elapsed - p.nextAt > 1 then p.nextAt = elapsed end
     local n = 0
     while elapsed >= p.nextAt and n < 200 do
-        send(p, p.tried + 1)
+        p.slot = (p.slot or 0) + 1
+        send(p, p.slot)
         p.nextAt = p.nextAt + 1 / p.rate
         n = n + 1
     end
@@ -415,7 +434,7 @@ end
 local echoFrame
 function Dev.RateTest(arg)
     arg = arg or ""
-    local mode, minutes = arg:match("^(%a*)%s*(%d*)")
+    local mode, minutes, chanArg, warmArg = arg:match("^(%a*)%s*(%d*)%s*(%d*)%s*(%d*)")
     if mode == "stop" then
         if run then finish(true) else say("not running.") end
         return
@@ -437,7 +456,8 @@ function Dev.RateTest(arg)
     local multi = mode == "channels"
     minutes = math.max(1, math.min(240, tonumber(minutes) or 30))
     if multi or long then
-        local want = long and LONG_CHANNELS or MAX_CHANNELS
+        local want = long and math.max(1, math.min(MAX_CHANNELS, tonumber(chanArg) or LONG_CHANNELS)) or MAX_CHANNELS
+        local warm = long and math.max(5, math.min(600, tonumber(warmArg) or CHANNEL_GAP)) or CHANNEL_GAP
         for i = 1, want do _G.JoinTemporaryChannel(channelName(i)) end
         say(("joining %d test channels and holding Tradebook's own sharing; about %d minutes."
             .. " /tbdev ratetest stop to stop."):format(want, long and minutes or 6))
@@ -467,7 +487,8 @@ function Dev.RateTest(arg)
                 phases = phases, index = 1, frame = CreateFrame("Frame"), mode = multi and "channels" or nil,
                 long = long, joined = want }
             run.frame:SetScript("OnUpdate", onUpdate)
-            C_Timer.After(CHANNEL_GAP, function() if run then startPhase() end end)
+            if long then say(("starting in %d s."):format(warm)) end
+            C_Timer.After(warm, function() if run then startPhase() end end)
         end)
         return
     end
