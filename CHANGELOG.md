@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Data
-- 34 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow. 535 vendors, 7,133 items.
+- 37 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag and Nipsy. 538 vendors, 7,157 items.
 - New trainers: Flora Silverwind, Eldrin and Me'lynn. 153 trainers, 2,433 services.
 - Disenchanting: 42 disenchants in 12 bands.
 
