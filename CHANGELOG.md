@@ -10,8 +10,8 @@
 - **Turn disenchant information off**: a new "Show disenchant information" option (Options > AddOns > Tradebook) hides it everywhere: item tooltips, the disenchant profit in recipe details and the "Disenchanting it" profit column. What you disenchant is still recorded and shared.
 
 ### Data
-- New vendors: Hagrus and Sovik (Orgrimmar), Grazlix (The Barrens), Zixil (Hillsbrad Foothills). 495 vendors, 6,511 items.
-- New trainers: Thund, Nogg and Roxxik (Engineering, Orgrimmar), Yelmak (Alchemy, Orgrimmar), Kil'hala (Tailoring, The Barrens). 143 trainers, 2,108 services.
+- New vendors: Hagrus and Sovik (Orgrimmar), Grazlix (The Barrens), Zixil (Hillsbrad Foothills), Wuark, Sana, Borstan, Jahan Hawkwing, Kilxx and Grimtak. 501 vendors, 6,592 items.
+- New trainers: Thund, Nogg and Roxxik (Engineering, Orgrimmar), Yelmak (Alchemy, Orgrimmar), Kil'hala (Tailoring, The Barrens), Snarl, Karn Stonehoof and Saru Steelfury (Blacksmithing), Shelene Rhobart (Leatherworking), Doctor Marsh and Doctor Martin Felben (Alchemy), Strange Hermit (Engineering). 150 trainers, 2,352 services.
 - Disenchanting: 40 disenchants in 12 bands.
 
 ### Sharing in game
