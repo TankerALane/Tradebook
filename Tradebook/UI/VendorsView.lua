@@ -170,7 +170,10 @@ local function initRow(row, data)
         if data.noVendor == "belowSell" then
             row.toggle:Hide()
             row.mid:SetText(W.ColorText(W.GREY, L.VENDOR_PAYS .. " ") .. ns.Prices.Money(data.sell))
-            row.right:SetText(W.ColorText(W.GREY, L.PRICE_AUCTION .. " ") .. ns.Prices.Money(data.auction))
+            -- The difference (what you'd make buying one and selling it to a vendor); the list is
+            -- sorted by it, biggest first.
+            row.right:SetText(W.ColorText(W.GREY, L.PRICE_AUCTION .. " ") .. ns.Prices.Money(data.auction) .. "  "
+                .. W.ColorText(W.GREEN, "+") .. ns.Prices.Money(data.sell - data.auction))
             return
         end
         if not best then
@@ -382,7 +385,8 @@ function View:RefreshList()
     self.status:SetText(L.VENDOR_STATUS:format(scanned, community) .. playersText .. "  " .. questieText)
     if #rows > 0 then
         self.empty:SetText("")
-    elseif (self.text or "") == "" and not (f.zone or f.class or f.quality or f.minLevel or f.maxLevel) then
+    elseif (self.text or "") == "" and not (f.zone or f.class or f.quality or f.minLevel or f.maxLevel
+        or f.belowSell) then
         self.empty:SetText(L.VENDOR_EMPTY_PROMPT)
     else
         self.empty:SetText(L.VENDOR_NONE)

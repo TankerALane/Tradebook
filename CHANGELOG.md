@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Vendors
-- **Cheaper at the auction house than a vendor pays**: a new filter, "Only items cheaper at the auction house than a vendor pays" (needs Auctionator), finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays next to the auction price, and lists the biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply.
+- **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply.
 
 ### Window
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
