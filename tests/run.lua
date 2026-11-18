@@ -1576,6 +1576,8 @@ test("net: channels (lanes), their prefixes, how many to join, send results", fu
     eq(N.SendOutcome(8, E), "backoff")
     eq(N.SendOutcome(7, E), "gone")
     eq(N.SendOutcome(9, E), "sent", "other errors: dropped as before")
+    -- a copy sending on every lane must stay under what receivers allow from one player
+    eq(N.SENDER_LIMIT >= N.LANES * 60 / N.INTERVAL, true, "sender limit covers all lanes")
 end)
 
 test("net: share text survives chunking, any part order, and rejects bad parts", function()

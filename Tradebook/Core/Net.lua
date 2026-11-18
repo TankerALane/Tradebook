@@ -46,6 +46,8 @@
 -- lanes 2..LANES are TradebookShare2.. with prefixes TRADEBOOK2.., joined only while that leaves
 -- CHANNEL_RESERVE of the MAX_CHAT_CHANNELS chat channels free for the player. Each lane sends at
 -- most one message every INTERVAL s (0.75/s); a refused lane waits BACKOFF s, the others go on.
+-- The lanes take turns, one message at a time, at most one every INTERVAL / LANES s in all (as
+-- the rate test sent: spread out, never 5 at once).
 -- All parts of one text go on one lane. Your own scans and control messages go on lane 1 (older
 -- copies hear them); passed-along reports and catch-ups go on any lane whose queue is empty, up
 -- to the lanes the receiver listens on (HELLO~<lanes>, SYNC~<lanes>; none given = 1).
@@ -78,10 +80,11 @@ Net.LANES = 5             -- channels used at most (lane 1 = CHANNEL)
 Net.MAX_CHAT_CHANNELS = 20 -- chat channels a character can be in (measured)
 Net.CHANNEL_RESERVE = 5   -- channels always left free for the player
 Net.BACKOFF = 15          -- seconds a refused channel waits
-Net.TICK = 0.2            -- seconds between looks at the lanes
+Net.TICK = 0.1            -- seconds between looks at the lanes (at most one message each)
 Net.BACKLOG_DAYS = 30     -- scans this recent are re-announced after login, slowly
 Net.BACKLOG_GAP = 20      -- seconds between re-announced NPCs
-Net.SENDER_LIMIT = 90     -- messages per minute from one player before they're ignored
+Net.SENDER_LIMIT = 300    -- messages per minute from one player before they're ignored (5 lanes at
+                          -- 0.75/s are 225 a minute at most; older copies hear only lane 1, 45)
 Net.MAX_DE_PLAYERS = 300  -- players whose disenchant totals are kept (the oldest is dropped)
 Net.COLLECTOR_HELLO = 600 -- seconds between a collector's hellos
 Net.RELAY_BATCH = 200     -- heard reports passed along per hello
@@ -551,6 +554,7 @@ local asm = Net.NewAssembler()
 local lanes = {}       -- [i] = { id = channel number or nil, queue, nextAt, pauseUntil }
 for i = 1, Net.LANES do lanes[i] = { queue = {}, nextAt = 0, pauseUntil = 0 } end
 local queue = lanes[1].queue -- lane 1: your own scans and control messages
+local lastLane, nextSendAt = 0, 0 -- the lane that sent last; when the next message may go
 local backlog = {}     -- { kind, npc } of your scans to re-announce, slowly
 local lastBacklog = 0
 local channelID
@@ -778,12 +782,21 @@ local function pump()
         local job = table.remove(backlog, 1)
         announce(job.kind, job.npc, job.force)
     end
+    -- One message at a time, the lanes taking turns: at most one every INTERVAL / LANES s in
+    -- all, on schedule (never catching up after a pause or a loading screen), and at most one
+    -- every INTERVAL s on each lane.
+    if now < nextSendAt then return end
     local enum = Enum and Enum.SendAddonMessageResult
-    for i, lane in ipairs(lanes) do
+    for k = 1, Net.LANES do
+        local i = (lastLane + k - 1) % Net.LANES + 1
+        local lane = lanes[i]
         if lane.id and now >= lane.nextAt and now >= lane.pauseUntil then
             if #lane.queue == 0 then fillBulk(i) end
             local msg = lane.queue[1]
             if msg then
+                lastLane = i
+                if now - nextSendAt > 1 then nextSendAt = now end
+                nextSendAt = nextSendAt + Net.INTERVAL / Net.LANES
                 lane.nextAt = now + Net.INTERVAL
                 local result = Compat.Call("C_ChatInfo.SendAddonMessage", Net.LanePrefix(i), msg, "CHANNEL", lane.id)
                 local outcome = Net.SendOutcome(result, enum)
@@ -800,6 +813,7 @@ local function pump()
                     table.remove(lane.queue, 1)
                     stats.sent = stats.sent + 1
                 end
+                return
             end
         end
     end
@@ -853,7 +867,13 @@ local function joinLanes()
         for i = 2, Net.LANES do
             local name = Net.LaneName(i)
             lanes[i].id = i <= want and channelNumber(name) or nil
-            if lanes[i].id then hideChannel(name) end
+            if lanes[i].id then
+                hideChannel(name)
+            elseif #lanes[i].queue > 0 then
+                -- Left (or couldn't join): its waiting messages go on lane 1.
+                for _, m in ipairs(lanes[i].queue) do queue[#queue + 1] = m end
+                lanes[i].queue = {}
+            end
         end
         ns.Debug("net: sharing on", laneCount(), "channels (" .. inUse, "chat channels in use)")
     end)
