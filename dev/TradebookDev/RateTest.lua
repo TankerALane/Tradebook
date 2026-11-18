@@ -14,9 +14,10 @@
 -- messages back, which shows they really went out. Per phase: sends accepted, refused
 -- (AddonMessageThrottle or other), echoed, and the rate echoed in the last SUSTAIN s (after the
 -- first burst is used up). Results: a window to copy, and TradebookDevDB.rateTest.
--- /tbdev ratetest long [minutes] [channels] [warm-up s]: the setup Tradebook would use:
--- channels (LONG_CHANNELS unless given, up to MAX_CHANNELS) with a prefix each, one message a
--- second on each, nonstop, for that long (30 minutes unless given), starting warm-up s after
+-- /tbdev ratetest long [minutes] [channels] [warm-up s] [per second]: the setup Tradebook
+-- would use: channels (LONG_CHANNELS unless given, up to MAX_CHANNELS) with a prefix each,
+-- `per second` messages a second on each (1 unless given, e.g. 0.5), nonstop, for that long
+-- (30 minutes unless given), starting warm-up s after
 -- joining (CHANNEL_GAP unless given). A channel that's refused pauses BACKOFF s (sends due then
 -- are skipped, not retried), as Tradebook would. Running totals in chat every PROGRESS_EVERY
 -- s; in the end a line per minute (tried, accepted, refused, echoed, lost = accepted but never
@@ -24,6 +25,8 @@
 -- Found 2026-11-17: 3 channels 25 s after joining (no back-off): ChannelThrottle after 11 s,
 -- then almost nothing; the 10-channel round of the channel test, ~4 minutes after joining, was
 -- clean. Joined lately, or a penalty left by the tests just before?
+-- Then with the back-off: 3 channels ~1.4/s delivered, 5 channels ~2.6/s for 15 minutes, 0 lost:
+-- each channel averages ~0.5/s (bursts of 10-13 at 1/s, then refused). Next: 0.5/s each.
 -- /tbdev ratetest channels: 1 message a second on each of several channels at once, to see
 -- whether the limit is per channel: 3 channels, then as many as are free (a character can be
 -- in 10 numbered channels at most), each with one prefix for all and a prefix per channel.
@@ -273,9 +276,9 @@ local function finish(stopped)
             local per = Dev.RateChannelLines({ p })
             for i = 2, #per do lines[#lines + 1] = per[i] end
         end
-        header = ("Long rate test %s, %s. %d channels with a prefix each, 1 message a second on each, for up to %d"
-            .. " minutes, %d-character messages."):format(date("%Y-%m-%d %H:%M"), stopped and "stopped early"
-            or "finished", p.channels or 1, p.duration / 60, MSG_LEN)
+        header = ("Long rate test %s, %s. %d channels with a prefix each, %s messages a second on each, for up to"
+            .. " %d minutes, %d-character messages."):format(date("%Y-%m-%d %H:%M"), stopped and "stopped early"
+            or "finished", p.channels or 1, tostring(p.perChannel or 1), p.duration / 60, MSG_LEN)
     else
         lines = Dev.RateLines(done)
         header = ("Rate test %s, %s. %d s per rate, %d s between, %d-character messages."):format(
@@ -300,8 +303,8 @@ local function startPhase()
     p.byChan, p.chanOf = {}, {}
     run.phase, run.startAt = p, GetTime()
     if p.long then
-        say(("%d channels, 1/s each, nonstop for %d minutes; running totals every %d s."):format(p.channels or 1,
-            p.duration / 60, PROGRESS_EVERY))
+        say(("%d channels, %s/s each, nonstop for %d minutes; running totals every %d s."):format(p.channels or 1,
+            tostring(p.perChannel or 1), p.duration / 60, PROGRESS_EVERY))
         run.ticker = C_Timer.NewTicker(PROGRESS_EVERY, function()
             if not (run and run.phase == p) then return end
             local per = {}
@@ -434,7 +437,8 @@ end
 local echoFrame
 function Dev.RateTest(arg)
     arg = arg or ""
-    local mode, minutes, chanArg, warmArg = arg:match("^(%a*)%s*(%d*)%s*(%d*)%s*(%d*)")
+    local mode, minutes, chanArg, warmArg, speedArg = arg:match("^(%a*)%s*(%d*)%s*(%d*)%s*(%d*)%s*([%d%.]*)")
+    local speed = math.max(0.1, math.min(5, tonumber(speedArg) or 1))
     if mode == "stop" then
         if run then finish(true) else say("not running.") end
         return
@@ -481,7 +485,8 @@ function Dev.RateTest(arg)
             end
             say(("%d test channels joined."):format(#ids))
             if ns and ns.Net and ns.Net.Hold then ns.Net.Hold(true) end
-            local phases = long and { { rate = want, channels = want, prefixes = want, distinct = true, long = true,
+            local phases = long and { { rate = want * speed, perChannel = speed, channels = want, prefixes = want,
+                distinct = true, long = true,
                 duration = minutes * 60, sustain = 60 } } or Dev.RateChannelPlan(#ids)
             run = { session = ("%04x"):format(math.random(0, 0xffff)), channels = ids, channel = ids[1],
                 phases = phases, index = 1, frame = CreateFrame("Frame"), mode = multi and "channels" or nil,

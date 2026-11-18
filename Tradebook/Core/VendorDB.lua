@@ -135,6 +135,72 @@ local function classOf(itemID)
     return classID
 end
 
+-- PURE. Does an item pass the item filters (like the auction house's)?
+-- info = { class, quality, level (required level), usable (true/false/nil = unknown yet) };
+-- f = { class, quality (at least), minLevel, maxLevel, usable }. Unknown facts don't pass.
+function VendorDB.ItemPasses(info, f)
+    if f.class and info.class ~= f.class then return false end
+    if f.quality and not (info.quality and info.quality >= f.quality) then return false end
+    if f.minLevel or f.maxLevel then
+        if not info.level then return false end
+        if f.minLevel and info.level < f.minLevel then return false end
+        if f.maxLevel and info.level > f.maxLevel then return false end
+    end
+    if f.usable and info.usable ~= true then return false end
+    return true
+end
+
+-- Can the current character use an item? Like the game's own tooltip: any red line (level,
+-- class, armor or weapon skill, profession skill, already known) means no. nil while the item
+-- isn't loaded yet (asked for; the list refreshes when it arrives). Without tooltip data,
+-- only the required level counts.
+local usableCache = {}
+local function isRed(c)
+    return c and c.r and c.r > 0.9 and c.g < 0.2 and c.b < 0.2
+end
+function VendorDB.Usable(itemID)
+    if usableCache[itemID] ~= nil then return usableCache[itemID] end
+    local name, _, _, _, level = Compat.Call("C_Item.GetItemInfo", itemID)
+    if not name then
+        Compat.Call("C_Item.RequestLoadItemDataByID", itemID)
+        return nil
+    end
+    local usable = true
+    if Compat.Has("C_TooltipInfo.GetItemByID") then
+        local data = Compat.Call("C_TooltipInfo.GetItemByID", itemID)
+        if not (data and data.lines) then return nil end
+        for _, line in ipairs(data.lines) do
+            if line.args and _G.TooltipUtil and _G.TooltipUtil.SurfaceArgs then _G.TooltipUtil.SurfaceArgs(line) end
+            if isRed(line.leftColor) or isRed(line.rightColor) then
+                usable = false
+                break
+            end
+        end
+    else
+        usable = (level or 0) <= (UnitLevel("player") or 0)
+    end
+    usableCache[itemID] = usable
+    return usable
+end
+
+-- Forget what was usable (level up, new skill or recipe).
+function VendorDB.ForgetUsable() usableCache = {} end
+
+-- The item filter for Search, or nil when no item filter is chosen: passes(itemID).
+local function itemFilter(opts)
+    if not (opts.class or opts.quality or opts.minLevel or opts.maxLevel or opts.usable) then return nil end
+    return function(itemID)
+        local info = { class = opts.class and classOf(itemID) }
+        if opts.quality or opts.minLevel or opts.maxLevel then
+            local name, _, quality, _, level = Compat.Call("C_Item.GetItemInfo", itemID)
+            if not name then Compat.Call("C_Item.RequestLoadItemDataByID", itemID) end
+            info.quality, info.level = quality, level
+        end
+        if opts.usable then info.usable = VendorDB.Usable(itemID) end
+        return VendorDB.ItemPasses(info, opts)
+    end
+end
+
 -- PURE. Does a vendor row pass the vendor-level filters?
 -- f = { zone, friendlyOnly, thisContinent, payment = "gold"|"tokens", source }
 function VendorDB.RowPasses(row, f)
@@ -151,8 +217,8 @@ end
 -- { { itemID, name, vendors = {}, noVendor = "filtered" | "none" } }, by name.
 -- all: { { itemID, name } } (every item, Questie.AllItems); vendorItems: VendorDB.Items();
 -- filtered: { [itemID] = name } items with vendors that the filters left out;
--- classOfItem(itemID) for opts.class.
-function VendorDB.WithoutVendors(all, vendorItems, filtered, needle, class, classOfItem)
+-- passes(itemID): the item filters (nil = none).
+function VendorDB.WithoutVendors(all, vendorItems, filtered, needle, passes)
     local out, seen = {}, {}
     for itemID, name in pairs(filtered or {}) do
         out[#out + 1] = { itemID = itemID, name = name, vendors = {}, noVendor = "filtered" }
@@ -161,7 +227,7 @@ function VendorDB.WithoutVendors(all, vendorItems, filtered, needle, class, clas
     for _, e in ipairs(all or {}) do
         if not seen[e.itemID] and not (vendorItems and vendorItems[e.itemID]) then
             e.lower = e.lower or e.name:lower()
-            if e.lower:find(needle, 1, true) and (not class or classOfItem(e.itemID) == class) then
+            if e.lower:find(needle, 1, true) and (not passes or passes(e.itemID)) then
                 out[#out + 1] = { itemID = e.itemID, name = e.name, vendors = {}, noVendor = "none" }
                 seen[e.itemID] = true
             end
@@ -176,21 +242,25 @@ end
 
 -- Search: { { itemID, name, classID, vendors = { rows nearest first }, best } }, items sorted
 -- by their nearest vendor, then name. opts = { text, zone, friendlyOnly, thisContinent,
--- payment, source, class (classID), limit }. An empty text lists everything that passes the
--- filters only when a zone is chosen (otherwise nothing: the list would be huge).
+-- payment, source, class (classID), quality, minLevel, maxLevel, usable, limit }. An empty text
+-- lists the vendor items that pass the filters only when a zone, item type, rarity or level is
+-- chosen (otherwise nothing: the list would be huge).
 -- A name search also finds items no vendor sells (Questie's item names; best = nil,
 -- noVendor set), after the vendor items, for their auction price. Not with opts.vendorOnly, nor
 -- when a zone, payment or source filter is chosen: those ask about vendors.
 function VendorDB.Search(opts)
     local needle = (opts.text or ""):lower()
-    if needle == "" and not opts.zone then return {}, {} end
+    if needle == "" and not (opts.zone or opts.class or opts.quality or opts.minLevel or opts.maxLevel) then
+        return {}, {}
+    end
+    local passes = itemFilter(opts)
     local pos = ns.Merchants.Here()
     local out, zones, filtered = {}, {}, {}
     local vendorItems = VendorDB.Items()
     for itemID, rec in pairs(vendorItems) do
         local name = rec.name or Compat.ItemInfo(itemID)
         if name and (needle == "" or name:lower():find(needle, 1, true))
-            and (not opts.class or classOf(itemID) == opts.class) then
+            and (not passes or passes(itemID)) then
             local rows = {}
             for _, row in pairs(rec.vendors) do
                 locate(row, pos)
@@ -216,8 +286,7 @@ function VendorDB.Search(opts)
         return a.name < b.name
     end)
     if needle ~= "" and not (opts.vendorOnly or opts.zone or opts.payment or opts.source) then
-        for _, e in ipairs(VendorDB.WithoutVendors(ns.Questie.AllItems(), vendorItems, filtered, needle,
-            opts.class, classOf)) do
+        for _, e in ipairs(VendorDB.WithoutVendors(ns.Questie.AllItems(), vendorItems, filtered, needle, passes)) do
             out[#out + 1] = e
         end
     end

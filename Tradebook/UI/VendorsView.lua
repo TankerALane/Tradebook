@@ -3,7 +3,7 @@
 -- first. Items no vendor sells (or none passing the filters) come after, with their auction
 -- price (Auctionator). Each item expands to its 5 closest vendors (price, zone, distance; click for a
 -- waypoint) with "See all" for the rest. Filters: zone, friendly to you, this continent, item
--- type, how it's paid for, and where the data came from. "Share your scans" opens /tb share.
+-- type, rarity, required level, usable by you, how it's paid for, and where the data came from. "Share your scans" opens /tb share.
 
 local _, ns = ...
 local L, W, Compat = ns.L, ns.W, ns.Compat
@@ -22,6 +22,13 @@ local function filters()
         for k, v in pairs(DEFAULTS) do s.vendorFilters[k] = v end
     end
     return s.vendorFilters
+end
+
+local QUALITY_FALLBACK = { [0] = "Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary" }
+local function qualityName(q)
+    local name = _G["ITEM_QUALITY" .. q .. "_DESC"] or QUALITY_FALLBACK[q]
+    local c = _G.ITEM_QUALITY_COLORS and _G.ITEM_QUALITY_COLORS[q]
+    return c and c.hex and (c.hex .. name .. "|r") or name
 end
 
 local function className(id)
@@ -232,6 +239,7 @@ local function buildFilterMenu(_, root)
     check(L.VENDOR_FILTER_VENDOR_ONLY, "vendorOnly")
     check(L.VENDOR_FILTER_FRIENDLY, "friendlyOnly")
     check(L.VENDOR_FILTER_CONTINENT, "thisContinent")
+    check(L.VENDOR_FILTER_USABLE, "usable")
     -- Zone: the zones the current results are in.
     local zone = root:CreateButton(L.VENDOR_FILTER_ZONE)
     local zones = { { text = L.VENDOR_ANY, value = nil } }
@@ -244,6 +252,10 @@ local function buildFilterMenu(_, root)
     local classes = { { text = L.VENDOR_ANY, value = nil } }
     for _, id in ipairs(ITEM_CLASSES) do classes[#classes + 1] = { text = className(id), value = id } end
     radios(class, classes, "class")
+    local quality = root:CreateButton(L.VENDOR_FILTER_QUALITY)
+    local qualities = { { text = L.VENDOR_ANY, value = nil } }
+    for q = 0, 5 do qualities[#qualities + 1] = { text = qualityName(q), value = q } end
+    radios(quality, qualities, "quality")
     local pay = root:CreateButton(L.VENDOR_FILTER_PAYMENT)
     radios(pay, { { text = L.VENDOR_ANY, value = nil }, { text = L.VENDOR_PAY_GOLD, value = "gold" },
         { text = L.VENDOR_PAY_TOKENS, value = "tokens" } }, "payment")
@@ -277,6 +289,38 @@ function View:Build(parent)
     self.filterBtn:SetDefaultCallback(resetFilters)
     self.filterBtn:SetIsDefaultCallback(filtersAreDefault)
     self.filterBtn:SetupMenu(buildFilterMenu)
+    -- Required level range, like the auction house.
+    self.levelLabel = W.Text(f, "GameFontHighlightSmall")
+    self.levelLabel:SetPoint("LEFT", self.filterBtn, "RIGHT", 14, 0)
+    self.levelLabel:SetText(L.VENDOR_LEVEL)
+    local function levelBox(key)
+        local box = CreateFrame("EditBox", nil, f, "InputBoxTemplate")
+        box:SetSize(26, 20)
+        box:SetAutoFocus(false)
+        box:SetNumeric(true)
+        box:SetMaxLetters(2)
+        box:SetScript("OnTextChanged", function(b, userInput)
+            if not userInput then return end
+            local v = tonumber(b:GetText())
+            filters()[key] = v and v > 0 and v or nil
+            View:RefreshList()
+        end)
+        box:SetScript("OnEnterPressed", box.ClearFocus)
+        box:SetScript("OnEscapePressed", box.ClearFocus)
+        W.Tooltip(box, { L.VENDOR_LEVEL, L.VENDOR_LEVEL_TIP })
+        return box
+    end
+    self.minLevel = levelBox("minLevel")
+    self.minLevel:SetPoint("LEFT", self.levelLabel, "RIGHT", 10, 0)
+    self.levelDash = W.Text(f, "GameFontHighlightSmall")
+    self.levelDash:SetPoint("LEFT", self.minLevel, "RIGHT", 2, 0)
+    self.levelDash:SetText("-")
+    self.maxLevel = levelBox("maxLevel")
+    self.maxLevel:SetPoint("LEFT", self.levelDash, "RIGHT", 8, 0)
+    -- What's usable changes with level, skills and recipes learned.
+    for _, event in ipairs({ "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED", "NEW_RECIPE_LEARNED", "LEARNED_SPELL_IN_TAB" }) do
+        ns.On(event, function() ns.VendorDB.ForgetUsable() end)
+    end
     self.share = W.Button(f, L.SHARE_BUTTON, 140, 22)
     self.share:SetPoint("TOPRIGHT", -12, -8)
     self.share:SetScript("OnClick", function() ns.Share.Show() end)
@@ -306,7 +350,12 @@ function View:RefreshList()
     if not self.frame then return end
     local f = filters()
     local opts = { text = self.text, zone = f.zone, friendlyOnly = f.friendlyOnly, thisContinent = f.thisContinent,
-        payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, limit = 300 }
+        payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, quality = f.quality,
+        minLevel = f.minLevel, maxLevel = f.maxLevel, usable = f.usable, limit = 300 }
+    -- The level boxes follow the filters (Reset clears them), unless being typed in.
+    for key, box in pairs({ minLevel = self.minLevel, maxLevel = self.maxLevel }) do
+        if not box:HasFocus() then box:SetText(f[key] and tostring(f[key]) or "") end
+    end
     local results, zones = ns.VendorDB.Search(opts)
     self.zones = zones
     local rows = {}
@@ -330,7 +379,7 @@ function View:RefreshList()
     self.status:SetText(L.VENDOR_STATUS:format(scanned, community) .. playersText .. "  " .. questieText)
     if #rows > 0 then
         self.empty:SetText("")
-    elseif (self.text or "") == "" and not f.zone then
+    elseif (self.text or "") == "" and not (f.zone or f.class or f.quality or f.minLevel or f.maxLevel) then
         self.empty:SetText(L.VENDOR_EMPTY_PROMPT)
     else
         self.empty:SetText(L.VENDOR_NONE)
