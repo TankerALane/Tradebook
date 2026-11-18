@@ -330,8 +330,10 @@ function UI.LayoutTabs()
     local full = frame:GetWidth() - 16
     measure(false)
     if natural > full - rightWidth - GROUP_GAP then measure(true) end
-    -- Rows of profession tabs; the first shares its row with Vendors/Legacy/Characters.
-    local rows = ns.util.WrapRows(widths, full - rightWidth - GROUP_GAP, full, TAB_GAP)
+    -- Rows of profession tabs, all left of Vendors/Legacy/Characters (nothing sits under them:
+    -- a narrow window wraps onto more rows instead).
+    local avail = full - rightWidth - GROUP_GAP
+    local rows = ns.util.WrapRows(widths, avail, avail, TAB_GAP)
     -- Narrowest the window can be: the right group plus two tabs in the first row.
     UI.SetMinWidth("tabs", 16 + rightWidth + GROUP_GAP + 2 * minWidth + TAB_GAP)
     local rowHeight = (first and first:GetHeight() or 32) - 4
@@ -348,7 +350,6 @@ function UI.LayoutTabs()
             prev = tab
         end
         -- A single tab wider than its row (very narrow window): shrink it to fit.
-        local avail = r == 1 and full - rightWidth - GROUP_GAP or full
         if #row == 1 and widths[row[1]] > avail then
             PanelTemplates_TabResize(visible[row[1]], 0, nil, minWidth, math.max(minWidth, avail))
         end

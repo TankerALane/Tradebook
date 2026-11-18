@@ -847,12 +847,14 @@ test("vendor database: sources merge, scanned first", function()
     eq(V.UnitPrice({ price = 10, source = "scanned" }, 200), 0.05, "200 arrows for 10c")
     eq(V.UnitPrice({ price = 5, source = "questie" }, 5), 5, "Questie rows are per item")
     eq(V.UnitPrice({ cost = "currency:3402:60" }), nil)
-    eq(V.CheaperAtAuction({ { price = 100 }, { price = 80 } }, 70), true)
-    eq(V.CheaperAtAuction({ { price = 100 }, { price = 60 } }, 70), false, "one vendor is cheaper")
-    eq(V.CheaperAtAuction({ { price = 10, source = "community" } }, 1, 200), false, "1c an arrow vs 0.05c")
-    eq(V.CheaperAtAuction({ { price = 25 } }, 4, 5), true, "water 5c each vs 4c")
-    eq(V.CheaperAtAuction({ { cost = "item:1:1" } }, 1), false, "no gold price to compare")
-    eq(V.CheaperAtAuction({ { price = 100 } }, nil), false, "no auction price")
+    local C = V.CheaperThanAuction
+    eq(#C({ { price = 100 }, { price = 60 } }, 70), 1, "only the vendor under the auction price")
+    eq(#C({ { price = 100 }, { price = 80 } }, 70), 0)
+    eq(#C({ { price = 10, source = "community" } }, 1, 200), 1, "0.05c an arrow vs 1c")
+    eq(#C({ { price = 25 } }, 4, 5), 0, "water 5c each vs 4c")
+    eq(#C({ { price = 25 } }, 6, 5), 1, "water 5c each vs 6c")
+    eq(#C({ { cost = "item:1:1" } }, 100), 0, "no gold price to compare")
+    eq(#C({ { price = 1 } }, nil), 0, "no auction price")
     -- name matches keep unknown names (they may load) so typing can narrow from them
     local pool = { { lower = "copper bar" }, { lower = "tin bar" }, {} }
     local low = function(e) return e.lower end

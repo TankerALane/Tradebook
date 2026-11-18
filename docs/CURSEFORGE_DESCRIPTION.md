@@ -21,7 +21,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - Click any vendor, trainer or mob for a waypoint. If it's nearby, it's also targeted and marked.
 
 ### Vendors tab: a community vendor database
-- Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie). Filter like the auction house: **level range**, **rarity**, **usable by this character**, **cheaper at the auction house**, item type, zone and more.
+- Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie). Filter like the auction house: **level range**, **rarity**, **usable by this character**, **cheaper at a vendor than at the auction house**, item type, zone and more.
 - Ships with **538 vendors and 153 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
 - **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. Log in later and the players online **catch you up** on what was shared in the last week. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
 
