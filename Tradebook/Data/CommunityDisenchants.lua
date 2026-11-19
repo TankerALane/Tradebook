@@ -11,7 +11,7 @@ local _, ns = ...
 ns.CommunityDisenchants = {
 [3]={n=1,players=1,mats={[10938]={t=1,q=2,lo=2,hi=2}}},
 [4]={n=13,players=3,mats={[10938]={t=3,q=4,lo=1,hi=2},[10940]={t=10,q=16,lo=1,hi=2}}},
-[5]={n=7,players=1,mats={[10939]={t=2,q=4,lo=2,hi=2},[10940]={t=5,q=14,lo=2,hi=3}}},
+[5]={n=17,players=1,mats={[10939]={t=6,q=9,lo=1,hi=2},[10940]={t=11,q=30,lo=2,hi=3}}},
 [6]={n=1,players=1,mats={[10940]={t=1,q=3,lo=3,hi=3}}},
 [7]={n=2,players=1,mats={[10939]={t=2,q=3,lo=1,hi=2}}},
 [8]={n=3,players=1,mats={[10940]={t=2,q=12,lo=6,hi=6},[10978]={t=1,q=1,lo=1,hi=1}}},

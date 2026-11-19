@@ -12,7 +12,7 @@
 ### Data
 - 40 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag, Nipsy, Homer Stonefield, Quartermaster Hudson and Vernon Hale. 541 vendors, 7,183 items.
 - New trainers: Flora Silverwind, Eldrin, Me'lynn, Lilyssia Nightbreeze (Alchemy), Alchemist Mallory and Herbalist Pomeroy (Elwynn Forest). 156 trainers, 2,467 services.
-- Disenchanting: 42 disenchants in 12 bands.
+- Disenchanting: 52 disenchants in 12 bands.
 
 ## v1.8.0
 
