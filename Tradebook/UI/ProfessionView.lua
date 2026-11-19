@@ -633,15 +633,10 @@ function View:Refresh()
     if isMe and prof and not pInfo.noRecipes and not ns.fake then
         link = { live = self:IsLive(), disabledTip = L.LINK_OPEN_FIRST:format(profName) }
     end
-    -- Unlearn button: your own main professions (the game has no unlearn for Cooking, First Aid
-    -- and Fishing in its window either).
-    local unlearn
-    if isMe and not linked and prof and pInfo.primary and not ns.fake then
-        unlearn = { name = prof.name or profName, skillLine = self.skill }
-    end
+    -- (Unlearn is on the Professions tab, in each primary profession's box.)
     ns.UI.SetRankBar(prof and prof.rank, prof and prof.max,
         prof and (profName .. " - " .. (c and ns.CharName(c.key) or "")), profName,
-        c and ns.RankUp.ButtonFor(c.key, self.skill), link, unlearn)
+        c and ns.RankUp.ButtonFor(c.key, self.skill), link, nil)
     View.friends = ns.Friends.For(self.skill)
     self.friendsBtn:SetShown(#View.friends > 0)
     self.friendsBtn:SetText(L.FRIENDS_BUTTON:format(#View.friends))

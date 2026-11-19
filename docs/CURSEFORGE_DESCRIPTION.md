@@ -35,7 +35,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Shift-click into search boxes**: while you're typing in the auction house's (or Auctionator's) search box, shift-clicking an item in Tradebook puts its name there instead of linking it in chat.
 - **Disenchanting**: item tooltips show what an item disenchants into, its value and whether to disenchant or sell; enchanting materials show what they're disenchanted from. Results are recorded from real disenchants in Forever and shared between Tradebook users, so the table gets confirmed for Forever. Don't want it? Turn it off in the options.
 - **Profession links**: click another player's profession link in chat and their recipes open in Tradebook, with materials, where to buy them and prices. The **link button** next to the skill bar posts your own profession in chat.
-- **Unlearn a profession** without going back to the default window: the red cross next to the skill bar (main professions only). The game still asks you to type UNLEARN to confirm.
+- **Unlearn a profession** without going back to the default window: the red cross on its box on the Professions tab (main professions only). The game still asks you to type UNLEARN to confirm.
 - **Profession spells** (Tailoring, Smelting, Fishing...) plus **Find Herbs and Find Minerals**: Forever's spellbook doesn't list them, so drag them from the Professions tab to your action bars.
 
 ### Level up faster

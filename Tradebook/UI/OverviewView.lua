@@ -59,7 +59,8 @@ local function newBox(parent, iconSize)
     -- Under the rank line (not at the icon's bottom: on the smaller secondary boxes that put
     -- the bar over the rank).
     b.bar:SetPoint("TOPLEFT", b.rank, "BOTTOMLEFT", 0, -4)
-    b.bar:SetPoint("RIGHT", -14, 0)
+    -- Primary boxes leave room right of the bar for the Unlearn cross.
+    b.bar:SetPoint("RIGHT", iconSize >= 48 and -28 or -14, 0)
     b.bar.bg = b.bar:CreateTexture(nil, "BACKGROUND")
     b.bar.bg:SetAllPoints()
     b.bar.bg:SetColorTexture(0, 0, 0, 0.6)
@@ -92,6 +93,13 @@ local function newBox(parent, iconSize)
     extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     slotFrame(extra, extra.tex, 2)
     b.extra = extra
+    -- Primary boxes: the game's red Unlearn cross right of the skill bar, like the default
+    -- window (it opens the game's own pop-up, where you type UNLEARN to confirm).
+    if iconSize >= 48 then
+        b.unlearn = ns.UI.CreateUnlearnButton(b)
+        b.unlearn:SetPoint("LEFT", b.bar, "RIGHT", 6, 0)
+        b.unlearn:Hide()
+    end
     return b
 end
 
@@ -105,6 +113,10 @@ local function fillBox(b, def, prof)
     b.name:SetShown(def ~= nil)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
+    if b.unlearn then
+        b.unlearn:SetShown(learned and def.primary and ns.UI.CanUnlearn() and not ns.fake and true or false)
+        b.unlearn.name, b.unlearn.skillLine = def and (L[def.name] or def.name), def and def.id
+    end
     -- The profession's own spell (Alchemy, Smelting for Mining) drags from the box; a tracking
     -- spell (Find Herbs, Find Minerals) is a different thing: its own small icon.
     local main, second
