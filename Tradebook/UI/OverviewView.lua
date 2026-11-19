@@ -45,7 +45,9 @@ local function newBox(parent, iconSize)
     b.bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     b.bar:SetStatusBarColor(0.0, 0.45, 0.85)
     b.bar:SetHeight(12)
-    b.bar:SetPoint("BOTTOMLEFT", b.icon, "BOTTOMRIGHT", 10, 0)
+    -- Under the rank line (not at the icon's bottom: on the smaller secondary boxes that put
+    -- the bar over the rank).
+    b.bar:SetPoint("TOPLEFT", b.rank, "BOTTOMLEFT", 0, -4)
     b.bar:SetPoint("RIGHT", -14, 0)
     b.bar.bg = b.bar:CreateTexture(nil, "BACKGROUND")
     b.bar.bg:SetAllPoints()
