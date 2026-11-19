@@ -23,8 +23,8 @@
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
 
 ### Data
-- 40 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag, Nipsy, Homer Stonefield, Quartermaster Hudson and Vernon Hale. 541 vendors, 7,183 items.
-- New trainers: Flora Silverwind, Eldrin, Me'lynn, Lilyssia Nightbreeze (Alchemy), Alchemist Mallory and Herbalist Pomeroy (Elwynn Forest), and Karolek (Orgrimmar) and Waldor (Leatherworking). 158 trainers, 2,532 services.
+- 42 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag, Nipsy, Homer Stonefield, Quartermaster Hudson, Vernon Hale, Mabel Solaj and Herble Baubbletump. 543 vendors, 7,211 items.
+- New trainers: Flora Silverwind, Eldrin, Me'lynn, Lilyssia Nightbreeze (Alchemy), Alchemist Mallory and Herbalist Pomeroy (Elwynn Forest), and Karolek (Orgrimmar) and Waldor (Leatherworking). 158 trainers, 2,533 services.
 - Disenchanting: 75 disenchants in 12 bands.
 
 ## v1.8.0
