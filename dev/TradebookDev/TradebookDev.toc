@@ -9,3 +9,4 @@
 LastImport.lua
 Dev.lua
 RateTest.lua
+Minimap.lua

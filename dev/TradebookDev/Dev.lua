@@ -709,6 +709,13 @@ function Dev.Toggle(show)
     win:SetShown(show)
 end
 
+-- Switch "Players' shares count as scanned" (also in the Unscanned filter); reloads the list.
+function Dev.ToggleCountHeard()
+    local d = db()
+    d.countHeard = not d.countHeard
+    if win and win:IsShown() then View:Load() end
+end
+
 -- Heard notifications ----------------------------------------------------
 
 -- Thank-you list (TradebookDevDB.helpers, local only, never committed; this addon is never
@@ -1070,6 +1077,7 @@ local function createHeardWindow()
         log:ScrollToBottom()
     end)
     tinsert(UISpecialFrames, "TradebookDevHeardFrame") -- ESC closes it
+    w.chat = chat
     w:Hide()
 end
 
@@ -1079,6 +1087,13 @@ function Dev.ToggleHeard(show)
     if not heardWin then createHeardWindow() end
     if show == nil then show = not heardWin:IsShown() end
     heardWin:SetShown(show)
+end
+
+-- Switch "Also in chat" (the heard window's tick box).
+function Dev.ToggleHeardChat()
+    local d = db()
+    d.heardChat = d.heardChat ~= true
+    if heardWin then heardWin.chat:SetChecked(d.heardChat) end
 end
 
 -- Add lines to the heard log (and the window when it's open).
@@ -1316,6 +1331,10 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
     end
     if (msg or ""):lower():match("^%s*test") then
         Dev.ShowTest()
+        return
+    end
+    if lower:match("^%s*minimap") then
+        Dev.SetMinimapShown(true)
         return
     end
     if (msg or ""):lower():match("^%s*notify") then
