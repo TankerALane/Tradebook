@@ -21,7 +21,8 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - Click any vendor, trainer or mob for a waypoint. If it's nearby, it's also targeted and marked.
 
 ### Vendors tab: a community vendor database
-- Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie). Filter like the auction house: **level range**, **rarity**, **usable by this character**, **Vendor > Auction** (items a vendor pays more for than they cost at the auction house), item type, zone and more.
+- Search **any item** and see the **nearest vendors** that sell it, their price (gold, Merchant's Favor or other currency), zone and distance. Items no vendor sells show their **auction price** (with Auctionator and Questie). Filter like the auction house: **level range**, **rarity**, **usable by this character**, item type, zone and more.
+- **Vendor > Auction** (with Auctionator): items listed at the auction house for less than a vendor pays for them, biggest profit first. It checks every item Tradebook and Questie know, not just what vendors sell.
 - Ships with **541 vendors and 156 trainers** scanned in game, from Orgrimmar to Teldrassil, and grows with every update.
 - **Built by players**: every vendor and trainer you open is scanned and **shared in game** with other Tradebook users while you play. Log in later and the players online **catch you up** on what was shared in the last week. It runs on a hidden channel (nothing in your chat) and pauses in combat and dungeons. Only NPC data is shared, never anything about your characters, and you can turn it off in the settings.
 
@@ -31,6 +32,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Recipe list** with search, Starred and Pinned sections, and filters: learned, not learned (learnable now, from a trainer, from a vendor, from a mob, nearest first), have materials, and skill-up colour.
 - **Recipe details**: materials with bag and bank counts (and which of your characters have them), the **nearest vendors** that sell each one with their price, a tree of craftable materials, and skill-up ranges ("orange until 125").
 - **Craft, quantity and Craft All.**
+- **Shift-click into search boxes**: while you're typing in the auction house's (or Auctionator's) search box, shift-clicking an item in Tradebook puts its name there instead of linking it in chat.
 - **Disenchanting**: item tooltips show what an item disenchants into, its value and whether to disenchant or sell; enchanting materials show what they're disenchanted from. Results are recorded from real disenchants in Forever and shared between Tradebook users, so the table gets confirmed for Forever. Don't want it? Turn it off in the options.
 - **Profession links**: click another player's profession link in chat and their recipes open in Tradebook, with materials, where to buy them and prices. The **link button** next to the skill bar posts your own profession in chat.
 - **Unlearn a profession** without going back to the default window: the red cross next to the skill bar (main professions only). The game still asks you to type UNLEARN to confirm.
@@ -54,8 +56,8 @@ Tradebook works on its own. These add more when installed:
 
 | Addon | What it adds |
 |---|---|
-| **Questie** | Vendors nobody has scanned yet in the Vendors tab, and finding items no vendor sells there. The nearest trainers and vendors for recipes you haven't learned. For each material: the mobs that drop it and the nodes it's gathered from. |
-| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction, to a vendor or by disenchanting it, a **profit column in the recipe list** (vendor, auction house or disenchant), the **disenchant value** in item tooltips, shopping list costs, auction prices for items no vendor sells in the Vendors tab, and **Send to Auctionator**. |
+| **Questie** | Vendors nobody has scanned yet in the Vendors tab, finding items no vendor sells there, and many more items for the Vendor > Auction filter. The nearest trainers and vendors for recipes you haven't learned. For each material: the mobs that drop it and the nodes it's gathered from. |
+| **Auctionator** | Material prices, the **cost to craft**, what the result **sells for** and your **profit** selling at auction, to a vendor or by disenchanting it, a **profit column in the recipe list** (vendor, auction house or disenchant), the **disenchant value** in item tooltips, shopping list costs, auction prices for items no vendor sells in the Vendors tab, the **Vendor > Auction** filter, and **Send to Auctionator**. |
 | **TomTom** | Waypoints use TomTom's arrow (otherwise the game's map pin). |
 | **Fellowship Ledger** | Your **friends' profession ranks** on each profession tab. |
 
