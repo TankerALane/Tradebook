@@ -845,20 +845,20 @@ test("vendor database: sources merge, scanned first", function()
     -- item filters, like the auction house's
     eq(V.ItemPasses({ class = 2 }, {}), true)
     -- cheaper at the auction house than a vendor pays: Light Leather sells for 15c
-    local A = { [2318] = 10, [2319] = 30, [2589] = 5, [4306] = 20 }
-    local S = { [2318] = 15, [2319] = 20, [2589] = 1, [4306] = 60 }
-    local pool1 = { { itemID = 2318, name = "Light Leather" }, { itemID = 2319, name = "Medium Leather" } }
-    local pool2 = { { itemID = 2318, name = "Light Leather" }, { itemID = 2589, name = "Linen Cloth" },
-        { itemID = 4306, name = "Silk Cloth" }, { itemID = 9999 } }
-    local function lowerOf(e) return e.name and e.name:lower() end
+    local A = { [2318] = 10, [2319] = 30, [2589] = 5, [4306] = 20, [9999] = 1 }
+    local S = { [2318] = 15, [2319] = 20, [2589] = 1, [4306] = 60, [9999] = 50 }
+    local N = { [2318] = "Light Leather", [2319] = "Medium Leather", [2589] = "Linen Cloth", [4306] = "Silk Cloth" }
+    local function nameOf(id) return N[id] end
     local function auc(id) return A[id] end
-    local function sel(id) return S[id] end
-    local got = V.BelowSellPrice({ pool1, pool2 }, "", lowerOf, auc, sel)
-    eq(#got, 2, "Light Leather and Silk Cloth, once each")
-    eq(got[1].name, "Silk Cloth", "biggest difference first (40c)")
-    eq(got[2].sell, 15)
-    eq(#V.BelowSellPrice({ pool1, pool2 }, "leather", lowerOf, auc, sel), 1)
-    eq(#V.BelowSellPrice({ pool2 }, "", lowerOf, auc, sel, function(id) return id ~= 4306 end), 1, "item filters")
+    local got = V.BelowSellPrice(S, "", nameOf, auc)
+    eq(#got, 3, "Light Leather, Silk Cloth and the unnamed one")
+    eq(got[1].itemID, 9999, "biggest difference first (49c), name not needed")
+    eq(got[2].name, "Silk Cloth")
+    eq(got[3].sell, 15)
+    eq(#V.BelowSellPrice(S, "leather", nameOf, auc), 1, "a needle skips unknown names")
+    local asked = {}
+    eq(#V.BelowSellPrice(S, "", nameOf, auc, function(id) asked[id] = true return id ~= 4306 end), 2, "item filters")
+    eq(asked[2319], nil, "filters only asked for items already cheaper")
     -- name matches keep unknown names (they may load) so typing can narrow from them
     local pool = { { lower = "copper bar" }, { lower = "tin bar" }, {} }
     local low = function(e) return e.lower end

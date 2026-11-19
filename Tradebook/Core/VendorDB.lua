@@ -268,43 +268,69 @@ end
 
 -- PURE. Items you can buy at the auction house for less than a vendor pays for them:
 -- { { itemID, name, auction, sell, vendors = {}, noVendor = "belowSell" } }, the biggest
--- difference first. pools: lists of entries with itemID and name (an item in two is counted
--- once); lowerOf(e): lower-case name or nil while unknown; auctionOf / sellOf(itemID): copper
--- per item or nil; passes(itemID): the item filters (nil = none).
-function VendorDB.BelowSellPrice(pools, needle, lowerOf, auctionOf, sellOf, passes)
-    local out, seen = {}, {}
-    for _, pool in ipairs(pools) do
-        for _, e in ipairs(pool) do
-            local id = e.itemID
-            if id and not seen[id] then
-                local lower = lowerOf(e)
-                if lower then
-                    seen[id] = true
-                    if needle == "" or lower:find(needle, 1, true) then
-                        local auction = auctionOf(id)
-                        local sell = auction and sellOf(id)
-                        if sell and auction < sell and (not passes or passes(id)) then
-                            out[#out + 1] = { itemID = id, name = e.name, auction = auction, sell = sell, vendors = {},
-                                noVendor = "belowSell" }
-                        end
-                    end
-                end
+-- difference first. sells: { [itemID] = copper a vendor pays } (Data/SellPrices.lua: only
+-- items a vendor buys are looked at); nameOf(itemID): the name if known (nothing is loaded
+-- for it), or nil; auctionOf(itemID): copper per item or nil; passes(itemID): the item
+-- filters (nil = none), asked only for items already cheaper. With a needle, items whose name
+-- isn't known are left out.
+function VendorDB.BelowSellPrice(sells, needle, nameOf, auctionOf, passes)
+    local out = {}
+    for id, sell in pairs(sells) do
+        local auction = auctionOf(id)
+        if auction and auction < sell then
+            local name = nameOf(id)
+            if (needle == "" or (name and name:lower():find(needle, 1, true))) and (not passes or passes(id)) then
+                out[#out + 1] = { itemID = id, name = name, auction = auction, sell = sell, vendors = {},
+                    noVendor = "belowSell" }
             end
         end
     end
     table.sort(out, function(a, b)
         local da, db = a.sell - a.auction, b.sell - b.auction
         if da ~= db then return da > db end
-        if a.name ~= b.name then return a.name < b.name end
+        local na, nb = a.name or "", b.name or ""
+        if na ~= nb then return na < nb end
         return a.itemID < b.itemID
     end)
     return out
 end
 
--- What a vendor pays for one (copper), or nil: from the game's item data (Data/SellPrices.lua),
--- so nothing has to load (loading items one by one made the list jump around as they came in).
-local function sellPriceOf(itemID)
-    return ns.SellPrice and ns.SellPrice[itemID]
+-- Item names already known, without asking the game for any (asking for thousands of items
+-- floods the game with item loads, each one refreshing the window): vendor data and Questie's
+-- item list. Built again when either changes.
+local knownNames, knownNamesOf, knownNamesQuestie
+local function nameOf(itemID)
+    local items, questie = VendorDB.Items(), ns.Questie.AllItems()
+    if knownNamesOf ~= items or knownNamesQuestie ~= questie then
+        knownNames, knownNamesOf, knownNamesQuestie = {}, items, questie
+        for _, e in ipairs(questie or {}) do knownNames[e.itemID] = e.name end
+        for id, rec in pairs(items) do if rec.name then knownNames[id] = rec.name end end
+    end
+    return knownNames[itemID]
+end
+
+-- The Vendor > Auction list, kept: built again only when the search, the filters or
+-- Auctionator's prices change (or, while an item filter waits for item data, at most every
+-- BELOW_SELL_RETRY s). The window refreshes often (item data arriving, combat); those reuse it.
+local BELOW_SELL_RETRY = 3
+local belowSell = {}
+local function belowSellList(opts, needle, passes)
+    local key = table.concat({ needle, tostring(opts.class), tostring(opts.quality), tostring(opts.minLevel),
+        tostring(opts.maxLevel), tostring(opts.usable), ns.Prices.Version(), tostring(ns.Questie.AllItems() ~= nil) }, "|")
+    local now = GetTime and GetTime() or 0
+    if belowSell.key == key and not (passes and now - belowSell.at > BELOW_SELL_RETRY) then
+        return belowSell.list
+    end
+    local started = _G.debugprofilestop and _G.debugprofilestop()
+    local list = VendorDB.BelowSellPrice(ns.SellPrice or {}, needle, nameOf, ns.Prices.Auction, passes)
+    belowSell.key, belowSell.at, belowSell.list = key, now, list
+    if started then ns.Debug("Vendor > Auction:", #list, "items in", ("%.1f ms"):format(_G.debugprofilestop() - started)) end
+    return list
+end
+
+-- Forget the kept Vendor > Auction list (filters changed in ways the key can't see).
+function VendorDB.ForgetBelowSell()
+    belowSell.key = nil
 end
 
 -- PURE. Items found by name that no vendor (passing the filters) sells, for the auction price:
@@ -339,8 +365,9 @@ end
 -- payment, source, class (classID), quality, minLevel, maxLevel, usable, belowSell, limit }. An
 -- empty text lists the vendor items that pass the filters only when a zone, item type, rarity,
 -- level or belowSell is chosen (otherwise nothing: the list would be huge).
--- belowSell: instead, any item (vendor items and Questie's) whose auction price (Auctionator)
--- is below what a vendor pays for it (VendorDB.BelowSellPrice); the item filters still apply.
+-- belowSell: instead, any item a vendor buys whose auction price (Auctionator) is below what
+-- a vendor pays for it (VendorDB.BelowSellPrice, kept between refreshes); the item filters
+-- still apply.
 -- A name search also finds items no vendor sells (Questie's item names; best = nil,
 -- noVendor set), after the vendor items, for their auction price. Not with opts.vendorOnly, nor
 -- when a zone, payment or source filter is chosen: those ask about vendors.
@@ -352,11 +379,9 @@ function VendorDB.Search(opts)
     end
     local passes = itemFilter(opts)
     if opts.belowSell then
-        local vendorItems = VendorDB.Items()
-        local out = VendorDB.BelowSellPrice({ vendorList(vendorItems), ns.Questie.AllItems() or {} }, needle,
-            function(e) if e.vendors then return recLower(e) end return entryLower(e) end,
-            ns.Prices.Auction, sellPriceOf, passes)
-        if opts.limit then for i = #out, opts.limit + 1, -1 do out[i] = nil end end
+        local list = belowSellList(opts, needle, passes)
+        local out = {}
+        for i = 1, math.min(#list, opts.limit or #list) do out[i] = list[i] end
         return out, {}
     end
     local pos = ns.Merchants.Here()

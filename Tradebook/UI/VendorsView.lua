@@ -162,7 +162,8 @@ local function initRow(row, data)
         row.name:SetWidth(240)
         local _, _, quality = Compat.ItemInfo(data.itemID)
         local qc = quality and ITEM_QUALITY_COLORS and ITEM_QUALITY_COLORS[quality]
-        row.name:SetText(data.name)
+        -- Vendor > Auction rows may not know the name yet: asked for only for rows on screen.
+        row.name:SetText(data.name or Compat.ItemInfo(data.itemID) or ("item:" .. data.itemID))
         if qc then row.name:SetTextColor(qc.r, qc.g, qc.b) else row.name:SetTextColor(1, 1, 1) end
         local best = data.best
         row.mid:SetPoint("LEFT", row.name, "RIGHT", 8, 0)
@@ -328,7 +329,7 @@ function View:Build(parent)
     self.filterBtn:SetupMenu(buildFilterMenu)
     -- What's usable changes with level, skills and recipes learned.
     for _, event in ipairs({ "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED", "NEW_RECIPE_LEARNED", "LEARNED_SPELL_IN_TAB" }) do
-        ns.On(event, function() ns.VendorDB.ForgetUsable() end)
+        ns.On(event, function() ns.VendorDB.ForgetUsable(); ns.VendorDB.ForgetBelowSell() end)
     end
     self.share = W.Button(f, L.SHARE_BUTTON, 140, 22)
     self.share:SetPoint("TOPRIGHT", -12, -8)

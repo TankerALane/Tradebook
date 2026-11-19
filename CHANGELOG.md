@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Vendors
-- **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply.
+- **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply. The list is built once and kept until Auctionator's prices or your filters change, so it doesn't make the game stutter.
 
 ### Leveling plan
 - **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.

@@ -28,6 +28,23 @@ function Prices.Available()
     return api() ~= nil
 end
 
+-- A number that changes whenever Auctionator's prices change (a scan finished), so lists built
+-- from auction prices know when to build again. Registers with Auctionator on first use;
+-- without its update callback, it changes every PRICE_VERSION_FALLBACK s instead.
+local PRICE_VERSION_FALLBACK = 30
+local priceVersion, registered, hasCallback = 0, false, false
+function Prices.Version()
+    local v1 = api()
+    if v1 and not registered then
+        registered = true
+        if type(v1.RegisterForDBUpdate) == "function" then
+            hasCallback = pcall(v1.RegisterForDBUpdate, CALLER, function() priceVersion = priceVersion + 1 end)
+        end
+    end
+    if hasCallback then return priceVersion end
+    return math.floor((GetTime and GetTime() or 0) / PRICE_VERSION_FALLBACK)
+end
+
 local function call(name, ...)
     local v1 = api()
     local fn = v1 and v1[name]
