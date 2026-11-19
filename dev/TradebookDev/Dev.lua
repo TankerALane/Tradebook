@@ -14,7 +14,8 @@
 -- message, Core/Net.lua), a few seconds of it from one player become one notification: lines in
 -- the heard window (its own window, opens by itself; /tbdev heard, /tbdev heard auto; copies in
 -- chat when "Also in chat" is ticked), a message in the middle of the screen and a sound. Vendors and trainers not in your
--- scans or the community data are marked NEW. /tbdev notify turns it off and on. Players are
+-- scans or the community data are marked NEW. /tbdev notify turns the alerts off and on (the
+-- window opening, chat, message and sound); the lines are still written to the heard window. Players are
 -- shown by character name when this addon saw them send (startNameWatcher), otherwise by number
 -- this session (Tradebook itself keeps hashes, never names).
 -- Since the last import: every notification is also logged (TradebookDevDB.heardLog), and the
@@ -1090,16 +1091,18 @@ local function addHeard(lines)
     while #log > MAX_HEARD_LINES do table.remove(log, 1) end
 end
 
--- The heard window (and chat, when chosen), the message in the middle of the screen, a sound,
--- and the since-import totals.
-local function showHeard(label, h, ctx, vn, tn, dn, test)
+-- The heard window's lines and the since-import totals; unless quiet (/tbdev notify off), also
+-- the window opening by itself, chat (when chosen), the message in the middle of the screen and
+-- a sound.
+local function showHeard(label, h, ctx, vn, tn, dn, test, quiet)
     local lines = Dev.HeardLines(label, h, ctx)
     if not lines then return end
     local stamp = "|cff999999" .. date("%H:%M") .. "|r " .. (test and "|cffff8000TEST|r " or "")
     lines[1] = stamp .. lines[1]
     addHeard(lines)
-    if db().heardAuto ~= false then Dev.ToggleHeard(true) end
     updateHeardSummary()
+    if quiet then return end
+    if db().heardAuto ~= false then Dev.ToggleHeard(true) end
     if db().heardChat == true then
         print("|cff33ff99Tradebook Dev|r heard " .. lines[1])
         for i = 2, #lines do print(lines[i]) end
@@ -1137,7 +1140,6 @@ local function flushHeard(who)
     if not h then return end
     local ctx = context()
     local vn, tn, dn = logHeard(who, h, ctx) -- before the NEW marks: logging doesn't change them
-    if db().notify == false then return end
     if not playerNumbers[who] then
         playerCount = playerCount + 1
         playerNumbers[who] = playerCount
@@ -1147,7 +1149,7 @@ local function flushHeard(who)
     if not name and relayedBy[who] then
         label = label .. ", passed along by |cffffffff" .. relayedBy[who] .. "|r"
     end
-    showHeard(label, h, ctx, vn, tn, dn)
+    showHeard(label, h, ctx, vn, tn, dn, false, db().notify == false)
 end
 
 -- Sender names, for the heard notifications only (this addon is never published). Tradebook
@@ -1319,7 +1321,7 @@ SlashCmdList.TRADEBOOKDEV = function(msg)
     if (msg or ""):lower():match("^%s*notify") then
         local d = db()
         d.notify = d.notify == false
-        print("|cff33ff99Tradebook Dev|r notifications for other players' data: " .. (d.notify and "on" or "off"))
+        print("|cff33ff99Tradebook Dev|r alerts for other players' data (still logged in /tbdev heard): " .. (d.notify and "on" or "off"))
         return
     end
     Dev.Toggle()
