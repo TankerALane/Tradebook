@@ -1092,7 +1092,7 @@ test("planner: skill-up chance", function()
     eq(P.Chance(nil, 100), 0)
 end)
 
-test("planner: cheapest recipe per point, merged steps, materials", function()
+test("planner: orange recipes only while any gives the point, merged steps, materials", function()
     -- A: cheap but yellow from 100, grey at 105. B: dearer, orange until 110, grey at 130.
     local recipes = {
         A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
@@ -1107,18 +1107,30 @@ test("planner: cheapest recipe per point, merged steps, materials", function()
         inventory = { [2] = 4 }, -- two crafts of B in the bags
     })
     eq(plan.reached, 110)
-    eq(plan.steps[1].recipeID, "B", "orange from what you have first")
-    eq(plan.steps[1].to, 102)
-    eq(plan.steps[1].cost, 0)
-    -- Then A per point: 10 / chance x 4/3 (yellow): 22, 33 at 102-103, then 67 > B's 60.
-    eq(plan.steps[2].recipeID, "A", "the cheap yellow one while it is well under B's cost")
-    eq(plan.steps[2].to, 104)
-    eq(plan.steps[3].recipeID, "B")
-    eq(plan.steps[3].to, 110)
-    eq(#plan.steps, 3)
-    eq(plan.materials[2].need, 16, "8 crafts of B")
+    eq(#plan.steps, 1, "B all the way: never the cheaper yellow A")
+    eq(plan.steps[1].recipeID, "B")
+    eq(plan.steps[1].crafts, 10, "one craft per point")
+    eq(plan.steps[1].sure, true)
+    eq(plan.sure, true)
+    eq(plan.materials[2].need, 20)
     eq(plan.materials[2].have, 4)
-    eq(plan.steps[3].cost, 12 * 30, "the bill only counts what you buy")
+    eq(plan.steps[1].cost, 16 * 30, "the bill only counts what you buy")
+end)
+
+test("planner: yellow only where no orange is left, marked not sure", function()
+    -- B is orange until 110, yellow to 120; nothing else.
+    local plan = ns.Planner.Plan({
+        rank = 105, target = 115, recipes = { "B" },
+        thresholds = function() return { 110, 120, 130 } end,
+        reagents = function() return { { itemID = 2, count = 1 } } end,
+        price = function() return 30 end,
+    })
+    eq(#plan.steps, 2, "the orange and the yellow points are separate steps")
+    eq(plan.steps[1].sure, true)
+    eq(plan.steps[1].to, 110)
+    eq(plan.steps[2].sure, false)
+    eq(plan.steps[2].from, 110)
+    eq(plan.sure, false)
 end)
 
 test("planner: orange from your own materials before a yellow one you also have", function()
@@ -1146,13 +1158,13 @@ test("planner: orange from your own materials before a yellow one you also have"
     eq(plan.cost, 0, "nothing to buy")
 end)
 
-test("planner: orange first unless yellow is clearly cheaper; ties go to orange", function()
-    local function first(yellowPrice)
+test("planner: orange however cheap the yellow one is", function()
+    local function first(yellowPrice, orangePrice)
         local recipes = {
             Y = { t = { 100, 110, 120 }, r = { { itemID = 1, count = 1 } } },
             O = { t = { 120, 130, 140 }, r = { { itemID = 2, count = 1 } } },
         }
-        local prices = { [1] = yellowPrice, [2] = 100 }
+        local prices = { [1] = yellowPrice, [2] = orangePrice }
         return ns.Planner.Plan({
             rank = 100, target = 101, recipes = { "Y", "O" },
             thresholds = function(id) return recipes[id].t end,
@@ -1160,33 +1172,37 @@ test("planner: orange first unless yellow is clearly cheaper; ties go to orange"
             price = function(item) return prices[item] end,
         }).steps[1].recipeID
     end
-    eq(first(80), "O", "yellow 80 x 4/3 > 100")
-    eq(first(75), "O", "a tie goes to the sure skill-up")
-    eq(first(60), "Y", "yellow 60 x 4/3 = 80: clearly cheaper")
+    eq(first(1, 100), "O")
+    eq(first(1, nil), "O", "even an orange one with materials of unknown price")
 end)
 
 test("planner: each step has its own materials (need, have, buy for that step alone)", function()
+    -- B orange until 105; C (a trainer recipe from 105) orange until 115.
     local recipes = {
-        A = { t = { 100, 102, 105 }, r = { { itemID = 1, count = 1 } } },
-        B = { t = { 110, 120, 130 }, r = { { itemID = 2, count = 2 } } },
+        B = { t = { 105, 110, 115 }, r = { { itemID = 2, count = 2 } } },
+        C = { t = { 115, 120, 125 }, r = { { itemID = 1, count = 1 }, { itemID = 2, count = 1 } } },
     }
     local plan = ns.Planner.Plan({
-        rank = 100, target = 110, recipes = { "A", "B" },
+        rank = 100, target = 110, recipes = { "B", "C" },
         thresholds = function(id) return recipes[id].t end,
         reagents = function(id) return recipes[id].r end,
         price = function(item) return ({ [1] = 10, [2] = 30 })[item] end,
-        inventory = { [2] = 5 }, -- 2 crafts of B (and one left over)
+        learnAt = function(id) return id == "C" and 105 or nil end,
+        inventory = { [2] = 12 },
     })
-    -- Steps: B 100-102 (owned), A 102-104, B 104-110 (see the plan test above).
-    local first, last = plan.steps[1], plan.steps[3]
-    eq(first.materials[2].need, 4)
-    eq(first.materials[2].have, 5, "have: everything you have")
-    eq(first.materials[2].buy, 0, "the first B step uses what you have")
-    eq(last.materials[2].need, last.crafts * 2)
-    eq(last.materials[2].have, 5)
-    eq(last.materials[2].buy, last.crafts * 2 - 5, "on its own: all 5 count, the earlier step isn't subtracted")
-    eq(plan.steps[2].materials[1].have, 0)
-    eq(plan.steps[2].materials[1].buy, plan.steps[2].materials[1].need)
+    eq(#plan.steps, 2)
+    local first, last = plan.steps[1], plan.steps[2]
+    eq(first.recipeID, "B")
+    eq(first.materials[2].need, 10)
+    eq(first.materials[2].have, 12, "have: everything you have")
+    eq(first.materials[2].buy, 0, "the first step uses what you have")
+    eq(last.recipeID, "C")
+    eq(last.materials[2].need, 5)
+    eq(last.materials[2].have, 12)
+    eq(last.materials[2].buy, 0, "on its own: all 12 count, the earlier step isn't subtracted")
+    eq(last.materials[1].have, 0)
+    eq(last.materials[1].buy, 5)
+    eq(plan.materials[2].need, 15, "the whole plan's total")
 end)
 
 test("planner: a step shows everything you have, and buys nothing when it covers whole crafts", function()

@@ -245,6 +245,7 @@ function PlannerUI.Refresh()
                     needHave({ need = step.materials[itemID].need, have = haveNow(itemID) }) }
             end
         end
+        if step.sure == false then lines[#lines + 1] = W.ColorText(W.DIFFICULTY[1], L.PLAN_NOT_SURE_TIP) end
         lines[#lines + 1] = W.ColorText(W.GREY, L.PLAN_STEP_TIP)
         return lines
     end
@@ -252,8 +253,10 @@ function PlannerUI.Refresh()
     local entries, totals = {}, {}
     for i, step in ipairs(plan.steps) do
         local r = ns.db.recipes[step.recipeID]
-        local text = L.PLAN_STEP:format(step.from, step.to, step.crafts, r.n)
+        local text = (step.sure == false and L.PLAN_STEP_CHANCE or L.PLAN_STEP):format(step.from, step.to,
+            step.crafts, r.n)
         if step.learn then text = text .. "  " .. W.ColorText(W.GREY, L.PLAN_LEARN) end
+        if step.sure == false then text = text .. "  " .. W.ColorText(W.DIFFICULTY[1], L.PLAN_NOT_SURE) end
         local right = step.unpriced and W.ColorText(W.GREY, L.PLAN_PRICE_UNKNOWN) or ns.Prices.Money(step.cost)
         local isDone = done(step)
         if not ticked[i] then

@@ -39,7 +39,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Profession spells on each tab** (Tailoring, Smelting, Fishing...) plus **Find Herbs and Find Minerals**: Forever's spellbook doesn't list them, so drag them from here to your action bars, or click to open.
 
 ### Level up faster
-- **Leveling plan**: the cheapest way to your skill cap, step by step, with the materials you need, what you already have, the cost and a shopping list.
+- **Leveling plan**: a sure way to your skill cap (orange recipes, a skill-up every craft, cheapest first), step by step, with the materials you need, what you already have, the cost and a shopping list.
 - **Train the next rank**: a button when you can train Journeyman, Expert or Artisan, with the requirements and the nearest trainers, books or quests.
 - **Specializations**: Gnomish/Goblin Engineering and Dragonscale/Elemental/Tribal Leatherworking, with their quests.
 - **Shopping lists**, split into what to buy from a vendor and what to buy at the auction house.

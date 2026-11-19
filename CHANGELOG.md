@@ -5,6 +5,9 @@
 ### Vendors
 - **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply.
 
+### Leveling plan
+- **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.
+
 ### Window
 - **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.

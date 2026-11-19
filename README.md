@@ -11,7 +11,7 @@ A profession companion for **World of Warcraft: Forever**.
 - Crafting from Tradebook for the character you're logged into: Craft, quantity, Craft All.
 - Every character's professions, skill levels and known recipes saved account-wide, with a fast **"Who can craft this?"** search.
 - Reagent counts from bags and bank, missing-reagent highlights, an expandable reagent tree with the nearest vendors for each material, and shopping lists split into vendor and auction house.
-- A **leveling plan**: the cheapest way to a profession's skill cap, with materials, cost and a shopping list.
+- A **leveling plan**: a sure way to a profession's skill cap (orange recipes, cheapest first), with materials, cost and a shopping list.
 - Where to get every recipe in Forever: trainers, vendors (with Merchant's Favor costs and reputation), the mobs that drop it with drop chances, world drops and quests; and the vendor price next to the auction house price.
 - A **Vendors** tab: search any item a vendor sells, nearest vendors first, with prices and waypoints. It ships with a community database of vendors and trainers scanned in game, and the vendors and trainers you open are scanned and shared in game with other Tradebook users (NPC data only; can be turned off).
 - **Train the next rank**: when a character can train Journeyman, Expert or Artisan, the requirements, cost, and the trainers, books or quests that teach it in Forever. Specializations (Gnomish/Goblin Engineering, Dragonscale/Elemental/Tribal Leatherworking) too.
