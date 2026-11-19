@@ -896,6 +896,20 @@ test("share text round-trips and keeps nothing personal", function()
     eq(S.Decode("nonsense"), nil)
 end)
 
+test("characters: main profession slots and secondary professions", function()
+    local C = ns.Characters
+    local s = C.ProfessionSlots(ns.Professions.list, { [165] = { rank = 97, max = 150 }, [185] = { rank = 1, max = 75 } })
+    eq(#s.main, 1)
+    eq(s.main[1].def.id, 165)
+    eq(s.mainFree, 1)
+    eq(#s.secondary, 3, "Cooking, First Aid, Fishing")
+    eq(s.secondaryKnown, 1)
+    s = C.ProfessionSlots(ns.Professions.list, { [182] = {}, [186] = {} })
+    eq(s.mainFree, 0, "gathering professions use main slots")
+    eq(C.ProfessionSlots(ns.Professions.list, {}).mainFree, 2)
+    eq(C.ProfessionSlots(ns.Professions.list, nil).secondaryKnown, 0)
+end)
+
 test("trainers: services, recipes they teach, share round-trip", function()
     local T = ns.Trainers
     local name, skill, cost = T.ParseService("Spiced Wolf Meat||used|0|Cooking 10|45|")

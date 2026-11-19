@@ -16,8 +16,8 @@ local current = { tab = nil, view = nil }
 local hideKeepsDefault = false
 
 local CAMP = "camp"
-local VENDORS, LEGACY, CHARACTERS = "vendors", "legacy", "characters" -- tabs at the far right
-local RIGHT_TABS = { [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
+local OVERVIEW, VENDORS, LEGACY, CHARACTERS = "overview", "vendors", "legacy", "characters" -- tabs at the far right
+local RIGHT_TABS = { [OVERVIEW] = true, [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
 local MIN_W, MIN_H = 760, 500
 
 -- Extra tabs at the far right, added before the window is built (UI.AddTab). Tradebook itself
@@ -77,6 +77,7 @@ local function tabIDs()
     local ids = {}
     for _, p in ipairs(ns.Professions.list) do ids[#ids + 1] = p.id end
     ids[#ids + 1] = CAMP
+    ids[#ids + 1] = OVERVIEW
     ids[#ids + 1] = VENDORS
     ids[#ids + 1] = LEGACY
     ids[#ids + 1] = CHARACTERS
@@ -91,6 +92,9 @@ local function tabTooltip(tab)
         if extraTabs[tab.key].tooltip then GameTooltip:AddLine(extraTabs[tab.key].tooltip, 0.8, 0.8, 0.8, true) end
     elseif tab.key == CAMP then
         GameTooltip:SetText(L.CAMP_TITLE, 1, 1, 1)
+    elseif tab.key == OVERVIEW then
+        GameTooltip:SetText(L.TAB_OVERVIEW, 1, 1, 1)
+        GameTooltip:AddLine(L.TAB_OVERVIEW_TIP, 0.8, 0.8, 0.8, true)
     elseif tab.key == VENDORS then
         GameTooltip:SetText(L.TAB_VENDORS, 1, 1, 1)
         GameTooltip:AddLine(L.TAB_VENDORS_TIP, 0.8, 0.8, 0.8, true)
@@ -129,6 +133,7 @@ end
 local function tabLabel(key, short)
     if extraTabs[key] then return extraTabs[key].label end
     if key == CAMP then return L.TAB_CAMP end
+    if key == OVERVIEW then return L.TAB_OVERVIEW end
     if key == VENDORS then return L.TAB_VENDORS end
     if key == LEGACY then return L.TAB_LEGACY end
     if key == CHARACTERS then return short and L.TAB_CHARACTERS_SHORT or L.TAB_CHARACTERS end
@@ -423,6 +428,8 @@ function UI.SelectTab(key, fromClick)
         showView(extraTabs[key].view)
     elseif key == CAMP then
         showView("camp")
+    elseif key == OVERVIEW then
+        showView("overview")
     elseif key == VENDORS then
         showView("vendors")
     elseif key == LEGACY then
@@ -443,11 +450,14 @@ function UI.SelectTab(key, fromClick)
     UI.UpdateTabs()
 end
 
--- Which tab to show when the window opens.
+-- Which tab to show when the window opens: the profession whose window is open, else My
+-- professions (the K key, like the Professions book), unless that's turned off in the options
+-- (then the tab you had open last).
 local function defaultTab()
     if UI.pendingLinked then return UI.pendingLinked.skill end
     local open = ns.Scanner.OpenProfession()
     if open then return open.professionID end
+    if ns.db.settings.openOverview ~= false then return OVERVIEW end
     local last = ns.db.settings.lastTab
     -- (A tab that no longer exists, e.g. a dev tab without its addon, is skipped.)
     local known = last and (ns.Professions.Get(last) or last == CAMP or RIGHT_TABS[last])

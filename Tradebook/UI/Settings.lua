@@ -60,13 +60,17 @@ local function build()
     W.Tooltip(gathering, { L.OPT_GATHERING, L.OPT_TABS_TIP })
     gathering:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 0, -6)
 
+    local overview = W.Check(panel, L.OPT_OVERVIEW, function(v) ns.db.settings.openOverview = v end)
+    W.Tooltip(overview, { L.OPT_OVERVIEW, L.OPT_OVERVIEW_TIP })
+    overview:SetPoint("TOPLEFT", gathering, "BOTTOMLEFT", 0, -6)
+
     local crossFaction = W.Check(panel, L.OPT_CROSS_FACTION, function(v)
         ns.db.settings.crossFaction = v
         ns.Recipes.Invalidate()
         if ns.UI.LayoutTabs then ns.UI.LayoutTabs() end
         ns.UI.Refresh()
     end)
-    crossFaction:SetPoint("TOPLEFT", gathering, "BOTTOMLEFT", 0, -6)
+    crossFaction:SetPoint("TOPLEFT", overview, "BOTTOMLEFT", 0, -6)
     W.Tooltip(crossFaction, { L.OPT_CROSS_FACTION, L.OPT_CROSS_FACTION_TIP })
 
     local netShare = W.Check(panel, L.OPT_NETSHARE, function(v) ns.Net.SetEnabled(v) end)
@@ -125,6 +129,7 @@ local function build()
         end
         gathering:SetChecked(anyShown)
         crossFaction:SetChecked(ns.db.settings.crossFaction == true)
+        overview:SetChecked(ns.db.settings.openOverview ~= false)
         netShare:SetChecked(ns.db.settings.netShare ~= false)
         deShow:SetChecked(ns.db.settings.deShow ~= false)
         deTooltip:SetChecked(ns.db.settings.deTooltip ~= false)

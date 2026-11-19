@@ -76,6 +76,7 @@ UI\ProfessionView.lua
 UI\GuideView.lua
 UI\SearchView.lua
 UI\CharactersView.lua
+UI\OverviewView.lua
 UI\VendorsView.lua
 UI\CampView.lua
 UI\LegacyView.lua

@@ -79,6 +79,28 @@ function Characters.SetRecipes(c, skillLineID, recipes, now)
     p.scannedAt = now
 end
 
+-- A character can have this many main professions (gathering ones included).
+Characters.MAIN_SLOTS = 2
+
+-- PURE. A character's profession slots. defs: Data/Professions.lua's list; professions: the
+-- character's { [skillLineID] = { rank, max } }. Returns { main = { { def, prof } } (learned,
+-- in list order), mainFree = slots left, secondary = { { def, prof or nil } } (every one),
+-- secondaryKnown = how many are learned }.
+function Characters.ProfessionSlots(defs, professions)
+    local out = { main = {}, secondary = {}, secondaryKnown = 0 }
+    for _, def in ipairs(defs) do
+        local prof = professions and professions[def.id]
+        if def.primary then
+            if prof then out.main[#out.main + 1] = { def = def, prof = prof } end
+        else
+            out.secondary[#out.secondary + 1] = { def = def, prof = prof }
+            if prof then out.secondaryKnown = out.secondaryKnown + 1 end
+        end
+    end
+    out.mainFree = math.max(0, Characters.MAIN_SLOTS - #out.main)
+    return out
+end
+
 function Characters.DaysSince(c, now)
     if not c or not c.lastSeen then return nil end
     return math.floor((now - c.lastSeen) / DAY)
