@@ -98,7 +98,7 @@ local function fillBox(b, def, prof)
         b.rank:SetText(W.ColorText(W.GREY, L.OVERVIEW_NOT_LEARNED))
         b.tip = { name, L.OVERVIEW_NOT_LEARNED_TIP }
     end
-    b:SetScript("OnClick", function() ns.UI.SelectTab(def.id) end)
+    b:SetScript("OnClick", function() ns.UI.SelectTab(def.id, true) end)
 end
 
 local function header(f, text)
