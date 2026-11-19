@@ -84,7 +84,10 @@ local function newBox(parent, iconSize)
     -- UI/TrackingButton.lua), or drag it to an action bar.
     local extra = ns.TrackingButton.Create(b)
     extra:SetSize(26, 26)
-    extra:SetPoint("BOTTOMRIGHT", b.bar, "TOPRIGHT", 0, 3)
+    -- Placed from the box itself, not the bar: the secure button laid over it can't be anchored
+    -- (even indirectly) to a font string, and the bar hangs under the rank text. This puts it
+    -- above the bar's right end in the primary boxes (Herbalism and Mining are primary).
+    extra:SetPoint("TOPRIGHT", b, "TOPRIGHT", -14, -10)
     extra.label:Hide()
     extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     slotFrame(extra, extra.tex, 2)
