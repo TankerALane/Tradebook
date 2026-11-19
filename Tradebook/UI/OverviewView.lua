@@ -24,6 +24,16 @@ local BACKDROP = {
 }
 
 -- One profession box: border, big icon, name, rank and a skill bar.
+-- The bronze slot frame of the default Professions window's slots (Professions-Slot-Frame)
+-- around an icon, so it reads as a button you can drag to an action bar.
+local function slotFrame(owner, icon, outset)
+    local t = owner:CreateTexture(nil, "OVERLAY")
+    t:SetAtlas("Professions-Slot-Frame")
+    t:SetPoint("TOPLEFT", icon, "TOPLEFT", -outset, outset)
+    t:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", outset, -outset)
+    return t
+end
+
 local function newBox(parent, iconSize)
     local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetBackdrop(BACKDROP)
@@ -33,8 +43,9 @@ local function newBox(parent, iconSize)
     b:GetHighlightTexture():SetAlpha(0.35)
     b.icon = b:CreateTexture(nil, "ARTWORK")
     b.icon:SetSize(iconSize, iconSize)
-    b.icon:SetPoint("LEFT", 9, 0)
+    b.icon:SetPoint("LEFT", 11, 0)
     b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    b.iconFrame = slotFrame(b, b.icon, math.floor(iconSize * 0.08 + 0.5))
     -- Smaller boxes (secondary) get a smaller name, so name, rank and bar fit beside the icon.
     b.name = W.Text(b, iconSize >= 48 and "GameFontNormalLarge" or "GameFontNormal")
     b.name:SetPoint("TOPLEFT", b.icon, "TOPRIGHT", 10, 0)
@@ -76,6 +87,7 @@ local function newBox(parent, iconSize)
     extra.tex = extra:CreateTexture(nil, "ARTWORK")
     extra.tex:SetAllPoints()
     extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    slotFrame(extra, extra.tex, 2)
     extra:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
     extra:RegisterForDrag("LeftButton")
     extra:SetScript("OnDragStart", function(self) ns.TrackingButton.Pickup(self.spellID) end)
@@ -98,6 +110,8 @@ end
 local function fillBox(b, def, prof)
     local learned = def and prof
     b.icon:SetShown(def ~= nil)
+    b.iconFrame:SetShown(def ~= nil)
+    b.iconFrame:SetDesaturated(not learned)
     b.name:SetShown(def ~= nil)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
