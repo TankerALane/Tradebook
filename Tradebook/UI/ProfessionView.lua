@@ -505,9 +505,7 @@ function View:Build(parent)
     self.charBtn:SetPoint("TOPLEFT", 0, 0)
     self.charBtn:SetScript("OnClick", charMenu)
 
-    -- The profession's spells (Tailoring, Smelting, Find Minerals...): drag to an action bar or
-    -- click (UI/TrackingButton.lua). Positioned in View:Layout, their own row above the search box.
-    self.spellIcons = { ns.TrackingButton.Create(left), ns.TrackingButton.Create(left) }
+    -- (The profession's spells, to drag to an action bar, are on the Professions tab.)
 
     -- (The rank is shown as a skill bar in the window header: ns.UI.SetRankBar.)
 
@@ -565,7 +563,6 @@ end
 --   row 1 (y 0):  character picker | Friends button (right, when shown)
 --   row 2:        note text (full width)
 --   row 3:        "Open <profession>" button (when shown)
---   row 4:        Find Herbs / Find Minerals icon (when the character knows it)
 --   then the search + Filter row and the list.
 function View:Layout(showOpen)
     self.friendsBtn:ClearAllPoints()
@@ -579,16 +576,6 @@ function View:Layout(showOpen)
     self.openBtn:ClearAllPoints()
     self.openBtn:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 8, -(8 + y))
     if showOpen then y = y + 26 end
-    local x, anyIcon = 12, false
-    for _, icon in ipairs(self.spellIcons) do
-        icon:ClearAllPoints()
-        icon:SetPoint("TOPLEFT", self.frame, "TOPLEFT", x, -(8 + y + 2))
-        if icon.spellID then
-            x = x + icon:FullWidth() + 18
-            anyIcon = true
-        end
-    end
-    if anyIcon then y = y + 38 end
     self.search:ClearAllPoints()
     self.search:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 14, -(8 + y + 4))
     self.filterBtn:ClearAllPoints()
@@ -685,19 +672,6 @@ function View:Refresh()
     if prof and prof.scannedAt and not isMe and not linked then
         notices[#notices + 1] = L.LAST_SCANNED:format(W.Ago(prof.scannedAt))
     end
-    local spells = {}
-    if ns.Screenshots and ns.Screenshots.trackingShot then
-        -- /tb shots: shown with the made-up characters (the oldest ranks, known to everyone).
-        local T = ns.TrackingButton
-        local first = {}
-        for _, list in pairs({ T.professionSpells[self.skill] or {}, T.spells[self.skill] or {} }) do
-            if list[1] then first[list[#list]] = true end
-        end
-        spells = T.SpellsFor(self.skill, function(id) return first[id] == true end)
-    elseif not self.browsing and self.charKey == ns.charKey and not ns.fake then
-        spells = ns.TrackingButton.SpellsFor(self.skill)
-    end
-    for i, icon in ipairs(self.spellIcons) do icon:SetSpell(spells[i], self.skill) end
     self.notice:SetText(table.concat(notices, "\n"))
     self.openBtn:SetShown(showOpen)
     self:Layout(showOpen)

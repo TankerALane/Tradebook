@@ -68,6 +68,27 @@ local function newBox(parent, iconSize)
     b:SetScript("OnDragStart", function(self)
         if self.spellID then ns.TrackingButton.Pickup(self.spellID) end
     end)
+    -- A second spell (Find Minerals for Mining): a small icon at the top right, dragged on its own.
+    local extra = CreateFrame("Button", nil, b)
+    extra:SetSize(22, 22)
+    extra:SetPoint("TOPRIGHT", -8, -7)
+    extra.tex = extra:CreateTexture(nil, "ARTWORK")
+    extra.tex:SetAllPoints()
+    extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    extra:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
+    extra:RegisterForDrag("LeftButton")
+    extra:SetScript("OnDragStart", function(self) ns.TrackingButton.Pickup(self.spellID) end)
+    extra:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        if not pcall(GameTooltip.SetSpellByID, GameTooltip, self.spellID) then
+            GameTooltip:SetText(ns.Compat.Call("C_Spell.GetSpellName", self.spellID) or "?", 1, 1, 1)
+        end
+        GameTooltip:AddLine(L.OVERVIEW_DRAG_TIP, 0.2, 1, 0.2, true)
+        GameTooltip:Show()
+    end)
+    extra:SetScript("OnLeave", GameTooltip_Hide)
+    extra:Hide()
+    b.extra = extra
     return b
 end
 
@@ -79,8 +100,15 @@ local function fillBox(b, def, prof)
     b.name:SetShown(def ~= nil)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
-    local spell = learned and ns.TrackingButton.SpellsFor(def.id)[1]
-    b.spellID = spell and spell.spellID or nil
+    local spells = learned and ns.TrackingButton.SpellsFor(def.id) or {}
+    b.spellID = spells[1] and spells[1].spellID or nil
+    local second = spells[2] and spells[2].spellID
+    b.extra.spellID = second
+    b.extra:SetShown(second ~= nil)
+    if second then
+        b.extra.tex:SetTexture(ns.Compat.Call("C_Spell.GetSpellTexture", second)
+            or ns.Compat.Call("GetSpellTexture", second) or 134400)
+    end
     if not def then
         b.tip = { L.OVERVIEW_EMPTY_SLOT, L.OVERVIEW_EMPTY_TIP }
         b:SetScript("OnClick", nil)
