@@ -1,16 +1,16 @@
 # Changelog
 
-## Unreleased
+## v1.9.0
+
+### Professions tab
+- **A new Professions tab**, like the game's Professions book: your two primary profession slots (a blank box while one is free) and your secondary professions (Cooking, First Aid, Fishing; greyed out until learned), each with a large icon, rank and skill bar. Click one to open it, or drag it to an action bar for its spell (Alchemy, Cooking, Smelting for Mining...). Herbalism and Mining also have a smaller Find Herbs / Find Minerals icon at the right, above the skill bar: click it to start tracking (not in combat), or drag it on its own. The red Unlearn cross moved here too, next to the skill bar in each primary profession's box (it still opens the game's pop-up where you type UNLEARN). These replace the spell icons that were on each profession's tab, which leaves more room for the recipe list. The K key (and the profession micro button) always opens Tradebook on it. The minimap button and /tb open on it too when no profession window is open; turn that off in the options to open on the tab you had last.
+- **Side tabs**: Professions, Characters, Legacy and Vendors are now icon tabs down the right side of the window (their name shows when you hover over them), which leaves the bottom row to the professions.
 
 ### Vendors
 - **Vendor > Auction**: a new filter (needs Auctionator) finds items listed at the auction house for less than a vendor pays for them, e.g. Light Leather at 10c that sells to a vendor for 15c. It looks at any item, not only what vendors sell, shows what a vendor pays, the auction price and the difference, biggest difference first. Type a name, or browse them all without one; item type, rarity, level and usable still apply. The list is built once and kept until Auctionator's prices or your filters change, so it doesn't make the game stutter.
 
 ### Leveling plan
 - **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.
-
-### Professions tab
-- **A new Professions tab**, like the game's Professions book: your two primary profession slots (a blank box while one is free) and your secondary professions (Cooking, First Aid, Fishing; greyed out until learned), each with a large icon, rank and skill bar. Click one to open it, or drag it to an action bar for its spell (Alchemy, Cooking, Smelting for Mining...). Herbalism and Mining also have a smaller Find Herbs / Find Minerals icon at the right, above the skill bar: click it to start tracking (not in combat), or drag it on its own. The red Unlearn cross moved here too, next to the skill bar in each primary profession's box (it still opens the game's pop-up where you type UNLEARN). These replace the spell icons that were on each profession's tab, which leaves more room for the recipe list. The K key (and the profession micro button) always opens Tradebook on it. The minimap button and /tb open on it too when no profession window is open; turn that off in the options to open on the tab you had last.
-- **Side tabs**: Professions, Characters, Legacy and Vendors are now icon tabs down the right side of the window (their name shows when you hover over them), which leaves the bottom row to the professions.
 
 ### Training
 - **Nearest trainers for your recipes**: clicking the skill bar now also shows the nearest trainers where you can learn new recipes at your current rank (Karolek in Orgrimmar for Journeyman Leatherworking), not only the trainers for the next rank, which can be far away (Expert Leatherworking: Thunder Bluff). It's shown first until you can train the next rank, and when you're at the top rank.
@@ -20,7 +20,6 @@
 - **Switching to a profession you have opens it**, however you get there (a tab, the Professions tab, a recipe from search, the leveling plan or the Characters tab, or the window reopening on it), so Craft is ready.
 - **Characters tab**: a character with five professions (two primary, three secondary) no longer has its last one run into the next character: each row is as tall as its list.
 - **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
-- With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
 
 ### Data
 - 42 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag, Nipsy, Homer Stonefield, Quartermaster Hudson, Vernon Hale, Mabel Solaj and Herble Baubbletump. 543 vendors, 7,211 items.
