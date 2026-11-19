@@ -189,11 +189,20 @@ Shots.PLAN = {
     end, after = function() ns.PlannerUI.Hide() end },
     -- The Professions tab (what K opens): primary and secondary professions, with the spells to
     -- drag (shown as known, so the made-up character's boxes have them).
+    -- A made-up character with Mining (or Herbalism), so Find Minerals / Find Herbs and the
+    -- Unlearn cross are in the picture.
     { name = "professions", run = function()
         Shots.trackingShot = true
+        for key, c in pairs(ns.db.characters) do
+            if c.professions and (c.professions[186] or c.professions[182]) then
+                ns.UI.views.overview.showKey = key
+                break
+            end
+        end
         ns.UI.SelectTab("overview")
     end, after = function()
         Shots.trackingShot = nil
+        ns.UI.views.overview.showKey = nil
     end },
 }
 

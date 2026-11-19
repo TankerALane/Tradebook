@@ -114,7 +114,8 @@ local function fillBox(b, def, prof)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
     if b.unlearn then
-        b.unlearn:SetShown(learned and def.primary and ns.UI.CanUnlearn() and not ns.fake and true or false)
+        local shots = ns.Screenshots and ns.Screenshots.trackingShot -- /tb shots: show it in the picture
+        b.unlearn:SetShown(learned and def.primary and ns.UI.CanUnlearn() and (shots or not ns.fake) and true or false)
         b.unlearn.name, b.unlearn.skillLine = def and (L[def.name] or def.name), def and def.id
     end
     -- The profession's own spell (Alchemy, Smelting for Mining) drags from the box; a tracking
@@ -211,7 +212,8 @@ end
 
 function View:Refresh()
     if not self.frame then return end
-    local c = ns.char
+    -- (/tb shots can show another character: View.showKey.)
+    local c = (View.showKey and ns.db.characters[View.showKey]) or ns.char
     local slots = ns.Characters.ProfessionSlots(ns.Professions.list, c and c.professions)
     for i, b in ipairs(self.primary) do
         local s = slots.main[i]
