@@ -205,7 +205,7 @@ local function frameRect(frame)
     local top, bottom = frame:GetTop() * s, frame:GetBottom() * s
     -- include the bottom tabs (they hang below the frame) and the side tabs (right of it)
     bottom = bottom - 32 * s
-    right = right + 52 * s
+    right = right + 44 * s
     return { left = left / w, right = right / w, top = 1 - top / h, bottom = 1 - bottom / h }
 end
 
