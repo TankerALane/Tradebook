@@ -133,7 +133,8 @@ end
 
 local function initRow(row, c)
     row.data = c
-    local layout = View.layout or layoutFor(math.huge)
+    -- Width not known yet: the narrowest layout (never overlaps), not the wide one.
+    local layout = View.layout or LAYOUT_NARROWEST
     applyLayout(row, layout)
     local isMe = c.key == ns.charKey
     local coords = c.class and CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[c.class]
@@ -252,5 +253,9 @@ function View:Refresh()
         end
     end
     self.summary:SetText(#lines > 0 and table.concat(lines, "\n") or W.ColorText(W.GREY, L.MINIMAP_NONE))
+    -- The row layout from the list's width now (its size-change hook alone missed some
+    -- changes, leaving the wide layout on a narrow window: Hide/Delete over the professions).
+    local width = self.list:GetWidth()
+    if width and width > 0 then self.layout = layoutFor(width) end
     self.list:SetItems(Characters.List(ns.db, ns.charKey, ns.db.settings.showHidden))
 end
