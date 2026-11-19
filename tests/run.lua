@@ -913,6 +913,14 @@ test("trainers: services, recipes they teach, share round-trip", function()
         eq(T.RecipeSkill(2539), 10)
         eq(ns.Sources.Required(2539), 10, "trainer's skill beats the classic data")
         eq(T.Get(3399).name, "Zamja")
+        -- read without a recipe: it doesn't teach it (unknown recipe or other profession: no claim)
+        ns.db.recipes[9999] = { n = "Smoked Bear Meat", s = 185 }
+        ns.db.recipes[9998] = { n = "Linen Bag", s = 197 }
+        eq(T.Lacks(3399, 9999), true)
+        eq(T.Lacks(3399, 2539), false)
+        eq(T.Lacks(3399, 9998), false, "another profession")
+        eq(T.Lacks(3399, 12345), false, "recipe name unknown")
+        eq(T.Lacks(1, 9999), false, "never read")
         -- share text carries trainers and their services
         local text, nv, nt = ns.Share.Encode({}, "b", "v", ns.db.trainers)
         eq(nv, 0); eq(nt, 1)

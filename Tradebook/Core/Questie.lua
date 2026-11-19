@@ -336,8 +336,9 @@ function Questie.RecipeSources(recipeID)
     local seenTrainers = ns.Trainers.ForRecipe(recipeID)
     local trainerIDs, isSeen = {}, {}
     for npc in pairs(seenTrainers or {}) do trainerIDs[#trainerIDs + 1] = npc; isSeen[npc] = true end
+    -- (Left out: trainers whose window was read without it.)
     for _, npc in ipairs(type(s.t) == "table" and s.t or {}) do
-        if not isSeen[npc] then trainerIDs[#trainerIDs + 1] = npc end
+        if not isSeen[npc] and not ns.Trainers.Lacks(npc, recipeID) then trainerIDs[#trainerIDs + 1] = npc end
     end
     if not (#trainerIDs > 0 or #confirmed > 0 or #unconfirmed > 0) then return nil end
     local faction = Compat.Call("UnitFactionGroup", "player")

@@ -198,6 +198,20 @@ function Trainers.RecipeCost(recipeID)
     return best
 end
 
+-- Was trainer `npc`'s window read without `recipeID` in it? true only when it was read (with
+-- services) and the recipe's name is known and missing: the classic data that names it as a
+-- teacher is wrong for Forever (Godan doesn't teach Enchant Shield - Lesser Stamina).
+function Trainers.Lacks(npc, recipeID)
+    local t = Trainers.Get(npc)
+    local r = ns.db and ns.db.recipes and ns.db.recipes[recipeID]
+    if not (t and t.services and #t.services > 0 and r and r.n) then return false end
+    if r.s and t.skill and r.s ~= t.skill then return false end
+    for _, line in ipairs(t.services) do
+        if Trainers.ParseService(line) == r.n then return false end
+    end
+    return true
+end
+
 -- Does trainer `id` teach `rank`? true / false (opened, and it doesn't), nil (never opened).
 function Trainers.Teaches(id, rank)
     local t = Trainers.Get(id)

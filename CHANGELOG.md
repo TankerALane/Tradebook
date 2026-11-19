@@ -10,6 +10,7 @@
 
 ### Training
 - **Nearest trainers for your recipes**: clicking the skill bar now also shows the nearest trainers where you can learn new recipes at your current rank (Karolek in Orgrimmar for Journeyman Leatherworking), not only the trainers for the next rank, which can be far away (Expert Leatherworking: Thunder Bluff). It's shown first until you can train the next rank, and when you're at the top rank.
+- **Trainers that don't teach a recipe are left out**: a trainer whose window has been read (by you or the community) without a recipe is no longer listed under "Learn from" for it, even when the classic data names them (Godan in Thunder Bluff doesn't teach Enchant Shield - Lesser Stamina).
 
 ### Window
 - **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
@@ -17,8 +18,8 @@
 
 ### Data
 - 40 new vendors, among them Gina MacGregor, Christopher Hewen, Spackle Thornberry, Cylina Darkheart, Friz Frazzlespark, Paige Armstrong, Martha Wellsworth and Goren Grayfellow; also William MacGregor, Barkeep Morag, Nipsy, Homer Stonefield, Quartermaster Hudson and Vernon Hale. 541 vendors, 7,183 items.
-- New trainers: Flora Silverwind, Eldrin, Me'lynn, Lilyssia Nightbreeze (Alchemy), Alchemist Mallory and Herbalist Pomeroy (Elwynn Forest). 156 trainers, 2,467 services.
-- Disenchanting: 52 disenchants in 12 bands.
+- New trainers: Flora Silverwind, Eldrin, Me'lynn, Lilyssia Nightbreeze (Alchemy), Alchemist Mallory and Herbalist Pomeroy (Elwynn Forest), and Karolek (Orgrimmar) and Waldor (Leatherworking). 158 trainers, 2,532 services.
+- Disenchanting: 75 disenchants in 12 bands.
 
 ## v1.8.0
 
