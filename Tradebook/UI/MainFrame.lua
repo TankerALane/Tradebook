@@ -28,6 +28,20 @@ local SIDE_ICONS = {
 }
 local EXTRA_ICON = "Interface\\Icons\\INV_SideTab_Bank_c60"
 local sideTabs = {}
+-- The tab art is drawn smaller (SIDE_SCALE) with a bigger icon inside, so the box hugs the
+-- icon: on screen the icon stays SIDE_ICON * SIDE_SCALE (30) and the box shrinks around it.
+local SIDE_SCALE, SIDE_ICON = 0.75, 40
+local SIDE_TOP, SIDE_GAP = -60, 2 -- first tab's top below the window's top; space between (screen px)
+local SIDE_TUCK = 4 -- the selected tab is pushed in this far under the border: one piece with it
+
+-- Place a side tab at its row (tab.sideY), the selected one tucked in under the border.
+-- Offsets are in the tab's own scale.
+local function placeSideTab(tab)
+    if not (tab.sideY and frame) then return end
+    local x = (tab.key == current.tab) and -SIDE_TUCK or 0
+    tab:ClearAllPoints()
+    tab:SetPoint("TOPLEFT", frame, "TOPRIGHT", x / SIDE_SCALE, tab.sideY / SIDE_SCALE)
+end
 local MIN_W, MIN_H = 760, 500
 
 -- Extra tabs at the far right, added before the window is built (UI.AddTab). Tradebook itself
@@ -281,8 +295,12 @@ local function buildTabs()
         local tab = CreateFrame("Frame", nil, frame, "LargeSideTabButtonTemplate")
         tab.key = key
         tab.Icon:SetTexture(SIDE_ICONS[key] or EXTRA_ICON)
-        tab.Icon:SetSize(30, 30)
+        tab:SetScale(SIDE_SCALE)
+        tab.Icon:SetSize(SIDE_ICON, SIDE_ICON)
         tab.Icon:SetTexCoord(0.03125, 0.96875, 0.03125, 0.96875)
+        -- Under the window's border, so the selected tab (pushed in under it) looks joined to it.
+        local border = frame.NineSlice and frame.NineSlice:GetFrameLevel()
+        if border and border > 1 then tab:SetFrameLevel(border - 1) end
         tab:SetCustomOnMouseUpHandler(function(self, button, upInside)
             if button == "LeftButton" and upInside then UI.SelectTab(self.key, true) end
         end)
@@ -317,19 +335,15 @@ function UI.LayoutTabs()
         tab:Hide()
     end
     -- Side tabs down the right edge, top to bottom (an extra tab only while it applies).
-    local prevSide
+    local y = SIDE_TOP
     for _, tab in ipairs(sideTabs) do
         local extra = extraTabs[tab.key]
         local show = not (extra and extra.shown and not extra.shown())
         tab:SetShown(show)
         if show then
-            tab:ClearAllPoints()
-            if prevSide then
-                tab:SetPoint("TOPLEFT", prevSide, "BOTTOMLEFT", 0, -2)
-            else
-                tab:SetPoint("TOPLEFT", frame, "TOPRIGHT", 0, -60)
-            end
-            prevSide = tab
+            tab.sideY = y
+            placeSideTab(tab)
+            y = y - tab:GetHeight() * SIDE_SCALE - SIDE_GAP
         end
     end
     -- Profession tabs and Camp in the layout's order, without hidden ones (the open tab
@@ -404,7 +418,10 @@ function UI.UpdateTabs()
         if tab.key == current.tab then selected = i end
     end
     PanelTemplates_SetTab(frame, selected)
-    for _, tab in ipairs(sideTabs) do tab:SetChecked(tab.key == current.tab) end
+    for _, tab in ipairs(sideTabs) do
+        tab:SetChecked(tab.key == current.tab)
+        placeSideTab(tab)
+    end
     local counts = ns.Characters.ProfessionCounts(ns.db, ns.charKey)
     for _, tab in ipairs(tabs) do
         local text = tab.Text or tab:GetFontString()
