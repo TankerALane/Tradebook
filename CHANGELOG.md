@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Data
+- New vendors: Nerrist (Stranglethorn Vale), K'waii (Durotar), Kixxle (Wetlands) and Fizzix Boomshot. 547 vendors, 7,268 items.
+- New trainers: Una and Tarn (Leatherworking) and Bena Winterhoof (Alchemy) in Thunder Bluff, Arthur Moore (Leatherworking) and Doctor Herbert Halsey (Alchemy) in Undercity, and Yarr Hammerstone (Mining, Dun Morogh). 164 trainers, 2,764 services.
+- Disenchanting: 80 disenchants in 12 bands.
+
 ## v1.9.0
 
 ### Professions tab
