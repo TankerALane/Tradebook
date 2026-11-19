@@ -68,10 +68,11 @@ local function newBox(parent, iconSize)
     b:SetScript("OnDragStart", function(self)
         if self.spellID then ns.TrackingButton.Pickup(self.spellID) end
     end)
-    -- A second spell (Find Minerals for Mining): a small icon at the top right, dragged on its own.
+    -- The tracking spell (Find Herbs, Find Minerals): a smaller icon at the right, just above
+    -- the skill bar, dragged on its own.
     local extra = CreateFrame("Button", nil, b)
-    extra:SetSize(22, 22)
-    extra:SetPoint("TOPRIGHT", -8, -7)
+    extra:SetSize(26, 26)
+    extra:SetPoint("BOTTOMRIGHT", b.bar, "TOPRIGHT", 0, 3)
     extra.tex = extra:CreateTexture(nil, "ARTWORK")
     extra.tex:SetAllPoints()
     extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
@@ -100,9 +101,13 @@ local function fillBox(b, def, prof)
     b.name:SetShown(def ~= nil)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
-    local spells = learned and ns.TrackingButton.SpellsFor(def.id) or {}
-    b.spellID = spells[1] and spells[1].spellID or nil
-    local second = spells[2] and spells[2].spellID
+    -- The profession's own spell (Alchemy, Smelting for Mining) drags from the box; a tracking
+    -- spell (Find Herbs, Find Minerals) is a different thing: its own small icon.
+    local main, second
+    for _, s in ipairs(learned and ns.TrackingButton.SpellsFor(def.id) or {}) do
+        if s.tracking then second = second or s.spellID else main = main or s.spellID end
+    end
+    b.spellID = main
     b.extra.spellID = second
     b.extra:SetShown(second ~= nil)
     if second then
