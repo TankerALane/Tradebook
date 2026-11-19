@@ -60,6 +60,26 @@ local function standingName(value)
     return tostring(value)
 end
 
+-- The nearest trainers where you can learn new recipes now (up to your current cap): the
+-- trainers for the next rank are often farther away (Expert Leatherworking: Thunder Bluff).
+local function addRecipeTrainers(pane, skill, prof, faction, profName)
+    if not (prof and prof.max) then return end
+    pane:Add({ text = L.RANKUP_RECIPE_TRAINERS:format(profName), font = "GameFontNormal", color = W.GOLD })
+    local list = ns.Questie.RecipeTrainers(skill, prof.max, faction)
+    if #list == 0 then
+        pane:Add({ indent = 1, text = ns.Questie.Available() and L.RANKUP_NO_TRAINERS or L.RANKUP_NEED_QUESTIE,
+            color = W.GREY })
+    else
+        local unsure = false
+        for _, e in ipairs(list) do
+            npcLine(pane, e, 1, not e.confirmed and W.ColorText(W.GREY, L.RANKUP_GUESS) or nil)
+            if not e.confirmed then unsure = true end
+        end
+        if unsure then pane:Add({ indent = 1, text = L.RANKUP_UNCONFIRMED, color = W.GREY }) end
+    end
+    pane:Gap()
+end
+
 local function addTrainers(pane, skill, nextRank, faction, profName)
     pane:Add({ text = L.RANKUP_BY_TRAINER, font = "GameFontNormal", color = W.GOLD })
     local list = ns.Questie.RankTrainers(skill, nextRank.rank, faction)
@@ -227,6 +247,7 @@ function RankUp.Refresh()
         pane:Add({ text = prof and prof.max and prof.max >= 300 and L.RANKUP_ALL_DONE:format(W.ClassName(c), profName)
             or L.RANKUP_NOTHING, color = W.GREY })
         pane:Gap()
+        addRecipeTrainers(pane, skill, prof, c.faction, profName)
         addSpecs(pane, skill, c, isMe, profName)
         pane:Finish()
         return
@@ -237,6 +258,8 @@ function RankUp.Refresh()
     local who = W.ClassName(c)
     pane:Add({ text = L.RANKUP_RAISES:format(who, profName, nextRank.cap) })
     pane:Gap()
+    -- Not ready for the next rank yet: first, where to learn recipes now.
+    if not ready then addRecipeTrainers(pane, skill, prof, c.faction, profName) end
 
     -- Requirements.
     pane:Add({ text = L.RANKUP_REQUIREMENTS, font = "GameFontNormal", color = W.GOLD })

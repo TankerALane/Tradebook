@@ -8,6 +8,9 @@
 ### Leveling plan
 - **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.
 
+### Training
+- **Nearest trainers for your recipes**: clicking the skill bar now also shows the nearest trainers where you can learn new recipes at your current rank (Karolek in Orgrimmar for Journeyman Leatherworking), not only the trainers for the next rank, which can be far away (Expert Leatherworking: Thunder Bluff). It's shown first until you can train the next rank, and when you're at the top rank.
+
 ### Window
 - **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.

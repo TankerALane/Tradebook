@@ -471,6 +471,34 @@ function Questie.RankTrainers(skillLine, rank, faction)
     return out
 end
 
+-- Nearest trainers (friendly to `faction`) where a character with skill cap `cap` can learn
+-- new recipes: those teaching the rank of that cap or a higher one (an Expert trainer also
+-- teaches Journeyman recipes). Up to LIMIT, nearest first, with confirmed as in RankTrainers.
+local RANK_ORDER = { "Journeyman", "Expert", "Artisan" }
+local CAP_RANK = { [75] = 1, [150] = 1, [225] = 2, [300] = 3 }
+function Questie.RecipeTrainers(skillLine, cap, faction)
+    if not Questie.Available() then return {} end
+    local all, seen = {}, {}
+    for i = CAP_RANK[cap] or 1, #RANK_ORDER do
+        for _, e in ipairs(Questie.RankTrainers(skillLine, RANK_ORDER[i], faction)) do
+            local prev = seen[e.id]
+            if not prev then
+                seen[e.id] = e
+                all[#all + 1] = e
+            elseif e.confirmed then
+                prev.confirmed = true
+            end
+        end
+    end
+    table.sort(all, function(a, b)
+        if (a.distance ~= nil) ~= (b.distance ~= nil) then return a.distance ~= nil end
+        if a.distance and b.distance and a.distance ~= b.distance then return a.distance < b.distance end
+        return tostring(a.name) < tostring(b.name)
+    end)
+    for i = #all, LIMIT + 1, -1 do all[i] = nil end
+    return all
+end
+
 -- Race masks for the two factions (classic races).
 local ALLIANCE_RACES = 1 + 4 + 8 + 64   -- Human, Dwarf, Night Elf, Gnome
 local HORDE_RACES = 2 + 16 + 32 + 128   -- Orc, Undead, Tauren, Troll
