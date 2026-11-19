@@ -80,27 +80,14 @@ local function newBox(parent, iconSize)
         if self.spellID then ns.TrackingButton.Pickup(self.spellID) end
     end)
     -- The tracking spell (Find Herbs, Find Minerals): a smaller icon at the right, just above
-    -- the skill bar, dragged on its own.
-    local extra = CreateFrame("Button", nil, b)
+    -- the skill bar. Click to cast it (through a secure button laid over it out of combat,
+    -- UI/TrackingButton.lua), or drag it to an action bar.
+    local extra = ns.TrackingButton.Create(b)
     extra:SetSize(26, 26)
     extra:SetPoint("BOTTOMRIGHT", b.bar, "TOPRIGHT", 0, 3)
-    extra.tex = extra:CreateTexture(nil, "ARTWORK")
-    extra.tex:SetAllPoints()
+    extra.label:Hide()
     extra.tex:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     slotFrame(extra, extra.tex, 2)
-    extra:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD")
-    extra:RegisterForDrag("LeftButton")
-    extra:SetScript("OnDragStart", function(self) ns.TrackingButton.Pickup(self.spellID) end)
-    extra:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        if not pcall(GameTooltip.SetSpellByID, GameTooltip, self.spellID) then
-            GameTooltip:SetText(ns.Compat.Call("C_Spell.GetSpellName", self.spellID) or "?", 1, 1, 1)
-        end
-        GameTooltip:AddLine(L.OVERVIEW_DRAG_TIP, 0.2, 1, 0.2, true)
-        GameTooltip:Show()
-    end)
-    extra:SetScript("OnLeave", GameTooltip_Hide)
-    extra:Hide()
     b.extra = extra
     return b
 end
@@ -122,12 +109,7 @@ local function fillBox(b, def, prof)
         if s.tracking then second = second or s.spellID else main = main or s.spellID end
     end
     b.spellID = main
-    b.extra.spellID = second
-    b.extra:SetShown(second ~= nil)
-    if second then
-        b.extra.tex:SetTexture(ns.Compat.Call("C_Spell.GetSpellTexture", second)
-            or ns.Compat.Call("GetSpellTexture", second) or 134400)
-    end
+    b.extra:SetSpell(second and { spellID = second, cast = true, tracking = true } or nil, def and def.id)
     if not def then
         b.tip = { L.OVERVIEW_EMPTY_SLOT, L.OVERVIEW_EMPTY_TIP }
         b:SetScript("OnClick", nil)
