@@ -45,7 +45,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Shopping lists**, split into what to buy from a vendor and what to buy at the auction house.
 
 ### All your characters
-- **My professions**: open Tradebook (K) and see at a glance how many of your two main profession slots are used and which secondary professions you have.
+- **Professions tab**: press K and see at a glance your two primary profession slots and which secondary professions you have, like the game's Professions book.
 - Every character's professions, recipes, bags and bank, saved account-wide.
 - **"Who can craft…?"** search across all of them, and **Could learn it** for recipes nobody knows yet.
 - **Characters view**: who is next to rank up, missing recipes, stale-data warning.

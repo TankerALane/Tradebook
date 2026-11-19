@@ -8,8 +8,9 @@
 ### Leveling plan
 - **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.
 
-### My professions
-- **A new My professions tab**, like the Professions book: how many of your two main profession slots are used (and how many you can still learn), your secondary professions (Cooking, First Aid, Fishing) and which you don't have yet, with skill and rank. Click one to open it. Tradebook now opens on it when no profession window is open (the K key, the minimap button, /tb); turn that off in the options to open on the tab you had last.
+### Professions tab
+- **A new Professions tab**, like the game's Professions book: your two primary profession slots (a blank box while one is free) and your secondary professions (Cooking, First Aid, Fishing; greyed out until learned), each with a large icon, rank and skill bar. Click one to open it. Tradebook now opens on it when no profession window is open (the K key, the minimap button, /tb); turn that off in the options to open on the tab you had last.
+- **Side tabs**: Professions, Characters, Legacy and Vendors are now icon tabs down the right side of the window (their name shows when you hover over them), which leaves the bottom row to the professions.
 
 ### Training
 - **Nearest trainers for your recipes**: clicking the skill bar now also shows the nearest trainers where you can learn new recipes at your current rank (Karolek in Orgrimmar for Journeyman Leatherworking), not only the trainers for the next rank, which can be far away (Expert Leatherworking: Thunder Bluff). It's shown first until you can train the next rank, and when you're at the top rank.

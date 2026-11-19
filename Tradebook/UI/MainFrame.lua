@@ -1,7 +1,7 @@
 -- UI/MainFrame.lua
--- The Tradebook window: native portrait frame, header (global search, Characters,
--- Legacy, Default UI), a content inset that hosts one view at a time, and bottom tabs
--- for every profession plus Camp.
+-- The Tradebook window: native portrait frame, header (global search, Default UI), a content
+-- inset that hosts one view at a time, bottom tabs for every profession plus Camp, and icon
+-- tabs down the right side (Professions, Characters, Legacy, Vendors; name on hover).
 
 local _, ns = ...
 local L, W = ns.L, ns.W
@@ -18,6 +18,16 @@ local hideKeepsDefault = false
 local CAMP = "camp"
 local OVERVIEW, VENDORS, LEGACY, CHARACTERS = "overview", "vendors", "legacy", "characters" -- tabs at the far right
 local RIGHT_TABS = { [OVERVIEW] = true, [VENDORS] = true, [LEGACY] = true, [CHARACTERS] = true }
+-- The side tabs, top to bottom, and their icons (Forever's own side-tab art).
+local SIDE_ORDER = { OVERVIEW, CHARACTERS, LEGACY, VENDORS }
+local SIDE_ICONS = {
+    [OVERVIEW] = "Interface\\Icons\\INV_SideTab_Professions_c60",
+    [CHARACTERS] = "Interface\\Icons\\INV_SideTab_Stats_c60",
+    [LEGACY] = "Interface\\Icons\\INV_SideTab_Reputation2_c60",
+    [VENDORS] = "Interface\\Icons\\INV_SideTab_Currency_c60",
+}
+local EXTRA_ICON = "Interface\\Icons\\INV_SideTab_Bank_c60"
+local sideTabs = {}
 local MIN_W, MIN_H = 760, 500
 
 -- Extra tabs at the far right, added before the window is built (UI.AddTab). Tradebook itself
@@ -77,16 +87,11 @@ local function tabIDs()
     local ids = {}
     for _, p in ipairs(ns.Professions.list) do ids[#ids + 1] = p.id end
     ids[#ids + 1] = CAMP
-    ids[#ids + 1] = OVERVIEW
-    ids[#ids + 1] = VENDORS
-    ids[#ids + 1] = LEGACY
-    ids[#ids + 1] = CHARACTERS
-    for _, key in ipairs(extraOrder) do ids[#ids + 1] = key end
     return ids
 end
 
 local function tabTooltip(tab)
-    GameTooltip:SetOwner(tab, "ANCHOR_TOP")
+    GameTooltip:SetOwner(tab, RIGHT_TABS[tab.key] and "ANCHOR_RIGHT" or "ANCHOR_TOP")
     if extraTabs[tab.key] then
         GameTooltip:SetText(extraTabs[tab.key].label, 1, 1, 1)
         if extraTabs[tab.key].tooltip then GameTooltip:AddLine(extraTabs[tab.key].tooltip, 0.8, 0.8, 0.8, true) end
@@ -100,8 +105,10 @@ local function tabTooltip(tab)
         GameTooltip:AddLine(L.TAB_VENDORS_TIP, 0.8, 0.8, 0.8, true)
     elseif tab.key == LEGACY then
         GameTooltip:SetText(L.TAB_LEGACY, 1, 1, 1)
+        GameTooltip:AddLine(L.TAB_LEGACY_TIP, 0.8, 0.8, 0.8, true)
     elseif tab.key == CHARACTERS then
         GameTooltip:SetText(L.TAB_CHARACTERS, 1, 1, 1)
+        GameTooltip:AddLine(L.TAB_CHARACTERS_TIP, 0.8, 0.8, 0.8, true)
     else
         local p = ns.Professions.Get(tab.key)
         GameTooltip:SetText(L[p.name] or p.name, 1, 1, 1)
@@ -265,6 +272,24 @@ local function buildTabs()
     end
     frame.Tabs = tabs
     PanelTemplates_SetNumTabs(frame, #tabs)
+
+    -- Side tabs: an icon each, the name on hover.
+    local sideKeys = {}
+    for _, key in ipairs(SIDE_ORDER) do sideKeys[#sideKeys + 1] = key end
+    for _, key in ipairs(extraOrder) do sideKeys[#sideKeys + 1] = key end
+    for i, key in ipairs(sideKeys) do
+        local tab = CreateFrame("Frame", nil, frame, "LargeSideTabButtonTemplate")
+        tab.key = key
+        tab.Icon:SetTexture(SIDE_ICONS[key] or EXTRA_ICON)
+        tab.Icon:SetSize(30, 30)
+        tab.Icon:SetTexCoord(0.03125, 0.96875, 0.03125, 0.96875)
+        tab:SetCustomOnMouseUpHandler(function(self, button, upInside)
+            if button == "LeftButton" and upInside then UI.SelectTab(self.key, true) end
+        end)
+        tab:SetScript("OnEnter", tabTooltip)
+        tab:SetScript("OnLeave", GameTooltip_Hide)
+        sideTabs[i] = tab
+    end
 end
 
 -- Lay the visible tabs out along the bottom, shrinking them to fit the window width.
@@ -289,13 +314,22 @@ function UI.LayoutTabs()
     local visible, right, byKey = {}, {}, {}
     for _, tab in ipairs(tabs) do
         byKey[tab.key] = tab
-        if RIGHT_TABS[tab.key] then
-            local extra = extraTabs[tab.key]
-            local show = not (extra and extra.shown and not extra.shown())
-            tab:SetShown(show)
-            if show then right[#right + 1] = tab end
-        else
-            tab:Hide()
+        tab:Hide()
+    end
+    -- Side tabs down the right edge, top to bottom (an extra tab only while it applies).
+    local prevSide
+    for _, tab in ipairs(sideTabs) do
+        local extra = extraTabs[tab.key]
+        local show = not (extra and extra.shown and not extra.shown())
+        tab:SetShown(show)
+        if show then
+            tab:ClearAllPoints()
+            if prevSide then
+                tab:SetPoint("TOPLEFT", prevSide, "BOTTOMLEFT", 0, -2)
+            else
+                tab:SetPoint("TOPLEFT", frame, "TOPRIGHT", 0, -60)
+            end
+            prevSide = tab
         end
     end
     -- Profession tabs and Camp in the layout's order, without hidden ones (the open tab
@@ -335,8 +369,7 @@ function UI.LayoutTabs()
     local full = frame:GetWidth() - 16
     measure(false)
     if natural > full - rightWidth - GROUP_GAP then measure(true) end
-    -- Rows of profession tabs, all left of Vendors/Legacy/Characters (nothing sits under them:
-    -- a narrow window wraps onto more rows instead).
+    -- Rows of profession tabs (a narrow window wraps onto more rows).
     local avail = full - rightWidth - GROUP_GAP
     local rows = ns.util.WrapRows(widths, avail, avail, TAB_GAP)
     -- Narrowest the window can be: the right group plus two tabs in the first row.
@@ -360,26 +393,18 @@ function UI.LayoutTabs()
         end
     end
     UI.tabRows = #rows
-    -- Right group, laid out from the right edge inwards.
-    local nextTab
-    for i = #right, 1, -1 do
-        local tab = right[i]
-        tab:ClearAllPoints()
-        if nextTab then
-            tab:SetPoint("RIGHT", nextTab, "LEFT", -TAB_GAP, 0)
-        else
-            tab:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -8, 2)
-        end
-        nextTab = tab
-    end
 end
 
 function UI.UpdateTabs()
     if not frame then return end
-    -- Select first: PanelTemplates restyles every tab, then we color them.
+    -- Select first: PanelTemplates restyles every tab, then we color them. A side tab open:
+    -- no bottom tab is selected.
+    local selected = 0
     for i, tab in ipairs(tabs) do
-        if tab.key == current.tab then PanelTemplates_SetTab(frame, i) end
+        if tab.key == current.tab then selected = i end
     end
+    PanelTemplates_SetTab(frame, selected)
+    for _, tab in ipairs(sideTabs) do tab:SetChecked(tab.key == current.tab) end
     local counts = ns.Characters.ProfessionCounts(ns.db, ns.charKey)
     for _, tab in ipairs(tabs) do
         local text = tab.Text or tab:GetFontString()
