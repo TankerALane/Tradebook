@@ -1,7 +1,7 @@
 -- dev/TradebookDev/Minimap.lua
 -- A minimap button for the maintainer tools (LibDataBroker + LibDBIcon, which Tradebook
 -- ships; this addon depends on Tradebook so they're loaded first).
---   Left-click: open the heard window (only opens it; /tbdev notify stays as it is).
+--   Left-click: open or close the heard window (/tbdev notify stays as it is).
 --   Right-click: a menu: switch the options, open the windows, and run the tests.
 -- Position and shown/hidden in TradebookDevDB.minimap. /tbdev minimap shows it again.
 --
@@ -118,11 +118,11 @@ local function start()
         label = "Tradebook Dev",
         icon = ICON,
         OnClick = function(owner, button)
-            if button == "RightButton" then menu(owner) else Dev.ToggleHeard(true) end
+            if button == "RightButton" then menu(owner) else Dev.ToggleHeard() end
         end,
         OnTooltipShow = function(tooltip)
             tooltip:AddLine("Tradebook Dev", 0.85, 0.65, 0.29)
-            tooltip:AddLine("Left-click: heard from other players", 0.6, 0.8, 1)
+            tooltip:AddLine("Left-click: open or close heard from other players", 0.6, 0.8, 1)
             tooltip:AddLine("Right-click: options and tests", 0.6, 0.8, 1)
         end,
     })
