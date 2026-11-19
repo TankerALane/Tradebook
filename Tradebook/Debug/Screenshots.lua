@@ -15,7 +15,7 @@ Shots.DELAY = 1.5            -- seconds for the window to redraw before each pic
 Shots.WIDTH, Shots.HEIGHT = 1100, 640
 
 local TAILORING, LEATHERWORKING, ENGINEERING, COOKING = 197, 165, 202, 185
-local ENCHANTING, HERBALISM = 333, 182
+local ENCHANTING = 333
 local WHITE_LEATHER_JERKIN = 2163 -- dropped by two mobs, with recorded drop chances
 
 -- Show one recipe on a profession tab, even one the shown character doesn't know.
@@ -187,13 +187,13 @@ Shots.PLAN = {
         profession(TAILORING)()
         ns.PlannerUI.Show(ns.charKey, TAILORING)
     end, after = function() ns.PlannerUI.Hide() end },
-    -- Find Herbs on the Herbalism tab (drag to an action bar).
-    { name = "gathering", run = function()
+    -- The Professions tab (what K opens): primary and secondary professions, with the spells to
+    -- drag (shown as known, so the made-up character's boxes have them).
+    { name = "professions", run = function()
         Shots.trackingShot = true
-        ns.UI.SelectTab(HERBALISM)
+        ns.UI.SelectTab("overview")
     end, after = function()
         Shots.trackingShot = nil
-        ns.UI.views.profession:Refresh()
     end },
 }
 
@@ -203,8 +203,9 @@ local function frameRect(frame)
     local w, h = UIParent:GetWidth(), UIParent:GetHeight()
     local left, right = frame:GetLeft() * s, frame:GetRight() * s
     local top, bottom = frame:GetTop() * s, frame:GetBottom() * s
-    -- include the bottom tabs (they hang below the frame)
+    -- include the bottom tabs (they hang below the frame) and the side tabs (right of it)
     bottom = bottom - 32 * s
+    right = right + 52 * s
     return { left = left / w, right = right / w, top = 1 - top / h, bottom = 1 - bottom / h }
 end
 

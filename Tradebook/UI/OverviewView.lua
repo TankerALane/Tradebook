@@ -120,7 +120,9 @@ local function fillBox(b, def, prof)
     -- The profession's own spell (Alchemy, Smelting for Mining) drags from the box; a tracking
     -- spell (Find Herbs, Find Minerals) is a different thing: its own small icon.
     local main, second
-    for _, s in ipairs(learned and ns.TrackingButton.SpellsFor(def.id) or {}) do
+    -- (/tb shots: every spell counts as known, so the made-up characters' boxes show them.)
+    local known = ns.Screenshots and ns.Screenshots.trackingShot and function() return true end or nil
+    for _, s in ipairs(learned and ns.TrackingButton.SpellsFor(def.id, known) or {}) do
         if s.tracking then second = second or s.spellID else main = main or s.spellID end
     end
     b.spellID = main
