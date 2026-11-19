@@ -431,7 +431,7 @@ function UI.UpdateTabs()
     end
 end
 
--- Select a bottom tab. fromClick: a real click (allowed to open the profession).
+-- Select a tab (a profession you have also opens in the game). fromClick: a real click.
 -- Browse every recipe of a profession none of your characters have (or go back to its
 -- guide page). Remembered per profession.
 function UI.SetBrowse(skillLineID, on)
@@ -463,9 +463,14 @@ function UI.SelectTab(key, fromClick)
         showView("characters")
     else
         local mine = ns.char and ns.char.professions[key]
-        if fromClick and mine then ns.Crafting.OpenProfession(key) end
         local browse = ns.db.settings.browse and ns.db.settings.browse[key]
         local linked = UI.pendingLinked and UI.pendingLinked.skill == key
+        -- Switching to a profession you have opens it in the game too (so Craft works), from
+        -- any switch, not only a tab click; but not over another player's linked profession
+        -- being shown (unless you clicked the tab).
+        if mine and not linked and (fromClick or not ns.Takeover.IsForeignView()) then
+            ns.Crafting.OpenProfession(key)
+        end
         if #ns.Characters.WithProfession(ns.db, key, ns.charKey) == 0 and not browse and not linked then
             showView("guide", key)
         else
