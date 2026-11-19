@@ -113,13 +113,18 @@ end
 
 -- Scrolling list using the modern ScrollBox. initializer(frame, data) styles each row;
 -- create(frame) builds a row once.
+-- rowHeight: a number, or function(data) -> the height of that row.
 function W.List(parent, rowHeight, create, initializer)
     local box = CreateFrame("Frame", nil, parent, "WowScrollBoxList")
     local bar = CreateFrame("EventFrame", nil, parent, "MinimalScrollBar")
     bar:SetPoint("TOPLEFT", box, "TOPRIGHT", 4, 0)
     bar:SetPoint("BOTTOMLEFT", box, "BOTTOMRIGHT", 4, 0)
     local view = CreateScrollBoxListLinearView()
-    view:SetElementExtent(rowHeight)
+    if type(rowHeight) == "function" then
+        view:SetElementExtentCalculator(function(_, data) return rowHeight(data) end)
+    else
+        view:SetElementExtent(rowHeight)
+    end
     view:SetElementInitializer("Button", function(frame, data)
         if not frame.built then
             frame.built = true

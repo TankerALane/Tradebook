@@ -12,7 +12,8 @@ ns.UI.RegisterView("overview", View)
 
 local RANK_OF_CAP = { [75] = "Apprentice", [150] = "Journeyman", [225] = "Expert", [300] = "Artisan" }
 local PAD, GAP, HEADER_H = 12, 10, 26
-local PRIMARY_H, SECONDARY_H = 96, 84
+local PRIMARY_H, SECONDARY_H = 70, 58
+local PRIMARY_MAX_W, SECONDARY_MAX_W = 300, 230 -- boxes don't stretch across a wide window
 local PRIMARY_ICON, SECONDARY_ICON = 52, 40
 
 local BACKDROP = {
@@ -32,18 +33,19 @@ local function newBox(parent, iconSize)
     b:GetHighlightTexture():SetAlpha(0.35)
     b.icon = b:CreateTexture(nil, "ARTWORK")
     b.icon:SetSize(iconSize, iconSize)
-    b.icon:SetPoint("LEFT", 12, 0)
+    b.icon:SetPoint("LEFT", 9, 0)
     b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-    b.name = W.Text(b, "GameFontNormalLarge")
-    b.name:SetPoint("TOPLEFT", b.icon, "TOPRIGHT", 12, -2)
+    -- Smaller boxes (secondary) get a smaller name, so name, rank and bar fit beside the icon.
+    b.name = W.Text(b, iconSize >= 48 and "GameFontNormalLarge" or "GameFontNormal")
+    b.name:SetPoint("TOPLEFT", b.icon, "TOPRIGHT", 10, 0)
     b.name:SetPoint("RIGHT", -10, 0)
     b.rank = W.Text(b, "GameFontHighlightSmall")
-    b.rank:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -4)
+    b.rank:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -2)
     b.bar = CreateFrame("StatusBar", nil, b)
     b.bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     b.bar:SetStatusBarColor(0.0, 0.45, 0.85)
     b.bar:SetHeight(12)
-    b.bar:SetPoint("BOTTOMLEFT", b.icon, "BOTTOMRIGHT", 12, 0)
+    b.bar:SetPoint("BOTTOMLEFT", b.icon, "BOTTOMRIGHT", 10, 0)
     b.bar:SetPoint("RIGHT", -14, 0)
     b.bar.bg = b.bar:CreateTexture(nil, "BACKGROUND")
     b.bar.bg:SetAllPoints()
@@ -118,8 +120,8 @@ function View:Build(parent)
 end
 
 -- Boxes in rows of `perRow`, `height` tall, from y down; returns the y below them.
-local function placeRow(f, boxes, perRow, height, y)
-    local width = (f:GetWidth() - 2 * PAD - (perRow - 1) * GAP) / perRow
+local function placeRow(f, boxes, perRow, height, y, maxWidth)
+    local width = math.min(maxWidth, (f:GetWidth() - 2 * PAD - (perRow - 1) * GAP) / perRow)
     for i, b in ipairs(boxes) do
         local col, row = (i - 1) % perRow, math.floor((i - 1) / perRow)
         b:ClearAllPoints()
@@ -136,10 +138,11 @@ function View:Layout()
     local y = -PAD
     self.primaryHeader:ClearAllPoints()
     self.primaryHeader:SetPoint("TOPLEFT", PAD, y)
-    y = placeRow(f, self.primary, #self.primary, PRIMARY_H, y - HEADER_H) - 2 * GAP
+    y = placeRow(f, self.primary, #self.primary, PRIMARY_H, y - HEADER_H, PRIMARY_MAX_W) - 2 * GAP
     self.secondaryHeader:ClearAllPoints()
     self.secondaryHeader:SetPoint("TOPLEFT", PAD, y)
-    y = placeRow(f, self.secondary, math.max(1, #self.secondary), SECONDARY_H, y - HEADER_H) - 2 * GAP
+    y = placeRow(f, self.secondary, math.max(1, #self.secondary), SECONDARY_H, y - HEADER_H,
+        SECONDARY_MAX_W) - 2 * GAP
     self.note:ClearAllPoints()
     self.note:SetPoint("TOPLEFT", PAD, y)
     self.note:SetPoint("RIGHT", -PAD, 0)

@@ -17,6 +17,7 @@
 - **Trainers that don't teach a recipe are left out**: a trainer whose window has been read (by you or the community) without a recipe is no longer listed under "Learn from" for it, even when the classic data names them (Godan in Thunder Bluff doesn't teach Enchant Shield - Lesser Stamina).
 
 ### Window
+- **Characters tab**: a character with five professions (two primary, three secondary) no longer has its last one run into the next character: each row is as tall as its list.
 - **Shift-click into the auction house search**: while you're typing in the auction house's search box (or Auctionator's, or any other search box), shift-clicking an item in Tradebook puts its name there instead of linking it in chat, like your bags do.
 - With the window narrowed all the way, profession tabs (and Camp) no longer sit under the Vendors, Legacy and Characters tabs: they wrap onto another row instead.
 

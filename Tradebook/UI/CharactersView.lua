@@ -10,6 +10,18 @@ local View = {}
 ns.UI.RegisterView("characters", View)
 
 local SUMMARY_WIDTH = 280
+local ROW_MIN = 74 -- icon, name, two info lines and the buttons (narrow layout)
+local PROF_LINE = 16 -- one profession line (font + spacing), rounded up
+
+-- A character's row: tall enough for every profession line (two primary and three secondary
+-- need more than the minimum; a fixed height let them run into the next row).
+local function rowHeight(c)
+    local n = 0
+    for _, p in ipairs(ns.Professions.list) do
+        if c.professions and c.professions[p.id] then n = n + 1 end
+    end
+    return math.max(ROW_MIN, 6 + n * PROF_LINE + 8)
+end
 
 -- Row layout. Wide: name and info on one line each, professions 236 past the icon, then
 -- the "not learned" column and Hide/Delete at the right. Narrow (the row can't hold all
@@ -202,7 +214,7 @@ function View:Build(parent)
     self.summary:SetJustifyV("TOP")
     self.summary:SetSpacing(3)
 
-    self.list = W.List(f, 74, createRow, initRow)
+    self.list = W.List(f, rowHeight, createRow, initRow)
     self.list:SetPoint("TOPLEFT", SUMMARY_WIDTH, -40)
     self.list:SetPoint("BOTTOMRIGHT", -22, 8)
     self.list:HookScript("OnSizeChanged", function(_, width)
