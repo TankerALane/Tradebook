@@ -9,7 +9,7 @@
 - **A sure path to the cap**: the plan now uses orange recipes (a skill-up every craft) wherever one can give the point, even when a yellow or green one would be cheaper on average, so following it gets you there with the crafts it lists. Only where no orange recipe is left does it use a yellow or green one; those steps say "craft about" and are marked as not a sure skill-up.
 
 ### Professions tab
-- **A new Professions tab**, like the game's Professions book: your two primary profession slots (a blank box while one is free) and your secondary professions (Cooking, First Aid, Fishing; greyed out until learned), each with a large icon, rank and skill bar. Click one to open it. Tradebook now opens on it when no profession window is open (the K key, the minimap button, /tb); turn that off in the options to open on the tab you had last.
+- **A new Professions tab**, like the game's Professions book: your two primary profession slots (a blank box while one is free) and your secondary professions (Cooking, First Aid, Fishing; greyed out until learned), each with a large icon, rank and skill bar. Click one to open it, or drag it to an action bar for its spell (Alchemy, Smelting, Find Herbs...). Tradebook now opens on it when no profession window is open (the K key, the minimap button, /tb); turn that off in the options to open on the tab you had last.
 - **Side tabs**: Professions, Characters, Legacy and Vendors are now icon tabs down the right side of the window (their name shows when you hover over them), which leaves the bottom row to the professions.
 
 ### Training

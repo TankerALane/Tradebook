@@ -227,6 +227,7 @@ L.OVERVIEW_CAN_LEARN = "You can learn %d more primary profession(s) at a trainer
 L.OVERVIEW_NOT_LEARNED = "Not learned"
 L.OVERVIEW_NOT_LEARNED_TIP = "Not learned on this character. Click to see where to learn it."
 L.OVERVIEW_OPEN_TIP = "Click to open this profession."
+L.OVERVIEW_DRAG_TIP = "Drag to an action bar to put its spell there."
 L.TAB_VENDORS = "Vendors"
 L.TAB_VENDORS_TIP = "Find any item a vendor sells: nearest vendor, price, and a waypoint."
 L.VENDORS_TITLE = "Vendors"

@@ -83,6 +83,9 @@ local function pickup(spellID)
     end
 end
 
+-- Put a spell on the cursor (to drop on an action bar).
+TrackingButton.Pickup = pickup
+
 local function showTooltip(owner, icon)
     local spellID = icon.spellID
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")

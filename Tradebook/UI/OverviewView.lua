@@ -62,6 +62,12 @@ local function newBox(parent, iconSize)
         GameTooltip:Show()
     end)
     b:SetScript("OnLeave", GameTooltip_Hide)
+    -- Drag the box to an action bar: the profession's spell (Alchemy, Smelting for Mining,
+    -- Find Herbs for Herbalism...), when this character knows one.
+    b:RegisterForDrag("LeftButton")
+    b:SetScript("OnDragStart", function(self)
+        if self.spellID then ns.TrackingButton.Pickup(self.spellID) end
+    end)
     return b
 end
 
@@ -73,6 +79,8 @@ local function fillBox(b, def, prof)
     b.name:SetShown(def ~= nil)
     b.rank:SetShown(def ~= nil)
     b.bar:SetShown(learned and true or false)
+    local spell = learned and ns.TrackingButton.SpellsFor(def.id)[1]
+    b.spellID = spell and spell.spellID or nil
     if not def then
         b.tip = { L.OVERVIEW_EMPTY_SLOT, L.OVERVIEW_EMPTY_TIP }
         b:SetScript("OnClick", nil)
@@ -93,6 +101,7 @@ local function fillBox(b, def, prof)
         b.bar:SetValue(prof.rank or 0)
         b.bar.text:SetText(L.SKILL_RANK:format(prof.rank or 0, prof.max or 0))
         b.tip = { name, L.OVERVIEW_OPEN_TIP }
+        if b.spellID then b.tip[#b.tip + 1] = W.ColorText(W.GREEN, L.OVERVIEW_DRAG_TIP) end
     else
         b.name:SetTextColor(W.GREY:GetRGB())
         b.rank:SetText(W.ColorText(W.GREY, L.OVERVIEW_NOT_LEARNED))
