@@ -6,9 +6,9 @@
 - **Questie's vendor lists are checked against real vendor windows**: when a vendor's window has been read (by you, in the community data, or by 2+ players sharing in game) and an item isn't in it, Questie's claim that the vendor sells it is no longer shown (e.g. Burkrum in Ashenvale doesn't sell Razor Arrow). Recipes and items with limited stock are kept, since they may just have been sold out.
 
 ### Data
-- New vendors: Nerrist (Stranglethorn Vale), K'waii (Durotar), Kixxle (Wetlands) and Fizzix Boomshot. 547 vendors, 7,268 items.
-- New trainers: Una and Tarn (Leatherworking) and Bena Winterhoof (Alchemy) in Thunder Bluff, Arthur Moore (Leatherworking) and Doctor Herbert Halsey (Alchemy) in Undercity, and Yarr Hammerstone (Mining, Dun Morogh). 164 trainers, 2,764 services.
-- Disenchanting: 80 disenchants in 12 bands.
+- New vendors: Nerrist and Nargatt (Stranglethorn Vale), K'waii, Kzan Thornslash, Uhgar, Jark, Flakk, Tai'tasi and Trayexir (Durotar), Kixxle and Naela Trance (Wetlands), Jin'sora (Orgrimmar), Tamelyn Aldridge (Redridge Mountains) and Fizzix Boomshot. 557 vendors, 7,382 items.
+- New trainers: Una and Tarn (Leatherworking) and Bena Winterhoof (Alchemy) in Thunder Bluff, Arthur Moore (Leatherworking) and Doctor Herbert Halsey (Alchemy) in Undercity, Yarr Hammerstone (Mining, Dun Morogh), Simon Tanner (Leatherworking, Stormwind), and Cook Torka (Cooking) and Rawrk (First Aid) in Durotar. 167 trainers, 2,839 services.
+- Disenchanting: 83 disenchants in 12 bands.
 
 ## v1.9.0
 
