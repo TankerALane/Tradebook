@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Data
+- New vendors: Llana and Shandrina (Ashenvale), Brak Durnad, Brahnmar and Falkan Armonis (Wetlands), Nina Surefire and Alynsia (Redridge Mountains), Sergeant De Vries (Elwynn Forest), Morg Gnarltree (Duskwood), the Defias Profiteer (Westfall), Keeg Gibn (Dun Morogh), Hai'zan (Durotar), Craig Nollward (Dustwallow Marsh), Mai'Lahii (Desolace) and Valaden Silverblade (Alterac Mountains). 572 vendors, 7,642 items.
+- New trainers: Telonis (Leatherworking, Darnassus), Therum Deepforge (Blacksmithing, Stormwind) and Rand Rhobart (Skinning, Tirisfal Glades). 170 trainers, 2,968 services.
+- Disenchanting: 102 disenchants in 12 bands.
+
 ## v1.9.1
 
 ### Vendors
