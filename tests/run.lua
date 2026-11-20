@@ -836,6 +836,17 @@ test("vendor database: sources merge, scanned first", function()
     eq(rec.vendors[12].source, "questie")
     eq(rec.vendors[12].price, 10, "game data price")
     eq(rec.vendors[12].priceSeen, false)
+    -- a vendor whose window was read and didn't have the item: Questie's claim is dropped
+    local it2 = {}
+    V.AddSaved(it2, { [6028] = { name = "Burkrum", items = { [2448] = { n = "Heavy Mithril Gauntlet", p = 1, s = -1 } } } },
+        "community")
+    local q = { { itemID = 3030, name = "Razor Arrow", vendors = { 6028, 12 } },
+        { itemID = 5000, name = "Limited", vendors = { 6028 } }, { itemID = 5001, name = "Only Burkrum", vendors = { 6028 } } }
+    V.AddQuestie(it2, q, nil, { [6028] = true }, function(id) return id == 5000 end)
+    eq(it2[3030].vendors[6028], nil, "read window without it: dropped")
+    eq(it2[3030].vendors[12].source, "questie", "unread vendor kept")
+    eq(it2[5000].vendors[6028].source, "questie", "limited stock / recipe: may be sold out, kept")
+    eq(it2[5001], nil, "no item left without vendors")
     -- filters
     eq(V.RowPasses({ zone = "Durotar", price = 1 }, { zone = "Barrens" }), false)
     eq(V.RowPasses({ friendly = false }, { friendlyOnly = true }), false)

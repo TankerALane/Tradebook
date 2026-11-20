@@ -43,16 +43,22 @@ end
 
 -- PURE. Add QuestieDB's vendor lists ({ { itemID, name, vendors = { npcID } } }) with the
 -- game's buy price (prices[itemID]).
-function VendorDB.AddQuestie(items, index, prices)
+-- windows: { [npcID] = true } for vendors whose window was read (your scans, the community data,
+-- shares 2+ players agree on). Questie's claim that such a vendor sells an item is dropped when
+-- the window didn't have it (Burkrum and Razor Arrow), unless mayBeOut(itemID): limited stock
+-- (or a recipe) can be sold out when the window was read.
+function VendorDB.AddQuestie(items, index, prices, windows, mayBeOut)
     for _, q in ipairs(index or {}) do
         local rec = items[q.itemID]
-        if not rec then
-            rec = { itemID = q.itemID, name = q.name, vendors = {} }
-            items[q.itemID] = rec
-        end
-        rec.name = rec.name or q.name
+        local readOut = windows and not (mayBeOut and mayBeOut(q.itemID))
         for _, npc in ipairs(q.vendors) do
-            if not rec.vendors[npc] and not (ns.NotInForever and ns.NotInForever[npc]) then
+            if not (rec and rec.vendors[npc]) and not (ns.NotInForever and ns.NotInForever[npc])
+                and not (readOut and windows[npc]) then
+                if not rec then
+                    rec = { itemID = q.itemID, name = q.name, vendors = {} }
+                    items[q.itemID] = rec
+                end
+                rec.name = rec.name or q.name
                 rec.vendors[npc] = { npcID = npc, source = "questie", price = prices and prices[q.itemID],
                     priceSeen = false }
             end
@@ -84,7 +90,25 @@ function VendorDB.Items()
     VendorDB.AddSaved(items, scanned, "scanned")
     VendorDB.AddSaved(items, ns.CommunityVendors, "community")
     VendorDB.AddSaved(items, ns.Net and ns.Net.HeardVendors() or {}, "players")
-    VendorDB.AddQuestie(items, questieIndex, ns.ItemBuyPrice)
+    -- Vendors whose window was read, and items seen with limited stock somewhere.
+    local windows, limited = {}, {}
+    local function read(vendors, needAgree)
+        for npc, e in pairs(vendors or {}) do
+            if not needAgree or (e.agree or 1) >= 2 then windows[npc] = true end
+            for itemID, it in pairs(e.items or {}) do
+                if it.s and it.s >= 0 then limited[itemID] = true end
+            end
+        end
+    end
+    read(scanned)
+    read(ns.CommunityVendors)
+    read(ns.Net and ns.Net.HeardVendors() or {}, true)
+    local function mayBeOut(itemID)
+        if limited[itemID] then return true end
+        local _, _, _, _, _, classID = Compat.Call("C_Item.GetItemInfoInstant", itemID)
+        return classID == 9 -- Recipe
+    end
+    VendorDB.AddQuestie(items, questieIndex, ns.ItemBuyPrice, windows, mayBeOut)
     cache, cacheKey = items, key
     return items
 end
