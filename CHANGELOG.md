@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.9.1
 
 ### Vendors
 - **Questie's vendor lists are checked against real vendor windows**: when a vendor's window has been read (by you, in the community data, or by 2+ players sharing in game) and an item isn't in it, Questie's claim that the vendor sells it is no longer shown (e.g. Burkrum in Ashenvale doesn't sell Razor Arrow). Recipes and items with limited stock are kept, since they may just have been sold out.
