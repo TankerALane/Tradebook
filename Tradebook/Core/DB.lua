@@ -37,7 +37,7 @@ DB.DEFAULTS = {
         filters = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
             unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false,
             unlearnedNoFavor = false, -- hide recipes only bought with Merchant's Favor
-            haveMats = false, haveMatsExVendor = false, skillup = false,
+            haveMats = false, haveMatsExVendor = false, skillup = false, itemUsable = false,
             skillupColors = { true, true, true } }, -- orange, yellow, green
         crossFaction = false, -- combine Alliance and Horde characters (Characters.SameSide)
         listOrder = "game", -- recipe list order: "game" (like the default window) | "az"

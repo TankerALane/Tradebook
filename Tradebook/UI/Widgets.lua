@@ -9,6 +9,15 @@ ns.W = W
 
 -- Brand accents: warm gold and brown (Tradebook icon).
 W.GOLD = CreateColor(0.85, 0.65, 0.29)
+
+-- An item quality's name in its colour ("Uncommon" in green), for rarity filters.
+local QUALITY_FALLBACK = { [0] = "Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary" }
+function W.QualityName(q)
+    local name = _G["ITEM_QUALITY" .. q .. "_DESC"] or QUALITY_FALLBACK[q]
+    local c = _G.ITEM_QUALITY_COLORS and _G.ITEM_QUALITY_COLORS[q]
+    return c and c.hex and (c.hex .. name .. "|r") or name
+end
+W.MAX_LEVEL, W.LEVEL_STEP = 60, 5 -- required level filters, in steps like the auction house's
 W.BROWN = CreateColor(0.45, 0.30, 0.16)
 W.GREY = CreateColor(0.5, 0.5, 0.5)
 W.RED = CreateColor(1, 0.3, 0.3)

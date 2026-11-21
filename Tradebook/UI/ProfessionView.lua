@@ -256,6 +256,11 @@ function View:BuildItems()
         return nil
     end
 
+    local itemFilter
+    if f.itemUsable or f.itemQuality or f.itemMinLevel or f.itemMaxLevel then
+        itemFilter = { usable = f.itemUsable or nil, quality = f.itemQuality or nil,
+            minLevel = f.itemMinLevel or nil, maxLevel = f.itemMaxLevel or nil }
+    end
     for _, id in ipairs(Recipes.ForProfession(db, self.skill)) do
         local r = db.recipes[id]
         if r.n and r.n ~= "" and (not self.query or ns.util.Matches(r.n, self.query)) then
@@ -313,6 +318,22 @@ function View:BuildItems()
                     end
                 end
             end
+            -- The crafted item: usable by you, rarity, required level (a recipe that makes no
+            -- item, like an enchant, is left out while one of these is chosen).
+            if keep and itemFilter then
+                if not r.o then
+                    keep = false
+                else
+                    local info = {}
+                    if itemFilter.quality or itemFilter.minLevel or itemFilter.maxLevel then
+                        local name, _, quality, _, level = Compat.Call("C_Item.GetItemInfo", r.o)
+                        if not name then Compat.Call("C_Item.RequestLoadItemDataByID", r.o) end
+                        info.quality, info.level = quality, level
+                    end
+                    if itemFilter.usable then info.usable = ns.VendorDB.Usable(r.o) end
+                    keep = ns.VendorDB.ItemPasses(info, itemFilter)
+                end
+            end
             local near = keep and byDistance and not learned and ns.Questie.RecipeSources(id)
             if near and near.best then
                 item.distance = near.best.distance
@@ -367,7 +388,8 @@ end
 -- Filters, with the defaults the red X on the Filter button restores.
 local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
     unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false, unlearnedNoFavor = false,
-    haveMats = false, haveMatsExVendor = false, skillup = false }
+    haveMats = false, haveMatsExVendor = false, skillup = false,
+    itemUsable = false, itemQuality = false, itemMinLevel = false, itemMaxLevel = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -463,6 +485,32 @@ local function buildFilterMenu(_, root)
             View:RefreshList()
         end)
         indent(item) -- under "Gives skill-ups"
+    end
+    -- The crafted item, like the auction house's filters.
+    root:CreateDivider()
+    root:CreateTitle(L.FILTER_ITEM_TITLE)
+    add(L.VENDOR_FILTER_USABLE, "itemUsable")
+    local quality = root:CreateButton(L.VENDOR_FILTER_QUALITY)
+    local function qualityRadio(text, value)
+        quality:CreateRadio(text, function() return (f.itemQuality or false) == value end, function()
+            f.itemQuality = value
+            View:RefreshList()
+        end)
+    end
+    qualityRadio(L.VENDOR_ANY, false)
+    for q = 0, 5 do qualityRadio(W.QualityName(q), q) end
+    local level = root:CreateButton(L.VENDOR_LEVEL)
+    local function levelRadio(text, lo, hi)
+        level:CreateRadio(text, function() return (f.itemMinLevel or false) == lo and (f.itemMaxLevel or false) == hi end,
+            function()
+                f.itemMinLevel, f.itemMaxLevel = lo, hi
+                View:RefreshList()
+            end)
+    end
+    levelRadio(L.VENDOR_ANY, false, false)
+    for lo = 1, W.MAX_LEVEL, W.LEVEL_STEP do
+        local hi = math.min(W.MAX_LEVEL, lo + W.LEVEL_STEP - 1)
+        levelRadio(L.VENDOR_LEVEL_RANGE:format(lo, hi), lo, hi)
     end
     -- List order and the profit column (not filters, but this is where the list's options live).
     root:CreateDivider()

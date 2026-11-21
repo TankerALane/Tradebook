@@ -28,12 +28,7 @@ local function filters()
     return s.vendorFilters
 end
 
-local QUALITY_FALLBACK = { [0] = "Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary" }
-local function qualityName(q)
-    local name = _G["ITEM_QUALITY" .. q .. "_DESC"] or QUALITY_FALLBACK[q]
-    local c = _G.ITEM_QUALITY_COLORS and _G.ITEM_QUALITY_COLORS[q]
-    return c and c.hex and (c.hex .. name .. "|r") or name
-end
+local qualityName = W.QualityName
 
 local function className(id)
     return Compat.Call("C_Item.GetItemClassInfo", id) or Compat.Call("GetItemClassInfo", id) or ("#" .. id)

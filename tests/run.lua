@@ -868,6 +868,9 @@ test("vendor database: sources merge, scanned first", function()
     eq(V.RowPasses({ source = "questie" }, { source = "scanned" }), false)
     -- item filters, like the auction house's
     eq(V.ItemPasses({ class = 2 }, {}), true)
+    eq(V.ItemPasses({ level = 0 }, { minLevel = 1, maxLevel = 5 }), true, "no level needed counts as level 1")
+    eq(V.ItemPasses({ level = 12 }, { minLevel = 1, maxLevel = 5 }), false)
+    eq(V.ItemPasses({ quality = 2 }, { quality = 3 }), false, "rarity at least")
     -- cheaper at the auction house than a vendor pays: Light Leather sells for 15c
     local A = { [2318] = 10, [2319] = 30, [2589] = 5, [4306] = 20, [9999] = 1 }
     local S = { [2318] = 15, [2319] = 20, [2589] = 1, [4306] = 60, [9999] = 50 }

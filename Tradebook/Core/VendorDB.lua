@@ -220,8 +220,9 @@ function VendorDB.ItemPasses(info, f)
     if f.quality and not (info.quality and info.quality >= f.quality) then return false end
     if f.minLevel or f.maxLevel then
         if not info.level then return false end
-        if f.minLevel and info.level < f.minLevel then return false end
-        if f.maxLevel and info.level > f.maxLevel then return false end
+        local level = math.max(1, info.level) -- no level needed (0) counts as level 1
+        if f.minLevel and level < f.minLevel then return false end
+        if f.maxLevel and level > f.maxLevel then return false end
     end
     if f.usable and info.usable ~= true then return false end
     return true
@@ -262,6 +263,11 @@ end
 
 -- Forget what was usable (level up, new skill or recipe).
 function VendorDB.ForgetUsable() usableCache = {} end
+if ns.On then
+    for _, event in ipairs({ "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED", "NEW_RECIPE_LEARNED", "LEARNED_SPELL_IN_TAB" }) do
+        ns.On(event, VendorDB.ForgetUsable)
+    end
+end
 
 -- The item filter for Search, or nil when no item filter is chosen: passes(itemID).
 local function itemFilter(opts)

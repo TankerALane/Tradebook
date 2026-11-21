@@ -12,6 +12,7 @@
 - **K opens on Professions**: a new option. On (the default), the K key opens Tradebook on the Professions tab as before. Off, K opens it on the tab you had open last (or on the profession whose window is open).
 
 ### Recipe list
+- **Crafted item filters**: the recipe list's Filter menu can now narrow recipes by what they make, like the auction house: **only items this character can use**, **rarity** (at least) and **required level** (in steps of 5). Recipes that make no item, like enchants, are left out while one of these is chosen.
 - **Have materials > Except vendor items**: a new filter option that shows the recipes you have the gathered or crafted materials for, where only what a vendor sells (thread, vials, spices...) is missing. Recipes made only of vendor materials aren't shown.
 
 ## v1.9.2
