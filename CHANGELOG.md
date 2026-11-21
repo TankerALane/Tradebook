@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.9.2
 
 ### Data
 - New vendors: Llana and Shandrina (Ashenvale), Brak Durnad, Brahnmar and Falkan Armonis (Wetlands), Nina Surefire and Alynsia (Redridge Mountains), Sergeant De Vries (Elwynn Forest), Morg Gnarltree (Duskwood), the Defias Profiteer (Westfall), Keeg Gibn (Dun Morogh), Hai'zan (Durotar), Craig Nollward (Dustwallow Marsh), Mai'Lahii, Lah'Mawhani and Wulan (Desolace), Valaden Silverblade (Alterac Mountains), Dorin Songblade (Redridge Mountains), Edwina Monzor (Wetlands), Yanni Stoutheart and Greishan Ironstove (Loch Modan), Kawnie Softbreeze and Marjak Keenblade (Mulgore), Zargh, Larhka and Kalldan Felmoon (The Barrens), Kareth (Orgrimmar), Daeolyn Summerleaf (Moonglade), Amy Davenport, Karen Taylor, Lindsay Ashlock, Kara Adams and Stondry Darkhammer (Redridge Mountains), Hammon Karwn (Arathi Highlands) and Xai'ander (Ashenvale). 592 vendors, 7,970 items.
