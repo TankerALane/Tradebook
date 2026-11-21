@@ -17,6 +17,7 @@ The profession companion for **World of Warcraft: Forever**. A better Profession
 - **Your professions at a glance**, like the game's Professions book: your **two primary profession slots** (an empty box while one is free) and your **secondary professions** (Cooking, First Aid, Fishing; greyed out until learned), each with its rank and skill bar. Click one to open it.
 - **Profession spells** (Alchemy, Smelting, Fishing...) and **Find Herbs / Find Minerals**: Forever's spellbook doesn't list them, so drag them from here to your action bars, or click Find Herbs / Find Minerals to start tracking.
 - **Unlearn a profession** with the red cross next to its skill bar (primary professions only). The game still asks you to type UNLEARN to confirm.
+- Rather have K open the tab you had last? Turn off **K opens on Professions** in the options.
 - **Characters**, **Legacy** and **Vendors** sit beside it as icon tabs down the right side of the window.
 
 ### Where to get every recipe

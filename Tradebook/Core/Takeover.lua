@@ -231,11 +231,11 @@ function Takeover.Start()
     end
     ns.On("PLAYER_REGEN_ENABLED", onCombatEnded)
     -- The K key and the profession micro button (ToggleProfessionsBook): when that opens
-    -- Tradebook, always on the Professions tab, like the game's Professions book (even with a
-    -- profession window open, and whatever the "Open on Professions" option says).
+    -- Tradebook, on the Professions tab like the game's Professions book (even with a profession
+    -- window open), or on your last tab with "K opens on Professions" off (UI.KeyPressed).
     if type(_G.ToggleProfessionsBook) == "function" then
         hooksecurefunc("ToggleProfessionsBook", function()
-            if ns.UI and ns.UI.IsShown() and not Takeover.IsForeignView() then ns.UI.SelectTab("overview") end
+            if ns.UI and ns.UI.IsShown() and not Takeover.IsForeignView() then ns.UI.KeyPressed() end
         end)
     end
     -- A profession link clicked while Tradebook has the default frame hidden: the frame is

@@ -499,13 +499,14 @@ end
 
 -- Which tab to show when the window opens: the profession whose window is open, else My
 -- professions (the K key, like the Professions book), unless that's turned off in the options
--- (then the tab you had open last).
-local function defaultTab()
+-- (then the tab you had open last). skipOverview: the tab you had before this opening (K with
+-- "K opens on Professions" off).
+local function defaultTab(skipOverview)
     if UI.pendingLinked then return UI.pendingLinked.skill end
     local open = ns.Scanner.OpenProfession()
     if open then return open.professionID end
-    if ns.db.settings.openOverview ~= false then return OVERVIEW end
-    local last = ns.db.settings.lastTab
+    if not skipOverview and ns.db.settings.openOverview ~= false then return OVERVIEW end
+    local last = skipOverview and UI.lastBeforeOpen or ns.db.settings.lastTab
     -- (A tab that no longer exists, e.g. a dev tab without its addon, is skipped.)
     local known = last and (ns.Professions.Get(last) or last == CAMP or RIGHT_TABS[last])
     local extra = known and extraTabs[last]
@@ -517,6 +518,18 @@ local function defaultTab()
     end
     if visible[1] then return visible[1] end
     return ns.Professions.list[1].id
+end
+
+-- The K key (or the profession micro button) opened or showed Tradebook: the Professions tab,
+-- or with "K opens on Professions" off, the tab you had last when K just opened the window
+-- (a profession whose window is open still comes first).
+function UI.KeyPressed()
+    if ns.db.settings.keyOverview ~= false then
+        UI.SelectTab(OVERVIEW)
+    elseif UI.openedAt == GetTime() then
+        local key = defaultTab(true)
+        if key ~= current.tab then UI.SelectTab(key) end
+    end
 end
 
 ---------------------------------------------------------------------------
@@ -950,6 +963,7 @@ function UI.Create()
 
     frame:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN)
+        UI.openedAt, UI.lastBeforeOpen = GetTime(), ns.db.settings.lastTab
         UI.SelectTab(defaultTab())
         -- Tabs resize themselves in their own OnShow; lay out again once that's done.
         C_Timer.After(0, UI.LayoutTabs)
