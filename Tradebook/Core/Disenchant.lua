@@ -148,14 +148,41 @@ function Disenchant.Value(results, price)
     return math.floor(total + 0.5)
 end
 
+-- PURE. One player's totals as text, the same for the same totals (to spot copies).
+function Disenchant.Fingerprint(bands)
+    local parts = {}
+    for band, rec in pairs(bands or {}) do
+        local mats = {}
+        for id, m in pairs(rec.mats or {}) do
+            mats[#mats + 1] = table.concat({ id, m.t or 0, m.q or 0, m.lo or 0, m.hi or 0 }, ",")
+        end
+        table.sort(mats)
+        parts[#parts + 1] = band .. ":" .. (rec.n or 0) .. ":" .. table.concat(mats, ";")
+    end
+    table.sort(parts)
+    return table.concat(parts, "|")
+end
+
 -- PURE. Your records plus other players' (heard: { [who] = { at, bands } }), per band. Other
 -- players count for a band only once 2+ players (you included) have reported it, so one
 -- player's report never decides on its own. Returns { [bandID] = { n, mats, players } }.
+-- Disenchants are saved for the whole account, so every character of one player sends the
+-- same totals: identical totals from several senders count once (seen 2026-11-21: one
+-- player's four characters counted as four players).
 function Disenchant.Combine(own, heard)
+    local unique, seen = {}, {}
+    for _, h in pairs(heard or {}) do
+        local fp = Disenchant.Fingerprint(h.bands)
+        if fp ~= "" and not seen[fp] then
+            seen[fp] = true
+            unique[#unique + 1] = h
+        end
+    end
+    heard = unique
     local reporters = {}
     local function addReporter(band) reporters[band] = (reporters[band] or 0) + 1 end
     for band, rec in pairs(own or {}) do if (rec.n or 0) > 0 then addReporter(band) end end
-    for _, h in pairs(heard or {}) do
+    for _, h in pairs(heard) do
         for band in pairs(h.bands or {}) do addReporter(band) end
     end
     local out = {}
@@ -177,7 +204,7 @@ function Disenchant.Combine(own, heard)
         end
     end
     for band, rec in pairs(own or {}) do if (rec.n or 0) > 0 then add(band, rec) end end
-    for _, h in pairs(heard or {}) do
+    for _, h in pairs(heard) do
         for band, rec in pairs(h.bands or {}) do
             if reporters[band] >= 2 then add(band, rec) end
         end
