@@ -17,7 +17,57 @@ function W.QualityName(q)
     local c = _G.ITEM_QUALITY_COLORS and _G.ITEM_QUALITY_COLORS[q]
     return c and c.hex and (c.hex .. name .. "|r") or name
 end
-W.MAX_LEVEL, W.LEVEL_STEP = 60, 5 -- required level filters, in steps like the auction house's
+
+-- A filter submenu where several values can be ticked ({ [value] = true } in t[key]; none
+-- ticked = any), with "Select all" on top: ticks every one, or clears them all when every one
+-- is already ticked. options: { { text, value } }. changed() after each change.
+function W.MultiSelectMenu(root, label, options, t, key, changed)
+    local sub = root:CreateButton(label)
+    local function allOn()
+        local set = t[key]
+        if type(set) ~= "table" then return false end
+        for _, opt in ipairs(options) do if not set[opt.value] then return false end end
+        return true
+    end
+    local keepOpen = _G.MenuResponse and _G.MenuResponse.Refresh
+    sub:CreateButton(ns.L.SELECT_ALL, function()
+        if allOn() then
+            t[key] = false
+        else
+            local set = {}
+            for _, opt in ipairs(options) do set[opt.value] = true end
+            t[key] = set
+        end
+        changed()
+        return keepOpen
+    end)
+    sub:CreateDivider()
+    for _, opt in ipairs(options) do
+        sub:CreateCheckbox(opt.text, function() return type(t[key]) == "table" and t[key][opt.value] == true end,
+            function()
+                local set = type(t[key]) == "table" and t[key] or {}
+                set[opt.value] = not set[opt.value] or nil
+                t[key] = next(set) and set or false
+                changed()
+            end)
+    end
+    return sub
+end
+
+-- The rarity and required-level choices for W.MultiSelectMenu.
+function W.QualityOptions()
+    local out = {}
+    for q = 0, ns.VendorDB.QUALITIES - 1 do out[#out + 1] = { text = W.QualityName(q), value = q } end
+    return out
+end
+function W.LevelOptions()
+    local out, V = {}, ns.VendorDB
+    for lo = 1, V.MAX_LEVEL, V.LEVEL_STEP do
+        local hi = math.min(V.MAX_LEVEL, lo + V.LEVEL_STEP - 1)
+        out[#out + 1] = { text = ns.L.VENDOR_LEVEL_RANGE:format(lo, hi), value = lo }
+    end
+    return out
+end
 W.BROWN = CreateColor(0.45, 0.30, 0.16)
 W.GREY = CreateColor(0.5, 0.5, 0.5)
 W.RED = CreateColor(1, 0.3, 0.3)

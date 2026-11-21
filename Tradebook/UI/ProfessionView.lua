@@ -257,9 +257,10 @@ function View:BuildItems()
     end
 
     local itemFilter
-    if f.itemUsable or f.itemQuality or f.itemMinLevel or f.itemMaxLevel then
-        itemFilter = { usable = f.itemUsable or nil, quality = f.itemQuality or nil,
-            minLevel = f.itemMinLevel or nil, maxLevel = f.itemMaxLevel or nil }
+    local qualities = ns.VendorDB.ActiveSet(f.itemQualities, ns.VendorDB.QUALITIES)
+    local levels = ns.VendorDB.ActiveSet(f.itemLevels, #W.LevelOptions())
+    if f.itemUsable or qualities or levels then
+        itemFilter = { usable = f.itemUsable or nil, qualities = qualities, levels = levels }
     end
     for _, id in ipairs(Recipes.ForProfession(db, self.skill)) do
         local r = db.recipes[id]
@@ -325,7 +326,7 @@ function View:BuildItems()
                     keep = false
                 else
                     local info = {}
-                    if itemFilter.quality or itemFilter.minLevel or itemFilter.maxLevel then
+                    if itemFilter.qualities or itemFilter.levels then
                         local name, _, quality, _, level = Compat.Call("C_Item.GetItemInfo", r.o)
                         if not name then Compat.Call("C_Item.RequestLoadItemDataByID", r.o) end
                         info.quality, info.level = quality, level
@@ -389,7 +390,7 @@ end
 local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
     unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false, unlearnedNoFavor = false,
     haveMats = false, haveMatsExVendor = false, skillup = false,
-    itemUsable = false, itemQuality = false, itemMinLevel = false, itemMaxLevel = false }
+    itemUsable = false, itemQualities = false, itemLevels = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -490,28 +491,9 @@ local function buildFilterMenu(_, root)
     root:CreateDivider()
     root:CreateTitle(L.FILTER_ITEM_TITLE)
     add(L.VENDOR_FILTER_USABLE, "itemUsable")
-    local quality = root:CreateButton(L.VENDOR_FILTER_QUALITY)
-    local function qualityRadio(text, value)
-        quality:CreateRadio(text, function() return (f.itemQuality or false) == value end, function()
-            f.itemQuality = value
-            View:RefreshList()
-        end)
-    end
-    qualityRadio(L.VENDOR_ANY, false)
-    for q = 0, 5 do qualityRadio(W.QualityName(q), q) end
-    local level = root:CreateButton(L.VENDOR_LEVEL)
-    local function levelRadio(text, lo, hi)
-        level:CreateRadio(text, function() return (f.itemMinLevel or false) == lo and (f.itemMaxLevel or false) == hi end,
-            function()
-                f.itemMinLevel, f.itemMaxLevel = lo, hi
-                View:RefreshList()
-            end)
-    end
-    levelRadio(L.VENDOR_ANY, false, false)
-    for lo = 1, W.MAX_LEVEL, W.LEVEL_STEP do
-        local hi = math.min(W.MAX_LEVEL, lo + W.LEVEL_STEP - 1)
-        levelRadio(L.VENDOR_LEVEL_RANGE:format(lo, hi), lo, hi)
-    end
+    local refresh = function() View:RefreshList() end
+    W.MultiSelectMenu(root, L.VENDOR_FILTER_QUALITY, W.QualityOptions(), f, "itemQualities", refresh)
+    W.MultiSelectMenu(root, L.VENDOR_LEVEL, W.LevelOptions(), f, "itemLevels", refresh)
     -- List order and the profit column (not filters, but this is where the list's options live).
     root:CreateDivider()
     root:CreateTitle(L.ORDER_TITLE)

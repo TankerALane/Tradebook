@@ -16,7 +16,6 @@ ns.UI.RegisterView("vendors", View)
 local TOP_N = 5
 local ITEM_CLASSES = { 7, 5, 0, 9, 1, 2, 4, 6, 11, 15 } -- trade goods first: the common reason to look
 local DEFAULTS = { friendlyOnly = true }
-local MAX_LEVEL, LEVEL_STEP = 60, 5
 local SEARCH_DELAY = 0.15
 
 local function filters()
@@ -25,10 +24,20 @@ local function filters()
         s.vendorFilters = {}
         for k, v in pairs(DEFAULTS) do s.vendorFilters[k] = v end
     end
-    return s.vendorFilters
+    local f = s.vendorFilters
+    -- Earlier builds: one rarity (at least) and one level range; now sets of each.
+    if f.quality then
+        f.qualities = {}
+        for q = f.quality, ns.VendorDB.QUALITIES - 1 do f.qualities[q] = true end
+        f.quality = nil
+    end
+    if f.minLevel or f.maxLevel then
+        f.levels = f.minLevel and { [ns.VendorDB.LevelRange(f.minLevel)] = true } or nil
+        f.minLevel, f.maxLevel = nil, nil
+    end
+    return f
 end
 
-local qualityName = W.QualityName
 
 local function className(id)
     return Compat.Call("C_Item.GetItemClassInfo", id) or Compat.Call("GetItemClassInfo", id) or ("#" .. id)
@@ -262,23 +271,10 @@ local function buildFilterMenu(_, root)
     local classes = { { text = L.VENDOR_ANY, value = nil } }
     for _, id in ipairs(ITEM_CLASSES) do classes[#classes + 1] = { text = className(id), value = id } end
     radios(class, classes, "class")
-    local quality = root:CreateButton(L.VENDOR_FILTER_QUALITY)
-    local qualities = { { text = L.VENDOR_ANY, value = nil } }
-    for q = 0, 5 do qualities[#qualities + 1] = { text = qualityName(q), value = q } end
-    radios(quality, qualities, "quality")
-    -- Required level, in steps of LEVEL_STEP (like the auction house's level range).
-    local level = root:CreateButton(L.VENDOR_LEVEL)
-    local function levelRadio(text, lo, hi)
-        level:CreateRadio(text, function() return f.minLevel == lo and f.maxLevel == hi end, function()
-            f.minLevel, f.maxLevel = lo, hi
-            View:RefreshList()
-        end)
-    end
-    levelRadio(L.VENDOR_ANY, nil, nil)
-    for lo = 1, MAX_LEVEL, LEVEL_STEP do
-        local hi = math.min(MAX_LEVEL, lo + LEVEL_STEP - 1)
-        levelRadio(L.VENDOR_LEVEL_RANGE:format(lo, hi), lo, hi)
-    end
+    -- Rarity and required level (in ranges like the auction house's): tick any number.
+    local refresh = function() View:RefreshList() end
+    W.MultiSelectMenu(root, L.VENDOR_FILTER_QUALITY, W.QualityOptions(), f, "qualities", refresh)
+    W.MultiSelectMenu(root, L.VENDOR_LEVEL, W.LevelOptions(), f, "levels", refresh)
     local pay = root:CreateButton(L.VENDOR_FILTER_PAYMENT)
     radios(pay, { { text = L.VENDOR_ANY, value = nil }, { text = L.VENDOR_PAY_GOLD, value = "gold" },
         { text = L.VENDOR_PAY_TOKENS, value = "tokens" } }, "payment")
@@ -355,8 +351,9 @@ function View:RefreshList()
     if not self.frame then return end
     local f = filters()
     local opts = { text = self.text, zone = f.zone, friendlyOnly = f.friendlyOnly, thisContinent = f.thisContinent,
-        payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly, quality = f.quality,
-        minLevel = f.minLevel, maxLevel = f.maxLevel, usable = f.usable,
+        payment = f.payment, source = f.source, class = f.class, vendorOnly = f.vendorOnly,
+        qualities = ns.VendorDB.ActiveSet(f.qualities, ns.VendorDB.QUALITIES),
+        levels = ns.VendorDB.ActiveSet(f.levels, #W.LevelOptions()), usable = f.usable,
         belowSell = f.belowSell and ns.Prices.Available() or nil, limit = 300 }
     local results, zones = ns.VendorDB.Search(opts)
     self.zones = zones
@@ -381,7 +378,7 @@ function View:RefreshList()
     self.status:SetText(L.VENDOR_STATUS:format(scanned, community) .. playersText .. "  " .. questieText)
     if #rows > 0 then
         self.empty:SetText("")
-    elseif (self.text or "") == "" and not (f.zone or f.class or f.quality or f.minLevel or f.maxLevel
+    elseif (self.text or "") == "" and not (f.zone or f.class or ns.VendorDB.NeedsItemInfo(opts)
         or f.belowSell) then
         self.empty:SetText(L.VENDOR_EMPTY_PROMPT)
     else

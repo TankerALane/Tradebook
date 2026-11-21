@@ -871,6 +871,17 @@ test("vendor database: sources merge, scanned first", function()
     eq(V.ItemPasses({ level = 0 }, { minLevel = 1, maxLevel = 5 }), true, "no level needed counts as level 1")
     eq(V.ItemPasses({ level = 12 }, { minLevel = 1, maxLevel = 5 }), false)
     eq(V.ItemPasses({ quality = 2 }, { quality = 3 }), false, "rarity at least")
+    -- several rarities / level ranges ticked
+    eq(V.ItemPasses({ quality = 2 }, { qualities = { [2] = true, [4] = true } }), true)
+    eq(V.ItemPasses({ quality = 3 }, { qualities = { [2] = true, [4] = true } }), false, "only those ticked")
+    eq(V.ItemPasses({ level = 7 }, { levels = { [1] = true, [6] = true } }), true)
+    eq(V.ItemPasses({ level = 0 }, { levels = { [1] = true } }), true, "no level needed is 1-5")
+    eq(V.ItemPasses({ level = 12 }, { levels = { [1] = true, [6] = true } }), false)
+    eq(V.LevelRange(60), 56)
+    eq(V.ActiveSet({ [1] = true }, 6) ~= nil, true)
+    eq(V.ActiveSet({}, 6), nil, "none ticked: any")
+    eq(V.ActiveSet({ [0] = true, [1] = true, [2] = true, [3] = true, [4] = true, [5] = true }, 6), nil,
+        "all ticked: any")
     -- cheaper at the auction house than a vendor pays: Light Leather sells for 15c
     local A = { [2318] = 10, [2319] = 30, [2589] = 5, [4306] = 20, [9999] = 1 }
     local S = { [2318] = 15, [2319] = 20, [2589] = 1, [4306] = 60, [9999] = 50 }

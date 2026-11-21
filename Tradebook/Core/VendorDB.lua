@@ -212,12 +212,35 @@ local function classOf(itemID)
     return classID
 end
 
+-- Required level filters come in ranges of LEVEL_STEP up to MAX_LEVEL (1-5, 6-10, ...).
+VendorDB.MAX_LEVEL, VendorDB.LEVEL_STEP = 60, 5
+VendorDB.QUALITIES = 6 -- Poor (0) to Legendary (5)
+
+-- PURE. The level range a required level falls in, by its first level (0, none, is 1-5).
+function VendorDB.LevelRange(level)
+    local step = VendorDB.LEVEL_STEP
+    return math.floor((math.max(1, level) - 1) / step) * step + 1
+end
+
+-- PURE. A chosen set ({ [value] = true }) as a filter: nil when none or all are chosen
+-- (no filter either way).
+function VendorDB.ActiveSet(set, total)
+    if type(set) ~= "table" then return nil end
+    local n = 0
+    for _, on in pairs(set) do if on then n = n + 1 end end
+    if n == 0 or n >= total then return nil end
+    return set
+end
+
 -- PURE. Does an item pass the item filters (like the auction house's)?
 -- info = { class, quality, level (required level), usable (true/false/nil = unknown yet) };
--- f = { class, quality (at least), minLevel, maxLevel, usable }. Unknown facts don't pass.
+-- f = { class, quality (at least), qualities ({ [quality] = true }), minLevel, maxLevel,
+-- levels ({ [first level of a range] = true }), usable }. Unknown facts don't pass.
 function VendorDB.ItemPasses(info, f)
     if f.class and info.class ~= f.class then return false end
     if f.quality and not (info.quality and info.quality >= f.quality) then return false end
+    if f.qualities and not (info.quality and f.qualities[info.quality]) then return false end
+    if f.levels and not (info.level and f.levels[VendorDB.LevelRange(info.level)]) then return false end
     if f.minLevel or f.maxLevel then
         if not info.level then return false end
         local level = math.max(1, info.level) -- no level needed (0) counts as level 1
@@ -269,12 +292,26 @@ if ns.On then
     end
 end
 
+-- Does a filter need the item's rarity or level?
+local function needsItemInfo(opts)
+    return opts.quality or opts.qualities or opts.minLevel or opts.maxLevel or opts.levels
+end
+VendorDB.NeedsItemInfo = needsItemInfo
+
+local function setKey(set)
+    if not set then return "-" end
+    local keys = {}
+    for k, on in pairs(set) do if on then keys[#keys + 1] = k end end
+    table.sort(keys)
+    return table.concat(keys, ",")
+end
+
 -- The item filter for Search, or nil when no item filter is chosen: passes(itemID).
 local function itemFilter(opts)
-    if not (opts.class or opts.quality or opts.minLevel or opts.maxLevel or opts.usable) then return nil end
+    if not (opts.class or needsItemInfo(opts) or opts.usable) then return nil end
     return function(itemID)
         local info = { class = opts.class and classOf(itemID) }
-        if opts.quality or opts.minLevel or opts.maxLevel then
+        if needsItemInfo(opts) then
             local name, _, quality, _, level = Compat.Call("C_Item.GetItemInfo", itemID)
             if not name then Compat.Call("C_Item.RequestLoadItemDataByID", itemID) end
             info.quality, info.level = quality, level
@@ -346,7 +383,8 @@ local BELOW_SELL_RETRY = 3
 local belowSell = {}
 local function belowSellList(opts, needle, passes)
     local key = table.concat({ needle, tostring(opts.class), tostring(opts.quality), tostring(opts.minLevel),
-        tostring(opts.maxLevel), tostring(opts.usable), ns.Prices.Version(), tostring(ns.Questie.AllItems() ~= nil) }, "|")
+        tostring(opts.maxLevel), setKey(opts.qualities), setKey(opts.levels), tostring(opts.usable),
+        ns.Prices.Version(), tostring(ns.Questie.AllItems() ~= nil) }, "|")
     local now = GetTime and GetTime() or 0
     if belowSell.key == key and not (passes and now - belowSell.at > BELOW_SELL_RETRY) then
         return belowSell.list
@@ -403,8 +441,7 @@ end
 -- when a zone, payment or source filter is chosen: those ask about vendors.
 function VendorDB.Search(opts)
     local needle = (opts.text or ""):lower()
-    if needle == "" and not (opts.zone or opts.class or opts.quality or opts.minLevel or opts.maxLevel
-        or opts.belowSell) then
+    if needle == "" and not (opts.zone or opts.class or needsItemInfo(opts) or opts.belowSell) then
         return {}, {}
     end
     local passes = itemFilter(opts)
