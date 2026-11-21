@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Recipe list
+- **Have materials > Except vendor items**: a new filter option that shows the recipes you have the gathered or crafted materials for, where only what a vendor sells (thread, vials, spices...) is missing. Recipes made only of vendor materials aren't shown.
+
 ## v1.9.2
 
 ### Data

@@ -68,6 +68,7 @@ end
 local function soldByVendor(itemID)
     return ns.Questie.SoldByVendor(itemID) or (ns.VendorDB and ns.VendorDB.HasVendors(itemID)) or false
 end
+Prices.SoldByVendor = soldByVendor
 
 -- { auction = copper or nil, vendor = copper or nil, age = days or nil } for one item.
 -- vendor: what Auctionator saw at a merchant, else the game's own vendor price for items a

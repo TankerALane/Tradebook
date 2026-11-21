@@ -277,6 +277,9 @@ function View:BuildItems()
             if isMe and learned then
                 local _, possible = Reagents.Shortage(db, c, r, 1)
                 item.possible = possible
+                if f.haveMats and f.haveMatsExVendor then
+                    item.possibleExVendor = Reagents.PossibleExceptVendor(db, c, r, ns.Prices.SoldByVendor)
+                end
             end
             -- Starred and Pinned sections are shortcuts: they ignore the filters (search still
             -- applies), and the recipes also stay in their own category below.
@@ -288,7 +291,11 @@ function View:BuildItems()
                 and not (item.diff and item.diff < 3 and f.skillupColors[item.diff + 1]) then
                 keep = false
             end
-            if not self.browsing and f.haveMats and not (item.possible and item.possible > 0) then keep = false end
+            if not self.browsing and f.haveMats then
+                -- "Except vendor items": what you gathered is enough; the rest can be bought.
+                local n = f.haveMatsExVendor and item.possibleExVendor or item.possible
+                if not (n and n > 0) then keep = false end
+            end
             if keep and not learned and not self.browsing then
                 -- Under "Not learned": learnable now, and how it's learned (trainer / recipe item).
                 if f.unlearnedLearnable and not ns.Sources.Learnable(id, p and p.rank) then keep = false end
@@ -360,7 +367,7 @@ end
 -- Filters, with the defaults the red X on the Filter button restores.
 local DEFAULT_FILTERS = { learned = true, unlearned = false, unlearnedNearest = false, unlearnedLearnable = false,
     unlearnedTrainer = false, unlearnedRecipe = false, unlearnedVendor = false, unlearnedDrop = false, unlearnedNoFavor = false,
-    haveMats = false, skillup = false }
+    haveMats = false, haveMatsExVendor = false, skillup = false }
 local SUB_INDENT = 18 -- the colour checkboxes sit one checkbox to the right, under "Gives skill-ups"
 
 local function filtersAreDefault()
@@ -427,7 +434,24 @@ local function buildFilterMenu(_, root)
     -- Hides Merchant's Favor recipes; doesn't turn "From a recipe" on (trainer recipes stay).
     sub(L.FILTER_NO_FAVOR, "unlearnedNoFavor", nil, 2)
     if ns.Questie.Available() then sub(L.FILTER_NEAREST, "unlearnedNearest") end -- needs NPC locations
-    add(L.FILTER_CRAFTABLE, "haveMats")
+    root:CreateCheckbox(L.FILTER_CRAFTABLE, function() return f.haveMats end, function()
+        f.haveMats = not f.haveMats
+        if not f.haveMats then f.haveMatsExVendor = false end
+        View:RefreshList()
+    end)
+    -- Under "Have materials": materials a vendor sells don't need to be in the bags.
+    local exVendor = root:CreateCheckbox(L.FILTER_EXCEPT_VENDOR, function() return f.haveMatsExVendor end, function()
+        f.haveMatsExVendor = not f.haveMatsExVendor
+        if f.haveMatsExVendor then f.haveMats = true end
+        View:RefreshList()
+    end)
+    if exVendor.SetTooltip then
+        exVendor:SetTooltip(function(tooltip)
+            tooltip:SetText(L.FILTER_EXCEPT_VENDOR, 1, 1, 1)
+            tooltip:AddLine(L.FILTER_EXCEPT_VENDOR_TIP, nil, nil, nil, true)
+        end)
+    end
+    indent(exVendor)
     add(L.FILTER_SKILLUP, "skillup")
     -- Skill-up colours (1 orange, 2 yellow, 3 green); ticking one turns "Gives skill-ups" on.
     for i = 1, 3 do

@@ -66,6 +66,20 @@ function Reagents.Shortage(db, character, recipe, times)
     return out, possible or 0
 end
 
+-- How many times a recipe can be crafted from what's in the bags, not counting the materials a
+-- vendor sells (isVendor(itemID) -> bool): those can be bought. 0 when every material is a
+-- vendor one (nothing gathered to use) or a non-vendor one is short.
+function Reagents.PossibleExceptVendor(db, character, recipe, isVendor)
+    local possible
+    for _, reagent in ipairs(ns.Recipes.Reagents(recipe)) do
+        if not isVendor(reagent.itemID) and reagent.count > 0 then
+            local can = math.floor(Reagents.Have(db, character, reagent.itemID).bags / reagent.count)
+            possible = possible and math.min(possible, can) or can
+        end
+    end
+    return possible or 0
+end
+
 -- Combined shopping list for several recipes.
 -- entries: { { recipeID, times } ... }. Returns sorted list of
 -- { itemID, need, bags, bank, account, missing } for items still missing from bags.

@@ -407,6 +407,19 @@ test("shortage math uses bags only and flags bank items", function()
     eq(possible, 2, "5 linen / 2 per craft")
 end)
 
+test("have materials except vendor items", function()
+    local db, a = fixture(ns)
+    local vendor = function(id) return id == 2320 end -- Coarse Thread
+    a.bags = { [2996] = 7 } -- 7 bolts, no thread: Linen Bag needs 3 bolts and 3 thread
+    local _, possible = ns.Reagents.Shortage(db, a, db.recipes[101], 1)
+    eq(possible, 0, "thread missing")
+    eq(ns.Reagents.PossibleExceptVendor(db, a, db.recipes[101], vendor), 2, "thread can be bought")
+    a.bags = { [2320] = 30 }
+    eq(ns.Reagents.PossibleExceptVendor(db, a, db.recipes[101], vendor), 0, "bolts still missing")
+    eq(ns.Reagents.PossibleExceptVendor(db, a, db.recipes[101], function() return true end), 0,
+        "only vendor materials: nothing gathered")
+end)
+
 test("shortage with nothing", function()
     local db, _, b = fixture(ns)
     local list, possible = ns.Reagents.Shortage(db, b, db.recipes[101], 1)
