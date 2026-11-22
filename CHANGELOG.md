@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.10.1
 
 ### Data
 - New vendors: Gunder Thornbush, Lohgan Eva, Tandaan Lightmane, Chylina, My'lanna, Christi Galvanis, Brinna Valanaar, Abra Cadabra and Huey Sunnydale. 622 vendors, 8,369 items.
