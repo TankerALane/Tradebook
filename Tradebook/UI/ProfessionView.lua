@@ -284,7 +284,7 @@ function View:BuildItems()
                 local _, possible = Reagents.Shortage(db, c, r, 1)
                 item.possible = possible
                 if f.haveMats and f.haveMatsExVendor then
-                    item.possibleExVendor = Reagents.PossibleExceptVendor(db, c, r, ns.Prices.SoldByVendor)
+                    item.possibleExVendor = Reagents.PossibleExceptVendor(db, c, r, ns.VendorDB.Buyable)
                 end
             end
             -- Starred and Pinned sections are shortcuts: they ignore the filters (search still

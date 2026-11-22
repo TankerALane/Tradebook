@@ -501,6 +501,33 @@ function VendorDB.HasVendors(itemID)
     return rec ~= nil and next(rec.vendors) ~= nil
 end
 
+-- PURE. Can this item be bought whenever you like? rec: an Items() record. A read window
+-- showing it in limited stock (a few herbs at some vendors) doesn't count, unless another
+-- read window has it without a limit; vendors only QuestieDB lists count when no read window
+-- saw it limited.
+function VendorDB.AlwaysInStock(rec)
+    if not rec then return false end
+    local limited, questie = false, false
+    for _, row in pairs(rec.vendors) do
+        if row.source == "questie" then
+            questie = true
+        elseif row.stock and row.stock >= 0 then
+            limited = true
+        else
+            return true
+        end
+    end
+    return questie and not limited
+end
+
+-- A material you can always buy from a vendor (for "Except vendor items"); QuestieDB's word
+-- for it until its vendor lists are loaded.
+function VendorDB.Buyable(itemID)
+    local rec = itemID and VendorDB.Items()[itemID]
+    if rec then return VendorDB.AlwaysInStock(rec) end
+    return ns.Questie.SoldByVendor(itemID) or false
+end
+
 -- The vendors of one item that aren't hostile to you, nearest first (vendors with no known
 -- position last): rows as in Search, at most `limit`, and how many there are in all.
 function VendorDB.ItemVendors(itemID, limit)

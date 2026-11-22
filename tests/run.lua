@@ -420,6 +420,19 @@ test("have materials except vendor items", function()
         "only vendor materials: nothing gathered")
 end)
 
+test("vendor items: limited stock isn't always for sale", function()
+    local V = ns.VendorDB
+    local function rec(...) return { vendors = { ... } } end
+    eq(V.AlwaysInStock(rec({ source = "community", stock = 3 })), false, "a few herbs at one vendor")
+    eq(V.AlwaysInStock(rec({ source = "community", stock = 3 }, { source = "questie" })), false,
+        "Questie's claim doesn't beat a window seen limited")
+    eq(V.AlwaysInStock(rec({ source = "community", stock = 3 }, { source = "scanned", stock = -1 })), true,
+        "unlimited somewhere else")
+    eq(V.AlwaysInStock(rec({ source = "community" })), true, "no stock number: unlimited")
+    eq(V.AlwaysInStock(rec({ source = "questie" })), true, "only Questie")
+    eq(V.AlwaysInStock(nil), false)
+end)
+
 test("shortage with nothing", function()
     local db, _, b = fixture(ns)
     local list, possible = ns.Reagents.Shortage(db, b, db.recipes[101], 1)
