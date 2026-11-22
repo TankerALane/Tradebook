@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Data
+- New vendors: Gunder Thornbush, Lohgan Eva, Tandaan Lightmane, Chylina, My'lanna, Christi Galvanis, Brinna Valanaar, Abra Cadabra and Huey Sunnydale. 622 vendors, 8,369 items.
+- Disenchanting: 210 disenchants in 13 bands.
+
 ## v1.10.0
 
 ### Data
