@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.10.0
 
 ### Data
 - New vendors: Xizk Goodstitch (Stranglethorn Vale), Morgum and Rekkul (Orgrimmar), Nargal Deatheye and Gishah (The Barrens), Wallace the Blind (Silverpine Forest), Innkeeper Fizzgrimble (Tanaris), Hae'Wilani (Desolace), Vayn Moongaze, Barkeep Hann, Samor Festivus, Kelsey Yance, Mazk Snipeshot, Nixxrax Fillamug, Synge, Kzixx, Laer Stepperunner, Nizzik, Krinkle Goodsteel, Magus Tirth and Mister Graphed. 613 vendors, 8,225 items.
