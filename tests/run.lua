@@ -1448,6 +1448,20 @@ test("disenchant: other players count for a band once 2+ players reported it", f
     local copy = function() return { [6] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } } end
     local alts = D.Combine({}, { a1 = { at = 1, bands = copy() }, a2 = { at = 2, bands = copy() } })
     eq(alts[6], nil, "one player's characters sending the same totals count once")
+    local function base()
+        local b = copy()
+        b[3], b[4] = copy()[6], copy()[6]
+        return b
+    end
+    local early, late = base(), base()
+    early[99] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } }
+    late[99] = { n = 4, mats = { [10940] = { t = 4, q = 5, lo = 1, hi = 2 } } }
+    late[7] = { n = 1, mats = { [10939] = { t = 1, q = 1, lo = 1, hi = 1 } } }
+    local snaps = D.Combine({}, { s1 = { at = 1, bands = early }, s2 = { at = 2, bands = late } })
+    eq(snaps[99], nil, "one player's characters sending earlier and later totals count once")
+    local other = { [99] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } }
+    local two = D.Combine({}, { s1 = { at = 1, bands = late }, o = { at = 2, bands = other } })
+    eq(two[99] and two[99].players, 2, "a different player with one alike band still counts")
     local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, c, 4, 2, 12, ns.DisenchantForeverSeen)
     eq(r.players, 2)
     eq(r.outside, "Wowhead", "green armor 5-15 was seen in Forever by Wowhead")

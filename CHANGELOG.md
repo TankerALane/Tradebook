@@ -3,10 +3,10 @@
 ## Unreleased
 
 ### Data
-- New vendors: Xizk Goodstitch (Stranglethorn Vale), Morgum and Rekkul (Orgrimmar), Nargal Deatheye and Gishah (The Barrens), Wallace the Blind (Silverpine Forest), Innkeeper Fizzgrimble (Tanaris), Hae'Wilani (Desolace) and Vayn Moongaze. 601 vendors, 8,110 items.
-- New trainers: Grarnik Goodstitch (Tailoring, Stranglethorn Vale), Tepa (Tailoring, Thunder Bluff) and Arnok (First Aid, Orgrimmar). 174 trainers, 3,108 services.
-- Disenchanting: 172 disenchants in 12 bands.
-- **Disenchant results from one player's several characters count as one player.** Disenchants are saved for the whole account, so each of a player's characters sent the same totals and counted as another player; one player alone could make a band look confirmed. Identical totals now count once, in game and in the shipped data.
+- New vendors: Xizk Goodstitch (Stranglethorn Vale), Morgum and Rekkul (Orgrimmar), Nargal Deatheye and Gishah (The Barrens), Wallace the Blind (Silverpine Forest), Innkeeper Fizzgrimble (Tanaris), Hae'Wilani (Desolace), Vayn Moongaze, Barkeep Hann, Samor Festivus, Kelsey Yance, Mazk Snipeshot, Nixxrax Fillamug, Synge, Kzixx, Laer Stepperunner, Nizzik, Krinkle Goodsteel, Magus Tirth and Mister Graphed. 613 vendors, 8,225 items.
+- New trainers: Grarnik Goodstitch (Tailoring, Stranglethorn Vale), Tepa (Tailoring, Thunder Bluff), Arnok (First Aid, Orgrimmar), Telurinon Moonshadow, Myizz Luckycatch, Fremal Doohickey and James Van Brunt. 178 trainers, 3,185 services.
+- Disenchanting: 196 disenchants in 13 bands.
+- **Disenchant results from one player's several characters count as one player.** Disenchants are saved for the whole account, so each of a player's characters sent the same totals and counted as another player; one player alone could make a band look confirmed. Identical totals now count once, in game and in the shipped data, and so do totals a player's characters sent at different times (3 or more bands exactly alike): only the biggest counts.
 
 ### Options
 - **K opens on Professions**: a new option. On (the default), the K key opens Tradebook on the Professions tab as before. Off, K opens it on the tab you had open last (or on the profession whose window is open).

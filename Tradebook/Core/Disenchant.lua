@@ -148,19 +148,39 @@ function Disenchant.Value(results, price)
     return math.floor(total + 0.5)
 end
 
+-- One band's record as text (the same for the same record).
+local function bandText(band, rec)
+    local mats = {}
+    for id, m in pairs(rec.mats or {}) do
+        mats[#mats + 1] = table.concat({ id, m.t or 0, m.q or 0, m.lo or 0, m.hi or 0 }, ",")
+    end
+    table.sort(mats)
+    return band .. ":" .. (rec.n or 0) .. ":" .. table.concat(mats, ";")
+end
+
 -- PURE. One player's totals as text, the same for the same totals (to spot copies).
 function Disenchant.Fingerprint(bands)
     local parts = {}
-    for band, rec in pairs(bands or {}) do
-        local mats = {}
-        for id, m in pairs(rec.mats or {}) do
-            mats[#mats + 1] = table.concat({ id, m.t or 0, m.q or 0, m.lo or 0, m.hi or 0 }, ",")
-        end
-        table.sort(mats)
-        parts[#parts + 1] = band .. ":" .. (rec.n or 0) .. ":" .. table.concat(mats, ";")
-    end
+    for band, rec in pairs(bands or {}) do parts[#parts + 1] = bandText(band, rec) end
     table.sort(parts)
     return table.concat(parts, "|")
+end
+
+-- Bands with exactly the same record in both tables.
+local SAME_PLAYER_BANDS = 3
+local function sharedBands(a, b)
+    local n = 0
+    for band, rec in pairs(a or {}) do
+        local other = b and b[band]
+        if other and bandText(band, rec) == bandText(band, other) then n = n + 1 end
+    end
+    return n
+end
+
+local function totalN(bands)
+    local n = 0
+    for _, rec in pairs(bands or {}) do n = n + (rec.n or 0) end
+    return n
 end
 
 -- PURE. Your records plus other players' (heard: { [who] = { at, bands } }), per band. Other
@@ -168,15 +188,31 @@ end
 -- player's report never decides on its own. Returns { [bandID] = { n, mats, players } }.
 -- Disenchants are saved for the whole account, so every character of one player sends the
 -- same totals: identical totals from several senders count once (seen 2026-11-21: one
--- player's four characters counted as four players).
+-- player's four characters counted as four players). Characters that sent at different times
+-- send the totals as they were then; senders with 3+ bands exactly alike are taken as one
+-- player too, and only the biggest of their tables counts.
 function Disenchant.Combine(own, heard)
-    local unique, seen = {}, {}
+    local list = {}
     for _, h in pairs(heard or {}) do
-        local fp = Disenchant.Fingerprint(h.bands)
-        if fp ~= "" and not seen[fp] then
-            seen[fp] = true
-            unique[#unique + 1] = h
+        if next(h.bands or {}) then list[#list + 1] = h end
+    end
+    table.sort(list, function(a, b)
+        local na, nb = totalN(a.bands), totalN(b.bands)
+        if na ~= nb then return na > nb end
+        if (a.at or 0) ~= (b.at or 0) then return (a.at or 0) > (b.at or 0) end
+        return Disenchant.Fingerprint(a.bands) < Disenchant.Fingerprint(b.bands)
+    end)
+    local unique = {}
+    for _, h in ipairs(list) do
+        local copy = false
+        for _, k in ipairs(unique) do
+            if Disenchant.Fingerprint(h.bands) == Disenchant.Fingerprint(k.bands)
+                or sharedBands(h.bands, k.bands) >= SAME_PLAYER_BANDS then
+                copy = true
+                break
+            end
         end
+        if not copy then unique[#unique + 1] = h end
     end
     heard = unique
     local reporters = {}
