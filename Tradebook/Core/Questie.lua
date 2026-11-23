@@ -500,6 +500,41 @@ function Questie.RecipeTrainers(skillLine, cap, faction)
     return all
 end
 
+-- Nearest trainers (friendly to `faction`) where a character can learn a profession
+-- (Apprentice): every trainer of a profession teaches it. Up to LIMIT, nearest first;
+-- confirmed = true when a trainer window read in game or a researched list has the trainer.
+function Questie.LearnTrainers(skillLine, faction)
+    if not Questie.Available() then return {} end
+    local ids, sure, seen = {}, {}, {}
+    local function add(id, certain)
+        if not id or ns.Trainers.Teaches(id, "Apprentice") == false then return end
+        if not seen[id] then
+            seen[id] = true
+            ids[#ids + 1] = id
+        end
+        sure[id] = sure[id] or certain
+    end
+    for id, t in pairs(ns.Trainers.All()) do
+        if t.skill == skillLine then add(id, true) end
+    end
+    for _, rank in ipairs({ "Journeyman", "Expert", "Artisan" }) do
+        local listed, known = ns.RankTrainers.For(skillLine, rank)
+        if known then
+            for _, id in ipairs(idsOf(listed)) do add(id, true) end
+        end
+    end
+    for _, id in ipairs(trainersFromRecipes(skillLine, 0)) do add(id, false) end
+    local p = ns.Professions.Get(skillLine)
+    for _, id in ipairs(p and trainersByTitle(p.name) or {}) do add(id, false) end
+    local all = nearestOf(ids, faction, "trainer")
+    local out = {}
+    for i = 1, math.min(LIMIT, #all) do
+        out[i] = all[i]
+        out[i].confirmed = sure[all[i].id] == true
+    end
+    return out
+end
+
 -- Race masks for the two factions (classic races).
 local ALLIANCE_RACES = 1 + 4 + 8 + 64   -- Human, Dwarf, Night Elf, Gnome
 local HORDE_RACES = 2 + 16 + 32 + 128   -- Orc, Undead, Tauren, Troll

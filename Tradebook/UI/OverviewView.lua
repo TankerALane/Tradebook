@@ -34,6 +34,8 @@ local function slotFrame(owner, icon, outset)
     return t
 end
 
+local nearestTrainer -- (below)
+
 local function newBox(parent, iconSize)
     local b = CreateFrame("Button", nil, parent, "BackdropTemplate")
     b:SetBackdrop(BACKDROP)
@@ -71,11 +73,20 @@ local function newBox(parent, iconSize)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(self.tip[1], 1, 1, 1)
         for i = 2, #self.tip do GameTooltip:AddLine(self.tip[i], nil, nil, nil, true) end
+        if self.learnSkill and ns.Questie.Available() then
+            local text = nearestTrainer(self.learnSkill)
+            if text then
+                GameTooltip:AddLine(" ")
+                GameTooltip:AddLine(L.OVERVIEW_NEAREST_TRAINER:format(text), 1, 1, 1, true)
+                GameTooltip:AddLine(L.OVERVIEW_RIGHT_WAYPOINT, 0.6, 0.8, 1, true)
+            end
+        end
         GameTooltip:Show()
     end)
     b:SetScript("OnLeave", GameTooltip_Hide)
     -- Drag the box to an action bar: the profession's spell (Alchemy, Smelting for Mining,
     -- Find Herbs for Herbalism...), when this character knows one.
+    b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     b:RegisterForDrag("LeftButton")
     b:SetScript("OnDragStart", function(self)
         if self.spellID then ns.TrackingButton.Pickup(self.spellID) end
@@ -103,6 +114,48 @@ local function newBox(parent, iconSize)
     return b
 end
 
+-- Where to learn a profession: the nearest trainer as one line ("Name, Zone 120 yd"), or nil.
+function nearestTrainer(skill)
+    local c = ns.char
+    local e = ns.Questie.LearnTrainers(skill, c and c.faction)[1]
+    if not e then return nil end
+    local place = ns.Questie.ZoneName(e.areaID) or ""
+    local d = ns.Locations.DistanceText(e.distance)
+    if d then place = place .. " " .. d end
+    local text = e.name .. ", " .. place
+    if not e.confirmed then text = text .. " " .. L.RANKUP_GUESS end
+    return text, e
+end
+
+local function waypointTo(e)
+    if e then ns.Waypoints.Set(e.areaID, e.x, e.y, e.name) end
+end
+
+-- The empty slot's menu: each primary profession this character could learn, with its
+-- nearest trainer; click one for a waypoint.
+local function learnMenu(owner)
+    local util = _G.MenuUtil
+    if not (util and util.CreateContextMenu) then return end
+    local c = ns.char
+    util.CreateContextMenu(owner, function(_, root)
+        root:CreateTitle(L.OVERVIEW_LEARN_TITLE)
+        if not ns.Questie.Available() then
+            root:CreateTitle(L.RANKUP_NEED_QUESTIE)
+            return
+        end
+        for _, def in ipairs(ns.Professions.list) do
+            if def.primary and not (c and c.professions and c.professions[def.id]) then
+                local text, e = nearestTrainer(def.id)
+                local name = L[def.name] or def.name
+                local label = name .. ":  " .. (text
+                    or W.ColorText(W.GREY, L.RANKUP_NO_TRAINERS_LEARN))
+                local b = root:CreateButton(label, function() waypointTo(e) end)
+                if not e and b.SetEnabled then b:SetEnabled(false) end
+            end
+        end
+    end)
+end
+
 -- Fill a box: def (Data/Professions.lua entry) and prof ({ rank, max } or nil). With no def
 -- the box is blank (a free primary slot); a def without prof is greyed out (not learned).
 local function fillBox(b, def, prof)
@@ -128,9 +181,10 @@ local function fillBox(b, def, prof)
     end
     b.spellID = main
     b.extra:SetSpell(second and { spellID = second, cast = true, tracking = true } or nil, def and def.id)
+    b.learnSkill = def and not learned and def.id or nil
     if not def then
         b.tip = { L.OVERVIEW_EMPTY_SLOT, L.OVERVIEW_EMPTY_TIP }
-        b:SetScript("OnClick", nil)
+        b:SetScript("OnClick", function(self) learnMenu(self) end)
         b:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
         return
     end
@@ -154,7 +208,13 @@ local function fillBox(b, def, prof)
         b.rank:SetText(W.ColorText(W.GREY, L.OVERVIEW_NOT_LEARNED))
         b.tip = { name, L.OVERVIEW_NOT_LEARNED_TIP }
     end
-    b:SetScript("OnClick", function() ns.UI.SelectTab(def.id, true) end)
+    b:SetScript("OnClick", function(self, button)
+        if button == "RightButton" then
+            if self.learnSkill then waypointTo(select(2, nearestTrainer(self.learnSkill))) end
+            return
+        end
+        ns.UI.SelectTab(def.id, true)
+    end)
 end
 
 local function header(f, text)

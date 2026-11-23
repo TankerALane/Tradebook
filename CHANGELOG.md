@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Professions tab
+- **Find a trainer for a free profession slot**: click an empty primary slot for the nearest trainer of each primary profession you could still learn; click one for a waypoint. A secondary profession you haven't learned shows its nearest trainer in its tooltip; right-click it for a waypoint. (Needs Questie; trainers not seen in game are marked unconfirmed.)
+
 ## v1.10.2
 
 ### Data
