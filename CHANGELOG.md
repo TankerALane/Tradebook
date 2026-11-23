@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.10.2
 
 ### Data
 - New vendors: Morhan Coppertongue, Joshua Maclure, Vharr, Hragran, Uthok, Aldren Cordon, Krakk, Rann Flamespinner, Terry Palin, Micha Yance, Sly Garrett, Jutak, Glyx Brewright, Moodan Sungrain, Bhaldaran Ravenshade, Innkeeper Thulbek, Kurgul, Tarban Hearthgrain, Jang, Pix Xizzix and Daniel Stitchsong. 643 vendors, 8,764 items.
