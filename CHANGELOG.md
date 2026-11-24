@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.11.1
 
 ### Data
 - New vendors: Kazan Mogosh, Yarlyn Amberstill, Dewin Shimmerdawn, Zarena Cromwind, Cowardly Crosby, Kizz Bluntstrike, Cutac, Turuk Amberstill, Kor'jus, Hraq, Vexspindle, Robert Aebischer, Harklan Moongrove, Zansoa, Brivelthwerp, Vizzklick, Dirge Quikcleave, Gikkix, Super-Seller 680, Kosco Copperpinch, Innkeeper Faralia, Gorhak, Kreza Darkthorn, Innkeeper Toka, Creeg Bothunk, Jaysin Lanyda, Jensen Farran, Helenia Olden and Kalsey Sanden. 672 vendors, 9,191 items.
