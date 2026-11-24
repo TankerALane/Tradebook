@@ -1569,6 +1569,13 @@ test("dev: counts what came in since the last import", function()
     eq(s.players, 2)
     eq(TradebookDev.SinceImport(log, 200).messages, 0, "all imported")
     eq(TradebookDev.SinceText(TradebookDev.SinceImport(log, 200), 200), nil)
+    local heard = { [1] = { agree = 2 }, [2] = { agree = 1 }, [3] = { agree = 3 }, [4] = {} }
+    local known = { [3] = true }
+    eq(TradebookDev.Confirmed(heard, function(npc) return not known[npc] end), 1, "2+ players, not in the data yet")
+    local text = TradebookDev.SinceText(s, 0, { vendors = 2, trainers = 0 })
+    assert(text:find("3 vendors (1 new, 2 Confirmed)", 1, true), text)
+    assert(TradebookDev.SinceText(TradebookDev.SinceImport(log, 200), 0, { vendors = 1, trainers = 0 }),
+        "confirmed shows even with no new messages")
 end)
 
 ---------------------------------------------------------------------------

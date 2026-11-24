@@ -927,11 +927,30 @@ function Dev.SinceImport(log, since)
 end
 
 -- PURE. "Since the last import: 12 vendors (3 new), ..." or nil when nothing came in.
-function Dev.SinceText(s, lastImport)
-    if s.messages == 0 then return nil end
+-- PURE. Heard NPCs ({ [npcID] = entry with agree = players }) that 2+ players now agree on
+-- and that aren't in your scans or the community data yet (isNew(npc)): what the next import
+-- adds from other players.
+function Dev.Confirmed(heard, isNewNpc)
+    local n = 0
+    for npc, e in pairs(heard or {}) do
+        if (e.agree or 1) >= 2 and isNewNpc(npc) then n = n + 1 end
+    end
+    return n
+end
+
+-- ready: { vendors = n, trainers = n } from Dev.Confirmed (optional), shown as "(x Confirmed)".
+function Dev.SinceText(s, lastImport, ready)
+    ready = ready or { vendors = 0, trainers = 0 }
+    if s.messages == 0 and ready.vendors == 0 and ready.trainers == 0 then return nil end
     local parts = {}
-    if s.vendors > 0 then parts[#parts + 1] = ("%d vendors (%d new)"):format(s.vendors, s.newVendors) end
-    if s.trainers > 0 then parts[#parts + 1] = ("%d trainers (%d new)"):format(s.trainers, s.newTrainers) end
+    local function kind(count, new, confirmed, word)
+        if count == 0 and confirmed == 0 then return end
+        local extra = { ("%d new"):format(new) }
+        if confirmed > 0 then extra[#extra + 1] = ("%d Confirmed"):format(confirmed) end
+        parts[#parts + 1] = ("%d %s (%s)"):format(count, word, table.concat(extra, ", "))
+    end
+    kind(s.vendors, s.newVendors, ready.vendors, "vendors")
+    kind(s.trainers, s.newTrainers, ready.trainers, "trainers")
     if s.confirms > 0 then parts[#parts + 1] = ("%d confirmations"):format(s.confirms) end
     if s.disenchantPlayers > 0 then
         local extra = {}
@@ -942,12 +961,19 @@ function Dev.SinceText(s, lastImport)
     end
     local when = lastImport and lastImport > 0 and date("%b %d %H:%M", lastImport) or "ever"
     return ("Since the last import (%s): %s, from %d players"):format(when, table.concat(parts, ", "), s.players)
+        .. ((ready.vendors + ready.trainers > 0)
+            and "\nConfirmed: new NPCs 2+ players now agree on (the next import adds them)." or "")
 end
 
 local function lastImport() return tonumber(_G.TradebookDevLastImport) or 0 end
 
 local function countText()
-    return Dev.SinceText(Dev.SinceImport(db().heardLog, lastImport()), lastImport())
+    local ready = { vendors = 0, trainers = 0 }
+    if ns and ns.Net and ns.Net.HeardVendors then
+        ready.vendors = Dev.Confirmed(ns.Net.HeardVendors(), function(npc) return isNew("vendor", npc) end)
+        ready.trainers = Dev.Confirmed(ns.Net.HeardTrainers(), function(npc) return isNew("trainer", npc) end)
+    end
+    return Dev.SinceText(Dev.SinceImport(db().heardLog, lastImport()), lastImport(), ready)
 end
 
 -- Keep what another player sent in the log (counted until the next import).
