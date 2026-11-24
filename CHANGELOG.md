@@ -3,8 +3,8 @@
 ## Unreleased
 
 ### Data
-- New vendors: Kazan Mogosh, Yarlyn Amberstill, Dewin Shimmerdawn, Zarena Cromwind, Cowardly Crosby, Kizz Bluntstrike, Cutac, Turuk Amberstill, Kor'jus, Hraq, Vexspindle, Robert Aebischer, Harklan Moongrove, Zansoa, Brivelthwerp, Vizzklick, Dirge Quikcleave, Gikkix, Super-Seller 680, Kosco Copperpinch, Innkeeper Faralia, Gorhak, Kreza Darkthorn, Innkeeper Toka and Creeg Bothunk. 668 vendors, 9,107 items.
-- New trainers: Lucan Cordell and Pa'zula (Enchanting), Daryl Stack (Tailoring), Dwukk (Blacksmithing), Krunn (Mining), Miao'zan (Alchemy), Grimnur Stonebrand (Fishing), Jayla (Skinning) and Mukdrak (Engineering). 191 trainers, 3,401 services.
+- New vendors: Kazan Mogosh, Yarlyn Amberstill, Dewin Shimmerdawn, Zarena Cromwind, Cowardly Crosby, Kizz Bluntstrike, Cutac, Turuk Amberstill, Kor'jus, Hraq, Vexspindle, Robert Aebischer, Harklan Moongrove, Zansoa, Brivelthwerp, Vizzklick, Dirge Quikcleave, Gikkix, Super-Seller 680, Kosco Copperpinch, Innkeeper Faralia, Gorhak, Kreza Darkthorn, Innkeeper Toka, Creeg Bothunk, Jaysin Lanyda, Jensen Farran, Helenia Olden and Kalsey Sanden. 672 vendors, 9,191 items.
+- New trainers: Lucan Cordell and Pa'zula (Enchanting), Daryl Stack (Tailoring), Dwukk (Blacksmithing), Krunn (Mining), Miao'zan (Alchemy), Grimnur Stonebrand (Fishing), Jayla (Skinning), Mukdrak (Engineering) and Sellandus (Tailoring). 192 trainers, 3,452 services.
 - Disenchanting: 293 disenchants in 14 bands.
 
 ## v1.11.0
