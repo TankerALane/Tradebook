@@ -2060,6 +2060,7 @@ ns.RecipeItemBound = {
 [7983]=true,
 [7984]=true,
 [7985]=true,
+[7994]=true,
 [7995]=true,
 [8029]=true,
 [8030]=true,
@@ -2992,6 +2993,7 @@ ns.RecipeItemBound = {
 [286086]=true,
 [286087]=true,
 [286153]=true,
+[289560]=true,
 }
 
 -- Vendor buy price of each recipe item (copper, before reputation discounts). Only
@@ -3202,6 +3204,7 @@ ns.RecipeItemPrice = {
 [7991]=10000,
 [7992]=8000,
 [7993]=10000,
+[7994]=500,
 [7995]=6000,
 [8028]=10000,
 [8029]=8000,

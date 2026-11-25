@@ -7,7 +7,7 @@
 
 local _, ns = ...
 
-ns.GameDataBuild = "1.60.1.70938"
+ns.GameDataBuild = "1.60.1.71091"
 
 ns.RecipeLevels = {
 [818]={185,25,50,75},
