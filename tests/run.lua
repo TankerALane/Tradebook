@@ -1475,6 +1475,14 @@ test("disenchant: other players count for a band once 2+ players reported it", f
     local other = { [99] = { n = 1, mats = { [10940] = { t = 1, q = 1, lo = 1, hi = 1 } } } }
     local two = D.Combine({}, { s1 = { at = 1, bands = late }, o = { at = 2, bands = other } })
     eq(two[99] and two[99].players, 2, "a different player with one alike band still counts")
+    -- Oldest matches the middle snapshot but not the newest: still one player.
+    local function rec(n) return { n = n, mats = { [10940] = { t = n, q = n, lo = 1, hi = 1 } } } end
+    local old = { [1] = rec(1), [2] = rec(1), [3] = rec(1), [4] = rec(1), [5] = rec(1) }
+    local mid = { [1] = rec(1), [2] = rec(1), [3] = rec(1), [4] = rec(2), [5] = rec(2) }
+    local new = { [1] = rec(3), [2] = rec(3), [3] = rec(1), [4] = rec(2), [5] = rec(2) }
+    local chain = D.Combine({ [1] = rec(1) }, { a = { at = 1, bands = old }, b = { at = 2, bands = mid },
+        c = { at = 3, bands = new } })
+    eq(chain[1].players, 2, "you + one player (three snapshots)")
     local r = D.Results(ns.DisenchantBands, ns.DisenchantClassic, c, 4, 2, 12, ns.DisenchantForeverSeen)
     eq(r.players, 2)
     eq(r.outside, "Wowhead", "green armor 5-15 was seen in Forever by Wowhead")

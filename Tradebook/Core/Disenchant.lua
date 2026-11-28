@@ -202,16 +202,19 @@ function Disenchant.Combine(own, heard)
         if (a.at or 0) ~= (b.at or 0) then return (a.at or 0) > (b.at or 0) end
         return Disenchant.Fingerprint(a.bands) < Disenchant.Fingerprint(b.bands)
     end)
-    local unique = {}
+    -- Compared with every table looked at so far, kept or not: an older snapshot can match a
+    -- middle one but no longer the biggest (seen 2026-11-27: one player's seven characters).
+    local unique, looked = {}, {}
     for _, h in ipairs(list) do
         local copy = false
-        for _, k in ipairs(unique) do
+        for _, k in ipairs(looked) do
             if Disenchant.Fingerprint(h.bands) == Disenchant.Fingerprint(k.bands)
                 or sharedBands(h.bands, k.bands) >= SAME_PLAYER_BANDS then
                 copy = true
                 break
             end
         end
+        looked[#looked + 1] = h
         if not copy then unique[#unique + 1] = h end
     end
     heard = unique
