@@ -961,8 +961,6 @@ function Dev.SinceText(s, lastImport, ready)
     end
     local when = lastImport and lastImport > 0 and date("%b %d %H:%M", lastImport) or "ever"
     return ("Since the last import (%s): %s, from %d players"):format(when, table.concat(parts, ", "), s.players)
-        .. ((ready.vendors + ready.trainers > 0)
-            and "\nConfirmed: new NPCs 2+ players now agree on (the next import adds them)." or "")
 end
 
 local function lastImport() return tonumber(_G.TradebookDevLastImport) or 0 end
