@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.11.2
 
 ### Data
 - New vendors: Thultash, Thultazor, Maxton Strang, Jannos Ironwill, Lamar Veisilli, Frast Dokner, Innkeeper Anderson, Lindea Rabonne, Bliztik, Old Man Heming, Namdo Bizzfizzle, Androd Fadran, Wigcik, Blixrez Goodstitch, Grawl, Franklin Hamar, Stuart Fleming, Dark Iron Entrepreneur, Truk Wildbeard, Marie Holdston, Riznek, Jinky Twizzlefixxit, Wrinkle Goodsteel, Jabbey, Sheendra Tallgrass, Janet Hommers, Harnor, Worb Strongstitch, Nioma, Xan'tish, Jazzrik, Innkeeper Shul'kar, Innkeeper Sikewa, Tukk, Vendor-Tron 1000, Lady Palanseer, Brave Stonehide, Stone Guard Zarg, First Sergeant Hola'mahi, Raider Bork, Sergeant Thunderhorn, Master Smith Burninate, Grizzek, Gritta Chumwater, Gilliwigs, Naluk and Hamur. 719 vendors, 9,898 items.
